@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.4 論理値</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.4 論理値">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.4 論理値">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_43.html#g_t_00e6_009c_00aa_00e5_00ae_009a_00e7_00be_00a9_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4-1"></a>
+<h2 class="section">6.4 論理値</h2>
+
+<dl>
+<dt><a name="index-_003cboolean_003e"></a><u>Builtin Class:</u> <b>&lt;boolean&gt;</b></dt>
+<dd><a name="index-boolean"></a>
+<p>論理値のクラスです。<code>#t</code>と<code>#f</code>のみがこのクラスのインスタンスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-not"></a><u>Function:</u> <b>not</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>が<code>#f</code>の時のみ<code>#t</code>を返し、それ以外の場合は<code>#f</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-boolean_003f"></a><u>Function:</u> <b>boolean?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>が論理値である場合に<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-boolean-1"></a><u>Function:</u> <b>boolean</b><i> obj</i></dt>
+<dd><p><var>obj</var>が<code>#f</code>であるとき<code>#f</code>を返し、それ以外の場合は<code>#t</code>を
+返します。値を論理値に変換したい場合に便利です。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_43.html#g_t_00e6_009c_00aa_00e5_00ae_009a_00e7_00be_00a9_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

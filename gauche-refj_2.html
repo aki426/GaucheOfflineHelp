@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>1.1 Gaucheの概要</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 1.1 Gaucheの概要">
+<meta name="keywords" content="Gauche ユーザリファレンス: 1.1 Gaucheの概要">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Gauche_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_3.html#g_t_00e8_00a1_00a8_00e8_00a8_0098_00e3_0081_00ab_00e3_0081_00a4_00e3_0081_0084_00e3_0081_00a6" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Gauche_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081-1"></a>
+<h2 class="section">1.1 Gaucheの概要</h2>
+
+<p>GaucheはScheme言語のスクリプトエンジンです。
+Schemeプログラムを読み込み、直ちにコンパイルして仮想マシンで実行します。
+Scheme言語の標準である、"Revised^5 Report on the Algorithmic Language Scheme"
+(<a indepth="true" href="gauche-refj_189.html#r5rs">R5RS</a>)に準拠しています。また、SRFI
+(<a href="http://srfi.schemers.org/">http://srfi.schemers.org</a>) に規定されている数多くのライブラリを
+サポートしています。
+</p>
+<p>Gaucheは、プログラマやシステム管理者がこなす日常の雑事を
+効率よくSchemeで書けるようにすることを目的として設計されています。
+</p>
+<p>世の中には多くのSchemeの実装がありますが、
+それぞれの実装には長所と短所があります。
+Gaucheが長所とするべく重点を置いているのは次のようなポイントです。
+</p>
+<dl compact="compact">
+<dt> <b>立ち上りが速いこと</b></dt>
+<dd><p>Gaucheが想定している用途のひとつは、プロダクション環境でちょろっと
+10行スクリプトをでっちあげて、それが非常に頻繁に呼ばれるようなケースです。
+CGIスクリプトなどもそうです。
+Gaucheは頻繁に使われる共通の機能については、豊富な組み込み関数として、
+あるいはプリコンパイルされ素早くロードできるSchemeライブラリとして提供しています。
+</p>
+</dd>
+<dt> <b>マルチバイト文字列</b></dt>
+<dd><p>文字列が1バイトキャラクタのみを扱っていれば良かった時代は過ぎ去りました。
+現代のプログラミングシステムは、様々なエンコーディングによるマルチバイト文字／文字列を
+自然に扱える必要があります。
+Gaucheは内部的に文字列を全て、コンパイル時に選択したエンコーディングの
+マルチバイト文字列として扱います。後から付け足したライブラリレベルでの
+マルチバイト文字列のサポートよりも、一貫性がありロバストな文字列操作が可能になっています。
+詳しくは<a indepth="true" href="gauche-refj_6.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097">マルチバイト文字列</a>を参照してください。
+</p>
+</dd>
+<dt> <b>モジュラー開発</b></dt>
+<dd><p>Gaucheは名前空間を分離する単純なモジュールシステムを備えており、
+名前の衝突を心配せずに複数の開発者が並行して作業をすることができます。
+</p>
+</dd>
+<dt> <b>統合されたオブジェクトシステム</b></dt>
+<dd><p>CLOSライクなメタオブジェクトプロトコルを備えた強力なオブジェクトシステム
+が組み込んであります。STklosやGuileのオブジェクトシステムとかなり互換性があります。
+</p>
+</dd>
+<dt> <b>システムインタフェース</b></dt>
+<dd><p>Schemeは計算機の詳細の多くを抽象化しますが、プログラムを書いていると、
+それらの高レベル層をバイパスして地下室に降りて作業しなければならないような時が
+あります。GaucheはPOSIX.1システムコールのほとんどを組み込みでサポートします。
+また、ネットワーキングモジュールなど他のシステム関連モジュールは通常、
+高レベルの抽象的なインタフェースと低レベルのシステムコールに近いインタフェースを
+両方提供します。
+</p>
+</dd>
+<dt> <b>強化された入出力</b></dt>
+<dd><p>本物のアプリケーションはI/O無しでは成り立ちません。
+SchemeはI/Oをポートとして簡潔に抽象化していますが、
+標準のSchemeには最低限の操作しか定義されていません。
+Gaucheはポートオブジェクトを入出力のための統合された抽象化オブジェクトと考え、
+それを通して下位のI/Oシステム層にアクセスするユーティリティ関数を提供しています。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">入出力</a>を参照して下さい。
+</p></dd>
+</dl>
+
+<p>一方、Gaucheは所詮インタプリタですから、高速に大量の計算をこなしたり
+巨大なデータセットを扱ったりするのは苦手です。
+</p>
+<p>但し、そのような場合でも、Gaucheを各コンポーネントをつなぐ「糊」言語として
+使うことは可能です。例えば性能の要求の厳しい部分はネイティブコードにコンパイルする言語で
+書いておき、セットアップにGaucheを使うといった方法があります。
+</p>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_3.html#g_t_00e8_00a1_00a8_00e8_00a8_0098_00e3_0081_00ab_00e3_0081_00a4_00e3_0081_0084_00e3_0081_00a6" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

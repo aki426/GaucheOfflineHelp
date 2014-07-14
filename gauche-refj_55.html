@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.17 Weak ポインタ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.17 Weak ポインタ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.17 Weak ポインタ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Weak-_00e3_0083_009d_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_54.html#g_t_00e3_0083_0084_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_56.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Weak-_00e3_0083_009d_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf-1"></a>
+<h2 class="section">6.17 Weak ポインタ</h2>
+
+<p>Weak ポインタとは、それが参照しているオブジェクトがガベージコレクトされることを
+許すようなポインタです。
+Gaucheは<em>weak ベクタ</em>オブジェクトによってweak ポインタの機能を提供します。
+Weak ベクタは通常のベクタに似ていますが、要素のオブジェクトがweak ベクタ以外から
+参照されていない場合、オブジェクトはガベージコレクトされ、weak ベクタの該当するエントリは
+<code>#f</code>で置き換えられます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define v (make-weak-vector 1))
+v
+gosh&gt; (weak-vector-ref v 0)
+#f
+gosh&gt; (weak-vector-set! v 0 (cons 1 1))
+#&lt;undef&gt;
+gosh&gt; (weak-vector-ref v 0)
+(1 . 1)
+gosh&gt; (gc)
+#&lt;undef&gt;
+gosh&gt; (gc)
+#&lt;undef&gt;
+gosh&gt; (weak-vector-ref v 0)
+#f
+</pre></td></tr></tbody></table>
+
+<dl>
+<dt><a name="index-_003cweak_002dvector_003e"></a><u>Builtin Class:</u> <b>&lt;weak-vector&gt;</b></dt>
+<dd><a name="index-weak_002dvector"></a>
+<p>Weak ベクタのクラスです。<code>&lt;sequence&gt;</code>と<code>&lt;collection&gt;</code>を継承しているので、
+<code>gauche.collection</code> (<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>参照) と
+<code>gauche.sequence</code> (<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>参照) も使えます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(coerce-to &lt;weak-vector&gt; '(1 2 3 4))
+  ⇒ a weak vector with four elements
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dweak_002dvector"></a><u>Function:</u> <b>make-weak-vector</b><i> size</i></dt>
+<dd><p>大きさ<var>size</var>のweak ベクタを作成して返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-weak_002dvector_002dlength"></a><u>Function:</u> <b>weak-vector-length</b><i> wvec</i></dt>
+<dd><p>weak ベクタ <var>wvec</var>の大きさを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-weak_002dvector_002dref"></a><u>Function:</u> <b>weak-vector-ref</b><i> wvec k &amp;optioal fallback</i></dt>
+<dd><p>weak ベクタ <var>wvec</var>の<var>k</var>番目の要素を返します。
+</p>
+<p><code>weak-vector-ref</code>は<var>k</var>が負の値であったりベクタの長さより
+大きかったりした場合はエラーを通知します。但し、省略可能な引数<var>fallback</var>
+が与えられている場合はその値が返されます。
+</p>
+<p>該当する要素が既にガベージコレクトされていた場合、<var>fallback</var>が
+与えられていればそれが、そうでなければ<code>#f</code>が返されます。
+</p>
+<p><code>gauche.sequence</code>モジュールをロードしていれば、
+メソッド<code>ref</code>も同じ目的で使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-weak_002dvector_002dset_0021"></a><u>Function:</u> <b>weak-vector-set!</b><i> wvec k obj</i></dt>
+<dd><p>weak ベクタ <var>wvec</var>の<var>k</var>番目の要素を<var>obj</var>に変更します。
+<var>k</var>が負数であったりベクタの長さより大きい場合はエラーとなります。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_54.html#g_t_00e3_0083_0084_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_56.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

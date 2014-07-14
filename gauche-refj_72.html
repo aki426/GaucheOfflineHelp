@@ -1,0 +1,509 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>8.1 必要なライブラリの探し方</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 8.1 必要なライブラリの探し方">
+<meta name="keywords" content="Gauche ユーザリファレンス: 8.1 必要なライブラリの探し方">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9-1"></a>
+<h2 class="section">8.1 必要なライブラリの探し方</h2>
+
+<p>各モジュール名は概ね何を実装しているかを示すような名前になっていて、
+<em>何のための</em>実装になっているかは示していません。モジュールがひと
+つの問題を解くためにあるのなら両方は一致しますが、問題の解法が複数ある
+こともありますし、ひとつのアルゴリズムの実装が複数の異る問題を解くのに
+役立つこともあります。したがって、モジュールに問題指向(あるいは目的指
+向)の名前を付けることは困難です。
+</p>
+<p>というわけで、Gaucheにはじめてふれるプログラマにとって問題を解くのに適
+切なGaucheモジュールを見つけるのは簡単ではないかもしれません。やるべきことに対
+応するアルゴリズムは複数ありえますから、それぞれのアルゴリズムは別々の
+モジュールで実装されています。
+</p>
+<p>モジュールはまた、いくつもの層で実装されています。システムコールへの直接のインタフェース
+を提供する低レベルモジュールもあれば、複数の低レベルモジュールを使って
+構築された、より抽象化され使いやすい高レベルモジュールもあります。さて
+どれを使えばよいでしょう。通常もっとも高レベルのものを使うのがよいでしょ
+う。やさしく使える抽象度の高いインタフェースを提供するというのがまさに
+ライブラリの目的だからです。とはいうものの、場合によっては抽象の壁をや
+ぶってその下にあるメカニズムに触らなければ出来ないこともあります。そ
+ういうときには低レベルのモジュールを直接使う必要があります。
+</p>
+<p>ここではライブラリをその目的にしたがってグループ分けします。各カテゴリ
+ごとに関連するモジュールをあげ、簡単な説明をしています。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a">8.1.1 ライブラリディレクトリ - データコンテナ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00a8_00e6_0096_0087_00e5_00ad_0097">8.1.2 ライブラリディレクトリ - 文字列と文字</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e4_00ba_00a4_00e6_008f_009b">8.1.3 ライブラリディレクトリ - データ交換</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab">8.1.4 ライブラリディレクトリ - ファイル</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">8.1.5 ライブラリディレクトリ - プロセスとスレッド</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af">8.1.6 ライブラリディレクトリ - ネットワーク</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">8.1.7 ライブラリディレクトリ - 入出力</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0099_0082_00e9_0096_0093">8.1.8 ライブラリディレクトリ - 時間</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00a8_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088">8.1.9 ライブラリディレクトリ - ビットとバイト</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00a8_00e6_0096_0087_00e5_00ad_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a-1"></a>
+<h3 class="subsection">8.1.1 ライブラリディレクトリ - データコンテナ</h3>
+
+<a name="g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e3_0081_00aa_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a_00e6_0093_008d_00e4_00bd_009c"></a>
+<h4 class="subsubheading">ジェネリックなコンテナ操作</h4>
+
+<p>似たような性質をもつデータコンテナがあります。たとえば、リスト、ベクタ、
+ハッシュテーブルはデータのコレクションとして見ることができます。それゆ
+え、すべての要素に適用できるようなジェネリックな操作があれば便利です。
+</p>
+<p>Gaucheでは主にオブジェクトシステムで使うためにこのような機構をある程度
+用意されています。
+</p>
+<ul>
+<li>
+<em>コレクション</em> - 順序付けられていないデータの集合に対するジェネリッ
+ク関数。<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>参照。
+</li><li>
+<em>シーケンス</em> - 順序付けられたデータの集合に対するジェネリック関数。
+<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>参照。
+</li><li>
+<em>リレーション</em> - (Coddの定義による)リレーションを処理するためのジェ
+ネリック関数。<a indepth="true" href="gauche-refj_182.html#util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.relation</code> - リレーションフレームワーク</a>参照。
+</li><li>
+<em>内包表記</em> - コレクションやシーケンスの構築やトラバースを短く便利
+に書くためのマクロ集。<a indepth="true" href="gauche-refj_121.html#Eager-comprehensions"><code>srfi-42</code> - 先行評価的内包表記</a>参照。
+</li></ul>
+
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a_00e3_0081_00ae_00e5_00ae_009f_00e8_00a3_0085"></a>
+<h4 class="subsubheading">コンテナの実装</h4>
+
+<ul>
+<li>
+<em>リスト</em> - もっともよく使うデータ構造。
+<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_009a_00e3_0082_00a2_00e3_0081_00a8_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088">ペアとリスト</a>と<a indepth="true" href="gauche-refj_110.html#List-library"><code>srfi-1</code> - List library</a>をチェックしましょう。
+</li><li>
+<em>ベクタ</em> - 任意のSchemeの値を格納する一次元配列。<a indepth="true" href="gauche-refj_52.html#g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf">ベクタ</a>お
+よび<a indepth="true" href="gauche-refj_122.html#Vector-library"><code>srfi-43</code> - ベクタライブラリ</a>を見ましょう。
+広い範囲のインデックスが必要で、しかし実際に格納されるデータが疎である場合は
+<a indepth="true" href="gauche-refj_183.html#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf">疎なベクタ</a>が使えるかもしれません。
+</li><li>
+<em>ユニフォームベクタ</em> - 制限された型の値(たとえば8ビット整数)を保
+持する特別なベクタ。グラフィックなどパフォーマンスが要求されるアプリケー
+ション用。<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照。
+</li><li>
+<em>配列</em> - 任意のScheme値を保持できる多次元配列。<a indepth="true" href="gauche-refj_75.html#g_t_00e9_0085_008d_00e5_0088_0097"><code>gauche.array</code> - 配列</a>参照。
+</li><li>
+<em>ユニフォーム配列</em> - 制限された型の値を保持する多次元配列。これも
+<a indepth="true" href="gauche-refj_75.html#g_t_00e9_0085_008d_00e5_0088_0097"><code>gauche.array</code> - 配列</a>でサポートされている。
+</li><li>
+<em>文字列</em> - 文字のシーケンス。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097">文字列</a>および
+<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>参照。Gaucheではマルチバイト文字列を扱えます。詳細
+については<a indepth="true" href="gauche-refj_6.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097">マルチバイト文字列</a>を見てください。
+</li><li>
+<em>文字集合</em> - 文字の集合。<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>および
+<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a>参照。
+</li><li>
+<em>ハッシュテーブル</em> - ハッシュテーブル。 <a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">ハッシュテーブル</a>参照。
+非常に大きなハッシュテーブル(数百万エントリ)の場合、
+<a indepth="true" href="gauche-refj_183.html#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">疎なテーブル</a>の方がメモリ効率が良い可能性もあります。
+</li><li>
+<em>キュー</em> - 高速なキュー、およびスレッドセーフなキューが<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc"><code>util.queue</code> - キュー</a>で用意されています。
+</li><li>
+<em>レコード</em> - 単純なデータ構造。Gaucheのオブジェクトシステムをつかっ
+て任意のデータ構造を定義できますが、<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>gauche.record</code> - レコード型</a>および
+<a indepth="true" href="gauche-refj_181.html#SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>util.record</code> - SLIB-互換のレコード型</a>を検討するのもいいでしょう。こちらの
+方がポータブルで高効率です。
+</li><li>
+<em>ストリーム</em> - これを使うと遅延アルゴリズムをスマートに実装できま
+す。<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>util.stream</code> - ストリームライブラリ</a>参照。
+</li><li>
+<em>平衡木</em> - 赤黒木が利用できます。<a indepth="true" href="gauche-refj_180.html#g_t_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8"><code>util.rbtree</code> - 赤黒木</a>参照。
+</li><li>
+<em>トライ</em> - 共通接頭辞検索用の効率のよい木構造です。<a indepth="true" href="gauche-refj_185.html#util_002etrie-_002d-Trie"><code>util.trie</code> - Trie</a>参照。
+</li><li>
+<em>データベースインタフェース</em> - dbmインタフェースが永続的ハッシュ
+テーブルとして利用できます。<a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>dbm</code> - 汎用DBMインタフェース</a>参照。ジェネリッ
+クなRDBMSへのインタフェースについては、
+<a indepth="true" href="gauche-refj_133.html#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4"><code>dbi</code> - データベース非依存アクセス層</a>を見てください。
+</li></ul>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00a8_00e6_0096_0087_00e5_00ad_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e4_00ba_00a4_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00a8_00e6_0096_0087_00e5_00ad_0097-1"></a>
+<h3 class="subsection">8.1.2 ライブラリディレクトリ - 文字列と文字</h3>
+
+<p>文字列の基本操作は<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097">文字列</a>および<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>でカバーされ
+ています。文字列は文字のシーケンスでもありますので、
+<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>および<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>のメソッドを適
+用可能です。
+</p>
+<p>文字および文字集合の操作は
+<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a>、<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>、<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a>がカ
+バーしています。
+</p>
+<p>文字列を先頭から順に操作したり構築したりする場合にはインデックスによる
+アクセスはおこないません。文字列ポート(<a indepth="true" href="gauche-refj_60.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">文字列ポート</a>参照)はさらに
+効率のよいエレガントな方法を提供しています。
+</p>
+<p>文字列から文字のならびを検索したり、とりだしたりするのに正規表現が使え
+ます。<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>参照。
+</p>
+<p>文字列の低レベル(たとえばバイトレベル)表現を扱う必要があるなら
+<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>に文字列とバイトベクタ相互の変換をおこなうツール
+があります。
+</p>
+<p>文字の単なるシーケンスよりも高次の構造を扱いたいのですか。それなら
+<code>text.*</code>モジュールを見てください。<a indepth="true" href="gauche-refj_168.html#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0"><code>text.parse</code> - 入力ストリームのパージング</a>には
+基本的なスキャナの実装が用意されています。
+<a indepth="true" href="gauche-refj_171.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_00a4_0089_00e6_008f_009b"><code>text.tr</code> - 文字変換</a>はUnixの<code>tr(1)</code>に似た機能を実装して
+います。2つのテキストの<code>diff</code>をとることもできます。これについては
+<a indepth="true" href="gauche-refj_165.html#g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b"><code>text.diff</code> - テキストストリームの相違点を計算する</a>を見てください。文字列の断片
+から大きな文字列を構成したいのなら、<code>string-append</code>を使ってはいけ
+ません。<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089"><code>text.tree</code> - 怠惰なテキスト構築</a>参照。
+</p>
+<p>大事なことを言い忘れました。Gaucheはさまざまな文字エンコーディングをサ
+ポートしています。基本的な関数については
+<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>を見てください。<code>open-input-file</code>
+のようなもっとも高次の関数のほとんどは、<code>:encoding</code>キーワード引数
+をとり、文字の変換を暗黙におこないます。非ASCII文字でSchemeのプログラ
+ムを書きたい場合には<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088">マルチバイトスクリプト</a>を見てください。encodingと
+いうマジックコメントを含むGaucheのソースコードを処理したいなら
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">コーディング認識ポート</a>を見てください。地域化が必要なら、Gaucneには
+GNU gettext互換のモジュール(<a indepth="true" href="gauche-refj_166.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8"><code>text.gettext</code> - 地域化メッセージ</a>)もあります。
+</p>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e4_00ba_00a4_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00a8_00e6_0096_0087_00e5_00ad_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e4_00ba_00a4_00e6_008f_009b-1"></a>
+<h3 class="subsection">8.1.3 ライブラリディレクトリ - データ交換</h3>
+
+<p>ほとんどのプログラムでは外界(他のプログラムや人間)とコミュニケーション
+する必要があります。ということは外部データを読み込んでそれがどのような
+フォーマットで書かれているかを判別したり、他のプログラムが理解できる
+フォーマットでデータを書き出したりするということです。
+</p>
+<p>ネットワークに関連する外部フォーマットの多くはRFCで規定されており、そ
+れらのいくつかに対応するRFCモジュール(<code>rfc.*</code>)があります。たとえ
+ばよく知られたRFC2822のメッセージフォーマットを処理するには
+<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f"><code>rfc.822</code> - RFC822メッセージ形式</a>を見てください。
+</p>
+<p>表形式のデータを交換するのにもっとも便利な方法は表の一行をプレーンテキ
+ストの一行に対応させることです。そしてカラムは特定の文字で区切ります。
+たとえば、コンマで区切ります。これらの解析と書き出し用の基本手続につい
+ては<a indepth="true" href="gauche-refj_164.html#CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab"><code>text.csv</code> - CSVテーブル</a>を見てください。
+</p>
+<p>今どきのビジネスユーザはXMLを欲しがるというのですか。いいでしょう。まぁ
+彼らが欲しいのは尖った括弧のえらい冗長なS式なんですから、XMLをS式と
+して読み込んで、自家籠中の car とか cdr とか map でちょちょいと処理し
+てえらい冗長な尖った括弧で書き出せばいいですよね。
+<code>sxml.ssax</code>モジュール(<a indepth="true" href="gauche-refj_160.html#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6"><code>sxml.ssax</code> - 関数的なXMLパーザ</a>)はSAX XMLパーザ
+の実装です。これを使えば、おてがるにXMLをパーズしたり処理したり、ある
+いはまた、SXML(S式XML)に変換することもできます。SXPath(XPathに対応する
+S式(<a indepth="true" href="gauche-refj_161.html#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e"><code>sxml.sxpath</code> - SXMLクエリ言語</a>))を使ってSXMLクエリを発行することもでき
+ます。SXMLシリアライザを使えば、すべての種類のXMLやHTMLをはきだすこと
+もできます(<a indepth="true" href="gauche-refj_163.html#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"><code>sxml.serializer</code> - SXMLからXMLとXHTMLのシリアライゼーション</a>)。
+</p>
+<p>(でもいまどきのwebサービスならたいていはJSONも話しますし、そっちの方が
+手軽だっていうなら、<a indepth="true" href="gauche-refj_152.html#JSON_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089"><code>rfc.json</code> - JSONのパーズと構築</a>を見てみると良いかも
+しれません。)
+</p>
+<p>さまざまなファイルフォーマットを処理するルーチンを<code>file.*</code>という
+モジュールで使えるようにしようという計画はあるのですが、まだなにも準備
+できていません。ひとつ自分で書いてやろうという人がいたら是非おねがいし
+たいので、おしらせ下さい。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e4_00ba_00a4_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab-1"></a>
+<h3 class="subsection">8.1.4 ライブラリディレクトリ - ファイル</h3>
+
+<p>ファイルおよびディレクトリ。おおざっぱに言うと見るべきところは2箇所で
+す。
+</p>
+<p><a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">ファイルシステム</a>のコア部分には下位のOSが提供しているに近いルーチンが
+あります。Unixのシステムプログラミングの経験があれば、よく知っている関
+数名がばかりだと思うでしょう。ちなみに<code>fcntl</code>の機能は
+<code>gauche.fcntl</code> (<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"><code>gauche.fcntl</code> - 低レベルファイル操作</a>)にあります。
+</p>
+<p>まちがいなく<code>file.util</code>(<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"><code>file.util</code> - ファイルシステムユーティリティ</a>)を使いたいこと
+でしょう。これはシステムレベル上で実装された高次レベルのルーチン群です。
+</p>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089-1"></a>
+<h3 class="subsection">8.1.5 ライブラリディレクトリ - プロセスとスレッド</h3>
+
+<p>プロセス関連のルーチンも2つのレベルで提供されます。
+</p>
+<p><code>gauche.process</code>モジュールは高レベルのルーチン
+(<a indepth="true" href="gauche-refj_95.html#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>gauche.process</code> - 高レベルプロセスインタフェース</a>)を提供しています。これを使えば、た
+とえば、データを子プロセスとの間でパイプすることが簡単にできます。
+</p>
+<p>Gaucheコアはプリミティブな<code>fork</code>および<code>exec</code>のインタフェース
+を、便利な<code>system</code>コール(<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照)同様提
+供しています。やりたいことを細かくコントロールしたい場合に使うとよいで
+しょう。
+</p>
+<p>GaucheはOSXを含む多くのUnixプラットフォームでプリエンプティブなスレッドを
+サポートしています。低レベルの排他制御を含む基本的なスレッドのサポートについては
+<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"><code>gauche.threads</code> - スレッド</a>を参照してください。<code>util.queue</code>モジュール
+(<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc"><code>util.queue</code> - キュー</a>参照)では、スレッド間同期にも使えるスレッドセーフなキューを
+提供しています。スレッドプールは<code>control.thread-pool</code> (<a indepth="true" href="gauche-refj_131.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab"><code>control.thread-pool</code> - スレッドプール</a>参照)
+によって提供されます。
+</p>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af-1"></a>
+<h3 class="subsection">8.1.6 ライブラリディレクトリ - ネットワーク</h3>
+
+<p>これは抽象の層が複数あります。最下層ではソケットレベルのシステムコール
+に対応するAPIがあります。中間層ではホスト名の解決、コネクション、シャッ
+トダウンなどを自動でやるような便利なライブラリになっています。最上層で
+は、たとえばHTTPのような特定のプロトコルを扱うためのモジュールがいくつ
+か用意されています。
+</p>
+<p><code>gauche.net</code>モジュール(<a indepth="true" href="gauche-refj_91.html#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0"><code>gauche.net</code> - ネットワーキング</a>)は最下層と中間層を提供し
+ています。最上層については<code>rfc.*</code>モジュールを探してみて下さい。
+たとえば <code>rfc.http</code> (<a indepth="true" href="gauche-refj_149.html#HTTP"><code>rfc.http</code> - HTTP</a>)です。
+その他のプロトコルについてもまもなくサポートされる予定です。
+<code>rfc.ftp</code>や<code>rfc.imap4</code>はすでにユーザの方々が書いてくれていて、
+Gaucheにとりこまれるのを待っている状態にあります。おそらく次のリリース
+で統合されるでしょう。
+</p>
+<p>さらに複数のプロトコルを抽象化して<code>net.*</code>という名前のさらに高次レ
+ベルのライブラリの計画もあります。emailの送信あるいはURIによるリソース
+アクセスなどの計画があります。コードの貢献は歓迎します。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0099_0082_00e9_0096_0093" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b-1"></a>
+<h3 class="subsection">8.1.7 ライブラリディレクトリ - 入出力</h3>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0099_0082_00e9_0096_0093"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00a8_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0099_0082_00e9_0096_0093-1"></a>
+<h3 class="subsection">8.1.8 ライブラリディレクトリ - 時間</h3>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00a8_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0099_0082_00e9_0096_0093" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_73.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e5_0091_00bd_00e5_0090_008d_00e8_00a6_008f_00e5_0089_0087" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00a8_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088-1"></a>
+<h3 class="subsection">8.1.9 ライブラリディレクトリ - ビットとバイト</h3>
+
+<a name="g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b"></a>
+<h4 class="subsubheading">バイナリ入出力</h4>
+
+<p>最下層としてGaucheはコアに含まれるブロック入出力(<code>read-block!</code>
+、<code>write-block</code>)と同様、バイト入出力のプリミティブ
+(<code>read-byte</code>、<code>write-byte</code>)も含んでいます
+(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">データの読み込み</a>、<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>、<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)。
+</p>
+<p>中間層としては、<code>binary.io</code>(<a indepth="true" href="gauche-refj_127.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO"><code>binary.io</code> - バイナリI/O</a>)モジュールには
+オプションでエンディアンを指定できる特定のデータを取得するルーチンがあ
+ります。
+</p>
+<p>そして最上層としては、<code>binary.pack</code>(<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"><code>binary.pack</code> - バイナリデータのパック</a>)
+モジュールがあって、構造をもつバイナリデータのパック、アンパックを可能
+にしています。Perlでいう<code>pack</code>/<code>unpack</code>です。
+</p>
+<a name="g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c"></a>
+<h4 class="subsubheading">ビット操作</h4>
+
+<p>Gaucheコアはビットシフトおよびマスク操作を提供しています。
+<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>を見てください。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e6_0099_0082_00e9_0096_0093" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_73.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e5_0091_00bd_00e5_0090_008d_00e8_00a6_008f_00e5_0089_0087" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

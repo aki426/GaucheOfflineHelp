@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.1 標準への準拠</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.1 標準への準拠">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.1 標準への準拠">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_6.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0-1"></a>
+<h2 class="section">2.1 標準への準拠</h2>
+
+<p>Gaucheは、以下に挙げる点を除き、オプショナルな構文や手続きも含め
+"Revised^5 Report of Algorithmic Language Scheme" に準拠しています。
+</p>
+<ul>
+<li>
+デフォルトで、Gaucheはシンボルの名前の大文字小文字を区別します。
+コマンドラインオプションや特別なリーダ指示子によって、
+大文字小文字を区別するかどうかを切替えることができます(<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5">大文字小文字の区別</a>参照)。
+</li><li>
+ある条件下で作られた継続は限られたエクステントを持ちます
+(具体的には、Cのコードからコールバックとして呼ばれるSchemeコード内で作られる継続
+がこれにあたります)。詳しくは<a indepth="true" href="gauche-refj_56.html#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a>を参照して下さい。
+</li><li>
+完全なNumeric tower(整数、有理数、実数、複素数)がサポートされますが、
+有理数は正確な表現のみで、また複素数は不正確な表現のみを持ちます。
+リーダは、精度に影響を与えない桁を’<code>#</code>’で表す数字表記を認識します。
+</li><li>
+手続き<code>rationalize</code>、<code>transcript-on</code>、及び<code>transcript-off</code>
+はサポートされていません。
+</li></ul>
+
+<p>(註：2007年9月に、新たなSchemeの標準であるR6RSが制定されました。
+GaucheをR6RS準拠にする予定は近い将来にはありませんが、
+R6RSと互換なモジュールを徐々に追加してゆく予定です。)
+</p>
+<p>Gaucheはまた、以下のSRFIをサポートしています。
+</p>
+<dl compact="compact">
+<dt> SRFI-0, 機能ベースの条件展開</dt>
+<dd><p>オートロードされるマクロとしてサポートされます。<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>参照。
+</p>
+</dd>
+<dt> SRFI-1, リストライブラリ</dt>
+<dd><p>モジュール<code>srfi-1</code>でサポートされます。<a indepth="true" href="gauche-refj_110.html#List-library"><code>srfi-1</code> - List library</a>参照。
+SRFI-1の手続きのうちいくつかは組み込みになっています。
+</p>
+</dd>
+<dt> SRFI-2, AND-LET*: 局所束縛をともなう AND、ガード付 LET* 特殊フォーム</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b">変数束縛</a>参照。
+</p>
+</dd>
+<dt> SRFI-4, 一様な数値ベクタ型</dt>
+<dd><p>モジュール<code>gauche.uvector</code>が
+<code>srfi-4</code>の上位互換手続きを提供します。
+同モジュールにはSRFI-4の手続きに加え、
+算術演算やジェネリックなインタフェースが定義されています。<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照。
+</p>
+</dd>
+<dt> SRFI-5, シグネチャとrest引数に互換性のあるlet形式</dt>
+<dd><p>モジュール<code>srfi-5</code>でサポートされます。
+<a indepth="true" href="gauche-refj_112.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008d_00e3_0083_0081_00e3_0083_00a3_00e3_0081_00a8rest_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ab_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ae_00e3_0081_0082_00e3_0082_008blet_00e5_00bd_00a2_00e5_00bc_008f"><code>srfi-5</code> - シグネチャとrest引数に互換性のあるlet形式</a>参照。
+</p>
+</dd>
+<dt> SRFI-6, 基本文字列ポート</dt>
+<dd><p>SRFI-6の手続きは組み込みになっています。<a indepth="true" href="gauche-refj_60.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">文字列ポート</a>参照。
+</p>
+</dd>
+<dt> SRFI-7, 機能ベースプログラム設定言語</dt>
+<dd><p>オートロードされるマクロとしてサポートされています。
+<a indepth="true" href="gauche-refj_113.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e"><code>srfi-7</code> - 機能ベースプログラム設定言語</a>参照。
+</p>
+</dd>
+<dt> SRFI-8, receive: 多値束縛</dt>
+<dd><p>構文<code>receive</code>は組み込みになっています。<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b">変数束縛</a>参照。
+</p>
+</dd>
+<dt> SRFI-9, レコード型の定義</dt>
+<dd><p>モジュール<code>gauche.record</code>でサポートされます。<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>gauche.record</code> - レコード型</a>参照。
+</p>
+</dd>
+<dt> SRFI-10, Sharp-comma外部フォーム</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_60.html#g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf">読み込み時コンストラクタ</a>参照。
+</p>
+</dd>
+<dt> SRFI-11, 多値を受け取るための構文</dt>
+<dd><p>モジュール<code>srfi-11</code>でサポートされます。<a indepth="true" href="gauche-refj_114.html#Let_002dvalues"><code>srfi-11</code> - Let-values</a>参照。
+</p>
+</dd>
+<dt> SRFI-13, 文字列ライブラリ</dt>
+<dd><p>モジュール<code>srfi-13</code>でサポートされます。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>参照。
+(SRFI-13の手続きのいくつかは組み込みになっています。)
+</p>
+</dd>
+<dt> SRFI-14, 文字集合のライブラリ</dt>
+<dd><p>文字集合と基本的なSRFI-14手続きは組み込みになっています。
+<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>参照。SRFI-14の完全なサポートはモジュール<code>srfi-14</code>
+で提供されています。<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a>参照。
+</p>
+</dd>
+<dt> SRFI-16, 可変長引数手続き構文 (case-lambda)</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>参照。
+</p>
+</dd>
+<dt> SRFI-17, 一般化された set!</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5">代入</a>参照。
+</p>
+</dd>
+<dt> SRFI-18, マルチスレッドのサポート</dt>
+<dd><p>いくつかのSRFI-18の機能は組み込みであり、、残りのAPIは
+<code>gauche.threads</code>モジュールで提供されます。<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"><code>gauche.threads</code> - スレッド</a>参照。
+</p>
+</dd>
+<dt> SRFI-19, 時間データの型と手続き</dt>
+<dd><p>時間のデータ型はGauche組み込みです(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)。
+SRFI-19の完全なサポートはモジュール<code>srfi-19</code>で提供されています。
+<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"><code>srfi-19</code> - 時間のデータ型と手続き</a>参照。
+</p>
+</dd>
+<dt> SRFI-22, UNIX 上の Scheme スクリプトの実行</dt>
+<dd><p>サポートされています。<a indepth="true" href="gauche-refj_15.html#Scheme_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">Schemeスクリプトを書く</a>参照。
+</p>
+</dd>
+<dt> SRFI-23, エラー報告機構</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5">例外の通知</a>参照。
+</p>
+</dd>
+<dt> SRFI-25, 多次元配列のプリミティブ</dt>
+<dd><p>モジュール<code>gauche.array</code>が、SRFI-25の上位互換と
+なっています。<a indepth="true" href="gauche-refj_75.html#g_t_00e9_0085_008d_00e5_0088_0097"><code>gauche.array</code> - 配列</a>参照。
+</p>
+</dd>
+<dt> SRFI-26, カリー化をともなわないパラメータの特殊化記法</dt>
+<dd><p>オートロードされるマクロとして定義されています。<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>参照。
+</p>
+</dd>
+<dt> SRFI-27, ランダムビットのソース</dt>
+<dd><p>モジュール<code>srfi-27</code>でサポートされます。<a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9"><code>srfi-27</code> - ランダムビットのソース</a>参照。
+</p>
+</dd>
+<dt> SRFI-28, 基本フォーマット文字列</dt>
+<dd><p>Gauche組み込みの<code>format</code>がSRFI-28のものの上位互換に
+なっています。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照。
+</p>
+</dd>
+<dt> SRFI-29, 地域化</dt>
+<dd><p>モジュール<code>srfi-29</code>でサポートされます。
+<a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096"><code>srfi-29</code> - 地域化</a>参照。
+</p>
+</dd>
+<dt> SRFI-30, ネストした複数行コメント</dt>
+<dd><p>ネイティブのリーダでサポートされています。<a indepth="true" href="gauche-refj_22.html#g_t_00e5_00ad_0097_00e5_008f_00a5_00e6_00a7_008b_00e9_0080_00a0">字句構造</a>参照。
+</p>
+</dd>
+<dt> SRFI-31, 再帰評価用の特殊フォーム rec</dt>
+<dd><p>オートロードされるマクロとして定義されています。<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b">変数束縛</a>参照。
+</p>
+</dd>
+<dt> SRFI-34, プログラムの例外処理</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096">例外</a>参照。
+(但し、Gaucheは<code>raise</code>に関してはsrfi-18のセマンティクスを文字通り
+実装していて、それはsrfi-34と若干異なります。将来はsrfi-34に合わせるかもしれません。)
+</p>
+</dd>
+<dt> SRFI-35, コンディション</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_58.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a>参照。
+</p>
+</dd>
+<dt> SRFI-36, I/O コンディション</dt>
+<dd><p>部分的にサポートされています.  <a indepth="true" href="gauche-refj_58.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a>参照。
+</p>
+</dd>
+<dt> SRFI-37, args-fold: プログラム引数処理</dt>
+<dd><p>モジュール<code>srfi-37</code>でサポートされます。
+<a indepth="true" href="gauche-refj_120.html#args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086"><code>srfi-37</code> - args-fold プログラム引数処理</a>参照。
+</p>
+</dd>
+<dt> SRFI-38, 共有されるデータの外部表現</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">データの読み込み</a>と<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照。
+</p>
+</dd>
+<dt> SRFI-39, パラメータオブジェクト</dt>
+<dd><p>モジュール<code>gauche.parameter</code>でサポートされます。
+<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>参照。
+</p>
+</dd>
+<dt> SRFI-40, ストリームライブラリ</dt>
+<dd><p>モジュール<code>util.stream</code>でサポートされています。
+See section <a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>util.stream</code> - ストリームライブラリ</a>.
+</p>
+</dd>
+<dt> SRFI-42, 先行評価的内包表記</dt>
+<dd><p>モジュール<code>srfi-42</code>でサポートされます。
+<a indepth="true" href="gauche-refj_121.html#Eager-comprehensions"><code>srfi-42</code> - 先行評価的内包表記</a>参照。
+</p>
+</dd>
+<dt> SRFI-43, ベクタライブラリ</dt>
+<dd><p>モジュール<code>srfi-43</code>でサポートされます。
+<a indepth="true" href="gauche-refj_122.html#Vector-library"><code>srfi-43</code> - ベクタライブラリ</a>参照。
+</p>
+</dd>
+<dt> SRFI-45, 反復的 Lazy アルゴリズムのための基本関数</dt>
+<dd><p>組み込みです。
+See section <a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1">遅延評価</a>.
+</p>
+</dd>
+<dt> SRFI-55, requireの拡張</dt>
+<dd><p>オートロードマクロとしてサポートされます。
+<a indepth="true" href="gauche-refj_123.html#Requiring-extensions"><code>srfi-55</code> - require の拡張</a>参照。
+</p>
+</dd>
+<dt> SRFI-60, 整数に対するビット操作</dt>
+<dd><p>ほとんどの手続きは組み込みになっています。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+完全なサポートは<code>srfi-60</code>モジュールで提供されます。
+<a indepth="true" href="gauche-refj_124.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c"><code>srfi-60</code> - 整数に対するビット操作</a>参照。
+</p>
+</dd>
+<dt> SRFI-61, より汎用的な<code>cond</code>節</dt>
+<dd><p>組み込みです。<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f">条件式</a>参照。
+</p>
+</dd>
+<dt> SRFI-62, S式コメント</dt>
+<dd><p>ネイティブのリーダでサポートされています。<a indepth="true" href="gauche-refj_22.html#g_t_00e5_00ad_0097_00e5_008f_00a5_00e6_00a7_008b_00e9_0080_00a0">字句構造</a>参照。
+</p>
+</dd>
+<dt> SRFI-87, case節での<code>=&gt;</code></dt>
+<dd><p>組込みです。<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f">条件式</a>参照。
+</p>
+</dd>
+<dt> SRFI-98, 環境変数にアクセスするためのインタフェース</dt>
+<dd><p>モジュール<code>srfi-98</code>でサポートされます。<a indepth="true" href="gauche-refj_125.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e5_00a4_0089_00e6_0095_00b0_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9"><code>srfi-98</code> - 環境変数へのアクセス</a>参照。
+</p>
+</dd>
+<dt> SRFI-99, ERR5RS レコード</dt>
+<dd><p>モジュール<code>gauche.record</code>でサポートされます。<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>gauche.record</code> - レコード型</a>参照。
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_6.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

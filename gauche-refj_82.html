@@ -1,0 +1,554 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.8 gauche.generator - ジェネレータ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.8 gauche.generator - ジェネレータ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.8 gauche.generator - ジェネレータ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Generator-constructors" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002egenerator-_002d-_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf"></a>
+<h2 class="section">9.8 <code>gauche.generator</code> - ジェネレータ</h2>
+
+<dl>
+<dt><a name="index-gauche_002egenerator"></a><u>Module:</u> <b>gauche.generator</b></dt>
+<dd><a name="index-gauche_002egenerator-1"></a>
+<p>ジェネレータは、値の列の生成器となるような、引数を取らない手続きです。
+呼ばれる度に列の次の値を返します。列の終端に達した場合はEOFが返されます。
+例えば、<code>read-char</code>は、現在の入力ポートからの入力を一文字づつ返す
+ジェネレータと考えることができます。
+</p>
+<p>値の列の生成源を手続きによってジェネレータとして抽象化するのは広く使われるテクニックなので、
+このようなジェネレータに共通して使えるユーティリティがあると便利です。
+このモジュールはそのために作られました。
+</p></dd></dl>
+
+<p>ジェネレータは、必要になったら計算を行うようなシステムを簡単に実現でき、
+効率も極めて良いですが、副作用に頼った抽象化であることには注意が必要です。
+例えば、途中まで列を生成した後に、最初にもどってやり直す、といったことはできません。
+より関数的にオンデマンドの計算を行うためには、ジェネレータを使って
+構築された、遅延シーケンスを使うのが便利です (<a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9">遅延シーケンス</a>参照)。
+</p>
+<p>このモジュールを使うと、様々なジェネレータを作って組み合わせることができます。
+いずれ、コードのどこかでそういったジェネレータの生成する値を消費することが必要な
+わけですが、そのために使えるいくつかの組み込み手続きがあります。
+<a indepth="true" href="gauche-refj_56.html#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">生成された値の畳み込み</a>を参照してください。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Generator-constructors">9.8.1 Generator constructors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Generator-operations">9.8.2 Generator operations</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Generator-constructors"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Generator-operations" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Generator-constructors-1"></a>
+<h3 class="subsection">9.8.1 Generator constructors</h3>
+
+<p>A generator isn’t a special datatype but just an ordinary procedure,
+so you can make a generator with lambdas.  This module provides
+some common generator constructors for the convenience.
+</p>
+<p>If you want to use your procedure as a generator, note that a
+generator can be invoked many times even after it returns EOF once.
+You have to code it so that once it returns EOF, it keeps returning
+EOF for the subsequent calls.
+</p>
+<p>The result of generator constructors is merely a procedure,
+and printing it doesn’t show much.  In the examples in this section
+we use <code>generator-&gt;list</code> to convert the generator to the list.
+See <a href="#Generator-operations">Generator operations</a> for the description of <code>generator-&gt;list</code>.
+</p>
+<dl>
+<dt><a name="index-null_002dgenerator"></a><u>Function:</u> <b>null-generator</b></dt>
+<dd><p>An empty generator.  Returns just an EOF object when called.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-circular_002dgenerator"></a><u>Function:</u> <b>circular-generator</b><i> arg …</i></dt>
+<dd><p>Returns an infinite generator that repeats the given arguments.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (circular-generator 1 2 3) 10)
+  ⇒ (1 2 3 1 2 3 1 2 3 1)
+</pre></td></tr></tbody></table>
+
+<p>Note that the above example limits the length of list by 10; otherwise
+<code>generator-&gt;list</code> won’t return.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-giota"></a><u>Function:</u> <b>giota</b><i> count :optional (start 0) (step 1)</i></dt>
+<dd><p>Like <code>iota</code> (See section <a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090">リストの作成</a>), creates a generator
+of a series of <var>count</var> numbers, starting from <var>start</var>
+and increased by <var>step</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (giota 10 3 2))
+  ⇒ (3 5 7 9 11 13 15 17 19 21)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-grange"></a><u>Function:</u> <b>grange</b><i> start :optional (end +inf.0) (step 1)</i></dt>
+<dd><p>Similar to <code>giota</code>, creates a generator of a series of
+numbers.  The series begins with <var>start</var>, increased by <var>step</var>,
+and continues while the number is below <var>end</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (grange 3 8))
+  ⇒ (3 4 5 6 7)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-generate"></a><u>Function:</u> <b>generate</b><i> proc</i></dt>
+<dd><p>Creates a generator from coroutine.
+</p>
+<p>The <var>proc</var> argument is a procedure that takes one argument,
+<var>yield</var>.   When called, <code>generate</code> immediately returns
+a generator <var>G</var>.  When <var>G</var> is called, the <var>proc</var> runs
+until it calls <var>yield</var>.  Calling <var>yield</var> causes to suspend
+the execution of <var>proc</var> and <var>G</var> returns the value passed
+to <var>yield</var>.
+</p>
+<p>Once <var>proc</var> returns, it is the end of the series?<var>G</var> returns
+eof object from then on.  The return value of <var>proc</var> is ignored.
+</p>
+<p>The following code creates a generator that produces a series
+0, 1, and 2 (effectively the same as <code>(giota 3)</code> and binds
+it to <code>g</code>.
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define g
+  (generate
+   (^[yield] (let loop ([i 0])
+               (when (&lt; i 3) (yield i) (loop (+ i 1)))))))
+
+(generator-&gt;list g) ⇒ (0 1 2)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-list_002d_003egenerator"></a><u>Function:</u> <b>list-&gt;generator</b><i> lis :optional start end</i></dt>
+<dt><a name="index-vector_002d_003egenerator"></a><u>Function:</u> <b>vector-&gt;generator</b><i> vec :optional start end</i></dt>
+<dt><a name="index-reverse_002dvector_002d_003egenerator"></a><u>Function:</u> <b>reverse-vector-&gt;generator</b><i> vec :optional start end</i></dt>
+<dt><a name="index-string_002d_003egenerator"></a><u>Function:</u> <b>string-&gt;generator</b><i> str :optioanl start end</i></dt>
+<dt><a name="index-bits_002d_003egenerator"></a><u>Function:</u> <b>bits-&gt;generator</b><i> n :optional start end</i></dt>
+<dt><a name="index-reverse_002dbits_002d_003egenerator"></a><u>Function:</u> <b>reverse-bits-&gt;generator</b><i> n :optional start end</i></dt>
+<dd><p>Returns a generator that yields each item in the given argument.
+A generator returned from <code>reverse-*</code> procedures runs in
+reverse order.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (list-&gt;generator '(1 2 3 4 5)))
+  ⇒ (1 2 3 4 5)
+(generator-&gt;list (vector-&gt;generator '#(1 2 3 4 5)))
+  ⇒ (1 2 3 4 5)
+(generator-&gt;list (reverse-vector-&gt;generator '#(1 2 3 4 5)))
+  ⇒ (5 4 3 2 1)
+(generator-&gt;list (string-&gt;generator "abcde"))
+  ⇒ (#\a #\b #\c #\d #\e)
+</pre></td></tr></tbody></table>
+
+<p>By default the generator is exhausted once all items are retrieved;
+the optional <var>start</var> and <var>end</var> arguments can limit the range
+the generator walks across; <var>start</var> specifies the left bound
+and <var>end</var> specifies the right bound.
+</p>
+<p>For forward generators, the first value the generator yields
+is <var>start</var>-th element, and it ends right before <var>end</var>-th element.
+For reverse generators, the first value is the item right next
+to the <var>end</var>-th element, and the last value is the <var>start</var>-th
+element.
+at the last element, and reverse generators ends at the first element.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (vector-&gt;generator '#(a b c d e) 2))
+  ⇒ (c d e)
+(generator-&gt;list (vector-&gt;generator '#(a b c d e) 2 4))
+  ⇒ (c d)
+(generator-&gt;list (reverse-vector-&gt;generator '#(a b c d e) 2))
+  ⇒ (e d c b)
+(generator-&gt;list (reverse-vector-&gt;generator '#(a b c d e) 2 4))
+  ⇒ (d c)
+(generator-&gt;list (reverse-vector-&gt;generator '#(a b c d e) #f 2))
+  ⇒ (b a)
+</pre></td></tr></tbody></table>
+
+<p><code>bits-&gt;generator</code> and <code>reverse-bits-&gt;geneator</code> takes
+an exact integer and treat it as a sequence of boolean values
+(0 for false and 1 for true), as <code>integer-&gt;list</code> does
+(See section <a indepth="true" href="gauche-refj_124.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c"><code>srfi-60</code> - 整数に対するビット操作</a>).
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (bits-&gt;generator #b10110)
+ ⇒ (#t #f #t #t #f)
+(generator-&gt;list (reverse-bits-&gt;generator #b10110)
+ ⇒ (#f #t #t #f #t)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-port_002d_003echar_002dgenerator"></a><u>Function:</u> <b>port-&gt;char-generator</b><i> input-port</i></dt>
+<dt><a name="index-port_002d_003ebyte_002dgenerator"></a><u>Function:</u> <b>port-&gt;byte-generator</b><i> input-port</i></dt>
+<dd><p>Returns a generator that reads characters or bytes from the given
+port, respectively.  They’re just <code>(cut read-char input-port)</code>
+and <code>(cut read-byte input-port)</code>, but we provide them for completeness.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-x_002d_003egenerator"></a><u>Generic function:</u> <b>x-&gt;generator</b><i> obj</i></dt>
+<dd><p>A generic version to convert any collection <var>obj</var> to a generator
+that walks across the <var>obj</var>.  Besides, if <var>obj</var> is an input port,
+<code>port-&gt;char-generator</code> is called.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-file_002d_003egenerator"></a><u>Function:</u> <b>file-&gt;generator</b><i> filename reader . open-args</i></dt>
+<dd><p>Opens a file <var>filename</var>, and returns a generator
+that reads items from the file
+by a procedure <var>reader</var>, which takes one argument, an input port.
+The arguments <var>open-args</var> are passed to <code>open-input-file</code>
+(See section <a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>).
+</p>
+<p>The file is closed when the generator is exhausted.  If a generator
+is abandoned before being read to the end, then the file is kept
+open until the generator is garbage-collected.  If you want to
+make sure the file is closed by a certain point of time, you might want
+to use a reader procedure as a generator within the dynamic extent
+of <code>with-input-from-file</code> etc.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-file_002d_003esexp_002dgenerator"></a><u>Function:</u> <b>file-&gt;sexp-generator</b><i> filename . open-args</i></dt>
+<dt><a name="index-file_002d_003echar_002dgenerator"></a><u>Function:</u> <b>file-&gt;char-generator</b><i> filename . open-args</i></dt>
+<dt><a name="index-file_002d_003eline_002dgenerator"></a><u>Function:</u> <b>file-&gt;line-generator</b><i> filename . open-args</i></dt>
+<dt><a name="index-file_002d_003ebyte_002dgenerator"></a><u>Function:</u> <b>file-&gt;byte-generator</b><i> filename . open-args</i></dt>
+<dd><p>Returns a generator that reads a series
+of sexps, characters, lines and bytes from a file <var>filename</var>,
+respectively.  These are versions
+of <code>file-&gt;generator</code> specialized by <code>read</code>,
+<code>read-char</code>, <code>read-line</code> and <code>read-byte</code> as the
+<var>reader</var> argument.
+</p>
+<p>Like <code>file-&gt;generator</code>, <var>open-args</var>
+are passed to <code>open-input-file</code> (See section <a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>).
+The file is closed when the generator is exhausted.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gunfold"></a><u>Function:</u> <b>gunfold</b><i> p f g seed :optional tail-gen</i></dt>
+<dd><p>A generator constructor similar to <var>unfold</var> (See section <a indepth="true" href="gauche-refj_110.html#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0">SRFI-1 リスト操作関数</a>).
+</p>
+<p><var>P</var> is a predicate that takes a seed value and determines
+where to stop.  <var>F</var> is a procedure that calculates a value
+from a seed value.  <var>G</var> is a procedure that calculates the
+next seed value from the current seed value.  <var>Tail-gen</var>
+is a procedure that takes the last seed value and returns a generator
+that generates the tail.
+</p>
+<p>For each call of the resulting generator, <var>p</var> is called with
+the current seed value.  If it returns a true, then we see we’ve
+done, and <code>tail-gen</code> is called (if it is given) to get a
+generator for the tail.  Otherwise,
+we apply <var>f</var> on the current seed value to get the value to
+generate, and use <var>g</var> to update the seed value.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (gunfold (^s (&gt; s 5)) (^s (* s 2)) (^s (+ s 1)) 0))
+  ⇒ '(0 2 4 6 8 10)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="Generator-operations"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Generator-constructors" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_83.html#g_t_00e3_0083_0095_00e3_0083_0083_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Generator-operations-1"></a>
+<h3 class="subsection">9.8.2 Generator operations</h3>
+
+<p>See section <a indepth="true" href="gauche-refj_56.html#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">生成された値の畳み込み</a>, for <code>generator-fold</code>,
+<code>generator-fold-right</code>, <code>generator-for-each</code> and
+<code>generator-map</code>.
+</p>
+<dl>
+<dt><a name="index-generator_002d_003elist"></a><u>Function:</u> <b>generator-&gt;list</b><i> generator :optional k</i></dt>
+<dd><p>Reads items from <var>generator</var> and returns a list of them.
+By default, this reads until the generator is exhausted.  If
+an optional argument <var>k</var> is given, it must be a nonnegative
+integer, and the list ends either <var>k</var> items are read,
+or the generator is exhausted.
+</p>
+<p>Be careful not to pass an infinite generator to this without
+specifying <var>k</var>?this procedure won’t return but hogs
+all the memory before crash.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-glet_002a"></a><u>Macro:</u> <b>glet*</b><i> (binding …) body body2 …</i></dt>
+<dd><p>This captures a monadic pattern frequently appears in the generator
+code.  It is in a similar spirit of <code>and-let*</code>, but returns
+as soon as the evaluating expression returns EOF, instead of <code>#f</code>
+as <code>and-let*</code> does.
+</p>
+<p>The <var>binding</var> part can be either <code>(var expr)</code> or <code>( expr )</code>.
+The actual definition will explain this syntax clearly.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-syntax glet*
+  (syntax-rules ()
+    [(_ () body body2 ...) (begin body body2 ...)]
+    [(_ ([var gen-expr] more-bindings ...) . body)
+     (let1 var gen-expr
+       (if (eof-object? var)
+         var
+         (glet* (more-bindings ...) . body)))]
+    [(_ ([ gen-expr ] more-bindings ...) . body)
+     (let1 var gen-expr
+       (if (eof-object? var)
+         var
+         (glet* (more-bindings ...) . body)))]))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-glet1"></a><u>Macro:</u> <b>glet1</b><i> var expr body body2 …</i></dt>
+<dd><p>This is to <code>glet*</code> as <code>let1</code> is to <code>let*</code>.  In other words,
+it is <code>(glet* ([var expr]) body body2 …)</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-do_002dgenerator"></a><u>Macro:</u> <b>do-generator</b><i> (var gexpr) body …</i></dt>
+<dd><p>This is a generator version of <code>dolist</code> and <code>dotimes</code>
+(See section <a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b">変数束縛</a>).
+</p>
+<p><var>Gexpr</var> is an expression that yields a generator.  It is
+evaluated once.  The resulting generator is called repeatedly
+until it returns EOF.  Every time the generator is called,
+<var>body</var> … are evaluated in the scope
+where <var>var</var> is bound to the value yielded from the generator.
+</p>
+<p>Like <code>dolist</code> and <code>dotimes</code>, this macro exists for
+side-effects.  You can write the same thing with <code>for-each</code> families,
+but sometimes this macro makes the imperative code more readable:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(do-generator [line (file-&gt;line-generator "filename")]
+  ;; do some side-effecting stuff with line
+  )
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>The following procedures take generators (noted as <var>gen</var> and
+<var>gen2</var>) and return a generator.  For the convenience, they
+also accept any collection to <var>gen</var> and <var>gen2</var> parameters;
+if a collection is passed where a generator is expected,
+it is implicitly coerced into a generator.
+</p>
+<dl>
+<dt><a name="index-gcons_002a"></a><u>Function:</u> <b>gcons*</b><i> item … gen</i></dt>
+<dd><p>Returns a generator that adds <var>item</var>s in front of <var>gen</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (gcons* 'a 'b (giota 2)))
+ ⇒ (a b 0 1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-gappend"></a><u>Function:</u> <b>gappend</b><i> gen …</i></dt>
+<dd><p>Returns a generator that yields the items from the first given
+generator, and once it is exhausted, use the second generator, and so on.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list (gappend (giota 3) (giota 2)))
+ ⇒ (0 1 2 0 1)
+
+(generator-&gt;list (gappend)
+ ⇒ ()
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-gmap"></a><u>Function:</u> <b>gmap</b><i> proc gen gen2 …</i></dt>
+<dd><p>Returns a generator that yields a value returned by <var>proc</var>
+applied on the values from given generators.  The returned generator
+terminates when any of the given generator is exhausted.
+</p>
+<p>NB: This differs from <code>generator-map</code> (See section <a indepth="true" href="gauche-refj_56.html#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">生成された値の畳み込み</a>)
+which consumes all
+values at once and returns the results as a list, while <code>gmap</code>
+returns a generator.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gmap_002daccum"></a><u>Function:</u> <b>gmap-accum</b><i> proc seed gen gen2 …</i></dt>
+<dd><p>A generator version of <code>map-accum</code> (See section <a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0">コレクションに対するマッピング</a>),
+mapping with states.
+</p>
+<p>The <var>proc</var> argument is a procedure that takes as many arguments
+as the input generators plus one.  It is called as
+<code>(proc v v2 … seed)</code> where <code>v</code>, <code>v2</code>, … are
+the values yielded from the input generators, and <var>seed</var> is the
+current seed value.  It must return two values, the yielding value
+and the next seed.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gfilter"></a><u>Function:</u> <b>gfilter</b><i> pred gen</i></dt>
+<dd><p>Returns a generator that yield the items from the source generator,
+except those who makes <var>pred</var> answers false.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gfilter_002dmap"></a><u>Function:</u> <b>gfilter-map</b><i> proc gen gen2 …</i></dt>
+<dd><p>Works the same as <code>(gfilter values (gmap proc gen gen2 …))</code>,
+only slightly efficiently.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gstate_002dfilter"></a><u>Function:</u> <b>gstate-filter</b><i> proc seed gen</i></dt>
+<dd><p>This allows stateful filtering of a series.  The <var>proc</var> argument
+must be a procedure that takes a value <var>V</var> from the source generator and
+a seed value.  It should return two values, a boolean flag and the next
+seed value.  If it returns true for the boolean flag, the generator
+yields <var>V</var>.  Otherwise, the generator keeps calling <var>proc</var>,
+with updating the seed value, until it sees the true flag value
+or the source generator is exhausted.
+</p>
+<p>The following example takes a generator of oscillating values
+and yields only values that are greater than their previous value.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(generator-&gt;list
+ (gstate-filter (^[v s] (values (&lt; s v) v)) 0
+                (list-&gt;generator '(1 2 3 2 1 0 1 2 3 2 1 0 1 2 3))))
+ ⇒ (1 2 3 1 2 3 1 2 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-gtake"></a><u>Function:</u> <b>gtake</b><i> gen k :optional (fill? #f) (padding #f)</i></dt>
+<dt><a name="index-gdrop"></a><u>Function:</u> <b>gdrop</b><i> gen k</i></dt>
+<dd><p>The generator version of
+<code>take*</code> and <code>drop*</code> (See section <a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4">リストへのアクセスと変更</a>);
+<code>gtake</code> returns a generator that yields (at most) first <var>k</var> items
+of the source generator, while <code>gdrop</code> returns a generator
+that skips the first <var>k</var> items of the source generator.
+</p>
+<p>Those won’t complain if the source generator is exhausted before generating
+<var>k</var> items.  By default, the generator returned by <code>gtake</code>
+terminates as the source ends, but if you give a true value to <code>fill?</code>,
+then the returned generator does yield <var>k</var> items, using the
+<var>padding</var> value to fill the rest.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gtake_002dwhile"></a><u>Function:</u> <b>gtake-while</b><i> pred gen</i></dt>
+<dt><a name="index-gdrop_002dwhile"></a><u>Function:</u> <b>gdrop-while</b><i> pred gen</i></dt>
+<dd><p>The generator version of <code>take-while</code> and <code>drop-while</code>
+(See section <a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4">リストへのアクセスと変更</a>).  The generator returned
+from <code>gtake-while</code> yields items from the source generator
+as far as <var>pred</var> returns true for each.  The generator returned
+from <code>gdrop-while</code> first reads items from the source generator
+while <var>pred</var> returns true for them, then start yielding items.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-grxmatch"></a><u>Function:</u> <b>grxmatch</b><i> regexp gen</i></dt>
+<dd><p>The <var>gen</var> argument must be, after coerced, a generator that
+yields characters.
+</p>
+<p>A generator returned from this procedure
+tries to match <var>regexp</var> from the character sequence
+generated by <var>gen</var>, and once it matches, remember the position after
+the match and returns <code>#&lt;rxmatch&gt;</code> object.  If no more match
+is found, the generator is exhausted.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">($ generator-&gt;list
+   $ gmap rxmatch-substring
+   $ grxmatch #/\w+/ "The quick brown fox jumps over the lazy dog.")
+ ⇒ ("The" "quick" "brown" "fox" "jumps" "over" "the" "lazy" "dog")
+</pre></td></tr></tbody></table>
+
+<p>Note: This procedure is efficient if <var>gen</var> is a string, in which
+case we actually bypass coercing it to a generator.  If <var>gen</var> is other
+than a string, the current implementation may need to apply <var>regexp</var>
+as many times as O(n^2) where n is the entire length of the character
+sequence generated by <var>gen</var>, although the coefficient is small.
+This may be improved in future, but be careful using this function
+on very large input.
+</p>
+<p>Note also that, when <var>gen</var> is not a string, <var>rxmatch</var> is applied
+on some buffered partial input.  So <code>rxmatch-after</code> of the returned
+match does not represents the whole “rest of input” after the match,
+but merely the rest of strings within the buffer.
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Generator-constructors" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_83.html#g_t_00e3_0083_0095_00e3_0083_0083_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

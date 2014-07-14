@@ -1,0 +1,628 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>7.5 メタオブジェクトプロトコル</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 7.5 メタオブジェクトプロトコル">
+<meta name="keywords" content="Gauche ユーザリファレンス: 7.5 メタオブジェクトプロトコル">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_69.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0083_00b3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00a8_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab-1"></a>
+<h2 class="section">7.5 メタオブジェクトプロトコル</h2>
+
+<p>CLOS 風のオブジェクトシステムでは、オブジェクトシステムがそれ自身の上に
+構築されます。すなわち、クラス構造のようなもの、クラスをどのように
+生成するか、インスタンスをどのように生成し初期化するか、メソッドをどのように
+ディスパッチし呼び出すか、これらはすべてオブジェクトシステムによって、
+定義されます。たとえば、クラスはジェネリックな構造と標準的クラスの
+振舞いを定義する <code>&lt;class&gt;</code> クラスのインスタンスです。<code>&lt;class&gt;</code>
+をサブクラス化すると、デフォルトのものとは違う振舞いをする、独自の
+クラス集合をつくることができます。これは結局、独自のオブジェクトシステムを
+つくることになります。
+</p>
+<p><em>メタオブジェクトプロトコル</em>は、どのようにオブジェクトシステムを
+構築するかに関連する API 群の定義です。ブロック構築のクラス、オブジェクト
+システムを操作するあいだに呼ばれるジェネリック関数の名前と順序などです。
+これらのクラスをサブクラス化し、これらのメソッドを特定化することは、
+オブジェクトシステムの振舞いをカスタマイズすることを意味します。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">7.5.1 クラスのインスタンシエーション</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba">7.5.2 スロットアクセスのカスタマイズ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">7.5.3 メソッドのインスタンシエーション</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e9_0081_00a9_00e7_0094_00a8_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba">7.5.4 メソッド適用のカスタマイズ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+
+<hr size="6">
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3-1"></a>
+<h3 class="subsection">7.5.1 クラスのインスタンシエーション</h3>
+
+<p>すべてのクラスはある特殊なクラスのグループのインスタンスになっています。
+他のクラスのクラスになれるようなクラスのことを <em>メタクラス</em> と呼びます。
+Gauche では <code>&lt;class&gt;</code> クラスおよびそのサブクラスのみがメタクラスに
+なれます。
+</p>
+<a name="define_002dclass-_00e3_0081_00ae_00e5_00b1_0095_00e9_0096_008b"></a>
+<h4 class="subsubheading"><code>define-class</code> の展開</h4>
+
+<p><code>define-class</code> マクロは基本的には <code>&lt;class&gt;</code> (あるいは指定された
+メタクラス)のインスタンスを生成するコードのラッパーで、それを与えられた
+名前に束縛します。以下のような <code>define-class</code> 形式を前提とします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class <var>name</var> (<var>supers</var>)
+  <var>slot-specs</var>
+  <var>options</var> …)
+</pre></td></tr></tbody></table>
+
+<p>これを次のように展開します。
+(‘<tt>`gauche-config --syslibdir`/gauche/object.scm</tt>’ の <code>define-class</code>
+マクロの定義をみれば展開形式を見ることができます。)
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define <var>name</var>
+  (let ((tmp1 (make <var>metaclass</var>
+                 :name '<var>name</var> :supers (list <var>supers</var>)
+                 :slots (map <var>process-slot-definitions</var>
+                             <var>slot-specs</var>)
+                 :defined-modules (list (current-module))
+                 <var>options</var> …)))
+    … <var>check class redefinition</var> …
+    … <var>registering accessor methods</var> …
+    tmp1))
+</pre></td></tr></tbody></table>
+
+<p>生成されるクラスのクラス、つまり、<var>metaclass</var> は以下のルールで
+決定されます。
+</p>
+<ol>
+<li>
+もし、<code>:metaclass</code> オプションが <code>define-class</code> マクロに
+与えられていれば、その値を使います。その値は、<code>&lt;class&gt;</code> クラスか
+あるいはその子孫でなければなりません。
+</li><li>
+さもなければ、クラス順位リスト中のクラスのメタクラスが試されます。
+<ul>
+<li>
+もし、すべてのメタクラスが <code>&lt;class&gt;</code> であるなら、生成される
+クラスのメタクラスも <code>&lt;class&gt;</code> になります。
+</li><li>
+もし、すべてのメタクラスが <code>&lt;class&gt;</code> かあるいは別のメタクラス
+<code>A</code> のどちらかであれば、生成されるクラスのメタクラスは、<code>A</code> に
+なります。
+</li><li>
+もしメタクラスの集合が <code>&lt;class&gt;</code> 以外の 2つ以上のメタクラス
+(<code>A</code>, <code>B</code>, <code>C</code> …)を含む場合、生成されるクラスの
+メタクラスはこれらのメタクラス <code>A</code>, <code>B</code>, <code>C</code> … すべてを
+継承したメタクラスになります。
+</li></ul>
+</li></ol>
+
+<p>クラスの名前、スーパークラス、スロットの定義は初期化引数として
+ジェネリック関数 <code>make</code> に引き渡され、それ以外の引数は
+<code>define-class</code> に引き渡されます。初期化引数 <code>define-modules</code> は
+どのモジュールでそのクラスが定義されたかを覚えておくために引き渡されます。
+これはこのクラスの再定義のとき用です。
+</p>
+<p>スロットの仕様 <var>slot-specs</var> は内部メソッド <var>process-slot-definitions</var>
+(これは直接呼び出すことはできません)で処理され、スロット定義になります。
+厳密には、<code>:init-form</code> スロットオプションは、<code>:init-thunk</code> オプション
+になり、<code>:getter</code>、<code>:setter</code>、<code>:accessor</code> のスロットオプションは
+引用されます。
+</p>
+<p>クラス(<var>metaclass</var> のインスタンス)が生成された後、<var>name</var> のグローバル
+な束縛がチェックされます。それが、クラスに束縛されていれば、クラスの再定義
+プロトコルが起動されます(<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9">クラスの再定義</a> 参照)。
+</p>
+<p>その後、<var>slot-specs</var> 中で、<code>:getter</code>、<code>:setter</code>、
+<code>:accessor</code> スロットオプションに与えられたメソッドが集められ、対応する
+ジェネリック関数に登録されます。
+</p>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e6_00a7_008b_00e9_0080_00a0"></a>
+<h4 class="subsubheading">クラス構造</h4>
+
+<dl>
+<dt><a name="index-_003cclass_003e"></a><u>Class:</u> <b>&lt;class&gt;</b></dt>
+<dd><a name="index-class-1"></a>
+<p>すべてのメタクラスのベースクラスである <code>&lt;class&gt;</code> は以下のような
+スロットを持っています。これらのスロットは内部的な管理のためにあるので
+クラスが初期化された後に、これらの値を変更すべきではないということに
+注意してください。クラスの情報を得るには、これらのスロットに直接
+アクセスするのではなく、<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">クラスオブジェクト</a> にある手続きを使うことをおすすめ
+します。
+</p>
+<dl>
+<dt><a name="index-name-2"></a><u>Instance Variable of &lt;class&gt;:</u> <b>name</b></dt>
+<dd><p>クラスの名前、<code>define-class</code> マクロに与えられたシンボルです。
+<code>class-name</code> はこの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cpl"></a><u>Instance Variable of &lt;class&gt;:</u> <b>cpl</b></dt>
+<dd><p>クラス順位リストです。<code>class-precedence-list</code> はこの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-direct_002dsupers"></a><u>Instance Variable of &lt;class&gt;:</u> <b>direct-supers</b></dt>
+<dd><p>直接スーパークラスのリストです。
+<code>class-direct-supers</code> はこの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-accessors"></a><u>Instance Variable of &lt;class&gt;:</u> <b>accessors</b></dt>
+<dd><p>スロットアクセサの連想リストです。これは各スロットがどのようにアクセスされる
+べきかをカプセル化しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-slots"></a><u>Instance Variable of &lt;class&gt;:</u> <b>slots</b></dt>
+<dd><p>スロット定義のリストです。<code>class-slots</code> はこの値を返します。
+スロット定義についての詳細は、<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">スロット定義オブジェクト</a> を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-direct_002dslots"></a><u>Instance Variable of &lt;class&gt;:</u> <b>direct-slots</b></dt>
+<dd><p>このクラスの定義で直接指定された(つまり継承したものではない)スロット定義の
+リストです。<code>class-direct-slots</code> はこの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-num_002dinstance_002dslots"></a><u>Instance Variable of &lt;class&gt;:</u> <b>num-instance-slots</b></dt>
+<dd><p>インスタンスにアロケートされるスロットの数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-direct_002dsubclasses"></a><u>Instance Variable of &lt;class&gt;:</u> <b>direct-subclasses</b></dt>
+<dd><p>このクラスを直接継承しているクラスのリストです。
+<code>class-direct-subclasses</code> はこの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-direct_002dmethods"></a><u>Instance Variable of &lt;class&gt;:</u> <b>direct-methods</b></dt>
+<dd><p>このクラスを特定化子リスト中にもつメソッドのリストです。
+<code>class-direct-methods</code> はこの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-initargs"></a><u>Instance Variable of &lt;class&gt;:</u> <b>initargs</b></dt>
+<dd><p>このクラスが生成されるときの初期化引数リストです。この情報は
+再定義されたクラスを初期化するのに使います(<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9">クラスの再定義</a> 参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-defined_002dmodules"></a><u>Instance Variable of &lt;class&gt;:</u> <b>defined-modules</b></dt>
+<dd><p>このクラスがグローバル束縛をもつモジュールのリストです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-redefined"></a><u>Instance Variable of &lt;class&gt;:</u> <b>redefined</b></dt>
+<dd><p>このクラスが再定義された場合、このスロットは新しいクラスへの参照を含みます。
+そうでない場合にはこのスロットは <code>#f</code> をもっています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-category"></a><u>Instance Variable of &lt;class&gt;:</u> <b>category</b></dt>
+<dd><p>このスロットの値は、このクラスがどのように生成されたかを示しています。
+Scheme 定義のクラスは、<code>scheme</code> というシンボルを持っています。それ以外の
+値は内部的に使用するだけです。
+</p></dd></dl>
+</dd></dl>
+
+<a name="g_t_003cclass_003e-_00e7_0094_00a8_00e3_0081_00ae-make-_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089"></a>
+<h4 class="subsubheading"><code>&lt;class&gt;</code> 用の make メソッド</h4>
+
+<dl>
+<dt><a name="index-make-2"></a><u>Method:</u> <b>make</b><i> (class &lt;class&gt;) :rest initargs</i></dt>
+</dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba-1"></a>
+<h3 class="subsection">7.5.2 スロットアクセスのカスタマイズ</h3>
+
+
+<dl>
+<dt><a name="index-compute_002dslots"></a><u>Generic Function:</u> <b>compute-slots</b></dt>
+<dt><a name="index-compute_002dget_002dn_002dset"></a><u>Generic Function:</u> <b>compute-get-n-set</b></dt>
+<dd><p>These two generic functions are responsible to determine
+what slots a class has, and how each slot is accessed.
+</p>
+<p>In the <code>initialize</code> method of a class,
+<code>compute-slots</code> is called after the class’s
+<code>direct-supers</code>, <code>cpl</code> and <code>direct-slots</code> are set.
+It must decide what slots the class should have, and what
+slot options each slot should have, based on those three piece
+of information.  The returned value should have the following
+form, and it is used as the value of the <code>slots</code> slot of the class.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;slots&gt; : (&lt;slot-definition&gt; ...)
+&lt;slot-definition&gt; : (&lt;slot-name&gt; . &lt;slot-options&gt;)
+&lt;slot-name&gt; : symbol
+&lt;slot-options&gt; : keyword-value alternating list.
+</pre></td></tr></tbody></table>
+
+<p>After the <code>slots</code> slot of the class is set by the returned
+value from <code>compute-slots</code>,
+<code>compute-get-n-set</code> is called for each slot
+to calculate how to access and modify the slot.
+The class and the slot definition are the arguments.
+It must return either one of the followings:
+</p>
+<dl compact="compact">
+<dt> an integer <var>n</var></dt>
+<dd><p>This slot becomes <var>n</var>-th instance slot.  This is the only way to
+allocate a slot per instance.
+</p>
+<p>The base method of <var>compute-get-n-set</var> keeps track of the current
+number of allocated instance slots in the class’s <code>num-instance-slots</code>
+slot.  It is not recommended for other specialized methods to use or
+change the value of this slot, unless you know a very good reason to
+override the object system behavior in deep down.  Usually it is suffice
+to call <code>next-method</code> to let the base method reserve an instnace
+slot for you.
+</p>
+<p>See the examples below for modifying instance slot access behaviors.
+</p>
+</dd>
+<dt> a list <code>(<var>get-proc</var> <var>set-proc</var> <var>bound?-proc</var> <var>initializable</var>)</code></dt>
+<dd><p>The <var>get-proc</var>, <var>set-proc</var> and <var>bound?-proc</var> elements are procedures
+invoked when this slot of an instance is accessed (either via
+<code>slot-ref</code>/<code>slot-set!</code>/<code>slot-bound?</code>,
+or an accessor method specified by <code>:getter</code>/<code>:setter</code> slot options).
+The value other than <var>get-proc</var> may be <code>#f</code>, and can be omitted
+if all the values after it is also <code>#f</code>.  That is, the simplest
+form of this type of return value is a list of one element,
+<var>get-proc</var>.
+</p>
+<ul>
+<li>
+When this slot is about to be read, <var>get-proc</var> is called with
+an argument, the instance.  The returned value of <var>get-proc</var> is
+the value of the slot.
+
+<p>The procedure may return <code>#&lt;undef&gt;</code> to indicate the slot is
+unbound.  It triggers the <code>slot-unbound</code> generic function.
+(That is, this type of slot cannot have <code>#&lt;undef&gt;</code> as its value.)
+</p>
+</li><li>
+When this slot is about to be written, <var>set-proc</var> is called
+with two arguments, the instance and the new value.  It is called
+purely for the side effect; the procedure may change the value
+of other slot of the instance, for example.
+
+<p>If this element is <code>#f</code> or omitted, the slot becomes read-only;
+any attempt to write to the slot will raise an error.
+</p>
+</li><li>
+When <code>slot-bound?</code> is called to check whether the slot of
+an instance is bound, <var>bound?-proc</var> is called with
+an argument, the instance.  It should return a boolean value
+which will be the result of <code>slot-bound?</code>.
+
+<p>If this element is <code>#f</code> or omitted, <code>slot-bound?</code> will
+call <var>get-proc</var> and returns true if it returns
+<code>#&lt;undef&gt;</code>.
+</p>
+</li><li>
+The last element, <var>initializable</var>, is a flag that indicates
+whether this slot should be initialized when <code>:init-value</code>
+or <code>:init-form</code>.
+</li></ul>
+
+</dd>
+<dt> A <code>&lt;slot-accessor&gt;</code> object</dt>
+<dd><p>Access to this slot is redirected through the returned
+slot-accessor object.   See below for more on <code>&lt;slot-accessor&gt;</code>.
+</p></dd>
+</dl>
+
+<p>The value returned by <code>compute-get-n-set</code> is immediately passed
+to <code>compute-slot-accessor</code> to create a <em>slot accessor</em> object,
+which encapsulates how to access and modify the slot.
+</p>
+<p>After all slot definitions are processed by <code>compute-get-n-set</code>
+and <code>compute-slot-accessor</code>, an assoc list of
+slot names and <code>&lt;slot-accessor&gt;</code> objects are stored in the
+class’s <code>accessors</code> slot.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-compute_002dslot_002daccessor"></a><u>Generic Function:</u> <b>compute-slot-accessor</b></dt>
+<dt><a name="index-compute_002dslot_002daccessor-1"></a><u>Method:</u> <b>compute-slot-accessor</b><i> (class &lt;class&gt;) slot access-specifier</i></dt>
+<dd><p><var>Access-specifier</var> is a value returned from
+<code>compute-get-n-set</code>.  The base method creates an instance
+of <code>&lt;slot-accessor&gt;</code> that encapsulates how to
+access the given slot.
+</p>
+<p>Created slot accessor objects are stored (as an assoc list using
+slot names as keys) in the class’s <code>accessors</code> slot.
+Standard slot accessors and mutators, such as <code>slot-ref</code>,
+<code>slot-set!</code>, <code>slot-bound?</code>, and the slot accessor
+methods specified in <code>:getter</code>, <code>:setter</code> and <code>:accessor</code>
+slot options, all go through slot accessor object eventually.
+Specifically, those functions and methods first looks up
+the slot accessor object of the desired slot, then calls
+<code>slot-ref-using-accessor</code> etc.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-compute_002dslots-1"></a><u>Method:</u> <b>compute-slots</b><i> (class &lt;class&gt;)</i></dt>
+<dd><p>The standard method walks CPL of <var>class</var> and gathers
+all direct slots.  If slots with the same name are found,
+the one of a class closer to <var>class</var> in CPL takes precedence.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-compute_002dget_002dn_002dset-1"></a><u>Method:</u> <b>compute-get-n-set</b><i> (class &lt;class&gt;) slot</i></dt>
+<dd><p>The standard processes the slot definition with the following
+slot allocations: <code>:instance</code>, <code>:class</code>,
+<code>each-subclass</code> and <code>:virtual</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-slot_002dref_002dusing_002daccessor"></a><u>Function:</u> <b>slot-ref-using-accessor</b><i> obj slot-accessor</i></dt>
+<dt><a name="index-slot_002dset_002dusing_002daccessor_0021"></a><u>Function:</u> <b>slot-set-using-accessor!</b><i> obj slot-accessor value</i></dt>
+<dt><a name="index-slot_002dbound_002dusing_002daccessor_003f"></a><u>Function:</u> <b>slot-bound-using-accessor?</b><i> obj slot-accessor</i></dt>
+<dt><a name="index-slot_002dinitialize_002dusing_002daccessor_0021"></a><u>Function:</u> <b>slot-initialize-using-accessor!</b><i> obj slot-accessor initargs</i></dt>
+<dd><p>The low-level slot accessing mechanism.  Every function or
+method that needs to read or write to a slot eventually comes
+down to one of these functions.
+</p>
+<p>Ordinary programs need not call these functions directly.
+If you ever need to call them, you have to be careful not
+to grab the reference to <var>slot-accessor</var> too long; if
+<var>obj</var>’s class is changed or redefined, <var>slot-accessor</var>
+can no longer be used.
+</p></dd></dl>
+
+<p>Here we show a couple of small examples to illustrate how slot access
+protocol can be customized.  You can also look at <code>gauche.mop.*</code>
+modules (in the source tree, look under <code>lib/gauche/mop/</code>)
+for more examples.
+</p>
+<p>The first example implements the same functionality of
+<code>:virtual</code> slot allocation.  We add <code>:procedural</code>
+slot allocation, which adds <code>:ref</code>, <code>:set!</code> and <code>:bound?</code>
+slot options.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;procedural-slot-meta&gt; (&lt;class&gt;) ())
+
+(define-method compute-get-n-set ((class &lt;procedural-slot-meta&gt;) slot)
+  (if (eqv? (slot-definition-allocation slot) :procedural)
+    (let ([get-proc   (slot-definition-option slot :ref)]
+          [set-proc   (slot-definition-option slot :set!)]
+          [bound-proc (slot-definition-option slot :bound?)])
+      (list get-proc set-proc bound-proc))
+    (next-method)))
+</pre></td></tr></tbody></table>
+
+<p>A specialized <code>compute-get-n-set</code> is defined on a metaclass
+<code>&lt;procedural-slot-meta&gt;</code>.  It checks the slot allocation,
+handles it if it is <code>:procedural</code>, and delegates other
+slot allocation cases to <code>next-method</code>.  This is a typical
+way to add new slot allocation by layering.
+</p>
+<p>To use this <code>:procedural</code> slot, give <code>&lt;procedural-slot-meta&gt;</code>
+to a <code>:metaclass</code> argument of <code>define-class</code>:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;temp&gt; ()
+  ((temp-c :init-keyword :temp-c :init-value 0)
+   (temp-f :allocation :procedural
+           :ref   (lambda (o) (+ (*. (ref o 'temp-c) 9/5) 32))
+           :set!  (lambda (o v)
+                    (set! (ref o 'temp-c) (*. (- v 32) 5/9)))
+           :bound? (lambda (o) (slot-bound? o 'temp-c))))
+  :metaclass &lt;procedural-slot-meta&gt;)
+</pre></td></tr></tbody></table>
+
+<p>An instance of <code>&lt;temp&gt;</code> keeps a temperature in both
+Celsius and Fahrenheit.  Here’s an example interaction.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define T (make &lt;temp&gt;))
+T
+gosh&gt; (d T)
+#&lt;&lt;temp&gt; 0xb6b5c0&gt; is an instance of class &lt;temp&gt;
+slots:
+  temp-c    : 0
+  temp-f    : 32.0
+gosh&gt; (set! (ref T 'temp-c) 100)
+#&lt;undef&gt;
+gosh&gt; (d T)
+#&lt;&lt;temp&gt; 0xb6b5c0&gt; is an instance of class &lt;temp&gt;
+slots:
+  temp-c    : 100
+  temp-f    : 212.0
+gosh&gt; (set! (ref T 'temp-f) 450)
+#&lt;undef&gt;
+gosh&gt; (d T)
+#&lt;&lt;temp&gt; 0xb6b5c0&gt; is an instance of class &lt;temp&gt;
+slots:
+  temp-c    : 232.22222222222223
+  temp-f    : 450.0
+</pre></td></tr></tbody></table>
+
+<p>Our next example is a simpler version of <code>gauche.mop.validator</code>.
+We add a slot option <code>:filter</code>, which takes a procedure
+that is applied to a value to be set to the slot.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;filter-meta&gt; (&lt;class&gt;) ())
+
+(define-method compute-get-n-set ((class &lt;filter-meta&gt;) slot)
+  (cond [(slot-definition-option slot :filter #f)
+         =&gt; (lambda (f)
+              (let1 acc (compute-slot-accessor class slot (next-method))
+                (list (lambda (o) (slot-ref-using-accessor o acc))
+                      (lambda (o v) (slot-set-using-accessor! o acc (f v)))
+                      (lambda (o) (slot-bound-using-accessor? o acc))
+                      #t)))]
+        [else (next-method)]))
+</pre></td></tr></tbody></table>
+
+<p>The trick here is to call <code>next-method</code> and
+<code>compute-slot-accessor</code> to calculate the slot accessor
+and wrap it.  See how this metaclass works:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;foo&gt; ()
+  ((v :init-value 0 :filter x-&gt;number))
+  :metaclass &lt;filter-meta&gt;)
+
+gosh&gt; (define foo (make &lt;foo&gt;))
+foo
+gosh&gt; (ref foo'v)
+0
+gosh&gt; (set! (ref foo'v) "123")
+#&lt;undef&gt;
+gosh&gt; (ref foo'v)
+123
+</pre></td></tr></tbody></table>
+
+
+
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e9_0081_00a9_00e7_0094_00a8_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3-1"></a>
+<h3 class="subsection">7.5.3 メソッドのインスタンシエーション</h3>
+
+<dl>
+<dt><a name="index-make-3"></a><u>Method:</u> <b>make</b><i> (class &lt;method&gt;) :rest initargs</i></dt>
+</dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e9_0081_00a9_00e7_0094_00a8_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e9_0081_00a9_00e7_0094_00a8_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba-1"></a>
+<h3 class="subsection">7.5.4 メソッド適用のカスタマイズ</h3>
+
+<dl>
+<dt><a name="index-apply_002dgeneric"></a><u>Generic Function:</u> <b>apply-generic</b><i> gf args</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-sort_002dapplicable_002dmethods"></a><u>Generic Function:</u> <b>sort-applicable-methods</b><i> gf methods args</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-method_002dmore_002dspecific_003f"></a><u>Generic Function:</u> <b>method-more-specific?</b><i> method1 method2 classes</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-apply_002dmethods"></a><u>Generic Function:</u> <b>apply-methods</b><i> gf methods args</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-apply_002dmethod"></a><u>Generic Function:</u> <b>apply-method</b><i> gf method build-next args</i></dt>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

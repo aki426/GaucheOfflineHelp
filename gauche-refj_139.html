@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.13 file.filter - ファイルのフィルタ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.13 file.filter - ファイルのフィルタ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.13 file.filter - ファイルのフィルタ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00ab_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_138.html#g_t_00e3_0082_00aa_00e3_0083_00aa_00e3_0082_00b8_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00aeDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="file_002efilter-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00ab_00e3_0082_00bf"></a>
+<h2 class="section">11.13 <code>file.filter</code> - ファイルのフィルタ</h2>
+
+<dl>
+<dt><a name="index-file_002efilter"></a><u>Module:</u> <b>file.filter</b></dt>
+<dd><a name="index-file_002efilter-1"></a>
+<p>このモジュールは、フィルター型のコマンド、
+すなわち入力を読み込み、処理をして結果を書き出すような場合に
+共通するパターンに使えるユーティリティ手続きを提供します。
+共通するパターンとは：
+</p>
+<ul>
+<li>
+入力は指定されたファイルかポートで、デフォルトはカレント入力ポート。
+</li><li>
+出力は指定されたファイルかポートで、デフォルトはカレント出力ポート。
+</li><li>
+出力は一時ファイルに書き出すこともできて、
+その場合は処理が終了した時点で指定されたファイルにリネーム。
+</li><li>
+処理途中でエラーが起こった場合に出力ファイルを削除
+</li></ul>
+</dd></dl>
+
+<dl>
+<dt><a name="index-file_002dfilter"></a><u>Function:</u> <b>file-filter</b><i> proc :key input output temporary-file keep-output?</i></dt>
+<dd><p>二つの引数、入力ポートと出力ポートを引数として<var>proc</var>を呼び出し、
+その結果を返します。
+入力ポートと出力ポートはキーワード引数により決定されます。
+</p>
+<dl compact="compact">
+<dt> <code>input</code></dt>
+<dd><p>この引数は入力ポートかファイル名を示す文字列でなければなりません。
+入力ポートの場合、それはそのまま<var>proc</var>に渡されます。
+文字列が渡された場合は、そのファイル名を持つファイルを入力用にオープンし、
+そのポートが<var>proc</var>に渡され、またこのポートは<var>proc</var>が戻った時に閉じられます。
+この引数が省略された場合は、現在の入力ポートが渡されます。
+</p></dd>
+<dt> <code>output</code></dt>
+<dd><p>この引数は出力ポートかファイル名を示す文字列でなければなりません。
+出力ポートの場合、それはそのまま<var>proc</var>に渡されます。
+文字列が渡された場合は、そのファイル名を持つファイルを出力用にオープンし、
+そのポートが<var>proc</var>に渡されます (但し、<var>temporary-file</var>
+引数が渡された時はそれに指定されるファイルが一時ファイルとしてオープンされます)。
+オープンされたポートは<var>proc</var>が戻った時に閉じられます。
+この引数が省略された場合は、現在の出力ポートが渡されます。
+</p></dd>
+<dt> <code>temporary-file</code></dt>
+<dd><p>文字列でファイル名が渡された場合、処理の間の出力先として<var>output</var>に指定された
+ファイルのかわりにそのファイルがオープンされます。
+<var>proc</var>にはその一時ファイルへの出力ポートが渡されます。
+<var>proc</var>が正常に返って来た時点で、一時ファイルは<var>output</var>に指定された
+ファイルへとリネームされます。
+</p>
+<p>もし一時ファイル名が<code>"/"</code>、<code>"./"</code>、<code>"../"</code>以外の
+文字で始まっていた場合は、<var>output</var>に与えられたファイル名のディレクトリが
+一時ファイルの前に追加されます。さらに、ユニークなサフィックスが一時ファイルの後に
+追加されます(一時ファイルは<code>sys-mkstemp</code>を使ってオープンされます)。
+</p>
+<p>この引数は、<var>output</var>にファイル名が与えられなかった場合は無視されます。
+</p></dd>
+<dt> <code>keep-output?</code></dt>
+<dd><p>真の値が与えられた場合、<var>proc</var>がエラーになった場合でも出力ファイルを削除しません。
+デフォルトでは、出力ファイル(もしくは<var>temporary-file</var>が与えられた場合は
+そのファイル)はエラーの場合には削除されます。
+</p></dd>
+</dl>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_138.html#g_t_00e3_0082_00aa_00e3_0083_00aa_00e3_0082_00b8_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00aeDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

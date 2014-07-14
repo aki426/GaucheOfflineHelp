@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.6 gauche.dictionary - ディクショナリフレームワーク</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.6 gauche.dictionary - ディクショナリフレームワーク">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.6 gauche.dictionary - ディクショナリフレームワーク">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_79.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0095_00e3_0082_00a3_00e3_0082_00b0_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e6_0083_0085_00e5_00a0_00b1" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0081_00ae_00e3_0081_009f_00e3_0082_0081_00e3_0081_00ae_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af-1"></a>
+<h2 class="section">9.6 <code>gauche.dictionary</code> - ディクショナリフレームワーク</h2>
+
+<dl>
+<dt><a name="index-gauche_002edictionary"></a><u>Module:</u> <b>gauche.dictionary</b></dt>
+<dd><a name="index-gauche_002edictionary-1"></a>
+<p>ディクショナリはキーから値への写像ができるオブジェクトを表わす抽象クラ
+スです。このモジュールではディクショナリに対してよく使うジェネリック関数、
+および他のディクショナリクラスの上に構築される汎用的なディクショナリクラスを
+提供します。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0081_00ae_00e3_0081_009f_00e3_0082_0081_00e3_0081_00ae_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0">9.6.1 ディクショナリのためのジェネリック関数</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_00b1_008e_00e7_0094_00a8_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa">9.6.2 汎用ディクショナリ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0081_00ae_00e3_0081_009f_00e3_0082_0081_00e3_0081_00ae_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00b1_008e_00e7_0094_00a8_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0081_00ae_00e3_0081_009f_00e3_0082_0081_00e3_0081_00ae_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0-1"></a>
+<h3 class="subsection">9.6.1 ディクショナリのためのジェネリック関数</h3>
+
+<p>These generic functions are useful to implement algorithms
+common to any dictionary-like objects.
+Among built-in classes, <code>&lt;hash-table&gt;</code> and <code>&lt;tree-map&gt;</code>
+implement the dictionary interface.  All the <code>&lt;dbm&gt;</code> classes
+provided by <code>dbm</code> module also implement it.
+</p>
+<p>To make your own class implement the dictionary interface, you have
+to provide at least <code>dict-get</code>, <code>dict-put!</code>, <code>dict-exists?</code>,
+<code>dict-delete!</code> and <code>dict-fold</code>.   Other generic functions
+have default behavior built on top of these.  Of course your can
+implement other methods as well, potentially to gain better performance.
+</p>
+<dl>
+<dt><a name="index-dict_002dget"></a><u>Generic function:</u> <b>dict-get</b><i> (dict <code>&lt;dictionary&gt;</code>) key :optional default</i></dt>
+<dd><p>Returns the value corresponding to the <var>key</var>.
+If the dictionary doesn’t have an entry with <var>key</var>,
+returns <var>default</var> when it is provided, or raises an error
+if not.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dput_0021"></a><u>Generic function:</u> <b>dict-put!</b><i> (dict <code>&lt;dictionary&gt;</code>) key value</i></dt>
+<dd><p>Puts the mapping from <var>key</var> to <var>value</var> into the dictionary.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_0028setter-dict_002dget_0029"></a><u>Generic function:</u> <b>(setter dict-get)</b><i> (dict <code>&lt;dictionary&gt;</code>) key value</i></dt>
+<dd><p>This works the same as <code>dict-put!</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dexists_003f"></a><u>Generic function:</u> <b>dict-exists?</b><i> (dict <code>&lt;dictionary&gt;</code>) key</i></dt>
+<dd><p>Returns <code>#t</code> if the dictionary has an entry with <var>key</var>,
+<code>#f</code> if not.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002ddelete_0021"></a><u>Generic function:</u> <b>dict-delete!</b><i> (dict <code>&lt;dictionary&gt;</code>) key</i></dt>
+<dd><p>Removes an entry with <var>key</var> form the dictionary.
+If the dictionary doesn’t have such an entry, this function is noop.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dfold"></a><u>Generic function:</u> <b>dict-fold</b><i> (dict <code>&lt;dictionary&gt;</code>) proc seed</i></dt>
+<dd><p><var>dict</var>の各要素に対して<var>proc</var>を呼びシード値を次に渡します。
+<var>proc</var>は引数を3つとります。エントリーのキー、エントリーの値、それ
+にシード値です。最初のシード値は<var>seed</var>です。<var>proc</var>からの返り値
+は次の<var>proc</var>の呼び出しでシード値として使われます。最後の<var>proc</var>
+の呼び出しの結果が<var>dict-fold</var>の返り値として返されます。
+</p>
+<p><var>dict</var>が<code>&lt;ordered-dictionary&gt;</code>であれば、<var>proc</var>は以下のよ
+うな結合で呼ばれます。ここで、キーは<var>K0</var>(最小)から<var>Kn</var>(最大)ま
+でで、それに対応する値が<var>V0</var>から<var>Vn</var>までであるとします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(proc Kn Vn (proc Kn-1 Vn-1 ... (proc K0 V0 seed)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dfold_002dright"></a><u>Generic function:</u> <b>dict-fold-right</b><i> (dict <code>&lt;ordered-dictionary&gt;</code>) proc seed</i></dt>
+<dd><p><code>dict-fold</code>と同じですが、<var>proc</var>を適用する結合の順が以下のよう
+に逆になります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(proc K0 V0 (proc K1 V1 ... (proc Kn Vn seed)))
+</pre></td></tr></tbody></table>
+
+<p>このジェネリック関数は<code>&lt;ordered-dictionary&gt;</code>上にのみ定義されてい
+ます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dfor_002deach"></a><u>Generic function:</u> <b>dict-for-each</b><i> (dict <code>&lt;dictionary&gt;</code>) proc</i></dt>
+<dd><p>ディクショナリ<var>dict</var>の各エントリーのキーと値に対して<var>proc</var>を呼
+びます。順序付きディクショナリに対しては<var>proc</var>がキーの昇順に呼ばれ
+ることが保証されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dmap"></a><u>Generic function:</u> <b>dict-map</b><i> (dict <code>&lt;dictionary&gt;</code>) proc</i></dt>
+<dd><p>ディクショナリ<var>dict</var>の各エントリーのキーと値に対して<var>proc</var>を呼
+び、結果をリストにまとめて返します。順序付きディクショナリに対しては結
+果が最初のキーの順にならびます(が、<var>proc</var>がキーの昇順に呼ばれるこ
+とを保証するものではありません)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dict_002dkeys"></a><u>Generic function:</u> <b>dict-keys</b><i> (dict <code>&lt;dictionary&gt;</code>)</i></dt>
+<dt><a name="index-dict_002dvalues"></a><u>Generic function:</u> <b>dict-values</b><i> (dict <code>&lt;dictionary&gt;</code>)</i></dt>
+<dd><p>それぞれ<var>dict</var>内にあるすべてのキーのリスト、すべての値のリストを返
+します。順序付きディクショナリについてはリストの要素はキーの昇順になら
+んでいます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_00b1_008e_00e7_0094_00a8_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0081_00ae_00e3_0081_009f_00e3_0082_0081_00e3_0081_00ae_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00b1_008e_00e7_0094_00a8_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa-1"></a>
+<h3 class="subsection">9.6.2 汎用ディクショナリ</h3>
+
+<dl>
+<dt><a name="index-_003cbimap_003e"></a><u>Class:</u> <b>&lt;bimap&gt;</b></dt>
+<dd><p>Provides a bidirectional map (<em>bimap</em>), a relation between two
+set of values, of which you can lookup both ways.
+</p>
+<p>Internally, a bimap consists of two dictionaries, <em>left</em> map
+and <em>right</em> map.  Think a bimap as a relation between <var>x</var>s
+and <var>y</var>s.  The left map takes an <var>x</var> as a key and returns
+corresponding <var>y</var> as its value.  The right map takes an <var>y</var>
+as a key and returns corresponding <var>x</var> as its value.
+</p>
+<p>Currently, <code>&lt;bimap&gt;</code> only supports strict one-to-one mapping.
+Mutating interface (<code>bimap-*-put!</code>, <code>bimap-*-delete!</code> etc)
+modifies both left and right maps to maintain this one-to-one mapping.
+(In future, we may provide an option to make many-to-one and
+many-to-many mappings).
+</p>
+<p>A bimap can be used as a dictionary, with the generic dictionary
+functions such as <code>dict-get</code>.  In such cases, the left map takes
+precedence; that is, the key given to <code>dict-get</code> etc. is
+regarded as the key to the left map.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dbimap"></a><u>Function:</u> <b>make-bimap</b><i> left-map right-map</i></dt>
+<dd><p>Creates a new bimap consists of two dictionaries, <var>left-map</var>
+and <var>right-map</var>.   It is the caller’s responsibility to
+choose appropriate type of dictionaries; for example, if you want
+to create a relation between a string and a number, you man want
+to create it like this:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-bimap (make-hash-table 'string=?)  ; string -&gt; number
+            (make-hash-table 'eqv?))     ; number -&gt; string
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-bimap_002dleft"></a><u>Function:</u> <b>bimap-left</b><i> bimap</i></dt>
+<dt><a name="index-bimap_002dright"></a><u>Function:</u> <b>bimap-right</b><i> bimap</i></dt>
+<dd><p>Returns the left or right map of <var>bimap</var>, respectively.
+Do not mutate the returned map, or you’ll break
+the consistency of the bimap.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bimap_002dleft_002dget"></a><u>Function:</u> <b>bimap-left-get</b><i> bimap key :optional default</i></dt>
+<dt><a name="index-bimap_002dright_002dget"></a><u>Function:</u> <b>bimap-right-get</b><i> bimap key :optional default</i></dt>
+<dd><p>Lookup the value corresponding to the <var>key</var> in the left or right
+map of <var>bimap</var>.   If no entry is found for <var>key</var>,
+<var>default</var> is returned if provided, otherwise an error is
+raised.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bimap_002dleft_002dexists_003f"></a><u>Function:</u> <b>bimap-left-exists?</b><i> bimap key</i></dt>
+<dt><a name="index-bimap_002dright_002dexists_003f"></a><u>Function:</u> <b>bimap-right-exists?</b><i> bimap key</i></dt>
+<dd><p>Returns <code>#f</code> if the left or right map of <var>bimap</var> has an entry of
+the key, <code>#t</code> otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bimap_002dput_0021"></a><u>Function:</u> <b>bimap-put!</b><i> bimap x y &amp;key (on-conflict :supersede)</i></dt>
+<dd><p>Put a relation (<var>x</var>, <var>y</var>) into the bimap.
+After this, <code>(bimap-left-get <var>x</var>)</code> will return <var>y</var>,
+and <code>(bimap-left-get <var>y</var>)</code> will return <var>x</var>.
+</p>
+<p>If there’s already a relation (<var>x</var>, _) and/or (_, <var>y</var>),
+the behavior depends on the value of the keyword argument <var>on-conflit</var>.
+</p>
+<dl compact="compact">
+<dt> <code>:supersede</code></dt>
+<dd><p>This is the default behavior.  Duplicate relations are silently
+removed in order to maintain one-to-one mapping.  For example,
+suppose a bimap between strings and numbers has had
+<code>("foo", 1)</code> and <code>("bar", 2)</code>.  When you try to
+put <code>("bar", 2)</code> with this option, the first two entries
+are removed.  Returns <code>#t</code>.
+</p>
+</dd>
+<dt> <code>:error</code></dt>
+<dd><p>Raises an error when duplicate relations are found.
+</p>
+</dd>
+<dt> <code>#f</code></dt>
+<dd><p>When duplicate relations are found, does nothing and returns <code>#f</code>.
+</p></dd>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-bimap_002dleft_002ddelete_0021"></a><u>Function:</u> <b>bimap-left-delete!</b><i> bimap key</i></dt>
+<dt><a name="index-bimap_002dright_002ddelete_0021"></a><u>Function:</u> <b>bimap-right-delete!</b><i> bimap key</i></dt>
+<dd><p>Deletes an relation with the given left key or right key from <var>bimap</var>.
+Both left and right maps are modified so that the consistency is maintained.
+If there’s no relations with given key, these are noop.
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0081_00ae_00e3_0081_009f_00e3_0082_0081_00e3_0081_00ae_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.9 準クオート(Quasiquote)</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.9 準クオート(Quasiquote)">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.9 準クオート(Quasiquote)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_30.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_29.html#g_t_00e7_00b9_00b0_00e3_0082_008a_00e8_00bf_0094_00e3_0081_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_31.html#g_t_00e5_00ae_009a_00e7_00be_00a9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088_0028Quasiquote_0029"></a>
+<h2 class="section">4.9 準クオート(Quasiquote)</h2>
+
+<dl>
+<dt><a name="index-quasiquote"></a><u>Special Form:</u> <b>quasiquote</b><i> template</i></dt>
+<dd><p>[R5RS]
+準クォートは固定部分と変数部分の両方を持つような構造を構成するのに便利
+です。詳細は以下の説明を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_0060template"></a><u>Reader Syntax:</u> <b><code>`<var>template</var></code></b></dt>
+<dd><p>[R5RS]
+<code>`x</code>は<code>(quasiquote x)</code>として読み込まれます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-unquote"></a><u>Special Form:</u> <b>unquote</b><i> datum …</i></dt>
+<dt><a name="index-unquote_002dsplicing"></a><u>Special Form:</u> <b>unquote-splicing</b><i> datum …</i></dt>
+<dd><p>[R5RS+][R6RS]
+これらの構文は準クォートされた<var>template</var>内にあるときにだけ意味を持ち
+ます。R5RSではこれらの構文が準クォートの外側で現われたときの意味に
+ついては何も言及していません。Gaucheではそのような場合にはエラーを通知します。
+そのような<code>unquote</code>や<code>unquote-splicing</code>が現れるのは、
+通常どこかで準クォートを忘れているからです。
+</p>
+<p>R5RSは<code>unquote</code>と<code>unquote-splicing</code>に一つだけ引数を取ることを
+許しています。<code>(unquote)</code>や<code>(unquote x y)</code>のようなフォームが
+準クオートの中に現れた場合の動作は定義されていません。
+R6RSではこれらの場合も定義されており、Gaucheもそれに倣っています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002cdatum"></a><u>Reader Syntax:</u> <b><code>,<var>datum</var></code></b></dt>
+<dt><a name="index-_002c@datum"></a><u>Reader Syntax:</u> <b><code>,@<var>datum</var></code></b></dt>
+<dd><p>[R5RS]
+<code>,x</code>および<code>,@x</code>は、それぞれ<code>(unquote x)</code>および
+<code>(unquote-splicing x)</code>として読み込まれます。
+</p></dd></dl>
+
+<a name="g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac"></a>
+<h3 class="subheading">準クォートの基本</h3>
+
+<p><code>(foo bar <var>x</var> <var>y</var>)</code>のようなリストを構成したいとしましょう。
+ここでは<code>foo</code>および<code>bar</code>はシンボルで、<var>x</var>および<var>y</var>は
+実行時に定まる値とします。(説明のために、変数<var>x</var>および<var>y</var>がそ
+れらの値を持っているものとします。) ひとつの方法は<code>list</code>関数を明
+示的に呼ぶことです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((x 0) (y 1))
+  (list 'foo 'bar x y)) ⇒ (foo bar 0 1)
+</pre></td></tr></tbody></table>
+
+<p>同じことを準クォートを使うと以下のようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((x 0) (y 1))
+  `(foo bar ,x ,y))  ⇒ (foo bar 0 1)
+</pre></td></tr></tbody></table>
+
+<p>ふたつの記法の違いは、前者では結果に書いたとおりを入れ込みたいところで
+クォートを使い、後者ではクォートしたくないところに<em>unquotes</em>を使
+うことです。
+</p>
+<p>ほとんどが固定部分でその中に変数部分が散在するような場合には準クォート
+を使った方が単純で読みやすくなります。
+</p>
+<p>そういうわけで、旧来のマクロでは準クォートが頻繁につかわれていました。
+旧来のマクロは基本的にマクロの引数として与えられた変数部分からプログラ
+ム断片を生成する手続だからです。簡単な<code>my-if</code>マクロの定義とそれが
+<code>cond</code>に展開されるようすを見てみましょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-macro (my-if test then else)
+  `(cond (,test ,then)
+         (else ,else)))
+
+(macroexpand '(my-if (&lt; n 0) n (- n)))
+  ⇒ (cond ((&lt; n 0) n) (else (- n)))
+</pre></td></tr></tbody></table>
+
+<p>マクロ定義内の2つの<code>else</code>に注目してください。ひとつはアンクォート
+されていませんので、出力にはそのまま現われます。もうひとつの方はといえ
+ば、こちらはアンクォートされていますので、その場所にマクロの引数が入り
+ます。
+</p>
+<p>もちろんマクロとは関係のないところでも準クォートは使えます。準クォート
+は構造のあるデータを構築する汎用的な方法です。ほとんどが変数部分である
+ような構造でも準クォートを好んで使うプログラマもいます。準クォートを使っ
+た方が簡潔に書けるからです。さらにGaucheでは準クォート形式に対する実行
+時アロケーションができるだけ少くなるようにしていますので、準クォートを
+使った方が効率がいいはずです。この点については後述の「準クォートはどの
+くらい静的か」を見てください。
+</p>
+<a name="g_t_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h3 class="subheading">スプライシング</h3>
+
+<p><code>(unquote-splicing <var>expr</var>)</code>が準クォート形式の中で使われていれ
+ば、<var>expr</var>は評価されてリストになるものでなければならず、それをとり
+まくコンテキストで継ぎ合わされます。例を見ると簡単にわかります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((x '(1 2 3)))
+  `(a ,@x b)) ⇒ (a 1 2 3 b)
+
+(let ((x '(1 2 3)))
+  `(a ,x b)) ⇒ (a (1 2 3) b)
+
+(let ((x '(1 2 3)))
+  `#(a ,@x b)) ⇒ #(a 1 2 3 b)
+</pre></td></tr></tbody></table>
+
+<p>アンクォート版とアンクォートスプライシング版を比べてください。スプライ
+シングはベクタに対しても機能します。
+</p>
+<a name="g_t_00e8_00a4_0087_00e6_0095_00b0_00e3_0081_00ae_00e5_00bc_0095_00e6_0095_00b0_00e3_0082_0092_00e5_008f_0096_00e3_0082_008bunquote"></a>
+<h3 class="subheading">複数の引数を取るunquote</h3>
+
+<p><code>unquote</code>や<code>unquote-splicing</code>が複数の引数を取る場合は、
+あたかも各引数がそれぞれ<code>unquote</code>または<code>unquote-splicing</code>されている
+かのように解釈されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">;; This is the same result as `(,(+ 1 2) ,(+ 2 3) ,(+ 3 4))
+`((unquote (+ 1 2) (+ 2 3) (+ 3 4)))
+  ⇒ (3 5 7)
+
+;; This is the same result as
+;;   `(,@(list 1 2) ,@(list 2 3) ,@(list 3 4))
+`((unquote-splicing (list 1 2) (list 2 3) (list 3 4)))
+  ⇒ (1 2 2 3 3 4)
+
+;; Edge cases
+`((unquote))          ⇒ ()
+`((unquote-splicing)) ⇒ ()
+</pre></td></tr></tbody></table>
+
+<p>複数のフォームをスプライスできない位置に現れた
+ゼロ個もしくは複数の引数を取る<code>unquote</code>/<code>unquote-splicing</code>フォームは
+エラーとなります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">;; Multiple arguments unquotes are error in non-splicing context
+`(unquote 1 2)          ⇒ <span class="roman">error</span>
+`(unquote-splicing 1 2) ⇒ <span class="roman">error</span>
+</pre></td></tr></tbody></table>
+
+<p>省略記法の<code>,x</code>と<code>,@x</code>は単一引数のフォームとしてしか使えないので、
+ゼロ個もしくは複数の引数を取る場合は
+<code>unquote</code>や<code>unquote-splicing</code>を陽に表記しなければなりません。
+わざわざそんなコーディングをする必要はまず無いでしょう。
+この機能は、ネストしたアンクオートしているフォーム、
+<code>,,@</code>や<code>,@,@</code>をサポートするためにあります。
+R5RSの仕様では、これらのフォームで、内側のunquote-splicingがゼロ個もしくは複数個の
+フォームへと展開された場合を処理できません。
+</p>
+<a name="g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00af_00e3_0081_00a9_00e3_0081_00ae_00e3_0081_008f_00e3_0082_0089_00e3_0081_0084_00e9_009d_0099_00e7_009a_0084_00e3_0081_008b"></a>
+<h3 class="subheading">準クォートはどのくらい静的か</h3>
+
+<p>準クォート形式が変数部分を含む場合、実行時には、明示的な形式が使われた
+ときと同じことがおこります。<code>`(,x ,y)</code>は<code>(list x y)</code>のように
+評価されます。しかし、Gaucheでは準クォート形式が固定部分を持つ場合には
+実行時アロケーションができるだけ少くなるようにします。
+</p>
+<p>まず、<code>`(a b c)</code>のように準クォート形式に変数部分がない場合、全体
+は静的にアロケートされます。構造の末尾が固定部分の場合にも静的にアロケー
+トされます。たとえば、<code>`((,x a b) (,y c d))</code>は<code>(list (cons x
+'(a b)) (cons y '(c d)))</code>のように機能します。
+</p>
+<p>さらにアンクォート式が定数式の場合，Gaucheはそれを準クォートの固定部分
+に埋め込みます。たとえば、<code>(define-constant x 3)</code>のように定義した
+としましょう。この場合<code>`(,x ,(+ x 1))</code>は定数<code>'(3 4)</code>のように
+コンパイルされます。(<code>define-constant</code>形式については、
+<a indepth="true" href="gauche-refj_31.html#g_t_00e5_00ae_009a_00e7_00be_00a9">定義</a>を参照してください。)
+</p>
+<p>一般的には、準クォート形式のどの部分が固定データとしてコンパイルされど
+の部分がされないのかを特定することは困難です。それゆえ、準クォートの返
+す構造の一部が新規にアロケートされていることを前提としたコードを書いて
+はいけません。いいかえると、そのような構造を変更するのは避けるべきです。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_29.html#g_t_00e7_00b9_00b0_00e3_0082_008a_00e8_00bf_0094_00e3_0081_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_31.html#g_t_00e5_00ae_009a_00e7_00be_00a9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

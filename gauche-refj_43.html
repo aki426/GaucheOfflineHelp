@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.5 未定義値</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.5 未定義値">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.5 未定義値">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_009c_00aa_00e5_00ae_009a_00e7_00be_00a9_00e5_0080_00a4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_42.html#g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_009a_00e3_0082_00a2_00e3_0081_00a8_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_009c_00aa_00e5_00ae_009a_00e7_00be_00a9_00e5_0080_00a4-1"></a>
+<h2 class="section">6.5 未定義値</h2>
+
+<p>Gaucheで作業していると、しばしば未定義値 <code>#&lt;undef&gt;</code>
+に出会うことがあるでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (if #f #t)
+#&lt;undef&gt;
+</pre></td></tr></tbody></table>
+
+<p>この値は、値そのものに意味が無いこと、あるいは
+とりたててほかにふさわしい値が無いことを意味します。
+</p>
+<p>未定義値と未束縛の変数を混同しないようにしてください。
+<code>#&lt;undef&gt;</code>は通常の第一級の値であり、変数に束縛しておくこともできます。
+未束縛の変数は文字通り、変数が束縛されていない、すなわち値を持たないことを意味します。
+</p>
+<p>しかし、場合によっては、変数に特定の値が提供されていないことを
+示すのに<code>#&lt;undef&gt;</code>が使われることもあります。
+例えば、既定値をもたない省略可能引数に実引数が提供されなかった
+場合、引数の値は<code>#&lt;undef&gt;</code>となります (<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>参照)。
+これは実際に<code>#&lt;undef&gt;</code>が引数として渡された場合と区別がつかない
+ことに注意してください。<code>#&lt;undef&gt;</code>を受け取ってわかることは、
+せいぜいその値にたいした意味がないということくらいです。
+<code>#&lt;undef&gt;</code>に大きな意味を持たせすぎないようにしましょう。
+</p>
+<p>以上の注意を念頭においた上で、未定義値を扱うには
+次の手続きが利用できます。
+</p>
+<dl>
+<dt><a name="index-undefined_003f"></a><u>Function:</u> <b>undefined?</b><i> obj</i></dt>
+<dd><p><var>obj</var>が未定義値である場合に限り<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-undefined"></a><u>Function:</u> <b>undefined</b></dt>
+<dd><p>未定義値を返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_42.html#g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_009a_00e3_0082_00a2_00e3_0081_00a8_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

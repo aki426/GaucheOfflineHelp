@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.11 dbm.ndbm - NDBMインタフェース</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.11 dbm.ndbm - NDBMインタフェース">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.11 dbm.ndbm - NDBMインタフェース">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="NDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_136.html#GDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_138.html#g_t_00e3_0082_00aa_00e3_0083_00aa_00e3_0082_00b8_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00aeDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="dbm_002endbm-_002d-NDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<h2 class="section">11.11 <code>dbm.ndbm</code> - NDBMインタフェース</h2>
+
+<dl>
+<dt><a name="index-dbm_002endbm"></a><u>Module:</u> <b>dbm.ndbm</b></dt>
+<dd><a name="index-dbm_002endbm-1"></a>
+<p>Provides interface to the ’new’ dbm library, a.k.a. ndbm.
+Extends <code>dbm</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cndbm_003e"></a><u>Class:</u> <b>&lt;ndbm&gt;</b></dt>
+<dd><a name="index-ndbm"></a>
+<p><code>&lt;dbm&gt;</code> を継承します。NDBM ライブラリのための実装を提供します。
+このモジュールはあなたのシステムにすでに NDBM がある場合にのみ
+インストールされます。
+</p></dd></dl>
+
+<p>統合された DBM インターフェース (See section <a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>dbm</code> - 汎用DBMインタフェース</a>) の
+他に、このモジュールでは NDBM API への直接のアクセスを提供する以下の
+低レベルな手続きを提供しています。これらの API の詳細については NDBM の
+マニュアルを見て下さい。
+</p>
+<dl>
+<dt><a name="index-ndbm_002dopen"></a><u>Function:</u> <b>ndbm-open</b><i> path flags mode</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dclose"></a><u>Function:</u> <b>ndbm-close</b><i> ndbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dclosed_003f"></a><u>Function:</u> <b>ndbm-closed?</b><i> ndbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dstore"></a><u>Function:</u> <b>ndbm-store</b><i> ndbm-object key content :optional flag</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dfetch"></a><u>Function:</u> <b>ndbm-fetch</b><i> ndbm-object key</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002ddelete"></a><u>Function:</u> <b>ndbm-delete</b><i> ndbm-object key</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dfirstkey"></a><u>Function:</u> <b>ndbm-firstkey</b><i> ndbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dnextkey"></a><u>Function:</u> <b>ndbm-nextkey</b><i> ndbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002derror"></a><u>Function:</u> <b>ndbm-error</b><i> ndbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-ndbm_002dclear_002derror"></a><u>Function:</u> <b>ndbm-clear-error</b><i> ndbm-object</i></dt>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_136.html#GDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_138.html#g_t_00e3_0082_00aa_00e3_0083_00aa_00e3_0082_00b8_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00aeDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

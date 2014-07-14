@@ -1,0 +1,1002 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.29 gauche.threads - スレッド</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.29 gauche.threads - スレッド">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.29 gauche.threads - スレッド">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_102.html#g_t_00e5_008d_0098_00e4_00bd_0093_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0Tips" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002ethreads-_002d-_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"></a>
+<h2 class="section">9.29 <code>gauche.threads</code> - スレッド</h2>
+
+<p>Gaucheでは、コンパイル時に有効にしていれば、POSIXスレッド(pthreads)か
+Windowsスレッド上に構築されるスレッドを使うことができます。
+</p>
+<dl>
+<dt><a name="index-gauche_002ethreads"></a><u>Module:</u> <b>gauche.threads</b></dt>
+<dd><a name="index-gauche_002ethreads-1"></a>
+<p>スレッドを扱うAPIを提供します。コンパイル時にスレッドのサポートを
+指定したか否かに関わらず、このモジュールを’use’することができます。
+スレッドがサポートされていない場合は、多くのスレッド関連の手続きは
+単に“not supported”エラーを通知するだけです。
+</p></dd></dl>
+
+<p>pthreadが使えるかどうかによって実行するコードを切り替えたい場合は、
+<code>cond-expand</code>フォームで<code>gauche.sys.threads</code>という
+feature identifierを使うことができます (<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>参照)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ [gauche.sys.threads
+   ;; Thread APIを使うコード (<code>gauche.threads</code>はこの時点で
+   ;; 自動的にロードされます).
+  ]
+ [else
+   ;; Thread APIを使わないコード
+  ])
+</pre></td></tr></tbody></table>
+
+<p>また、pthreadプラットフォームとWindowsスレッドプラットフォームで
+それぞれ、<code>gauche.sys.pthreads</code>と<code>gauche.sys.wthreads</code>
+というfeature identifierも定義されています。
+ただ、Schemeレベルではこれら下位の実装の違いを意識する必要は
+ほとんど無いでしょう。スレッドサポートの有無によりコードを切り替える時は、
+<code>gauche.sys.threads</code>を使うのが良いでしょう。
+</p>
+<p>コンパイル時ではなく実行時にスレッドが有効かどうかをチェックするためには、
+次の手続きを使います。
+</p>
+<dl>
+<dt><a name="index-gauche_002dthread_002dtype"></a><u>Function:</u> <b>gauche-thread-type</b></dt>
+<dd><p>サポートされているスレッドのタイプを表すシンボルを返します。
+以下のいずれかのシンボルが返されます。
+</p>
+<dl compact="compact">
+<dt> <code>none</code></dt>
+<dd><p>スレッドはサポートされていません。
+</p></dd>
+<dt> <code>pthread</code></dt>
+<dd><p>スレッドはPOSIXのpthreadsを使って実装されています。
+</p></dd>
+<dt> <code>win32</code></dt>
+<dd><p>スレッドはWin32スレッドを使って実装されています。
+</p></dd>
+</dl>
+
+<p>(註：pthreadプラットフォームではシンボル<code>pthread</code>ではなく
+<code>pthreads</code>を返すべきでした。そうすれば、
+<code>gauche-thread-type</code>の返り値はコンフィグレーション時に
+<code>--enable-threads</code>に与えた値と対応するものになっていたでしょう。
+互換性のために、残念ながらこの見過ごしは修正されないでしょう。
+</p></dd></dl>
+
+<p>SchemeレベルのスレッドAPIはSRFI-18、“マルチスレッドサポート”
+(<a indepth="true" href="gauche-refj_189.html#srfi_002d18">[SRFI-18]</a>)を満たし、Gaucheのオブジェクトの
+インターフェースでラップされます。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0Tips">9.29.1 スレッドプログラミングTips</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">9.29.2 スレッド手続き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096">9.29.3 同期プリミティブ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096">9.29.4 スレッド例外</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0Tips"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0Tips-1"></a>
+<h3 class="subsection">9.29.1 スレッドプログラミングTips</h3>
+
+<p>スレッドのAPIは外見上シンプルでポータブルに見えますが、
+その機能の潜在的な力を活用するためには、スレッドがどのように
+実装されているかを知る必要があります。
+いくつかの言語では言語組み込みの機能としてスレッドをサポートし、
+プログラマによるスレッドの利用を推奨しています。
+しかし、多くの場合、実現したいアルゴリズムをスレッドを使わずに
+実装する方法があります。
+スレッドを使うことの利点と欠点を、そのスレッドがシステムによってどのように
+実現されているかを考慮した上で比較する必要があります。
+</p>
+<p>Gaucheでは、スレッドを使う一番の目的は、他の方法で表現することが
+難しい、プリエンプティブなスケジューリングを<em>必要</em>とする
+プログラムを書くことです。プリエンプティブなスレッドは、
+例えば、中断できないブロッキングI/Oを行うモジュールを
+使わなければならないときや、実行時間の分からない計算に
+割り込みを行いたいときなどに必要となります。
+</p>
+<p>それぞれのGaucheのスレッドには、個別の仮想マシンが割り当てられ、
+専用のPOSIXスレッドにより実行されます。したがって、コンテキスト
+スイッチのオーバヘッドは、ネイティブスレッドとほとんど変わりません。
+しかし、スレッドの生成は、例えばcall/ccによる軽量スレッドよりは
+ずっとコストのかかる処理です。
+このように、Gaucheのプリエンプティブなスレッドは、
+きめ細かい計算のために幾千ものスレッドを生成したいアプリケーション
+向けでは<em>ありません</em>。
+</p>
+<p>推奨される使用方法は、いわゆる“スレッドプール”と呼ばれる
+テクニックです。つまり、スレッドの集合を作って長時間それを
+保持し、必要になったときにジョブをそこへディスパッチする
+というものです。Gaucheは<code>control.thread-pool</code>モジュール
+(<a indepth="true" href="gauche-refj_131.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab"><code>control.thread-pool</code> - スレッドプール</a>参照) でスレッドプールの実装を提供しています。
+</p>
+<p>プリエンプティブなスレッドには他にも難しい点があり
+(<a indepth="true" href="gauche-refj_189.html#fairthreads">FairThreads</a>参照)、
+しばしばネイティブなプリエンプティブスレッドよりも
+より良くフィットする代替策があります。
+</p>
+<ul>
+<li>
+単に同時実行が必要なだけなら、<code>call/cc</code>による協調スレッド
+テクニックが使えるでしょう。call/ccベースのスレッドの生成は、
+ネイティブスレッドを生成するよりも高速です。
+
+</li><li>
+ブロッキングI/Oを扱う必要があり、全てのコードが手元にある場合は、
+古き良き<code>select</code>ベースのディスパッチ(<a indepth="true" href="gauche-refj_98.html#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3"><code>gauche.selector</code> - 簡単なディスパッチャ</a>に
+例があります)を使うほうが簡単なことがあります。
+
+</li><li>
+サブシステムにおけるリソースの消費をコントロールする必要がある場合で、
+サブシステムがメインシステムとほとんど独立に動作する場合は、
+スレッドの代わりにUnixプロセスが使えることでしょう。
+時代に逆行するように聞こえますが、Unixプロセスはサブシステムと
+メインシステムの間に高度な“防御壁”を提供します。
+(例えば、サブシステムがセグメンテーション違反を起こしても、
+メインシステムは実行しつづけられます。)
+
+</li></ul>
+
+<p>もちろん、これらのテクニックはネイティブスレッドとは相互排他ではありません。
+例えば、“スレッドプール”テクニックと一緒にディスパッチャを使うこともできます。
+それらの機能を実現するために、ネイティブスレッドが唯一の方法ではないということを
+心に留め置いて下さい。
+</p>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0Tips" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d-1"></a>
+<h3 class="subsection">9.29.2 スレッド手続き</h3>
+
+<dl>
+<dt><a name="index-_003cthread_003e"></a><u>Builtin Class:</u> <b>&lt;thread&gt;</b></dt>
+<dd><a name="index-thread"></a>
+<p>スレッドを表すクラスです。それぞれのスレッドは、POSIXスレッドにより
+評価される関連付けられた手続きを持ちます。手続きが正常に戻ると、
+その結果は内部的な“結果”スロットに格納され、<code>thread-join!</code>により
+取得することができます。例外が投げられるか
+<code>thread-terminate!</code>により終了されるかで、手続きが異常終了すると、
+例外条件が内部的な“結果としての例外”スロットに格納され、
+その例外条件は終了したスレッドに対して<code>thread-join!</code>を
+呼ぶスレッドへと渡されます。
+</p>
+<p>それぞれのスレッドは独自の動的環境と動的なハンドラスタックを持っています。
+あるスレッドが生成されると、その動的な環境は生成者の動的な環境によって
+初期化されます。そのスレッドの動的なハンドラスタックは初期においては空です。
+</p>
+<p>スレッドは以下の4つの状態のうちのひとつを取ります。<code>thread-state</code>手続きで
+スレッドの状態を調べることができます。
+</p>
+<dl compact="compact">
+<dt> <code>new</code></dt>
+<dd><p>まだ作られたばかりで起動されてない状態です。<code>make-thread</code>が返すスレッドは
+この状態です。スレッドがひとたび起動されると、そのスレッドがこの状態に戻ることは
+決してありません。
+この時点ではPOSIXスレッドはまだ作られません。<code>thread-start!</code>によって
+POSIXスレッドが作られ、Gaucheのスレッドを実行します。
+</p></dd>
+<dt> <code>runnable</code></dt>
+<dd><p><code>thread-start!</code>によって起動されたスレッドはこの状態になります。
+スレッドがシステムコールによるブロックされている時もその状態は<code>runnable</code>
+であることに注意してください。
+</p></dd>
+<dt> <code>stopped</code></dt>
+<dd><p>スレッドが<code>thread-stop!</code>によって止められるとこの状態になります。
+この状態のスレッドは<code>thread-cont!</code>によって再び<code>runnable</code>になり、
+止められた時点から実行を再開することができます。
+</p></dd>
+<dt> <code>terminated</code></dt>
+<dd><p>割り当てられたコードの実行が終了したり、<code>thread-terminate!</code>によって
+強制的に終了させられた時に、スレッドはこの状態になります。
+一度この状態になると他の状態に遷移することはありません。
+</p></dd>
+</dl>
+
+<p>複数のスレッドで共有されるリソースへのアクセスは、同期化プリミティブにより
+明示的に保護されなければなりません。<a href="#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096">同期プリミティブ</a>参照。
+</p>
+<p>ポートへのアクセスはGaucheによりシリアライズされます。
+複数のスレッドが1つのポートへの書き込みを試みた場合、それらの出力は
+混じることもありますが、失われる出力はなく、そのポートのステータスは
+一貫性が保たれます。複数のスレッドが1つのポートからの読み込みを試みた
+場合、1つの読み込みプリミティブ(例えば、<code>read</code>や<code>read-char</code>、
+<code>read-line</code>など)がアトミックに実行されます。
+</p>
+<p>シグナルハンドラは全てのスレッドで共有されますが、それぞれのスレッドは
+独自のシグナルマスクを持ちます。詳細は、<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">シグナルとスレッド</a>を参照。
+</p>
+<p>スレッドオブジェクトは以下の外部スロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-name-7"></a><u>Instance Variable of &lt;thread&gt;:</u> <b>name</b></dt>
+<dd><p>スレッドに関連付けられる名前。
+これは単にアプリケーションにとっての便宜を図るためのものです。
+原始となるスレッドは“<code>root</code>”という名前を持ちます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-specific"></a><u>Instance Variable of &lt;thread&gt;:</u> <b>specific</b></dt>
+<dd><p>アプリケーションが使うスレッドローカルなスロット。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-current_002dthread"></a><u>Function:</u> <b>current-thread</b></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+現在のスレッドを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_003f"></a><u>Function:</u> <b>thread?</b><i> obj</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>obj</var>がスレッドなら<code>#t</code>、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dthread"></a><u>Function:</u> <b>make-thread</b><i> thunk :optional name</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>thunk</var>を実行するための新しいスレッドを生成して返します。
+そのスレッドの実行を開始するには、<code>thread-start!</code>を呼ぶ必要があります。
+<var>thunk</var>の実行結果は、<var>thread-join!</var>を呼ぶことで回収できます。
+</p>
+<p>オプション引数<var>name</var>を与えることで、そのスレッドに名前を与えることができます。
+</p>
+<p>作成されたスレッドは、呼び出したスレッドのシグナルマスクを継承し
+(<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">シグナルとスレッド</a>参照)、また呼び出したスレッドの持つ
+その時点でのパラメータのコピーを受けとります。
+</p>
+<p>これらの初期化操作以外に、作られるスレッドと呼び出したスレッド間の関係は
+ありません。Unixのプロセスのような親子関係があるわけではないのです。
+どのスレッドも、他のスレッドに対して<code>thread-join!</code>を発行
+して結果を受け取ることができます。
+もし誰も<code>thread-join!</code>を発行せず、また作られたスレッドに対する
+参照を保持していなかった場合、スレッドは実行が終了した後にガベージコレクトされます。
+</p>
+<p>もしスレッドが捕捉されない例外のために実行を終了し、その結果が<code>thread-join!</code>で
+回収されなかった場合、標準エラーポートに“thread dies a lonely death” という
+警告メッセージが出力されます。そのようなケースは通常何らかのコーディングエラーで
+あるからです。スレッドの結果を回収しない場合は、
+<var>thunk</var>中ですべての例外を捕捉し処理しなければなりません。
+</p>
+<p>内部的に、この手続きは単にSchemeスレッドオブジェクトを割り当て初期化している
+だけです。POSIXスレッドは<code>thread-start!</code>が呼ばれるまで生成されません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dstate"></a><u>Function:</u> <b>thread-state</b><i> thread</i></dt>
+<dd><p><var>thread</var>の状態を示す、<code>new</code>、<code>runnable</code>、<code>stopped</code>、
+<code>terminated</code>のいずれかのシンボルを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dname"></a><u>Function:</u> <b>thread-name</b><i> thread</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>thread</var>のスロット<var>name</var>の値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dspecific"></a><u>Function:</u> <b>thread-specific</b><i> thread</i></dt>
+<dt><a name="index-thread_002dspecific_002dset_0021"></a><u>Function:</u> <b>thread-specific-set!</b><i> thread value</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>thread</var>の指定したスレッドの値を取得/設定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dstart_0021"></a><u>Function:</u> <b>thread-start!</b><i> thread</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>thread</var>を開始します。<var>thread</var>がすでに開始されていればエラーになります。
+<var>thread</var>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dyield_0021"></a><u>Function:</u> <b>thread-yield!</b></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+呼び出しているスレッドの実行を中断し、他に待機中の実行可能なスレッドがあれば、
+CPUにそれを処理させます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dsleep_0021"></a><u>Function:</u> <b>thread-sleep!</b><i> timeout</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+呼び出しているスレッドを<var>timeout</var>に指定した時間だけ中断します。
+<var>timeout</var>は絶対的な時間を表す<code>&lt;time&gt;</code>オブジェクト(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)か、
+この手続きが呼ばれた時刻からの相対的な秒数を表す実数でなければなりません。
+</p>
+<p>指定された時間が経過すると、<code>thread-sleep!</code>は未定義値を返します。
+</p>
+<p><var>timeout</var>が過去の時間を指していたら、<code>thread-sleep!</code>はすぐに戻ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dstop_0021"></a><u>Function:</u> <b>thread-stop!</b><i> thread :optional timeout timeout-val</i></dt>
+<dd><p>Stops execution of the target <var>thread</var> temporarily.
+You can resume the execution of the <var>thread</var> by <code>thread-cont!</code>.
+</p>
+<p>The stop request is handled synchronously; that is,
+Gauche VM only checks the request at the “safe” point
+of the VM and stops itself.  It means if the <var>thread</var> is
+blocked by a system call, it won’t become <code>stopped</code> state
+until the system call returns.
+</p>
+<p>By default, <code>thread-stop!</code> returns after the target
+thread stops.  Since it may take indefinitely, you can give optional
+<var>timeout</var> argument to specify timeout.   The <var>timeout</var>
+argument can be <code>#f</code>, which means no timeout, or
+a <code>&lt;time&gt;</code> object that specifies an absolute point of time,
+or a real number specifying the number of seconds to wait.
+</p>
+<p>The return value of <code>thread-stop!</code> is <var>thread</var> if
+it could successfully stop the target, or <var>timeout-val</var>
+if timeout reached.   When <var>timeout-val</var> is omitted, <code>#f</code>
+is assumed.
+</p>
+<p>If the target <var>thread</var> has already been stopped by the caller
+thread, this procedure returns immediately.
+</p>
+<p>When <var>thread-stop!</var> is timed out, the request remains
+effective even after <var>thread-stop!</var> returns.
+That is, the target thread may stop at some point in future.
+The caller thread is expected to call <var>thread-stop!</var>
+again to complete the stop operation.
+</p>
+<p>An error is signalled if the target thread has already been
+stopped by another thread (including the “pending” stop
+request issued by other threads), or the target thread
+is in neither <code>runnable</code> nor <code>stopped</code> state.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dcont_0021"></a><u>Function:</u> <b>thread-cont!</b><i> thread</i></dt>
+<dd><p>Resumes execution of <var>thread</var> which has been stopped by
+<code>thread-stop!</code>.  An error is raised if <var>thread</var>
+is not in stopped state, or it is stopped by another thread.
+</p>
+<p>If the caller thread has already requested to stop the target
+thread but timed out, calling <code>thread-cont!</code> cancels
+the request.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dterminate_0021"></a><u>Function:</u> <b>thread-terminate!</b><i> thread</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+指定されたスレッド<var>thread</var>を終了します。
+<var>thread</var>は終了され、<code>&lt;terminated-thread-exception&gt;</code>のインスタンスが
+<var>thread</var>の結果例外のフィールドに格納されます。
+</p>
+<p><var>thread</var>が呼び出しているスレッドと同じ場合、この手続きは戻りません。
+そうでなければ、この手続きは未定義値を返します。
+</p>
+<p><var>thread</var>には(<code>dynamic-wind</code>での’after’手続きのような)クリーンアップ手続きを
+呼ぶチャンスがないので、この手続きは注意して使って下さい。
+<var>thread</var>がクリティカルセクションにあるならば、一貫性のない状態を残すことに
+なります。
+しかし、あるスレッドが一旦終了すると、そのスレッドが保持していたmutexは
+’abandoned’(放棄された)状態になり、そのようなmutexをロックしようとするスレッドは
+’abandoned mutex exception’を投げるので、その状況を知ることができます。
+<a href="#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096">同期プリミティブ</a>参照。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-thread_002djoin_0021"></a><u>Function:</u> <b>thread-join!</b><i> thread :optional timeout timeout-val</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>thread</var>の終了、あるいは<var>timeout</var>が与えられていればtimeoutが
+それに達するのを待ちます。
+</p>
+<p><var>Timeout</var>は絶対的な時間を表す<code>&lt;time&gt;</code>オブジェクト(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)か、
+この手続きが呼ばれた時刻からの相対的な時間を秒数で表した実数でなければなりません。
+タイムアウトが指定されていない(デフォルト)は<code>#f</code>です。
+</p>
+<p><var>thread</var>が正常に終了したら、<code>thread-join!</code>は<var>thread</var>の
+結果フィールドに格納されている値を返します。
+<var>thread</var>が異常終了したら、<code>thread-join!</code>は<var>thread</var>の結果例外
+フィールドに格納されている例外を投げます。それは
+<code>&lt;terminated-thread-exception&gt;</code>か
+<code>&lt;uncaught-exception&gt;</code>のどちらかです。
+</p>
+<p>タイムアウトに達すると、<var>timeout-val</var>が与えられていれば<var>timeout-val</var>を返し、
+与えられていなければ<code>&lt;join-timeout-exception&gt;</code>を投げます。
+</p>
+<p>これらの例外の詳細については<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096">スレッド例外</a>を参照してください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096-1"></a>
+<h3 class="subsection">9.29.3 同期プリミティブ</h3>
+
+<a name="Mutex"></a>
+<h4 class="subsubheading">Mutex</h4>
+
+<dl>
+<dt><a name="index-_003cmutex_003e"></a><u>Builtin Class:</u> <b>&lt;mutex&gt;</b></dt>
+<dd><a name="index-mutex"></a>
+<p>同期のための基本的デバイスです。次の4つの状態のいずれかを持ちます:
+locked/owned、locked/not-owned、unlocked/abandoned、unlocked/not-abandoned。
+Mutexは、それがunlocked(ロックされていない状態)であるときのみ、
+(<code>mutex-lock!</code>により)ロックされます。
+所有されている(owned) mutexは、そのmutexを所有しているスレッドを記憶しています。
+通常、所有者となるスレッドはmutexをロックしたスレッドですが、
+ロックしたのとは別のスレッドがmutexを所有するようにすることもできます。
+ロックは<code>mutex-unlock!</code>によるか、所有するスレッドが終了すると解放されます。
+前者の場合、mutexはunlocked/not-abandoned(ロックされておらず、放棄されていない状態)
+になります。
+後者の場合、mutexはunlocked/abandoned(ロックされておらず、放棄された状態)になります。
+</p>
+<p>Mutexは、以下の外部スロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-name-8"></a><u>Instance Variable of &lt;mutex&gt;:</u> <b>name</b></dt>
+<dd><p>Mutexの名前。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-state"></a><u>Instance Variable of &lt;mutex&gt;:</u> <b>state</b></dt>
+<dd><p>Mutexの状態。これは読み取りのみ可能なスロットです。
+下記の<code>mutex-state</code>の説明を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-specific-1"></a><u>Instance Variable of &lt;mutex&gt;:</u> <b>specific</b></dt>
+<dd><p>アプリケーションが任意のデータを保持することのできるスロットです。
+例えば、アプリケーションはこの固有フィールドで’再帰的な’ mutexを
+実装することができます。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-mutex_003f"></a><u>Function:</u> <b>mutex?</b><i> obj</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>obj</var>がmutexであれば<code>#t</code>、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dmutex"></a><u>Function:</u> <b>make-mutex</b><i> :optional name</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+新しいmutexオブジェクトを生成して返します。
+生成時には、mutexの状態は、unlocked/not-abandoned(ロックされておらず、
+放棄されていない状態)です。オプションで、このmutexに名前を付けることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mutex_002dname"></a><u>Function:</u> <b>mutex-name</b><i> mutex</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+Mutexの名前を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mutex_002dspecific"></a><u>Function:</u> <b>mutex-specific</b><i> mutex</i></dt>
+<dt><a name="index-mutex_002dspecific_002dset_0021"></a><u>Function:</u> <b>mutex-specific-set!</b><i> mutex value</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+Mutexの固有の値を取得/セットできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mutex_002dstate"></a><u>Function:</u> <b>mutex-state</b><i> mutex</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>mutex</var>の状態を返します。状態は以下のうちの1つです。
+</p>
+<dl compact="compact">
+<dt> あるスレッド</dt>
+<dd><p>Mutexはlocked/owned(ロックされ所有されている)で、所有者は返されたスレッド。
+</p></dd>
+<dt> シンボル <code>not-owned</code></dt>
+<dd><p>Mutexはlocked/not-owned(ロックされているが所有されていない)。
+</p></dd>
+<dt> シンボル <code>abandoned</code></dt>
+<dd><p>Mutexはunlocked/abandoned(ロックされておらず、放棄されている)。
+</p></dd>
+<dt> シンボル <code>not-abandoned</code></dt>
+<dd><p>Mutexはunlocked/not-abandoned(ロックされておらず、放棄されていない)。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-mutex_002dlock_0021"></a><u>Function:</u> <b>mutex-lock!</b><i> mutex :optional timeout thread</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>mutex</var>をロックします。<var>mutex</var>がunlocked/not-abandoned(
+ロックされておらず放棄されていない状態)なら、
+この手続きはその状態を排他的なlocked(ロックされた状態)に変更します。
+デフォルトでは、<var>mutex</var>はlocked/owned(ロックされ、所有された状態)になり、
+所有者は呼び出したスレッドです。
+他の所有しているスレッドを、引数<var>thread</var>を与えることもできます。
+引数<var>thread</var>に<code>#f</code>が与えられると、mutexはlocked/not-owned
+(ロックされ所有されていない状態)になります。
+</p>
+<p><var>mutex</var>がunlocked/abandoned(ロックされておらず放棄された状態)ならば、それはつまり、
+他の何らかのスレッドがそのロックを解放せずに終了した場合、
+この手続きは<var>mutex</var>の状態を変更した後に、’abandoned mutex exception’
+(<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096">スレッド例外</a>参照)を通知します。
+</p>
+<p><var>mutex</var>がlocked(ロックされた状態)で、<var>timeout</var>が省略されるか<code>#f</code>ならば、
+この手続きは<var>mutex</var>のロックが解放されるまでブロックします。
+<var>timeout</var>が指定されている場合は、ロックが獲得できなかったケースでは
+指定された時間に達した時に<code>mutex-lock!</code>は戻ります。
+<var>timeout</var>には、絶対的な時間(<code>&lt;time&gt;</code>オブジェクト、<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)か、
+相対的な時間を(実数で)指定できます。
+</p>
+<p><var>mutex</var>のロックが成功すると<code>mutex-lock!</code>は<code>#t</code>を返し、
+タイムアウトに達すると<code>#f</code>が返ります。
+</p>
+<p><var>mutex</var>それ自身は’再帰的なロック’の機能は実装していません。
+つまり、<var>mutex</var>をロックしたスレッドが再度<var>mutex</var>をロックしようと
+すると、そのスレッドはブロックします。しかし、このmutexに
+基づいて再帰的なロックのセマンティクスを実装することは難しくありません。
+次の例は、SRFI-18のドキュメントから引用したものです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (mutex-lock-recursively! mutex)
+  (if (eq? (mutex-state mutex) (current-thread))
+      (let ((n (mutex-specific mutex)))
+        (mutex-specific-set! mutex (+ n 1)))
+      (begin
+        (mutex-lock! mutex)
+        (mutex-specific-set! mutex 0))))
+
+(define (mutex-unlock-recursively! mutex)
+  (let ((n (mutex-specific mutex)))
+    (if (= n 0)
+        (mutex-unlock! mutex)
+        (mutex-specific-set! mutex (- n 1)))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-mutex_002dunlock_0021"></a><u>Function:</u> <b>mutex-unlock!</b><i> mutex :optional condition-variable timeout</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>mutex</var>をアンロックします。<var>mutex</var>の状態は、unlocked/not-abandoned
+(ロックされておらず、放棄されていない状態)となります。
+呼び出しているスレッドにより所有されていないmutexをアンロックすることは
+許されています。
+</p>
+<p>オプショナル引数の<var>conditional-variable</var>が与えられている場合、
+<code>mutex-unlock!</code>は“条件変数待機”の動作も行います(例えば、POSIXスレッドの
+<code>pthread_cond_wait</code>)。
+現在のスレッドは<var>mutex</var>をアンロックし、
+<var>condition-variable</var>の待ち状態に入る動作をアトミックに行います。
+スレッドは、他のスレッドが<var>condition-variable</var>にシグナルを通知するか
+(下記の<code>condition-variable-signal!</code>と<code>condition-variable-broadcast!</code>を
+見て下さい)、
+<var>timeout</var>が与えられていてそれに達すると、ブロックが解除されます。
+引数<var>timeout</var>は、絶対的な時間を表す<code>&lt;time&gt;</code>オブジェクト(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)、
+相対的な時間を秒数で表す実数、タイムアウトしないことを表す<code>#f</code>のいずれかです。
+ブロックが解除された時に、必ずしも条件が満たされているとは限らないので、
+次に挙げる例(SRFI-18のドキュメントより引用)のように、
+呼び出したスレッドは<var>mutex</var>のロックを再獲得して条件を検査するべきです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let loop ()
+  (mutex-lock! m)
+  (if (condition-is-true?)
+      (begin
+        (do-something-when-condition-is-true)
+        (mutex-unlock! m))
+      (begin
+        (mutex-unlock! m cv)
+        (loop))))
+</pre></td></tr></tbody></table>
+
+<p><code>mutex-unlock!</code>の戻り値は、タイムアウトした場合に<code>#f</code>、
+それ以外の場合は<code>#t</code>となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mutex_002dlocker"></a><u>Function:</u> <b>mutex-locker</b><i> mutex</i></dt>
+<dt><a name="index-mutex_002dunlocker"></a><u>Function:</u> <b>mutex-unlocker</b><i> mutex</i></dt>
+<dd><p>それぞれ<code>(lambda () (mutex-lock! mutex))</code> と
+<code>(lambda () (mutex-unlock! mutex))</code> を返します。
+これらのクロージャは、各<var>mutex</var>につきひとつづつしか作られないため、
+タイトなループの中ではこれらの形のリテラルなラムダ式を使うよりも軽量です。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-with_002dlocking_002dmutex"></a><u>Function:</u> <b>with-locking-mutex</b><i> mutex thunk</i></dt>
+<dd><p><var>mutex</var>をロックして<var>thunk</var>を呼びます。次のように実装されています。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (with-locking-mutex mutex thunk)
+  (dynamic-wind
+   (mutex-locker mutex)
+   thunk
+   (mutex-unlocker mutex)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00a4_0089_00e6_0095_00b0"></a>
+<h4 class="subsubheading">条件変数</h4>
+
+<dl>
+<dt><a name="index-_003ccondition_002dvariable_003e"></a><u>Builtin Class:</u> <b>&lt;condition-variable&gt;</b></dt>
+<dd><a name="index-condition_002dvariable"></a>
+<p>条件変数は、ある条件が真になるのを待っているスレッドの集合を保持します。
+あるスレッドがその条件を変更する時、<code>condition-variable-signal!</code>あるいは
+<code>condition-variable-broadcast!</code>が呼ばれ、それは1つ以上の待機中の
+スレッドのブロックを解除するため、それらのスレッドは条件が満足するかどうか
+検査できます。
+</p>
+<p>条件変数オブジェクトは以下のスロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-name-9"></a><u>Instance Variable of &lt;condition-variable&gt;:</u> <b>name</b></dt>
+<dd><p>条件変数の名前。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-specific-2"></a><u>Instance Variable of &lt;condition-variable&gt;:</u> <b>specific</b></dt>
+<dd><p>アプリケーションが任意のデータを保持できるスロット。
+</p></dd></dl>
+
+<p>SRFI-18は、pthreadの<code>pthread_cond_wait</code>に相当する手続きを
+持たないことに注意してください。条件変数を待つのは、
+<code>mutex-unlock!</code>の省略可能引数に条件変数を渡し、
+その後mutexを再び<code>mutex-lock!</code>で得ることで行います。
+この設計は柔軟性のためです。詳しくはSRFI-18を参照して下さい。
+</p>
+<p>このような、pthreadで条件変数を使う定石は：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">while (some_condition != TRUE) {
+  pthread_cond_wait(condition_variable, mutex);
+}
+</pre></td></tr></tbody></table>
+<p>SRFI-18では次のようなコードになります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let loop ()
+  (unless some-condition
+    (mutex-unlock! mutex condition-variable)
+    (mutex-lock! mutex)
+    (loop)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dvariable_003f"></a><u>Function:</u> <b>condition-variable?</b><i> obj</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>obj</var>が条件変数なら<code>#t</code>、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dcondition_002dvariable"></a><u>Function:</u> <b>make-condition-variable</b><i> :optional name</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+新しい条件変数を返します。オプショナル引数<var>name</var>で
+その名前を与えることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dvariable_002dname"></a><u>Function:</u> <b>condition-variable-name</b><i> cv</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+条件変数の名前を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dvariable_002dspecific"></a><u>Function:</u> <b>condition-variable-specific</b><i> cv</i></dt>
+<dt><a name="index-condition_002dvariable_002dspecific_002dset_0021"></a><u>Function:</u> <b>condition-variable-specific-set!</b><i> cv value</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+条件変数の固有の値を取得/セットします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dvariable_002dsignal_0021"></a><u>Function:</u> <b>condition-variable-signal!</b><i> cv</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>cv</var>で待機しているスレッドがある場合は、それらのうちの1つがスケジューラに
+より選択され、実行可能にされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dvariable_002dbroadcast_0021"></a><u>Function:</u> <b>condition-variable-broadcast!</b><i> cv</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<var>cv</var>で待機している全てのスレッドのブロックを解除します。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00a2_00e3_0083_0088_00e3_0083_00a0"></a>
+<h4 class="subsubheading">アトム</h4>
+
+<p>An atom is a convenient wrapper to make operations on a
+given set of objects thread-safe.  Instead of defining
+thread-safe counterparts of every structure, you can easily
+wrap an existing data structures to make it thread-safe.
+</p>
+<dl>
+<dt><a name="index-atom"></a><u>Function:</u> <b>atom</b><i> val …</i></dt>
+<dd><p>Creates and returns an atom object with <var>val</var> … as the
+initial values.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-atom_003f"></a><u>Function:</u> <b>atom?</b><i> obj</i></dt>
+<dd><p>Returns <code>#t</code> iff <var>obj</var> is an atom.
+</p></dd></dl>
+
+<p>The following procedures can be used to <em>atomically</em>
+access and update the content of an atom.   They commonly
+takes optional <var>timeout</var> and <var>timeout-val</var> arguments,
+both are defaulted to <code>#f</code>, which causes those procedures
+to block until they acquire a lock.
+</p>
+<p>Those arguments can be used to modify the behavior when
+the lock cannot be acquired in timely manner.
+<var>timeout</var> may be a <code>&lt;time&gt;</code> object (See section <a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>)
+to specify an absolute point of time, or a real number
+to specify the relative time in seconds.  If timeout is
+expired, those procedures give up acquiring the lock,
+and the value given to <var>timeout-val</var> is returned.
+</p>
+<dl>
+<dt><a name="index-atom_002dref"></a><u>Function:</u> <b>atom-ref</b><i> atom :optional index timeout timeout-val</i></dt>
+<dd><p>Returns <var>index</var>-th value of <var>atom</var>.
+See above for <var>timeout</var> and <var>timeout-val</var> arguments.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a (atom 'a 'b))
+
+(atom-ref a 0) ⇒ a
+(atom-ref a 1) ⇒ b
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-atomic"></a><u>Function:</u> <b>atomic</b><i> atom proc :optional timeout timeout-val</i></dt>
+<dd><p>Calls <var>proc</var> with the current values in <var>atom</var>,
+while locking <var>atom</var>.  <var>proc</var> must take
+as many arguments as the number of values <var>atom</var> has.
+</p>
+<p>The returned value(s) of <var>proc</var> is the result of
+<code>atomic</code>, unless timeout occurs.
+See above for <var>timeout</var> and <var>timeout-val</var> arguments.
+</p>
+<p>For example, the <code>ref/count</code> procedure
+in the following example counts the number of times
+the hashtable is referenced in thread-safe way.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a (atom (make-hash-table 'eq?) (list 0)))
+
+(define (ref/count a key)
+  (atomic a
+   (lambda (ht count-cell)
+     (inc! (car count-cell))
+     (hash-table-get h key))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-atomic_002dupdate_0021"></a><u>Function:</u> <b>atomic-update!</b><i> atom proc :optional timeout timeout-val</i></dt>
+<dd><p>Calls <var>proc</var> with the current values in <var>atom</var>
+while locking <var>atom</var>, and updates the values in <var>atom</var>
+by the returned values from <var>proc</var>.
+<var>proc</var> must take as many arguments as the number of
+values <var>atom</var> has, and must return the same number of
+values.
+</p>
+<p>The returned value(s) of <var>proc</var> is the result of
+<code>atomic</code>, unless timeout occurs.
+See above for <var>timeout</var> and <var>timeout-val</var> arguments.
+</p>
+<p>The following example shows a thread-safe counter.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a (atom 0))
+
+(atomic-update! a (cut + 1 &lt;&gt;))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<p>Note: The term <em>atom</em> in historical Lisps
+meant objects that are not a cons cell (pair).  Back then
+cons cells were the only aggregated datatype and there were
+few other datatypes (numbers and symbols), so having a
+complementary term to cells made sense.
+</p>
+<p>Although it still appears in introductory Lisp tutorials,
+modern Lisps, including Scheme, has so many datatypes and it makes
+little sense to have a specific term for non-aggregate types.
+</p>
+<p>Clojure adopted the term <em>atom</em> for thread-safe (atomic)
+primitive data, and we followed it.
+</p>
+<p>Note: The constructor of atom is not <code>make-atom</code>
+but <code>atom</code>, following the convention of <code>list</code>/<code>make-list</code>,
+<code>vector</code>/<code>make-vector</code>, and <code>string</code>/<code>make-string</code>;
+that is, the name without <code>make-</code> takes its elements as
+variable number of arguments.
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_104.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096-1"></a>
+<h3 class="subsection">9.29.4 スレッド例外</h3>
+
+<p>例外のいくつかのタイプは、スレッド関連の手続きから投げられます。
+これらの例外は、Gaucheの例外メカニズム(<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096">例外</a>参照)により
+扱われます。
+</p>
+<dl>
+<dt><a name="index-_003cthread_002dexception_003e"></a><u>Builtin Class:</u> <b>&lt;thread-exception&gt;</b></dt>
+<dd><a name="index-thread_002dexception"></a>
+<p>スレッド関連の例外の基底クラスです。<code>&lt;exception&gt;</code>クラスを継承しています。
+スロットを1つ持っています。
+</p>
+<dl>
+<dt><a name="index-thread-1"></a><u>Instance Variable of &lt;thread-exception&gt;:</u> <b>thread</b></dt>
+<dd><p>この例外を投げたスレッド。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cjoin_002dtimeout_002dexception_003e"></a><u>Builtin Class:</u> <b>&lt;join-timeout-exception&gt;</b></dt>
+<dd><a name="index-join_002dtimeout_002dexception"></a>
+<p>待機していたスレッドが戻る前にタイムアウトに達した時に<code>thread-join!</code>によって
+投げられる例外。<code>&lt;thread-exception&gt;</code>を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cabandoned_002dmutex_002dexception_003e"></a><u>Builtin Class:</u> <b>&lt;abandoned-mutex-exception&gt;</b></dt>
+<dd><a name="index-abandoned_002dmutex_002dexception"></a>
+<p>ロックされる<var>mutex</var>が、unlocked/abandoned(ロックされておらず、放棄された状態)
+であるときに<code>mutex-lock!</code>により投げられる例外。
+<code>&lt;thread-exception&gt;</code>を継承しています。スロットを1つ持ちます。
+</p>
+<dl>
+<dt><a name="index-mutex-1"></a><u>Instance Variable of &lt;abandoned-mutex-exception&gt;:</u> <b>mutex</b></dt>
+<dd><p>この例外の原因となったmutex。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cterminated_002dthread_002dexception_003e"></a><u>Builtin Class:</u> <b>&lt;terminated-thread-exception&gt;</b></dt>
+<dd><a name="index-terminated_002dthread_002dexception"></a>
+<p>待機していたスレッドが(<code>thread-terminate!</code>により)異常終了した
+場合に(<code>thread-join!</code>により)投げられる例外。
+<code>&lt;thread-exception&gt;</code>を継承し、スロットを1つ持ちます。
+</p>
+<dl>
+<dt><a name="index-terminator"></a><u>Instance Variable of &lt;terminated-thread-exception&gt;:</u> <b>terminator</b></dt>
+<dd><p>この例外の原因となったスレッドを終了したスレッド。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cuncaught_002dexception_003e"></a><u>Builtin Class:</u> <b>&lt;uncaught-exception&gt;</b></dt>
+<dd><a name="index-uncaught_002dexception"></a>
+<p>待機していたスレッドが捕捉されない例外により終了された場合に
+<code>thread-join!</code>により投げられる例外。
+<code>&lt;thread-exception&gt;</code>を継承し、スロットを1つ持ちます。
+</p>
+<dl>
+<dt><a name="index-reason"></a><u>Instance Variable of &lt;uncaught-exception&gt;:</u> <b>reason</b></dt>
+<dd><p>そのスレッドの終了の原因となった例外。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-join_002dtimeout_002dexception_003f"></a><u>Function:</u> <b>join-timeout-exception?</b><i> obj</i></dt>
+<dt><a name="index-abandoned_002dmutex_002dexception_003f"></a><u>Function:</u> <b>abandoned-mutex-exception?</b><i> obj</i></dt>
+<dt><a name="index-terminated_002dthread_002dexception_003f"></a><u>Function:</u> <b>terminated-thread-exception?</b><i> obj</i></dt>
+<dt><a name="index-uncaught_002dexception_003f"></a><u>Function:</u> <b>uncaught-exception?</b><i> obj</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+これらの手続きは、<var>obj</var>が特定のタイプの例外かどうかを検査します。
+SRFI-18との互換性のために提供されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-uncaught_002dexception_002dreason"></a><u>Function:</u> <b>uncaught-exception-reason</b><i> exc</i></dt>
+<dd><p>[SRFI-18]、[SRFI-21]
+<code>&lt;uncaught-exception&gt;</code>オブジェクトの<code>reason</code>スロットの値を
+返します。
+SRFI-18との互換性のために提供されています。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_104.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

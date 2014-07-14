@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.1 srfi-0 - 機能条件式</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.1 srfi-0 - 機能条件式">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.1 srfi-0 - 機能条件式">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_110.html#List-library" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d0-_002d-_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"></a>
+<h2 class="section">10.1 <code>srfi-0</code> - 機能条件式</h2>
+
+<dl>
+<dt><a name="index-srfi_002d0"></a><u>Module:</u> <b>srfi-0</b></dt>
+<dd><a name="index-srfi_002d0-1"></a>
+<p>このモジュールは SRFI-0 の <code>cond-expand</code> マクロ形式を提供します。
+現在、このモジュールは <code>cond-expand</code> を使用したときに、自動的に
+ロードされますので、明示的に <code>(use srfi-0)</code> を書く必要はありません。
+ポータブルなプログラムにするには、’use’ 形式を使わない方が良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cond_002dexpand"></a><u>Macro:</u> <b>cond-expand</b><i> (feature-requirement command-or-definition …) …</i></dt>
+<dd><p>[SRFI-0]
+Gauche が <var>feature-requirement</var> をサポートしていれば、このマクロは
+<var>command-or-definition</var> … を展開します。
+異るScheme の実装による機能の差異を吸収するのに使えると言えるでしょう。
+</p>
+<p><var>feature-requiremnt</var> は以下のような構文でなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>feature-requirement</var>
+  : <var>feature-identifier</var>
+  | (and <var>feature-requirement</var> …)
+  | (or  <var>feature-requirement</var> …)
+  | (not <var>feature-requirement</var>)
+</pre></td></tr></tbody></table>
+
+<p><var>feature-identifier</var> は機能を示すシンボルです。ある機能が Gauche で
+サポートされているなら、それは、<var>feature-requirement</var> を満たします。
+より複雑な条件を構成するために、<var>feature-requirement</var> のブール代数による
+組み合わせを用いることが出来ます。
+</p>
+<p>このマクロは <var>feature-requirement</var> を順にテストし、そのひとつが
+満たされたら、対応する <var>command-or-definition</var> … に展開されます。
+</p>
+<p>最後の節は、<var>feature-requirement</var> ではなく、<code>else</code> で始めることも
+できます。これ以前に満たされた条件がない場合には、このマクロは else 節の
+<var>command-or-definition</var> に展開されます。もし、else 節がなく、
+満たされる条件節がひとつもなければ、エラーが発生します。
+</p>
+<p>現時点の Gauche では、サポートされている SRFI の機能は、srfi 名
+(たとえば、<code>srfi-1</code>)で識別されます(サポートされている SRFI に
+ついては <a indepth="true" href="gauche-refj_5.html#g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0">標準への準拠</a> を参照してください)。
+また、シンボル <code>gauche</code> も <var>feature-identifier</var> として認識されます。
+</p>
+<p>srfi-13 (文字列ライブラリ)を必要とするプログラムを書いているとしましょう。
+Gauche では、標準的には、以下のようにします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use srfi-13)
+
+;; ... あなたのプログラム ...
+</pre></td></tr></tbody></table>
+
+<p>しかし、この ’use’ マクロは Gauche 専用で、他の Scheme の実装では
+動作しません。代りに以下のように書くことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+  (srfi-13
+    ;; ... あなたのプログラム ...
+  ))
+</pre></td></tr></tbody></table>
+
+<p>その実装が <code>srfi-13</code> をサポートしていれば、この形式は「あなたの
+プログラム」に展開されます。Gauche では、この場合に
+内部で<code>(use srfi-13)</code>を呼び出します。
+</p>
+<p>上記のフォームは実装がsrfi-13をサポートしていなければエラーとなります。
+そのような実装の上でもプログラムを走らせたい時は、
+代替となるライブラリ定義を提供すると良いでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ (srfi-13
+   ;; ... あなたのプログラム ...
+ )
+ (else
+   (load "my-srfi-13-implementation")
+   ;; ... あなたのプログラム ...
+ ))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_110.html#List-library" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

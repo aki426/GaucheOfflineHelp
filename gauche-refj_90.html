@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.16 gauche.mop.validator - Validator付きスロット</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.16 gauche.mop.validator - Validator付きスロット">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.16 gauche.mop.validator - Validator付きスロット">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_90.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Validator_00e4_00bb_0098_00e3_0081_008d_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_89.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_0088_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_91.html#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002emop_002evalidator-_002d-Validator_00e4_00bb_0098_00e3_0081_008d_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088"></a>
+<h2 class="section">9.16 <code>gauche.mop.validator</code> - Validator付きスロット</h2>
+
+<dl>
+<dt><a name="index-gauche_002emop_002evalidator"></a><u>Module:</u> <b>gauche.mop.validator</b></dt>
+<dd><a name="index-gauche_002emop_002evalidator-1"></a>
+<p><code>:validator</code>および<code>:observer</code>
+スロットオプションを追加するメタクラスを提供するモジュールです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cvalidator_002dmeta_003e"></a><u>Class:</u> <b>&lt;validator-meta&gt;</b></dt>
+<dd><a name="index-validator_002dmeta"></a>
+<p>このメタクラスは、スロットの値がセットされる前後に呼ばれるコールバックを
+指定する機能を提供します。例えば、あるスロットに常に文字列のみが
+セットされているようにしたい場合、そのスロットに、<code>slot-ref</code>経由であれ
+アクセサメソッド経由であれ値がセットされようとした時に指定の手続きが呼ばれるように
+し、その手続きの中で、値が文字列でなかったらエラーとするか、強制的に値を
+文字列に変換してしまうことができます。その手続きが返した値が実際にスロットに
+セットされます。
+</p>
+<p>スロットに値がセットされる前に呼ばれる<em>validator</em>手続きは、
+<code>:validator</code>スロットオプションによって指定できます。
+手続きは、インスタンスとセットされようとしている値の二つを引数に取ります。
+その手続きが返した値が実際にスロットにセットされる値となります。
+</p>
+<p>スロットに値がセットされた後に呼ばれる<em>observer</em>手続きは
+<code>:observer</code>スロットオプションによって指定できます。
+手続きは、インスタンスとセットされた値の二つを引数に取ります。
+戻り値は捨てられます。
+</p>
+<p>下の例を参照して下さい。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;v&gt; ()
+  ((a :accessor a-of
+      :validator (lambda (obj value) (x-&gt;string value)))
+   (b :accessor b-of
+      :validator (lambda (obj value)
+                   (if (integer? value)
+                       value
+                       (error "integer required for slot b")))))
+  :metaclass &lt;validator-meta&gt;)
+
+(define v (make &lt;v&gt;))
+(slot-set! v 'a 'foo)
+(slot-ref v 'a) ⇒ "foo"
+
+(set! (a-of v) 1234)
+(a-of v) ⇒ "1234"
+
+(slot-set! v 'b 55)
+(slot-ref v 'b) ⇒ 55
+
+(slot-set! v 'b 3.4) ⇒ <span class="roman">error</span>
+(set! (b-of v) 3.4)  ⇒ <span class="roman">error</span>
+</pre></td></tr></tbody></table>
+
+<p><code>:validator</code> が指定されたスロットにも、<code>:init-value</code>等を
+使って既定の初期値を指定しておくことができます。
+その場合、インスタンスの初期化ルーチンは、
+init-keywordによる初期値指定が無ければ既定の初期値を引数としてvalidator手続きを
+呼び出します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;v&gt; ()
+  ((a :initform 'foo :init-keyword :a
+      :validator (lambda (obj value) (x-&gt;string value)))))
+
+(slot-ref (make &lt;v&gt;) 'a)        ⇒ "foo"
+(slot-ref (make &lt;v&gt; :a 555) 'a) ⇒ "555"
+</pre></td></tr></tbody></table>
+
+<p>仮想スロットに似ていますが、validatorを持つスロットはインスタンス内に実際に
+値を格納している点が異なります。
+</p>
+<p>このモジュールはまた、スロットのアクセスをメタオブジェクトプロトコルを使って
+カスタマイズする例でもあります。この機能は20行ほどのコードで実現されています。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_89.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_0088_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_91.html#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

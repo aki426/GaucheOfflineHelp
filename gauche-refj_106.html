@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.32 gauche.version - バージョン番号の比較</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.32 gauche.version - バージョン番号の比較">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.32 gauche.version - バージョン番号の比較">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00a7_00e3_0083_00b3_00e7_0095_00aa_00e5_008f_00b7_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_107.html#g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002eversion-_002d-_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00a7_00e3_0083_00b3_00e7_0095_00aa_00e5_008f_00b7_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083"></a>
+<h2 class="section">9.32 <code>gauche.version</code> - バージョン番号の比較</h2>
+
+<dl>
+<dt><a name="index-gauche_002eversion"></a><u>Module:</u> <b>gauche.version</b></dt>
+<dd><a name="index-gauche_002eversion-1"></a>
+<p>このモジュールは、バージョン番号(リリース番号)を比較する便利な手続きを提供します。
+ここでのバージョン番号とはソフトウェアのリリースにつけられる
+"<code>0.5.1</code>"、"<code>3.2-3</code>"、"<code>8.2pl1</code>"といった文字列で、
+通常これらの番号間には順序関係が定義できます。
+例えば "1.2.3" は "1.2" より新しいが "2.1" より古い、といった具合です。
+以下のようにこれらの文字列の順序を比較することができるようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(version&lt;? "2.2.3" "2.2.11")     ⇒ #t
+(version&lt;? "2.3.1" "2.3")        ⇒ #f
+(version&lt;? "2.3.1-1" "2.3.1-10") ⇒ #t
+(version&lt;? "13a" "5b")           ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>バージョン番号の付け方には特に標準というものはありませんが、
+よく使われている方法を採用しました。全ての場合に使えるとはいきませんが、
+大抵の場合はカバーできるのではないかと思います。
+</p>
+<p>厳密に言えば、分岐などの場合があるのでバージョン番号間の関係は半順序関係にしかなりません。
+このモジュールでは単純な定義を使って、全順序関係があるものとして扱います。
+</p>
+<p>まず、ここでのバージョン番号は以下の構文に従うものとします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> &lt;version&gt; : &lt;principal-release&gt;
+           | &lt;version&gt; &lt;post-subrelease&gt;
+           | &lt;version&gt; &lt;pre-subrelease&gt;
+ &lt;principal-release&gt; : &lt;relnum&gt;
+ &lt;post-subrelease&gt;   : [.-] &lt;relnum&gt;
+ &lt;pre-subrelease&gt;    : _ &lt;relnum&gt;
+ &lt;relnum&gt;            : [0-9A-Za-z]+
+</pre></td></tr></tbody></table>
+
+<p>通常<code>&lt;relnum&gt;</code>は数字部分と、それに続く省略可能な拡張部分とからなります。
+例えば "<code>23a</code>" は数字部分23と拡張部分"<code>a</code>"からなります。
+もし<code>&lt;relnum&gt;</code>が数字で始まらない場合、その数字部分は-1であると考えることにします。
+</p>
+<p><code>&lt;relnum&gt;</code>の順序関係を次のように定義します。
+</p><ol>
+<li>
+relnum Aとrelnum Bが異なる数字部分を持っている場合、拡張部分を無視して
+数字部分を数値として比較します。例："<code>3b</code>" &lt; "<code>4a</code>"。
+</li><li>
+relnum Aとrelnum Bの数字部分が等しい場合、拡張部分を辞書順に比較します。
+例："<code>4c</code>" &lt; "<code>4d</code>"、"<code>5</code>" &lt; "<code>5a</code>"。
+</li></ol>
+
+<p><code>&lt;relnum&gt;</code>間の順序が定義できたところで、バージョン番号の順序を次のように定義します。
+</p><ol>
+<li>
+各々のバージョン番号を分解して <code>&lt;principal-release&gt;</code> とそれに続く
+サブリリース部品のリストに入れる。このリストの各要素のことを「リリース部品」
+と呼びます。
+</li><li>
+もし両方のリストの最初のリリース部品が同じなら、それを両方のリストから
+取り除きます。これをリストの先頭が異るまでくりかえします。
+</li><li>
+そうすると次のような場合に分られます。
+<ol>
+<li>
+両方のリストが空： バージョンは同じ。
+</li><li>
+一方のリスト (A) が空で、他方のリスト (B) の先頭がポストサブリリース：
+A が B より前のバージョン。
+</li><li>
+一方のリスト (A) が空で、他方のリスト (B) の先頭がプリサブリリース：
+B が A より前のバージョン
+</li><li>
+リスト A の先頭がポストサブリリースで、リスト B の先頭がプリサブリリース：
+B が A より前のバージョン
+</li><li>
+両方のリストとも先頭がポストサブリリースであるかプリサブリリース：
+relnum を比較する。
+</li></ol>
+</li></ol>
+
+<p>以下はいくつかの例です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">"1" &lt; "1.0" &lt; "1.1" &lt; "1.1.1" &lt; "1.1.2" &lt; "1.2" &lt; "1.11"
+"1.2.3" &lt; "1.2.3-1" &lt; "1.2.4"
+"1.2.3" &lt; "1.2.3a" &lt; "1.2.3b"
+"1.2_rc0" &lt; "1.2_rc1" &lt; "1.2" &lt; "1.2-pl1" &lt; "1.2-pl2"
+"1.1-patch112" &lt; "1.2_alpha"
+</pre></td></tr></tbody></table>
+
+<p><code>&lt;pre-subrelease&gt;</code> があるのは、「リリース候補」あるいは
+「プリリリース」のバージョンをつかえるようにするためです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-version_003d_003f"></a><u>Function:</u> <b>version=?</b><i> ver1 ver2</i></dt>
+<dt><a name="index-version_003c_003f"></a><u>Function:</u> <b>version&lt;?</b><i> ver1 ver2</i></dt>
+<dt><a name="index-version_003c_003d_003f"></a><u>Function:</u> <b>version&lt;=?</b><i> ver1 ver2</i></dt>
+<dt><a name="index-version_003e_003f"></a><u>Function:</u> <b>version&gt;?</b><i> ver1 ver2</i></dt>
+<dt><a name="index-version_003e_003d_003f"></a><u>Function:</u> <b>version&gt;=?</b><i> ver1 ver2</i></dt>
+<dd><p>ふたつのバージョン番号文字列 <var>ver1</var> と <var>ver2</var> の順序関係によって
+真偽値を返します。もし引数が、バージョン番号を定義するのに不正な文字列を
+含んでいたばあい、エラーが上ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-version_002dcompare"></a><u>Function:</u> <b>version-compare</b><i> ver1 ver2</i></dt>
+<dd><p>ふたつのバージョン番号文字列 <var>ver1</var> と <var>ver2</var> を比較し、
+<var>ver1</var> のほうが <var>ver2</var> より前、<var>ver1</var> と <var>ver2</var> は同じ、
+<var>ver1</var> が <var>ver2</var> の後、の3つの場合によって、それぞれ、
+-1、0、1 を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relnum_002dcompare"></a><u>Function:</u> <b>relnum-compare</b><i> rel1 rel2</i></dt>
+<dd><p>これは <code>version-compare</code>の下位レベルの手続きです。
+ふたつのリリース番号 (relnum) <var>rel1</var> と <var>rel2</var> を比較し、
+<var>rel1</var> が <var>rel2</var> より前、<var>rel1</var> と <var>rel2</var> が同じ、
+<var>rel1</var> が <var>rel2</var> より後、の3つの場合によって、それぞれ、
+-1、0、1 を返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_107.html#g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

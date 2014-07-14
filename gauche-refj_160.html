@@ -1,0 +1,948 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.34 sxml.ssax - 関数的なXMLパーザ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.34 sxml.ssax - 関数的なXMLパーザ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.34 sxml.ssax - 関数的なXMLパーザ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_159.html#SLIB_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SSAX_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="sxml_002essax-_002d-_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6"></a>
+<h2 class="section">11.34 <code>sxml.ssax</code> - 関数的なXMLパーザ</h2>
+
+<dl>
+<dt><a name="index-sxml_002essax"></a><u>Module:</u> <b>sxml.ssax</b></dt>
+<dd><a name="index-sxml_002essax-1"></a>
+<p><code>sxml.*</code>モジュールは、XML構造のS式表現に基づく
+Oleg KiselyovのSXMLフレームワーク(<a indepth="true" href="gauche-refj_189.html#ssax">SSAX</a>参照)の適合です。
+</p>
+<p>SSAXは、SXMLフレームワークのパーザ部分です。以下は、
+SSAXのウェブページからの引用です。
+</p>
+<blockquote><p>SSAXは関数的なXMLパージングフレームワークで、DOM/SXMLパーザ、SAXパーザ、
+字句解析・構文解析手続きのサポートライブラリから構成されます。
+パッケージ内の手続きは、XML文書の様々な部分をトークナイズ、あるいは
+パーズするために独立して使うことができます。
+このフレームワークは、XML名前空間、文字、内部および外部解析済み実体、
+属性値の正規化、処理命令とCDATAセクションをサポートしています。
+パッケージは、ある程度の妥当性検査を行うSXMLパーザ: SAXパーザの
+インスタンスであるDOMモードのパーザ(SSAXと呼ばれます)を含んでいます。
+</p></blockquote>
+
+<p>現在のバージョンは、SXMLツールセットの最新の’公式な’リリース(4.9)よりも
+新しい、SSAXのCVSバージョンをベースにしており、パッケージSXML-gauche-0.9は、
+SXML-4.9をベースにしています。
+SXMLのリリース4.9以降では、重要な変更があります。
+現在のAPIでは、大文字の接頭辞<code>SSAX:</code>の代わりに小文字の<code>ssax:</code>を
+使います。Gaucheはデフォルトで文字の大小を区別するために、この違いは
+問題となります。
+後方互換性のためにエイリアスされた名前が定義されていますが、
+大文字の接頭辞付きの名前の使用は推奨されません。
+</p></dd></dl>
+
+<p>マニュアルのこのパートの内容はSSAXのソースコードから抽出されたもので、
+単にそのコメントをTexinfoのフォーマットに変換しただけです。
+オリジナルのテキストは、Oleg Kiselyovによるものです。
+変換により生じた誤字・誤植やフォーマットエラーの責任は、
+Shiro Kawaiにあります。
+</p>
+<p>このマニュアルのエントリは、低レベルの構造から高レベルのユーティリティへと
+“ボトムアップ”の方法で並べられています。
+もし、あなたが単にXMLドキュメントをパーズしたりSXMLを得たいだけならば、
+<a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6-_002d-XML_00e3_0081_008b_00e3_0082_0089SXML_00e3_0081_00b8">SSAXの高レベルのパーザ - XMLからSXMLへ</a>の<code>ssax:xml-&gt;sxml</code>を
+チェックして下さい。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#SSAX_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097">11.34.1 SSAXデータタイプ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SSAX_00e3_0081_00ae_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089">11.34.2 SSAXの低レベルパージングコード</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6_00e3_0081_00a8_00e3_0082_00b9_00e3_0082_00ad_00e3_0083_00a3_00e3_0083_008a">11.34.3 SSAXの高レベルのパーザとスキャナ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6-_002d-XML_00e3_0081_008b_00e3_0082_0089SXML_00e3_0081_00b8">11.34.4 SSAXの高レベルのパーザ - XMLからSXMLへ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="SSAX_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SSAX_00e3_0081_00ae_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SSAX_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097-1"></a>
+<h3 class="subsection">11.34.1 SSAXデータタイプ</h3>
+
+<dl compact="compact">
+<dt> <em>TAG-KIND</em></dt>
+<dd><p>シンボル’<code>START</code>、’<code>END</code>、’<code>PI</code>、’<code>DECL</code>、’<code>COMMENT</code>、
+’<code>CDSECT</code>は、マークアップトークンを識別するものです。
+</p></dd>
+<dt> <em>UNRES-NAME</em></dt>
+<dd><p>XML文書で、マークアップトークン: 開始タグ、<code>PI</code>ターゲット、属性名に
+与えられる名前(XML勧告では<code>GI</code>と呼ばれます)です。
+<code>GI</code>が<code>NCName</code>である場合、<var>UNRES-NAME</var>はこの<code>NCName</code>が
+Schemeのシンボルに変換されたものになります。
+<code>GI</code>が<code>QName</code>ならば、<var>UNRES-NAME</var>は、シンボルのペア、
+(<var>PREFIX</var> . <var>LOCALPART</var>)となります。
+</p></dd>
+<dt> <em>RES-NAME</em></dt>
+<dd><p>展開された名前、つまり<var>UNRES-NAME</var>の解決されたバージョンです。
+名前空間URIが空でない場合の要素や属性名では、<var>RES-NAME</var>はシンボルのペア、
+(<var>URI-SYMB</var> . <var>LOCALPART</var>)です。そうでない場合は、1つのシンボルです。
+</p></dd>
+<dt> <em>ELEM-CONTENT-MODEL</em></dt>
+<dd><p>以下のシンボルのうちの1つです。
+</p><table>
+<tbody><tr><td width="30%"><code>ANY</code></td><td width="70%">何でもよく、ENDタグがあるもの。</td></tr>
+<tr><td width="30%"><code>EMPTY-TAG</code></td><td width="70%">内容がなく、ENDタグのないもの。</td></tr>
+<tr><td width="30%"><code>EMPTY</code></td><td width="70%">内容がなく、次のトークンがENDタグであるもの。</td></tr>
+<tr><td width="30%"><code>PCDATA</code></td><td width="70%">文字データのみで、子要素がないもの。</td></tr>
+<tr><td width="30%"><code>MIXED</code></td><td width="70%"></td></tr>
+<tr><td width="30%"><code>ELEM-CONTENT</code></td><td width="70%"></td></tr>
+</tbody></table>
+</dd>
+<dt> <em>URI-SYMB</em></dt>
+<dd><p>名前空間を表すシンボル、あるいはURIを表すためにユーザが選んだ他のシンボルです。
+前者の場合、<var>URI-SYMB</var>は不正なURI文字が<code>%</code>でクォートされた
+文字列をシンボルに変換したものです。
+</p></dd>
+<dt> <em>NAMESPACES</em></dt>
+<dd><p>効力を持つ名前空間を表すリストです。リストの要素は、以下のフォームのうちの1つです。
+</p>
+<dl compact="compact">
+<dt> <code>(<var>prefix</var> <var>uri-symb</var> . <var>uri-symb</var>)</code></dt>
+<dd><p>あるいは、
+</p></dd>
+<dt> <code>(<var>prefix</var> <var>user-prefix</var> . <var>uri-symb</var>)</code></dt>
+<dd><p><var>user-prefix</var>は、そのURIを表現するためにユーザにより選ばれたシンボル。
+</p></dd>
+<dt> <code>(#f <var>user-prefix</var> . <var>uri-symb</var>)</code></dt>
+<dd><p>ユーザが選んだプリフィックスと<var>uri-symbol</var>の指定。
+</p></dd>
+<dt> <code>(*DEFAULT* <var>user-prefix</var> . <var>uri-symb</var>)</code></dt>
+<dd><p>デフォルト名前空間の宣言。
+</p></dd>
+<dt> <code>(*DEFAULT* #f . #f)</code></dt>
+<dd><p>デフォルト名前空間を宣言しない。この記法は、それ以前の宣言を上書き
+することを表す。
+</p></dd>
+</dl>
+
+<p><var>NAMESPACES</var>のリストは、同じ<var>PREFIX</var>についていくつかの要素を含むかも
+しれません。リストの先頭に近いものが効力を持ちます。
+</p>
+</dd>
+<dt> <em>ATTLIST</em></dt>
+<dd><p>ペア(<var>NAME</var> . <var>VALUE</var>)の順序付きのコレクションで、<var>NAME</var>は
+<var>RES-NAME</var>か<var>UNRES-NAME</var>です。このコレクションはADTです。
+</p></dd>
+<dt> <em>STR-HANDLER</em></dt>
+<dd><p>3引数の手続き <code>(<var>string1</var> <var>string2</var> <var>seed</var>)</code>で、
+新しい<var>seed</var>を返します。
+この手続きは、文字データ<var>string2</var>が後に続く、文字データ<var>string1</var>を
+扱うものです。<var>string2</var>は、“\n”や“”のような短い文字列です。
+</p></dd>
+<dt> <em>ENTITIES</em></dt>
+<dd><p>ペア (<var>named-entity-name</var> . <var>named-entity-body</var>)の連想リストで、
+<var>named-entity-name</var>はその実体が宣言されたシンボル、
+<var>named-entity-body</var>は文字列か、(外部実体の場合は)
+(そこから実体が読み込める)入力ポートを返す手続きです。
+<var>named-entity-body</var>はまた、<code>#f</code>かも知れません。
+これは、<var>named-entity-name</var>がその時点で展開されていることを
+示します。
+この<var>named-entity-name</var>への参照は、WFC非再帰違反としてエラーに
+なります。
+</p></dd>
+<dt> <em>XML-TOKEN</em></dt>
+<dd><p><var>kind</var>と<var>token</var>という2つのスロットを持つレコードです。
+このレコードは、XML勧告によれば、「開始タグ、終了タグ、空要素タグ、
+実体参照、文字参照、コメント、CDATAセクションの区切り、
+文書型宣言、処理命令の形を取る」マークアップを表します。
+</p><dl compact="compact">
+<dt> <var>kind</var></dt>
+<dd><p><var>TAG-KIND</var>。
+</p></dd>
+<dt> <var>head</var></dt>
+<dd><p><var>UNRES-NAME</var>。’<code>COMMENT</code>と’<code>CDSECT</code>というkindのXMLトークンでは、
+そのheadは<code>#f</code>になります。
+</p></dd>
+</dl>
+
+<p>例を示します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;P&gt;  =&gt; kind='START, head='P
+&lt;/P&gt; =&gt; kind='END, head='P
+&lt;BR/&gt; =&gt; kind='EMPTY-EL, head='BR
+&lt;!DOCTYPE OMF ...&gt; =&gt; kind='DECL, head='DOCTYPE
+&lt;?xml version="1.0"?&gt; =&gt; kind='PI, head='xml
+&amp;my-ent; =&gt; kind = 'ENTITY-REF, head='my-ent
+</pre></td></tr></tbody></table>
+<p>文字参照は、対応する文字へと透過的に解決されるので、XMLトークンとしては
+表現されません。
+</p></dd>
+<dt> <em>XML-DECL</em></dt>
+<dd><p><var>elems</var>、<var>entities</var>、<var>notations</var>という3つのスロットを持つレコードです。
+</p>
+<p>このレコードは、XML文書のデータタイプを表現します。それは、
+宣言された要素とその属性のリスト、宣言された記法、
+解析済み一般実体の置換文字列やロードされる手続きのリストなどです。
+通常、xml-declレコードは、それを作るには他にたくさんの方法
+(例えばファイルからロードするなど)があるにも関わらず、DTDかXML Schemaから
+作られます。
+</p>
+<p><var>elems</var>: decl-elemか<code>#f</code>の(連想)リスト。後者は、パーザに、
+要素と属性の妥当性検査を行わないように指示します。
+</p>
+<p><var>decl-elem</var>: 1つの要素の宣言:
+<code>(<var>elem-name</var> <var>elem-content</var> <var>decl-attrs</var>)</code>;
+<var>elem-name</var>はその要素の<var>UNRES-NAME</var>。
+<var>elem-content</var>は<var>ELEM-CONTENT-MODEL</var>。
+<var>decl-attrs</var>は<var>ATTLIST</var>か、<code>(<var>attr-name</var> . <var>value</var>)</code>の
+連想リスト。
+この要素は、要素のパージングを扱うユーザ手続きを宣言できます。
+(例えば、カスタムな妥当性検査を行ったり、タグに出会うたびに
+IDのハッシュを構築するなど。)
+</p>
+<p><var>decl-attr</var>: <var>ATTLIST</var>の要素で、1つの属性
+<code>(<var>attr-name</var> <var>content-type</var> <var>use-type</var> <var>default-value</var>)</code>
+の宣言:
+<var>attr-name</var>はその宣言された属性の<var>UNRES-NAME</var>、
+<var>content-type</var>はシンボル<code>CDATA</code>、<var>NMTOKEN</var>、<var>NMTOKENS</var>、
+あるいは列挙されたタイプの文字列のリスト。
+<var>use-type</var>はシンボル<code>REQUIRED</code>、<code>IMPLIED</code>、<code>FIXED</code>。
+default-valueは、デフォルト値としての文字列か、与えられなければ<code>#f</code>。
+</p></dd>
+</dl>
+
+<dl>
+<dt><a name="index-make_002dempty_002dattlist"></a><u>Function:</u> <b>make-empty-attlist</b></dt>
+<dt><a name="index-attlist_002dadd"></a><u>Function:</u> <b>attlist-add</b><i> attlist name-value</i></dt>
+<dt><a name="index-attlist_002dnull_003f"></a><u>Function:</u> <b>attlist-null?</b></dt>
+<dt><a name="index-attlist_002dremove_002dtop"></a><u>Function:</u> <b>attlist-remove-top</b><i> attlist</i></dt>
+<dt><a name="index-attlist_002d_003ealist"></a><u>Function:</u> <b>attlist-&gt;alist</b><i> attlist</i></dt>
+<dt><a name="index-attlist_002dfold"></a><u>Function:</u> <b>attlist-fold</b></dt>
+<dd><p>名前-値の属性リストを扱うユーティリティ手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dxml_002dtoken"></a><u>Function:</u> <b>make-xml-token</b><i> kind head</i></dt>
+<dt><a name="index-xml_002dtoken_003f"></a><u>Function:</u> <b>xml-token?</b><i> token</i></dt>
+<dd><p><var>XML-TOKEN</var>レコードのコンストラクタと述語です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-xml_002dtoken_002dkind"></a><u>Macro:</u> <b>xml-token-kind</b><i> token</i></dt>
+<dt><a name="index-xml_002dtoken_002dhead"></a><u>Macro:</u> <b>xml-token-head</b><i> token</i></dt>
+<dd><p><var>XML-TOKEN</var>レコードのアクセッサマクロです。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SSAX_00e3_0081_00ae_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SSAX_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6_00e3_0081_00a8_00e3_0082_00b9_00e3_0082_00ad_00e3_0083_00a3_00e3_0083_008a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SSAX_00e3_0081_00ae_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089-1"></a>
+<h3 class="subsection">11.34.2 SSAXの低レベルパージングコード</h3>
+
+<p>これらは、プリミティブな字句解析ユニット(名前、空白、タグ)や、
+より一般的な断片を扱います。
+これらのパーザのほとんどは、適切なコンテキストで呼ばれなければなりません。
+例えば、<code>ssax:complete-start-tag</code>は、開始タグが検知されその<code>GI</code>が
+読み込まれたときにのみ呼ばれなければなりません。
+</p>
+<dl>
+<dt><a name="index-ssax_003askip_002dS"></a><u>Function:</u> <b>ssax:skip-S</b><i> port</i></dt>
+<dd><p>次のように定義されるS(空白)をスキップします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [3] S ::= (#x20 | #x9 | #xD | #xA)
+</pre></td></tr></tbody></table>
+<p>この手続きは、<var>port</var>のスキャン中に遭遇した最初の空白ではない文字を
+返します。この文字は、入力ストリームに残されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003ancname_002dstarting_002dchar_003f"></a><u>Function:</u> <b>ssax:ncname-starting-char?</b><i> a-char</i></dt>
+<dd><p><code>NCName</code>がa-charで始まるかどうかを検査します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dNCName"></a><u>Function:</u> <b>ssax:read-NCName</b><i> port</i></dt>
+<dd><p><var>port</var>で現在の位置から始まる<code>NCName</code>を読み込み、それをシンボルとして
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dQName"></a><u>Function:</u> <b>ssax:read-QName</b><i> port</i></dt>
+<dd><p>(名前空間)完全修飾名、<code>QName</code>を<var>port</var>の現在の位置から読み込みます。
+</p>
+<p>REC-xml-namesは、
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [6] QName ::= (Prefix ':')? LocalPart
+ [7] Prefix ::= NCName
+ [8] LocalPart ::= NCName
+</pre></td></tr></tbody></table>
+
+<p>戻り値は、<var>UNRES-NAME</var>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aPrefix_002dXML"></a><u>Variable:</u> <b>ssax:Prefix-XML</b></dt>
+<dd><p>定義済みのXML名前空間の接頭辞、つまり、’<code>xml</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dmarkup_002dtoken"></a><u>Function:</u> <b>ssax:read-markup-token</b><i> port</i></dt>
+<dd><p>この手続きは、マークアップトークンのパージングを開始します。
+ストリームの現在の位置は、<code>#\&lt;</code>でなければなりません。
+この手続きは、見ているマークアップトークンがどの種類のものか見当を
+つけるに十分な程度、入力ストリームをスキャンします。
+この手続きは、そのトークンを表現するxml-token構造を返します。
+通常、その時点のマークアップの読み込みは完了していないことに注意して下さい。
+特に、開始タグトークンの属性はスキャンされていません。
+</p>
+<p>特定の値が返されたときの戻り値と<var>port</var>での位置を詳細に説明します。
+</p><dl compact="compact">
+<dt> <code>PI-token</code></dt>
+<dd><p><code>PI</code>ターゲットのみが読み込まれました。
+処理命令の読み込みを完了してそれを無視するためには、<code>ssax:skip-pi</code>を呼びます。
+(<code>PI</code>の内容が、属性-値のペアの場合は、)<code>ssax:read-attributes</code>も
+便利です。
+</p></dd>
+<dt> <code>END-token</code></dt>
+<dd><p>終了タグが完全に読み込まれました。
+現在の位置は、終了の<code>#\&gt;</code>文字の直後です。
+</p></dd>
+<dt> <code>COMMENT</code></dt>
+<dd><p>コメントが完全に読み込まれスキップされました。
+現在の位置は、コメントが終了する“<code>--&gt;</code>”の直後です。
+</p></dd>
+<dt> <code>CDSECT</code></dt>
+<dd><p>現在の位置は、"<code>&lt;!CDATA[</code>"の直後です。
+残りを読むためには、<code>ssax:read-cdata-body</code>を使います。
+</p></dd>
+<dt> <code>DECL</code></dt>
+<dd><p>この宣言マークアップを識別するキーワード(“<code>&lt;!</code>”に続くもの)を
+読み込んだところです。現在の位置は、(通常は空白文字である)
+そのキーワードの直後です。
+</p></dd>
+<dt> <code>START-token</code></dt>
+<dd><p>この開始タグのキーワード(<code>GI</code>)を読み込んだところです。
+属性はまだスキャンされていません。
+また、このタグが空の要素を持つかどうかも分かりません。
+このトークンのパージングを終了するためには、
+<code>ssax:complete-start-tag</code>を使います。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003askip_002dpi"></a><u>Function:</u> <b>ssax:skip-pi</b><i> port</i></dt>
+<dd><p>現在の位置は、<code>PI</code>の内側です。
+<code>PI</code>の残りをスキップします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dpi_002dbody_002das_002dstring"></a><u>Function:</u> <b>ssax:read-pi-body-as-string</b><i> port</i></dt>
+<dd><p>現在の位置は、<code>PITarget</code>を読み込んだ直後です。
+<code>PI</code>のボディを読み込んで、それを文字列として返します。
+ポートでは、<code>PI</code>を終了する’<code>?&gt;</code>’の直後の文字を指します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [16] PI ::= '&lt;?' PITarget (S (Char* - (Char* '?&gt;' Char*)))? '?&gt;'
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003askip_002dinternal_002ddtd"></a><u>Function:</u> <b>ssax:skip-internal-dtd</b><i> port</i></dt>
+<dd><p>ポートでの現在の位置は、内部DTDサブセットの内側です
+(例えば、内部DTDサブセットの始まりである<code>#\[ </code>を読み込んだところ)。
+このDTDを終了する、組み合わせとなる“<code>]&gt;</code>”までをスキップします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dcdata_002dbody"></a><u>Function:</u> <b>ssax:read-cdata-body</b><i> port str-handler seed</i></dt>
+<dd><p>この手続きは、<code>CDATA</code>セクションを開始する文字列、"<code>&lt;![CDATA[</code>"を
+読み込んだ後に呼ばれなければなりません。
+現在の位置は、<code>CDATA</code>のボディの最初の位置です。
+この手続きは、<code>CDATA</code>のボディの<em>データ</em>を読み込み、それらを
+<var>STR-HANDLER</var>(文字データのコンシューマ)へ渡します。
+</p>
+<p>str-handlerは、<code>string1</code> <var>string2</var> <var>seed</var>を取る手続き
+<var>STR-HANDLER</var>です。
+<var>STR-HANDLER</var>の最初の引数<var>string1</var>は、改行を含みません。
+2番目の引数<var>string2</var>は、改行を含むことがよくあります。
+<var>STR-HANDLER</var>の最初の呼び出しでは、seedは<code>ssax:read-cdata-body</code>の
+第3引数として渡されるものです。
+この最初の呼び出しの結果は、文字データのコンシューマの引数seedとして渡され、
+以降同じように続きます。
+<var>STR-HANDLER</var>の最後の呼び出しの結果は、<code>ssax:read-cdata-body</code>
+から返されるものです。
+基本的な’<code>fold</code>’イテレータに似ています。
+</p>
+<p><code>CDATA</code>セクションでは、以下の3つだけの例外を除いて、全ての文字は
+その表面上の値を持ちます。
+</p><ul>
+<li>
+<code>CR</code>、<code>LF</code>、<code>CRLF</code>は行区切りとして扱われ、<var>STR-HANDLER</var>へは
+1つの<code>#\newline</code>として渡されます。
+</li><li>
+組み合わせとなる“<code>]]&gt;</code>”は、<code>CDATA</code>セクションの終わりであると
+されます。
+</li><li>
+<code>&amp;gt;</code>は、<code>#\&gt;</code>文字の埋め込みとして扱われます。
+<code>&amp;lt;</code>と<code>&amp;amp;</code>は特別なものとして認識されない(よって展開されない)ことに
+注意が必要です!
+</li></ul>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dchar_002dref"></a><u>Function:</u> <b>ssax:read-char-ref</b><i> port</i></dt>
+<dd><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [66]  CharRef ::=  '&amp;#' [0-9]+ ';'
+                  | '&amp;#x' [0-9a-fA-F]+ ';'
+</pre></td></tr></tbody></table>
+<p>この手続きは、文字参照を表す“<code>&amp;#</code>”を読み込んだ後に呼ばれなければ
+なりません。
+この手続きは、この参照を読み込んで対応する文字を返します。
+<var>port</var>での現在の位置は、文字参照の終わりとなる“<code>;</code>”の後と
+なります。
+<code>WFC: XML-Spec.html#wf-Legalchar</code>も参照のこと。
+</p>
+<p>XML勧告のセクション“4.1 文字と実体参照”によると、
+</p><blockquote><p>“[定義: 文字参照は、ISO/IEC 10646文字セットにある特定の文字を参照する。
+例えば、利用できる入力デバイスからは直接アクセスできないものなど。]”
+</p></blockquote>
+<p>したがって、入力ストリームの現在の文字エンコーディングに<em>関係なく</em>、
+文字コードを文字に変換するために関数<code>ucscode-&gt;char</code>を使います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003ahandle_002dparsed_002dentity"></a><u>Function:</u> <b>ssax:handle-parsed-entity</b><i> port name entities content-handler str-handler seed</i></dt>
+<dd><p>解析済み実体参照を展開し処理します。
+</p><ul>
+<li>
+<var>port</var> - ポート
+</li><li>
+<var>name</var> - 展開する解析済み実体の名前。シンボル。
+</li><li>
+<var>entities</var> - <var>ENTITIES</var>を参照。
+</li><li>
+<var>content-handler</var> - <var>port</var> <var>entities</var> <var>seed</var>を取る手続きで、
+<var>seed</var>を返す。
+</li><li>
+<var>str-handler</var> - <var>STR-HANDLER</var>。対象となる実体が宣言済み実体となった
+場合に呼ばれる。
+</li></ul>
+<p>戻り値は、<var>content-handler</var>か<var>str-handler</var>から返された値です。
+</p>
+<p>こちらも参照のこと。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  WFC: XML-Spec.html#wf-entdeclared
+  WFC: XML-Spec.html#norecursion
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dattributes"></a><u>Function:</u> <b>ssax:read-attributes</b><i> port entities</i></dt>
+<dd><p>この手続きは、<code>Attribute*</code>を読み込みパーズします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [41] Attribute ::= Name Eq AttValue
+ [10] AttValue ::=  '"' ([^&lt;&amp;"] | Reference)* '"'
+                 | "'" ([^&lt;&amp;'] | Reference)* "'"
+ [25] Eq ::= S? '=' S?
+</pre></td></tr></tbody></table>
+<p>この手続きは、<var>Name</var>(<var>UNRES-NAME</var>)と<var>Value</var>(文字列)のペアである
+<var>ATTLIST</var>を返します。
+<var>port</var>での現在の文字は、NCNameの開始文字ではなく、空白ではない文字です。
+</p>
+<p>’AttValue’を読み込むときには、以下のルールに留意して下さい。
+“属性の値がアプリケーションに渡されるか妥当性が検査される前に、
+XMLプロセッサはそれを以下のように正規化しなければならない:
+</p><ul>
+<li>
+文字参照は、属性値に参照された文字を追加することで処理される。
+</li><li>
+実体参照は、その実体のテキストの置換を再帰的に行うことにより
+処理される。[<var>ENTITIES</var>参照] [名前付きのエンティティ、amp lt gt
+quot aposは定義済みと想定される]
+</li><li>
+空白文字(<code>#x20</code>、<code>#xD</code>、<code>#xA</code>、<code>#x9</code>)は、
+外部解析済み実体か内部解析済み実体のリテラルの実体の値の一部である
+“<code>#xD#xA</code>”のシーケンスにただ1つの<code>#x20</code>が追加されることを
+除いて、正規化された値に<code>#x20</code>を追加することで処理される。
+</li><li>
+他の文字は、正規化された値をそれらに追加することにより処理される”
+</li></ul>
+
+<p>こちらも参照のこと。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> WFC: XML-Spec.html#CleanAttrVals
+ WFC: XML-Spec.html#uniqattspec
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aresolve_002dname"></a><u>Function:</u> <b>ssax:resolve-name</b><i> port unres-name namespaces apply-default-ns?</i></dt>
+<dd><p>与えられた適切な<var>namespaces</var>の宣言を用いて、<var>unres-name</var>を
+<var>res-name</var>に変換する。
+最後の引数<var>apply-default-ns?</var>は、デフォルト名前空間の適用を行うか
+どうかを決めます(例えば、属性名には適用しないなど)。
+</p>
+<p><code>REC-xml-names/#nsc-NSDeclared</code>によれば、接頭辞“xml”は
+名前空間名“<a href="http://www.w3.org/XML/1998/namespace">http://www.w3.org/XML/1998/namespace</a>”に定義済みで束縛されていると
+されます。
+</p>
+<p>この手続きは、名前空間の制約をテストします:
+<a href="http://www.w3.org/TR/REC-xml-names/#nsc-NSDeclared">http://www.w3.org/TR/REC-xml-names/#nsc-NSDeclared</a>。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003auri_002dstring_002d_003esymbol"></a><u>Function:</u> <b>ssax:uri-string-&gt;symbol</b><i> uri-str</i></dt>
+<dd><p><var>uri-str</var>を適切なシンボルに変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003acomplete_002dstart_002dtag"></a><u>Function:</u> <b>ssax:complete-start-tag</b><i> tag port elems entities namespaces</i></dt>
+<dd><p>この手続きは、開始タグのマークアップのパージングを完了するためのものです。
+この手続きは、開始タグトークンが読み込まれた後に呼ばれなければなりません。
+<var>tag</var>は<var>UNRES-NAME</var>です。
+<var>elems</var>は<code>xml-decl::elems</code>のインスタンスで、
+手続きに、要素とそれらの属性の妥当性検査を<em>行わない</em>ように
+指示するために、<code>#f</code>を指定することができます。
+</p>
+<p>この手続きはいくつかの値を返します。
+</p><dl compact="compact">
+<dt> <var>elem-gi</var></dt>
+<dd><p><var>RES-NAME</var>。
+</p></dd>
+<dt> <var>attributes</var></dt>
+<dd><p>要素の属性。<code>(<var>res-name</var> . <var>string</var>)</code>というペアの<var>ATTLIST</var>。
+このリストは、<code>xmlns</code>属性を<em>含みません</em>。
+</p></dd>
+<dt> <var>namespaces</var></dt>
+<dd><p>パージング中の開始タグに含まれる名前空間(再)宣言により修正された後の
+名前空間の入力リスト。
+</p></dd>
+</dl>
+
+<p>終了時の<var>port</var>での現在の位置は、開始タグのマークアップを終了する
+<code>#\&gt;</code>の後になります。
+</p>
+<p>こちらも参照のこと。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> VC: XML-Spec.html#enum
+ VC: XML-Spec.html#RequiredAttr
+ VC: XML-Spec.html#FixedAttr
+ VC: XML-Spec.html#ValueType
+ WFC: XML-Spec.html#uniqattspec (after namespaces prefixes are resolved)
+ VC: XML-Spec.html#elementvalid
+ WFC: REC-xml-names/#dt-NSName
+</pre></td></tr></tbody></table>
+
+<p>XML勧告では明示されていませんが、<var>xmlns</var>と<var>xmlns:</var>属性は、
+(そのデフォルト値を指定するために宣言されることが出来ますが)
+宣言される必要がないことに注意して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dexternal_002did"></a><u>Function:</u> <b>ssax:read-external-id</b><i> port</i></dt>
+<dd><p>この手続きは、<code>ExternalID</code>をパーズします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [75] ExternalID ::= 'SYSTEM' S SystemLiteral
+                 | 'PUBLIC' S PubidLiteral S SystemLiteral
+ [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
+ [12] PubidLiteral ::=  '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
+ [13] PubidChar ::=  #x20 | #xD | #xA | [a-zA-Z0-9]
+                | [-'()+,./:=?;!*#@$_%]
+</pre></td></tr></tbody></table>
+<p>この手続きは、<code>ExternalID</code>が期待されるところで呼ばれます。
+つまり、現在の文字は、それぞれ<code>SYSTEM</code>か<code>PUBLIC</code>トークンを開始する
+<code>#\S</code>か<code>#\P</code>でなければなりません。
+この手続きは、<code>SystemLiteral</code>を文字列として返します。
+<code>PubidLiteral</code>は、存在したとしても無視されます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6_00e3_0081_00a8_00e3_0082_00b9_00e3_0082_00ad_00e3_0083_00a3_00e3_0083_008a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SSAX_00e3_0081_00ae_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6-_002d-XML_00e3_0081_008b_00e3_0082_0089SXML_00e3_0081_00b8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6_00e3_0081_00a8_00e3_0082_00b9_00e3_0082_00ad_00e3_0083_00a3_00e3_0083_008a-1"></a>
+<h3 class="subsection">11.34.3 SSAXの高レベルのパーザとスキャナ</h3>
+
+<p>これらは、全体的な実体(ドキュメント)あるいはその高レベルな断片
+(プロローグ、ルート要素など)をパーズします。
+</p>
+<dl>
+<dt><a name="index-ssax_003ascan_002dMisc"></a><u>Function:</u> <b>ssax:scan-Misc</b><i> port</i></dt>
+<dd><p>そのコンテキストでの<code>Misc</code>をスキャンします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">[1]  document ::=  prolog element Misc*
+[22] prolog ::= XMLDecl? Misc* (doctypedec l Misc*)?
+[27] Misc ::= Comment | PI |  S
+</pre></td></tr></tbody></table>
+<p>以下の関数は、プロローグかエピローグのコンテキストで呼ばれます。
+これらのコンテキストでは、空白文字は完全に無視されます。
+<code>ssax:scan-Misc</code>からの戻り値は、<code>PI</code>トークンか<code>DECL</code>トークン、
+<code>START</code>トークン、EOFのいずれかです。
+コメントは無視され報告されません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aread_002dchar_002ddata"></a><u>Function:</u> <b>ssax:read-char-data</b><i> port expect-eof? str-handler seed</i></dt>
+<dd><p>この手続きは、XML文書かXML要素の文字内容を読むためのものです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [43] content ::=
+        (element | CharData | Reference | CDSect | PI
+         | Comment)*
+</pre></td></tr></tbody></table>
+<p>具体的には、この手続きは<code>CharData</code>を読み込み、<code>CDSect</code>と
+文字実体を展開し、コメントをスキップします。
+この手続きは、名前付き参照、EOF、<code>PI</code>あるいは開始/終了タグの開始地点で
+停止します。
+</p>
+<dl compact="compact">
+<dt> <var>port</var></dt>
+<dd><p>読み込むポート。
+</p></dd>
+<dt> <var>expect-eof?</var></dt>
+<dd><p>EOFがノーマルかどうか、つまり、文字データがEOFで終わるかどうかを
+表す真偽値。解析済み実体を処理している間はEOFはノーマル。
+</p></dd>
+<dt> <var>str-handler</var></dt>
+<dd><p><var>STR-HANDLER</var>。
+</p></dd>
+<dt> <var>seed</var></dt>
+<dd><p><var>STR-HANDLER</var>の最初の呼び出し時に渡される引数。
+</p></dd>
+</dl>
+
+<p>この手続きは2つの結果、<var>seed</var>と<var>token</var>を返します。
+</p>
+<p><var>seed</var>は<var>str-handler</var>の最後の呼び出しの結果、あるいは
+<var>str-handler</var>が一度も呼ばれなかった場合はオリジナルのseedです。
+</p>
+<p><var>token</var>はEOFオブジェクト(これは<var>expect-eof?</var>が<code>#t</code>の場合のみ)か、
+</p><ul>
+<li>
+<var>START</var>タグか<var>END</var>タグを表すxml-token。
+開始トークンの場合は、呼び出し側が読み込みを完了する必要がある。
+</li><li>
+<code>PI</code>の開始を表すxml-token。
+この<code>PI</code>の残りを読み込むかスキップするかはアプリケーションに
+任される。
+</li><li>
+名前付き実体参照を表すxml-token。
+</li></ul>
+
+<p><code>CDATA</code>セクションと文字参照はインラインで展開され返されません。
+コメントは無視されます。
+</p>
+<p>XML勧告が要求するように、文字データ中の全ての空白文字は保存されなければなりません。
+しかし、<code>CR</code>文字(<code>#xD</code>)は、<code>LF</code>文字(<code>#A</code>)の前に現れるか
+<code>#xA</code>文字で置き換えられた場合は、無視されなければなりません。
+XML勧告のセクション2.10と2.11を参照して下さい。
+また、正規のXML勧告も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003aassert_002dtoken"></a><u>Function:</u> <b>ssax:assert-token</b><i> token kind gi error-cont</i></dt>
+<dd><p><var>token</var>が、予想された<var>kind</var>のもので、予想された<var>gi</var>を
+持つことを確認します。<var>gi</var>引数は、実際には2つのシンボル、
+名前空間URIかその接頭辞と、そのローカル名のペアでしょう。
+アサーションが失敗したら、<var>error-cont</var>に3つの引数、<var>token</var> <var>kind</var> <var>gi</var>
+を渡されて評価されます。
+<var>error-cont</var>の結果が返されます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6-_002d-XML_00e3_0081_008b_00e3_0082_0089SXML_00e3_0081_00b8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6_00e3_0081_00a8_00e3_0082_00b9_00e3_0082_00ad_00e3_0083_00a3_00e3_0083_008a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_161.html#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6-_002d-XML_00e3_0081_008b_00e3_0082_0089SXML_00e3_0081_00b8-1"></a>
+<h3 class="subsection">11.34.4 SSAXの高レベルのパーザ - XMLからSXMLへ</h3>
+
+<p>これらのパーザは、SSAXパーザをインスタンス化するための構文的フォームのセットです。
+ユーザは、完全な妥当性検査、妥当性検査なし、特定の妥当性検査を行うために
+このパーザをインスタンス化できます。
+ユーザは、どの<code>PI</code>について通知されたいかを指定します。
+ユーザは、解析済み文字と要素のデータで何をしたいかを知らせます。
+後者のハンドラは、パージングがSAXやDOMモデルに従うかを決定します。
+</p>
+<dl>
+<dt><a name="index-ssax_003amake_002dpi_002dparser"></a><u>Macro:</u> <b>ssax:make-pi-parser</b><i> my-pi-handlers</i></dt>
+<dd><p>1つの処理命令(<code>PI</code>)をパーズして処理するパーザを作ります。
+</p>
+<p><var>my-pi-handlers</var>:
+(<var>PI-TAG</var> . <var>PI-HANDLER</var>)のペアの連想リスト。
+<var>PI-TAG</var>は<var>NCName</var>のシンボル、<code>PI</code>ターゲット。
+<var>PI-HANDLER</var>は<var>port</var> <var>pi-tag</var> <var>seed</var>を引数とする手続きで、
+<var>port</var>では<code>PI</code>ターゲットの後の最初のシンボルを指しています。
+ハンドラは、<code>PI</code>を終了する組み合わせとなる’<code>?&gt;</code>’を含む、
+<code>PI</code>の残りを読み込みます。ハンドラは新しいseedを返します。
+<var>PI-TAG</var>の1つは、シンボル<code>*DEFAULT*</code>でしょう。
+これに対応するハンドラは、他のハンドラが扱わない<code>PI</code>を処理します。
+<code>*DEFAULT*</code> <var>PI-TAG</var>が指定されていない場合は、
+<code>ssax:make-pi-parser</code>は、<code>PI</code>のボディをスキップするパーザを
+作ります。
+</p>
+<p><code>ssax:make-pi-parser</code>が返すのは、<var>port</var> <var>pi-tag</var> <var>seed</var>を
+取る手続きで、ユーザ指定のハンドラに従い現在の<code>PI</code>をパーズします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003amake_002delem_002dparser"></a><u>Macro:</u> <b>ssax:make-elem-parser</b><i> my-new-level-seed my-finish-element my-char-data-handler my-pi-handlers</i></dt>
+<dd><p>その文字内容や子要素をも含む１つの要素をパーズし処理するパーザを作ります。
+このパーザは通常、ドキュメントのルート要素の適用されます。
+</p>
+<dl compact="compact">
+<dt> <var>my-new-level-seed</var></dt>
+<dd><p><var>elem-gi</var> <var>attributes</var> <var>namespaces</var> <var>expected-content</var> <var>seed</var> <br>
+を引数に取る手続きで、<var>elem-gi</var>は処理されようとしている要素の<var>RES-NAME</var>です。
+この手続きは、要素の内容を処理するハンドラに渡されるseedを生成します。
+</p>
+</dd>
+<dt> <var>my-finish-element</var></dt>
+<dd><p><var>elem-gi</var> <var>attributes</var> <var>namespaces</var> <var>parent-seed</var> <var>seed</var> <br>
+を引数に取る手続きです。この手続きは、<var>elem-gi</var>のパージングが完了した時に
+呼ばれます。
+<var>seed</var>は、最後に呼ばれたパーザからの(あるいは、
+要素が空要素であった場合は、<var>my-new-level-seed</var>からの)結果です。
+<var>parent-seed</var>は、<var>my-new-level-seed</var>へ渡されたのと同じseedです。
+この手続きは、パーザの結果となるseedを生成するためのものです。
+</p>
+</dd>
+<dt> <var>my-char-data-handler</var></dt>
+<dd><p><var>STR-HANDLER</var>。
+</p>
+</dd>
+<dt> <var>my-pi-handlers</var></dt>
+<dd><p><code>ssax:make-pi-handler</code>を参照して下さい。
+</p></dd>
+</dl>
+
+<p>生成されたパーザは:
+<var>start-tag-head</var> <var>port</var> <var>elems</var> <var>entities</var> <var>namespaces</var>
+<var>preserve-ws?</var> <var>seed</var> <br>
+を引数に取る手続きです。
+この手続きは、開始タグのトークンが読み込まれた後に呼ばれなければなりません。
+<var>start-tag-head</var>は要素の開始タグの<var>UNRES-NAME</var>です。
+<var>elems</var>は<code>xml-decl::elems</code>のインスタンスです。
+<code>ssax:complete-start-tag::preserve-ws?</code>も参照して下さい。
+</p>
+<p>こちらも参照のこと。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> VC: XML-Spec.html#elementvalid
+ WFC: XML-Spec.html#GIMatch
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003amake_002dparser"></a><u>Macro:</u> <b>ssax:make-parser</b><i> user-handler-tag user-handler-proc ...</i></dt>
+<dd><p>XMLパージングフレームワークのインスタンスである、XMLパーザを作ります。
+これは、提供されるユーザハンドラによって、SAX、DOM、あるいは特化された
+パーザになります。
+</p>
+<p><var>user-handler-tag</var>はシンボルで、タグに続く手続き的な式を識別します。
+以下にタグと対応する手続きのシグネチャを示します。
+全てのタグが指定される必要はありません。
+いくつかが省略されると、合理的なデフォルトのものが適用されます。
+</p>
+<dl compact="compact">
+<dt> <code>tag: <var>DOCTYPE</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <var>port</var> <var>docname</var> <var>systemid</var> <var>internal-subset?</var> <var>seed</var>
+</p>
+<p><var>internal-subset?</var>が<code>#t</code>なら、ポートでの現在の位置は内部DTDサブセットの
+開始となる<code>#\[</code>を読んだ直後です。
+手続きから戻る前に、このサブセットの残りの読み込みを完了しなければなりません
+(あるいは、それを読むことに興味がなければ、skip-internal-subsetを呼ばなければなりません)。
+終了時のポートでの位置は、DOCTYPE宣言全体のあとの最初のシンボルでなければなりません。
+</p>
+<p>ハンドラ手続きは4つの値: <br>
+<var>elems</var> <var>entities</var> <var>namespaces</var> <var>seed</var> <br>
+を生成しなければなりません。
+<var>elems</var>については、<code>xml-decl::elems</code>を参照して下さい。
+妥当性検査をオフにするためには、<code>#f</code>になるでしょう。
+<var>namespaces</var>は、通常、選択された<var>URI-SYMB</var>に対して<var>USER-PREFIX</var>を含む
+でしょう。
+デフォルトのハンドラ手続きは、内部サブセットがあってもそれをスキップし、
+<code>(values #f '() '() seed)</code>を返します。
+</p>
+</dd>
+<dt> <code>tag: <var>UNDECL-ROOT</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <var>elem-gi</var> <var>seed</var> <br>
+<var>elem-gi</var>はルート要素の<var>UNRES-NAME</var>です。
+この手続きは、パージング中のXML文書が<code>DOCTYPE</code>宣言を<em>含まない</em>時に
+呼ばれます。
+ハンドラ手続きは、上ではDOCTYPEハンドラですが、4つの値: <br>
+<var>elems</var> <var>entities</var> <var>namespaces</var> <var>seed</var><br>
+を生成しなければなりません。
+デフォルトのハンドラ手続きは、<code>(values #f '() '() seed)</code>を返します。
+</p>
+</dd>
+<dt> <code>tag: <var>DECL-ROOT</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <var>elem-gi</var> <var>seed</var> <br>
+<var>elem-gi</var>は、ルート要素の<var>UNRES-NAME</var>です。
+この手続きは、パージング中のXML文書が<code>DOCTYPE</code>宣言を含む場合に呼ばれます。
+このハンドラ手続きは、新しい<code>seed</code>を生成しなければなりません
+(そして、ハンドラが望めば、ルート要素の名前がDOCTYPEにマッチするかを
+検証します)。
+デフォルトのハンドラ手続きは、それ自身を返す手続きです。
+</p>
+</dd>
+<dt> <code>tag: <var>NEW-LEVEL-SEED</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <code>ssax:make-elem-parser</code>と<var>my-new-level-seed</var>を参照して下さい。
+</p>
+</dd>
+<dt> <code>tag: <var>FINISH-ELEMENT</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <code>ssax:make-elem-parser</code>と<var>my-finish-element</var>を参照して下さい。
+</p>
+</dd>
+<dt> <code>tag: <var>CHAR-DATA-HANDLER</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <code>ssax:make-elem-parser</code>と<var>my-char-data-handler</var>を参照して下さい。
+</p>
+</dd>
+<dt> <code>tag: <var>PI</var></code></dt>
+<dd><p>ハンドラ手続きの引数: <code>ssax:make-pi-parser</code>を参照して下さい。<br>
+デフォルトの値は、<code>'()</code>です。
+</p></dd>
+</dl>
+
+<p>生成されるパーザは、<br>
+<var>PORT</var> <var>SEED</var>を取る手続き、<br>
+です。
+</p>
+<p>この手続きは、ドキュメントのプロローグをパーズして、
+その残りを処理するために(ssax:make-elem-parserで作られた)パーザへ
+引き継いで終了します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> [1]  document ::=  prolog element Misc*
+ [22] prolog ::= XMLDecl? Misc* (doctypedec | Misc*)?
+ [27] Misc ::= Comment | PI |  S
+
+ [28] doctypedecl ::=  '&lt;!DOCTYPE' S Name (S ExternalID)? S?
+                        ('[' (markupdecl | PEReference | S)* ']' S?)? '&gt;'
+ [29] markupdecl ::= elementdecl | AttlistDecl
+                      | EntityDecl
+                      | NotationDecl | PI
+                      | Comment
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>いくつかの便利なユーティリティ手続きがあります。
+</p>
+<dl>
+<dt><a name="index-ssax_003areverse_002dcollect_002dstr"></a><u>Function:</u> <b>ssax:reverse-collect-str</b><i> fragments</i></dt>
+<dd><p><var>fragments</var>(そのいくつかはテキスト文字列)のリストを渡すと、
+そのリストを逆順にして隣り合ったテキスト文字列を連結します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003areverse_002dcollect_002dstr_002ddrop_002dws"></a><u>Function:</u> <b>ssax:reverse-collect-str-drop-ws</b><i> fragments</i></dt>
+<dd><p>fragments(そのいくつかはテキスト文字列)のリストを渡すと、
+そのリストを逆順にして隣り合ったテキスト文字列を連結します。
+“重要でない”空白文字、つまり、最初や最後、要素の間にある空白文字を
+削除します。文字データに含まれる空白文字には影響を与えません。
+この手続きは、パーズされたSXMLにある“重要でない”空白文字を
+“知的に”削除するために使います。空白文字に関して、厳密に
+XML勧告に準拠したい場合は、代わりに手続き
+<code>ssax:reverse-collect-str</code>を使って下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ssax_003axml_002d_003esxml"></a><u>Function:</u> <b>ssax:xml-&gt;sxml</b><i> port namespace-prefix-assig</i></dt>
+<dd><p>これは、上のSSAXパーザのインスタンスで、<var>port</var>から読み込まれる
+XMLドキュメントのSXML表現を返します。
+<var>namespace-prefix-assig</var>は、<code>(<var>USER-PREFIX</var> . <var>URI-STRING</var>)</code>
+のリストで、特定の<var>URI-STRING</var>で識別されるある名前空間を
+<var>USER-PREFIX</var>に割り当てます。これは空リストでも構いません。
+この手続きは、SXMLツリーを返します。
+ポートでの位置は、ルート要素の後の最初の文字を指します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6_00e3_0081_00a8_00e3_0082_00b9_00e3_0082_00ad_00e3_0083_00a3_00e3_0083_008a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_161.html#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

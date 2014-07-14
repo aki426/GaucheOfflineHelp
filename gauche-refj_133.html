@@ -1,0 +1,627 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.7 dbi - データベース非依存アクセス層</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.7 dbi - データベース非依存アクセス層">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.7 dbi - データベース非依存アクセス層">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_132.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4-1"></a>
+<h2 class="section">11.7 <code>dbi</code> - データベース非依存アクセス層</h2>
+
+<dl>
+<dt><a name="index-dbi"></a><u>Module:</u> <b>dbi</b></dt>
+<dd><a name="index-dbi-1"></a>
+<p>このモジュールはさまざまなリレーショナルデータベースシステム(RDBMS)に
+アクセスするための統一されたインタフェースを提供します。個々のデータベー
+スシステムに特有の操作についてはデータベースドライバ(DBD)モジュールに
+パッケージされています。DBDのモジュールは通常暗黙裏にDBIの層からロード
+されます。
+</p>
+<p>このモジュールは Perl の DBI/DBD アーキテクチャに強く影響を受けていま
+す。Perl DBIを使った経験があるなら、このモジュールを使うのはたやすいで
+しょう。
+</p></dd></dl>
+
+<p>まず例を見るほうがよいでしょう。以下は<code>dbi</code>モジュールを使ったデー
+タベースアクセス例の概要です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use dbi)
+(use gauche.collection) ; to make 'map' work on the query result
+
+(guard (e ((&lt;dbi-error&gt; e)
+           ;; handle error
+           ))
+  (let* ((conn   (dbi-connect "dbi:mysql:test;host=dbhost"))
+         (query  (dbi-prepare conn
+                   "SELECT id, name FROM users WHERE department = ?"))
+         (result (dbi-execute query "R&amp;D"))
+         (getter (relation-accessor result)))
+    (map (lambda (row)
+           (list (getter row "id")
+                 (getter row "name")))
+         result)))
+</pre></td></tr></tbody></table>
+
+<p><code>dbi-connect</code>にわたす、<code>"dbi:mysql:test;host=dbhost"</code>引数以
+外は使用するデータベースシステムに依存する部分はありません。この引数に
+より、<code>dbi</code>モジュールはこのアクセスが<code>mysql</code>データベースに対
+するものであると判断します。そして、mysql-特有の手続を扱うようにします。
+別のデータベースシステムwhateverを使いたいのであれば、単に
+<code>"dbi:<var>whatever</var>:<var>parameter</var>"</code>を<code>dbi-connect</code>に渡せ
+ばよく、<code>dbd.whatever</code>がシステムにインストールされていれば同じよ
+うにできます。
+</p>
+<p>データベースに対するクエリは<code>dbi-prepare</code>を使って作成します。
+クエリの発行は<code>dbi-execute</code>で行います。このような2つのフェーズを
+使うことで、パラメータ化されたSQL文の一種であるプリペアドクエリを
+作ることができます。上の例ではクエリはSQL文の中で<code>'?'</code>で表現され
+ている部分に、ひとつの引数をわりあてます。実引数の値は
+<code>dbi-execute</code>で設定されます。類似のクエリを大量に発行するような場
+合にはプリペアドクエリをひとつ生成し、それにさまざまなパラメータを渡し
+て実行するとパフォーマンスがかせげます。このパラメータは自動的にクォー
+トされます。
+</p>
+<p>クエリが<code>SELECT</code>文の場合、その結果は関係プロトコルを実装するコレ
+クションとして返されます。詳細は<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>および
+<a indepth="true" href="gauche-refj_182.html#util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.relation</code> - リレーションフレームワーク</a>を見てください。
+</p>
+<p>いちばん外側にある<code>guard</code>はエラーを捕捉するためのものです。
+<code>dbi</code>に関連したエラーは<code>&lt;dbi-error&gt;</code>コンディションを継承して
+いるものと見なされます。いくつかの特有のエラーは<code>dbi</code>モジュールで
+定義されています。特定の<code>dbd</code>層はさらに固有のエラーを定義していま
+す。
+</p>
+<p>次節ではユーザレベルのAPIについて説明します。すなわち、<code>dbi</code>を使
+う際に必要となる手続に関する説明です。そのあとのセクションではドライバ
+APIを説明をします。すなわち特定の<code>dbd</code>ドライバを<code>dbi</code>フレー
+ムワークで使えるようにするために使うAPIの説明です。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API">11.7.1 DBIのユーザAPI</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#DBI_00e7_0094_00a8_00e3_0081_00ae_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0090_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">11.7.2 DBI用のドライバを書く</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#DBI_00e7_0094_00a8_00e3_0081_00ae_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0090_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API-1"></a>
+<h3 class="subsection">11.7.1 DBIのユーザAPI</h3>
+
+<a name="DBI_00e3_0081_00ae_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<h4 class="subsubheading">DBIのコンディション</h4>
+
+<p><code>dbi</code> API が投げる可能性のあるコンディションがいくつか定義されて
+います。コンディションの詳細については<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096">例外</a>を見てください。
+</p>
+<dl>
+<dt><a name="index-_003cdbi_002derror_003e"></a><u>Condition Type:</u> <b>&lt;dbi-error&gt;</b></dt>
+<dd><p><code>dbi</code>-関連のコンディションのベースクラス。<code>&lt;error&gt;</code>を継承し
+ています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cdbi_002dnonexistent_002ddriver_002derror_003e"></a><u>Condition Type:</u> <b>&lt;dbi-nonexistent-driver-error&gt;</b></dt>
+<dd><p><code>dbi-connect</code>は指定されたドライバが見つからない場合にこのコンディ
+ションを投げます。<code>&lt;dbi-error&gt;</code>を継承しています。
+</p>
+<dl>
+<dt><a name="index-driver_002dname"></a><u>Instance Variable of &lt;dbi-nonexistent-driver-error&gt;:</u> <b>driver-name</b></dt>
+<dd><p>要求されたドライバの名前を文字列として保持している。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cdbi_002dunsupported_002derror_003e"></a><u>Condition Type:</u> <b>&lt;dbi-unsupported-error&gt;</b></dt>
+<dd><p>呼び出されたメソッドが基盤となるドライバでサポートされていない場合、こ
+のコンディションが投げられます。<code>&lt;dbi-error&gt;</code>を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cdbi_002dparameter_002derror_003e"></a><u>Condition Type:</u> <b>&lt;dbi-parameter-error&gt;</b></dt>
+<dd><p>プリペアドクエリへ渡されたパラメータの数がプリペアドステートメントの中
+のものと一致しないとき、このコンディションが投げられます。
+</p></dd></dl>
+
+<p>上の3つのエラー以外に、<code>dbi</code>がプリペアドSQL文を構文解析するのにド
+ライバを利用す場合、不正なSQL文が<code>dbi-prepare</code>に渡されると、
+<code>&lt;sql-parse-error&gt;</code>が投げられます
+(<a indepth="true" href="gauche-refj_170.html#text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089"><code>text.sql</code> - SQLのパーズと構築</a>参照)。
+</p>
+<a name="g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0081_00b8_00e3_0081_00ae_00e6_008e_00a5_00e7_00b6_009a"></a>
+<h4 class="subsubheading">データベースへの接続</h4>
+
+<dl>
+<dt><a name="index-dbi_002dconnect"></a><u>Function:</u> <b>dbi-connect</b><i> dsn :key username password</i></dt>
+<dd><p><var>dsn</var>(データソース名)で指定されたデータソースを使ってデータベース
+に接続します。<var>dsn</var>は以下の構文をもつ文字列です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">dbi:<var>driver</var>:<var>options</var>
+</pre></td></tr></tbody></table>
+
+<p><var>driver</var>は特定のドライバ名です。対応するドライバモジュールがなけれ
+ばなりません。すなわち、<code>dbd.<var>driver</var></code>がシステムにインストー
+ルされていなければなりません。たとえば、<var>dsn</var>が<code>"dbi:mysql:"</code>
+ではじまるとすると、<code>dbi-connect</code>は<code>dbd.mysql</code>をロードしよう
+とします。
+</p>
+<p><var>options</var>部分の解釈はドライバに依存します。通常この部分のフォーマッ
+トは<code>key1=value1;key2=value2;...</code>のようになっていますが、ドライバ
+によっては別の解釈になります。たとえば、<code>mysql</code>ドライバでは、
+<var>options</var>の最初の部分でデータベース名を指定することができます。
+<var>options</var>の正確な仕様については各ドライバのドキュメントをチェック
+してください。
+</p>
+<p>接続のために必要な追加情報はキーワード引数であたえます。
+<var>username</var>および<var>password</var>は共通でサポートされている引数です。
+ドライバは他にもキーワード引数を認識します。
+</p>
+<p>データベースへの接続が成功したら、コネクションオブジェクト
+(<code>&lt;dbi-connection&gt;</code>のサブクラスのインスタンス)が返ります。さもな
+ければ、エラーがあがります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cdbi_002dconnection_003e"></a><u>Class:</u> <b>&lt;dbi-connection&gt;</b></dt>
+<dd><p>データベースシステムへの接続のベースクラス。各ドライバはこのクラスのサ
+ブクラスを定義し、これにデータベース特有のコネクションに関する情報を持
+たせます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dopen_003f"></a><u>Method:</u> <b>dbi-open?</b><i> (c &lt;dbi-connection&gt;)</i></dt>
+<dd><p>データベースへの接続がオープン状態(アクティブ状態)にあるかどうかを確か
+めます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dclose"></a><u>Method:</u> <b>dbi-close</b><i> (c &lt;dbi-connection&gt;)</i></dt>
+<dd><p>データベースへの接続を閉じます。これによりこの接続に関連付けられたリソー
+スが解放されます。いったん閉じた<var>c</var>に対してはどのようなdbi操作もで
+きません。(<code>dbi-open?</code>だけは例外)。すでに閉じられたコネクションに
+対して<code>dbi-close</code>を呼んでもなにも起りません。
+</p>
+<p>ドライバは通常<code>&lt;dbi-connection&gt;</code>がガベージコレクションされたとき
+にコネクションを閉じますが、このことを期待したコードを書くのはいただけ
+ません。GCのタイミングというのは予測不可能だからです。ユーザプログラム
+は適切なタイミングで<code>dbi-close</code>を呼ぶようにすべきです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dlist_002ddrivers"></a><u>Function:</u> <b>dbi-list-drivers</b></dt>
+<dd><p>解っているドライバのモジュール名のリストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cdbi_002ddriver_003e"></a><u>Class:</u> <b>&lt;dbi-driver&gt;</b></dt>
+<dd><p>ドライバのベースクラス。高レベルの<code>dbi</code> APIを使うかぎり、これが必
+要になることはありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dmake_002ddriver"></a><u>Function:</u> <b>dbi-make-driver</b><i> driver-name</i></dt>
+<dd><p><code>dbi-connect</code>から呼ばれる低レベル関数、通常この関数を呼ぶ必要はあ
+りません。
+</p>
+<p><var>driver-name</var>で指定されたドライバモジュールをロードし、当該のドラ
+イバクラスのインスタンスを生成してそれを返します。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e3_0081_00ae_00e6_00ba_0096_00e5_0082_0099_00e3_0081_00a8_00e7_0099_00ba_00e8_00a1_008c"></a>
+<h4 class="subsubheading">クエリの準備と発行</h4>
+
+<dl>
+<dt><a name="index-dbi_002dprepare"></a><u>Method:</u> <b>dbi-prepare</b><i> conn sql :key pass-through …</i></dt>
+<dd><p>SQL文の文字列表現<var>sql</var>からデータベースコネクション<code>conn</code>用の
+クエリオブジェクト(<code>&lt;dbi-query&gt;</code>のインスタンスもしくはそのサブク
+ラスのインスタンス)を生成してそれを返します。
+</p>
+<p><var>sql</var>は<code>?</code>であらわされているパラメータスロットを持ちます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(dbi-prepare conn "insert into tab (col1, col2) values (?, ?)")
+
+(dbi-prepare conn "select * from tab where col1 = ?")
+</pre></td></tr></tbody></table>
+
+<p>これらのスロットは<code>dbi-execute</code>を使って実際にクエリを発行したとき
+に埋められます。パラメータスロットを使うのは以下の利点があるからです。
+(1) クォートが自動的にほどこされます。不適切なクォートによるセキュリティ
+ホールを気にする必要はありません。
+(2) いくつかのドライバでは準備の段階でサーバへテンプレートSQL文を送る
+機能がサポートされていて、実行段階ではパラメータを送るだけで済みます。
+これは似たようなクエリを大量に一度に発行するときには効率のよいやりかた
+です。
+</p>
+<p>バックエンドでプリペアド文がサポートされていない場合(でSQLテンプレー
+トが<code>?</code>パラメータを持つ場合)、ドライバは<var>sql</var>を解析するのに
+<code>text.sql</code>モジュールを使います。与えられたSQL文が正しい構文でなけ
+れば、<code>&lt;sql-parse-error&gt;</code>コンディションが発生します。
+</p>
+<p>キーワード引数<var>pass-through</var>に真の値を渡して、SQLの解釈を抑制し、
+<var>sql</var>をそのままバックエンドのデータベースシステムに渡すことができ
+ます。<code>text.sql</code>で理解できないようなSQLの拡張をバックエンドがサポー
+トしている場合に役立ちます。
+</p>
+<p>ドライバがプリペアド文を<code>text.sql</code>抜きでバックエンドに処理させた
+場合、<code>pass-through</code>引数は無視されます。ドライバは他のキーワード
+引数を取ることもあります。詳細はそれぞれのドライバのドキュメントを参照
+してください。
+</p>
+<p><em>注意</em>：SQL文のケース畳み込みは実装依存です。DBMSのなかにはテーブ
+ル名やカラム名は大文字小文字の区別をしないものもあり、一方で区別するも
+のもあります。ポータブルなSQL文を書きたいのなら、識別子をクォートしま
+しょう。すなわち常に名前をダブルクォートで囲むようにします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cdbi_002dquery_003e"></a><u>Class:</u> <b>&lt;dbi-query&gt;</b></dt>
+<dd><p><code>dbi-prepare</code>によって作成されたプリペアドクエリに関する情報を保持
+します。以下のスロットが定義されています。
+</p>
+<dl>
+<dt><a name="index-connection"></a><u>Instance Variable of &lt;dbi-query&gt;:</u> <b>connection</b></dt>
+<dd><p><code>&lt;dbi-connection&gt;</code>オブジェクトを含みます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-prepared"></a><u>Instance Variable of &lt;dbi-query&gt;:</u> <b>prepared</b></dt>
+<dd><p>ドライバがクエリを準備する場合、このスロットがプリペアド文を保持します。
+このスロットをどのように使うかはおのおののドライバによります。したがっ
+て、クライアントはこの値に依存してはいけません。
+</p></dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dopen_003f-1"></a><u>Method:</u> <b>dbi-open?</b><i> (q &lt;dbi-query&gt;)</i></dt>
+<dd><p>クエリが<code>dbi-execute</code>に渡せる状態になっているときにのみ、
+<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dclose-1"></a><u>Method:</u> <b>dbi-close</b><i> (q &lt;dbi-query&gt;)</i></dt>
+<dd><p>クエリを破棄し、当該クエリに関連づけられたリソースを解放します。この操
+作を実行後は、<code>dbi-open?</code>は<var>q</var>に対して<code>#f</code>を返します。
+そして、当該クエリは他の用途にはつかえません。<var>q</var>がガベージコレク
+ションにより回収された場合、リソースは解放されますが、アプリケーション
+が明示的にクエリを閉じるようにすることを強く勧めます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dexecute"></a><u>Method:</u> <b>dbi-execute</b><i> (q &lt;dbi-query&gt;) parameter …</i></dt>
+<dd><p><code>dbi-prepare</code>によって作成さればクエリを実行します。当該クエリが期
+待するのと同じ数のパラメータを渡す必要があります。
+</p>
+<p>発行されたクエリが<code>select</code>文の場合<code>dbi-execute</code>は
+<em>リレーション</em>を表わすオブジェクトを返します。リレーションは
+行とカラムの値をカプセル化したもので、カラム名のようなメタ情報も同様で
+す。結果へアクセスの方法については後述の「クエリの結果を見る」を見てく
+ださい。
+</p>
+<p>クエリがSELECT以外の<code>create</code>、<code>insert</code>、<code>delete</code>などの
+場合、クエリクロージャー返り値は不定です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002ddo"></a><u>Method:</u> <b>dbi-do</b><i> conn sql :optional options parameter-value …</i></dt>
+<dd><p>この手続はクエリを作成し、すぐに実行したいときに便利です。これは次の式
+と同じですが、この場合はドライバはオーバーヘッドを避けるため、中間のク
+エリを作らないようにこのメソッドをオーバーロードします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(dbi-execute (apply dbi-prepare conn sql options)
+             parameter-value …)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002descape_002dsql"></a><u>Method:</u> <b>dbi-escape-sql</b><i> conn str</i></dt>
+<dd><p><var>str</var>中の特殊文字をエスケープした文字列を返します。
+</p>
+<p>SQLの公式標準ではこのような文字としてはシングルクォート(<code>'</code>)につ
+いてだけ規定しています。しかし、印字可能文字ではない文字については規定
+がありません。また、データベースシステムによっては他のエスケープ文字を
+使うものもあります。それゆえ、自分でエスケープしようとせずに、このメソッ
+ドを使う必要があります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; c を利用可能なDBIコネクションとする
+(dbi-escape-sql c "don't know")
+  ⇒ "don''t know"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e3_0081_00ae_00e7_00b5_0090_00e6_009e_009c_00e3_0082_0092_00e8_00a6_008b_00e3_0082_008b"></a>
+<h4 class="subsubheading">クエリの結果を見る</h4>
+
+<p>クエリが<code>select</code>文である場合、<code>&lt;collection&gt;</code>と
+<code>&lt;relation&gt;</code>の両方のオブジェクトが返ります。行のコレクション
+(すなわち、<code>&lt;collection&gt;</code> APIの実装)ですから、行にアクセスするに
+は<code>map</code>、<code>for-each</code>、その他のジェネリック関数が使えます。
+また、カラム名やアクセサを取り出すにはリレーションAPIが使えます。
+リレーションAPIについては<a indepth="true" href="gauche-refj_182.html#util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.relation</code> - リレーションフレームワーク</a>をコレクションAPIにつ
+いては<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>を見てください。
+</p>
+<p>クエリから戻ったオブジェクトの実際のクラスはドライバによりますが、
+以下のメソッドを使うことができます。
+</p>
+<dl>
+<dt><a name="index-dbi_002dopen_003f-2"></a><u>Method:</u> <b>dbi-open?</b><i> result</i></dt>
+<dd><p>クエリの結果がまだアクティブであるかどうかをチェックします。
+結果は<code>dbi-close</code>によって明示的に閉じられるかデータベースへのコネ
+クションが閉じられると非アクティブになります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dclose-2"></a><u>Method:</u> <b>dbi-close</b><i> result</i></dt>
+<dd><p>クエリの結果を閉じます。結果に関連付けられていたリソースが解放されます。
+<var>result</var>は、いったん閉じると使えなくなります。ただし、
+<code>dbi-open?</code>にだけは渡せます。
+</p>
+<p>ドライバは通常、結果がガベージコレクタによって回収される時にリソースを
+解放しますが、アプリケーションはこれに依存してはいけません。結果を使い
+おわったら明示的に<code>dbi-close</code>を呼ぶことをおすすめします。
+</p></dd></dl>
+
+<hr size="6">
+<a name="DBI_00e7_0094_00a8_00e3_0081_00ae_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0090_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="DBI_00e7_0094_00a8_00e3_0081_00ae_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0090_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f-1"></a>
+<h3 class="subsection">11.7.2 DBI用のドライバを書く</h3>
+
+<p>特定のデータベースシステムのドライバを書くということは、
+<code>dbd.<var>foo</var></code>モジュールを実装することです。ここで<var>foo</var>はド
+ライバの名前になります。
+</p>
+<p>このモジュールは以下に説明するいくつかのクラスとメソッドを実装しなけれ
+ばなりません。
+</p>
+<a name="g_t_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008bDBI_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9"></a>
+<h4 class="subsubheading">実装するDBIクラス</h4>
+
+<p>以下のクラスを定義しなければなりません。
+</p>
+<ul>
+<li>
+<code>&lt;dbi-driver&gt;</code>のサブクラス。このクラスの名前は<em>必ず</em>
+<code>&lt;<var>foo</var>-driver&gt;</code>でなければなりません。ここで、<var>foo</var>は
+ドライバの名前です。通常このクラスはシングルトンインスタンスを生成し、
+後述の<code>dbi-make-connection</code>メソッドをディスパッチするためにのみ利
+用されます。
+</li><li>
+<code>&lt;dbi-connection&gt;</code>のサブクラス。このクラスのインスタンスは
+<code>dbi-make-connection</code>によって生成されます。そのためには、実際のコ
+ネクションに関する情報を保持する必要があります。
+</li><li>
+ドライバにあったクエリ結果を表現するための<code>&lt;relation&gt;</code>および
+<code>&lt;collection&gt;</code>のサブクラス。(ほとんどの場合、SELECT文の結果は順序
+が重要です。それは、ORDER BY 節によってソートされる可能性があるからで
+す。したがって、<code>&lt;sequence&gt;</code>を継承するほうが、<code>&lt;collection&gt;</code>
+を継承するよりも適切です。)
+</li><li>
+オプションとして、プリペアドクエリのドライバ特有の情報を保持するため
+<code>&lt;dbi-query&gt;</code>のサブクラスを実装します。
+</li></ul>
+
+<a name="g_t_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008bDBI_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089"></a>
+<h4 class="subsubheading">実装するDBIメソッド</h4>
+
+<p>ドライバは以下のメソッドを実装しなければなりません。
+</p>
+<dl>
+<dt><a name="index-dbi_002dmake_002dconnection"></a><u>Method:</u> <b>dbi-make-connection</b><i> (d &lt;foo-driver&gt;) (options &lt;string&gt;) (option-alist &lt;list&gt;) :key username password …</i></dt>
+<dd><p>このメソッドは<code>dbi-connect</code>から呼ばれ、データベースへの接続を担い、
+コネクションオブジェクトを作成します。コネクションオブジェクトを返さな
+ければなりません。コネクションが確立できない場合には、
+<code>&lt;dbi-error&gt;</code>をあげなければなりません。
+</p>
+<p><var>options</var>は<code>dbi-connect</code>に与えられるデータソースネーム(DSN)の
+オプションパートです。<var>option-alist</var>は<var>options</var>を解析した結果
+の連想リストです。両方ともに用意して、ドライバが自明ではない方法で
+<var>options</var>文字列を解釈できるようにします。
+</p>
+<p>たとえば、DSNとして
+<code>"dbi:foo:myaddressbook;host=dbhost;port=8998"</code>が与えられたとする
+と、fooの<code>dbi-make-connection</code>は<var>options</var>として
+<code>"myaddressbook;host=dbhost;port=8998"</code>を受け取り、
+<var>optons-alist</var>として
+<code>(("myaddressbook" . #t) ("host" . "dbhost") ("port" . "8998"))</code>
+を受け取ります。
+</p>
+<p><var>options-alist</var>の後ろならどのようなキーワード引数でも
+<code>dbi-connect</code>に渡せます。DBIプロトコルは現在のところは
+<var>username</var>および<var>password</var>のみを指定します。
+ドライバはその他のキーワード引数を定義できます。
+ドライバ特有のキーワード引数にはドライバ名を接頭辞として付けることをお
+勧めします。たとえば、<code>dbd.foo</code>なら、<code>:foo-whatever</code>のように
+です。
+</p>
+<p>どのようなオプションを使えるようにするか、あるいはオプションの構文をど
+うするかはドライバを書く人しだいです。基本的な考え方は、DSN はデータの
+ソースを識別するためのものであり、その役割りはWWWにおけるURLのようなも
+のだということです。それゆえ、データベースのホスト名、ポート番号、それ
+にデータベース名などが含まれることになるでしょう。しかし、ユーザ名やパ
+スワードのような認証に関する情報を含めてはいけません。というわけで、そ
+の手の情報はキーワード引数で渡すのです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dprepare-1"></a><u>Method:</u> <b>dbi-prepare</b><i> (c &lt;foo-connection&gt;) (sql &lt;string&gt;) :key pass-through …</i></dt>
+<dd><p>このメソッドは<code>&lt;dbi-query&gt;</code>あるいはそのサブクラスのインスタンスで
+あるプリペアドクエリオブジェクトを生成し、それを返すものでなくてはなり
+ません。<var>sql</var>によるクエリがデータベースに発行されるのは、プリペア
+ドクエリオブジェクトが<code>dbi-execute</code>に渡されたときです。
+</p>
+<p>このメソッドは返されるクエリオブジェクトの<code>connection</code>スロットに
+<var>c</var>を設定しなけばなりません。
+</p>
+<p><var>sql</var>はSQL文です。これには<code>'?'</code>で表現されたプレイスホルダが含
+まれることがあります。クエリクロージャはこのプレイスホルダと同じ数の引
+数をとらなければなりません。内部的に<var>sql</var>をどのようにパーズするか、
+クエリクロージャが呼ばれたとき完全なSQL文を構築するか、<var>sql</var>をバッ
+クエンドのサーバに送って文を準備し、クエリクロージャはパラメータだけを
+送るようにするかなどはドライバに依存します。
+</p>
+<p>ドライバがSQL文を内部的にわたす場合、キーワード引数<code>pass-through</code>
+を認識しなければいけません。もし、真の値が与えられたら、ドライバは
+<code>sql</code>を不透明なものとして扱い、これをそのままクエリクロージャが呼
+ばれた際に渡さなければなりません。
+</p>
+<p>ドライバがその他のキーワード引数を定義することもできます。
+その場合、ドライバ特有のキーワード引数にはドライバ名を接頭辞として付け
+ることをお勧めします。たとえば、<code>dbd.foo</code>なら、
+<code>:foo-whatever</code>のようにです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dexecute_002dusing_002dconnection"></a><u>Method:</u> <b>dbi-execute-using-connection</b><i> (c &lt;foo-connection&gt;) (q &lt;dbi-query&gt;) (params &lt;list&gt;)</i></dt>
+<dd><p>このメソッドは<code>dbi-execute</code>から呼ばれます。<var>q</var>が保持するクエ
+リを発行しなければなりません。クエリがパラメータ化されている場合、
+<var>dbi-execute</var>に与えられた実際のパラメータは<var>params</var>引数に渡さ
+れます。
+</p>
+<p><var>q</var>が<code>select</code>-型のクエリの場合は、このメソッドは適切なリレー
+ションオブジェクトを返さなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002descape_002dsql-1"></a><u>Method:</u> <b>dbi-escape-sql</b><i> (c &lt;foo-connection&gt;) str</i></dt>
+<dd><p>デフォルトのエスケープメソッドでは十分でないとき、ドライバは特別のエス
+ケープを行うためにこのメソッドをオーバーロードすることができます。たと
+えば、MySQLではバックスラッシュ文字はシングルクォートと同様に特別あつ
+かいしますので、<code>dbi-escape-sql</code>メソッドを持っています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dopen_003f-3"></a><u>Method:</u> <b>dbi-open?</b><i> (c &lt;foo-connection&gt;)</i></dt>
+<dt><a name="index-dbi_002dopen_003f-4"></a><u>Method:</u> <b>dbi-open?</b><i> (q &lt;foo-query&gt;)</i></dt>
+<dt><a name="index-dbi_002dopen_003f-5"></a><u>Method:</u> <b>dbi-open?</b><i> (r &lt;foo-result&gt;)</i></dt>
+<dt><a name="index-dbi_002dclose-3"></a><u>Method:</u> <b>dbi-close</b><i> (c &lt;foo-connection&gt;)</i></dt>
+<dt><a name="index-dbi_002dclose-4"></a><u>Method:</u> <b>dbi-close</b><i> (q &lt;foo-query&gt;)</i></dt>
+<dt><a name="index-dbi_002dclose-5"></a><u>Method:</u> <b>dbi-close</b><i> (r &lt;foo-result&gt;)</i></dt>
+<dd><p>これらのメソッドでコネクションおよび結果の状態を調べ、コネクションおよ
+び結果を閉じます。closeメソッドはコネクションや結果が利用しているリソー
+スを解放しなければなりません。ドライバは<code>dbi-close</code>がすでに閉じら
+れたコネクションや結果に対しても適用できるようにしておかなければなりま
+せん。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002ddo-1"></a><u>Method:</u> <b>dbi-do</b><i> (c &lt;foo-connection&gt;) (sql &lt;string&gt;) :optional options parameter-value …</i></dt>
+<dd><p>この機能を実装するのにデフォルトメソッドは<code>dbi-prepare</code>および
+<code>dbi-execute</code>を使っています。これだけでも動きますが、
+ドライバは効率のために中間のクエリオブジェクトの生成をスキップするため
+にこのメソッドをオーバーロードできます。
+</p></dd></dl>
+
+<a name="DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e9_0096_00a2_00e6_0095_00b0"></a>
+<h4 class="subsubheading">DBIのユーティリティ関数</h4>
+
+<p>以下の関数は上述のメソッドを実装するための低レベルのユーティリティです。
+</p>
+<dl>
+<dt><a name="index-dbi_002dparse_002ddsn"></a><u>Function:</u> <b>dbi-parse-dsn</b><i> data-source-name</i></dt>
+<dd><p><code>dbi-connect</code>に与えられたデータソースネーム(DSN)文字列を解析し、
+以下の3つの値を返す。(1) ドライバ名(文字列) (2) DSNのオプション部分(文
+字列) (3) 解析済オプション(連想リスト)。与えられた文字列がDSN構文に準
+拠していない場合には<code>&lt;dbi-error&gt;</code>があがります。
+</p>
+<p>典型的なドライバを書く場合には必要ありません。構文解析は
+<code>dbi-make-connection</code>を呼ぶ前にすんでいるからです。このメソッドは
+プロキシのようなメタドライバという類のものを書くときに便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbi_002dprepare_002dsql"></a><u>Function:</u> <b>dbi-prepare-sql</b><i> connection sql</i></dt>
+<dd><p>プレイスホルダを含むSQL文 <var>sql</var> をパーズし、実際の値をパラメータと
+して渡されたときに完全なSQLを生成するクロージャを作成します。
+バックエンドがプリペアド文をサポートしていない場合は、ドライバ中でクエ
+リを準備するのにこの関数を使うことになります。
+</p>
+<p><var>connection</var>はデータベースへのDBIコネクションです。SQL中の値は適切
+にエスケープされている必要があります(上述の<code>dbi-escape-sql</code>をみて
+ください)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; c は正しいdbiコネクションを持っているとする
+((dbi-prepare-sql c "select * from table where id=?") "foo'bar")
+ =&gt; "select * from table where id='foo''bar'"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

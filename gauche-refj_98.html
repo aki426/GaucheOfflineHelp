@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.24 gauche.selector - 簡単なディスパッチャ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.24 gauche.selector - 簡単なディスパッチャ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.24 gauche.selector - 簡単なディスパッチャ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_97.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002eselector-_002d-_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3"></a>
+<h2 class="section">9.24 <code>gauche.selector</code> - 簡単なディスパッチャ</h2>
+
+<dl>
+<dt><a name="index-gauche_002eselector"></a><u>Module:</u> <b>gauche.selector</b></dt>
+<dd><a name="index-gauche_002eselector-1"></a>
+<p>このモジュールは、<code>sys-select</code> (<a indepth="true" href="gauche-refj_63.html#I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096">I/Oの多重化</a>参照)に基づき、
+登録されたハンドラにI/Oイベントをディスパッチするためのシンプルな
+インタフェースを提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cselector_003e"></a><u>Class:</u> <b>&lt;selector&gt;</b></dt>
+<dd><a name="index-selector"></a>
+<p>ディスパッチャのインスタンスで、ハンドラを携えてI/Oポートを監視します。
+<code>make</code>メソッドで新しいインスタンスを作れます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-selector_002dadd_0021"></a><u>Method:</u> <b>selector-add!</b><i> (self &lt;selector&gt;) port-or-fd proc flags</i></dt>
+<dd><p>セレクタにハンドラ<var>proc</var>を追加します。<var>proc</var>は、<var>port-or-fd</var>
+(ポートオブジェクトかシステムのファイルディスクリプタを表す整数)が
+<var>flags</var>で指定された条件に合致した場合に呼ばれます。
+<var>flags</var>は、以下のシンボルの1つ以上のリストでなければなりません。
+</p><dl compact="compact">
+<dt> <code>r</code></dt>
+<dd><p><var>port-or-fd</var>が読み取り可能になった時点で<var>proc</var>が呼ばれます。
+</p></dd>
+<dt> <code>w</code></dt>
+<dd><p><var>port-or-fd</var>が書き込み可能になった時点で<var>proc</var>が呼ばれます。
+</p></dd>
+<dt> <code>x</code></dt>
+<dd><p><var>port-or-fd</var>で例外的な状況が発生した場合に<var>proc</var>が呼ばれます。
+</p></dd>
+</dl>
+
+<p><var>proc</var>は、2引数で呼ばれます。1つ目は<var>port-or-fd</var>そのもので、
+2つ目は条件を表すシンボル、<code>r</code>、<code>w</code>あるいは<code>x</code>です。
+</p>
+<p>同じ条件の下ですでに<var>port-or-fd</var>にハンドラが関連付けられていた場合は、
+以前のハンドラが<var>proc</var>で置き換えられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-selector_002ddelete_0021"></a><u>Method:</u> <b>selector-delete!</b><i> (self &lt;selector&gt;) port-or-fd proc flags</i></dt>
+<dd><p><var>port-or-fd</var>、<var>proc</var>、<var>flags</var>にマッチするハンドラエントリを
+削除します。引数のいずれかが<code>#f</code>である場合は、それが何でも良いことを
+意味します。例えば、
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(selector-delete! selector the-port #f #f)
+</pre></td></tr></tbody></table>
+<p><var>the-port</var>に関連付けられた全てのハンドラを削除します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(selector-delete! selector #f #f '(w))
+</pre></td></tr></tbody></table>
+<p>書き込み可能になるのを待っている全てのハンドラを削除します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-selector_002dselect"></a><u>Method:</u> <b>selector-select</b><i> (self &lt;selector&gt;) :optional (timeout #f)</i></dt>
+<dd><p>ディスパッチャのボディです。<var>self</var>に登録された条件を待ち、条件が合致すると
+それに関連付けられたハンドラを呼びます。
+<var>timeout</var>引数が省略されるか偽の場合、このメソッドは永久に待ちます。
+タイムアウトの値を与える場合は、マイクロ秒を表す実数か、秒とマイクロ秒を
+表す2つの整数のリストを与えます。
+</p>
+<p>戻り値は、ハンドラが呼ばれた回数です。0(ゼロ)は、セレクタがタイムアウト
+したことを意味します。
+</p>
+<p>ハンドラの中で<var>self</var>を変更することは安全です。その変更は、次回の
+<code>selector-select</code>の呼び出し以降に反映されます。
+</p></dd></dl>
+
+<p>echoサーバのシンプルな例を示します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.net)
+(use gauche.selector)
+
+(define (echo-server port)
+  (let ((selector (make &lt;selector&gt;))
+        (server   (make-server-socket 'inet port :reuse-addr? #t)))
+
+    (define (accept-handler sock flag)
+      (let* ((client (socket-accept server))
+             (output (socket-output-port client)))
+        (selector-add! selector
+                       (socket-input-port client :buffering #f)
+                       (lambda (input flag)
+                         (echo client input output))
+                       '(r))))
+
+    (define (echo client input output)
+      (let ((str (read-block 4096 input)))
+        (if (eof-object? str)
+            (begin (selector-delete! selector input #f #f)
+                   (socket-close client))
+            (begin (display str output)
+                   (flush output)))))
+
+    (selector-add! selector
+                   (socket-fd server)
+                   accept-handler
+                   '(r))
+    (do () (#f) (selector-select selector))))
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_97.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

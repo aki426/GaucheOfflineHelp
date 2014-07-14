@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.8 繰り返し</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.8 繰り返し">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.8 繰り返し">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_29.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e7_00b9_00b0_00e3_0082_008a_00e8_00bf_0094_00e3_0081_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_28.html#g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_30.html#g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00b9_00b0_00e3_0082_008a_00e8_00bf_0094_00e3_0081_0097-1"></a>
+<h2 class="section">4.8 繰り返し</h2>
+
+<dl>
+<dt><a name="index-do"></a><u>Special Form:</u> <b>do</b><i> ((variable init [step]) …) (test expr …) body …</i></dt>
+<dd><p>[R5RS]
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-let-1"></a><u>Special Form:</u> <b>let</b><i> name bindings body …</i></dt>
+<dd><p>[R5RS]
+</p></dd></dl>
+
+
+
+<dl>
+<dt><a name="index-dotimes"></a><u>Macro:</u> <b>dotimes</b><i> (variable limit [result]) body …</i></dt>
+<dt><a name="index-dolist"></a><u>Macro:</u> <b>dolist</b><i> (variable lexpr [result]) body …</i></dt>
+<dd><p>Common Lispからの輸入です。それぞれ以下のように展開されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(dotimes (variable limit result) body …)
+==&gt;
+(do ((tlimit limit)
+     (variable 0 (+ variable 1)))
+    ((&gt;= variable tlimit) result)
+  body …)
+
+(dolist (variable lexpr result) body …)
+==&gt;
+(begin
+  (for-each (lambda (variable) body …) lexpr)
+  (let ((variable '())) result))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-while"></a><u>Macro:</u> <b>while</b><i> expr body …</i></dt>
+<dt><a name="index-while-1"></a><u>Macro:</u> <b>while</b><i> expr <code>=&gt;</code> var body …</i></dt>
+<dt><a name="index-while-2"></a><u>Macro:</u> <b>while</b><i> expr guard <code>=&gt;</code> var body …</i></dt>
+<dd><p><var>Var</var> は識別子で<var>guard</var>は一つの引数をとる手続きです。
+</p>
+<p>最初の形式ではまず<var>expr</var>が評価され、もしそれが真値を返したら
+<var>body</var> … が評価されます。そして<var>expr</var>が真値を返す
+限り繰り返されます。
+</p>
+<p>2番目の形式では、<var>body</var> … で有効な変数<var>var</var>を
+作成し、<var>expr</var>の結果に束縛します。
+</p>
+<p>最後の形式では、<var>expr</var> の返り値が <var>guard</var> に渡されこの
+結果が真値である限り <var>body</var> … が繰り返されます。
+変数 <var>var</var> は <var>expr</var> の結果に束縛されます。
+</p>
+<p><code>while</code> 自体の返り値は不定です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((a '(0 1 2 3 4)))
+  (while (pair? a)
+    (write (pop! a)))) ⇒ <span class="roman">prints "01234"</span>
+
+(let ((a '(0 1 2 3 #f 5 6)))
+  (while (pop! a) integer? =&gt; var
+    (write var))) ⇒ <span class="roman">prints "0123"</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-until"></a><u>Macro:</u> <b>until</b><i> expr body …</i></dt>
+<dt><a name="index-until-1"></a><u>Macro:</u> <b>until</b><i> expr guard <code>=&gt;</code> var body …</i></dt>
+<dd><p><code>while</code> の条件を逆にしたものです。 つまり、
+最初の形式では<var>expr</var>が真値を返すまで <var>body</var> … を
+繰り返します。2番目の形式では<var>expr</var>の結果が<var>guard</var> に渡され
+それが真値を返すまで繰り返します。 <var>Var</var>は<var>expr</var>返り値に
+束縛されます。
+</p>
+<p>(<var>guard</var> を省いた2番目の形式では<var>var</var>は常に<code>#f</code>へ
+束縛されるため、あまり意味がありません。)
+</p>
+<p><code>until</code>自体の返り値は不定です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((a '(0 1 2 3 4)))
+  (until (null? a)
+    (write (pop! a)))) ⇒ <span class="roman">prints "01234"</span>
+
+(until (read-char) eof-object? =&gt; ch
+  (write-char ch))
+ ⇒ <span class="roman">reads from stdin and writes char until EOF is read</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_28.html#g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_30.html#g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.43 text.progress - テキスト端末上でプログレスを表示する</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.43 text.progress - テキスト端末上でプログレスを表示する">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.43 text.progress - テキスト端末上でプログレスを表示する">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="text_002eprogress-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e7_00ab_00af_00e6_009c_00ab_00e4_00b8_008a_00e3_0081_00a7_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_0092_00e8_00a1_00a8_00e7_00a4_00ba_00e3_0081_0099_00e3_0082_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_168.html#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_170.html#text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002eprogress-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e7_00ab_00af_00e6_009c_00ab_00e4_00b8_008a_00e3_0081_00a7_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_0092_00e8_00a1_00a8_00e7_00a4_00ba_00e3_0081_0099_00e3_0082_008b-1"></a>
+<h2 class="section">11.43 <code>text.progress</code> - テキスト端末上でプログレスを表示する</h2>
+
+<dl>
+<dt><a name="index-text_002eprogress"></a><u>Module:</u> <b>text.progress</b></dt>
+<dd><a name="index-text_002eprogress-1"></a>
+<p>このモジュールはバーチャートを文字を用いて表示し、テキスト端末上に処理
+の進行状況を出すためのユーティリティです。
+</p>
+<p>プログレスバーの汎用的なフォーマット1行のテキストで構成されます。この1
+行はいくつかの部分に分解できます。タイトルを表示するヘッダ部、その後に
+プログレスバーがあって、数値部、時間部と続きます。以下がその例です(foo
+からはじまる1行だけが実際に表示されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;-header-&gt; &lt;-------bar---------&gt; &lt;-num-&gt;&lt;-time-&gt;      &lt;---info----&gt;
+foo       |#############        |123/211   01:21 ETA  compiling...
+          ^
+          separator
+</pre></td></tr></tbody></table>
+
+<p>バーチャートに使う文字などのいろいろなバリエーションや、数値で表わす
+進捗のフォーマットなども設定可能です。
+</p>
+<p>内部的にはプログレスバーは2つの数値、最大値(ゴール)と現在の値を保持し
+ています。バーは最大値に対する現在の値の比を示すものです。数値で表わす
+進捗はデフォルトでは最大値の上に現在の値を表示します。しかし、たとえば、
+現在の値だけを表示するとか、100分率で表示するなどの設定が可能です。
+</p>
+<p>プログレスバーは2つの状態「進捗中」および「終了」のどちらかの状態を保
+持しています。「進捗中」なら、どの時点でも表示されるテキストには
+<code>#\return</code>が続きます。これにより次の表示が前の表示を上書きするこ
+とになります。時間部はETA(残り時間)を表示します。終了してしまえば、最
+後の行の後に<code>#\newline</code>が続きます。時間部には終了までにかかった時
+間が表示されます。
+</p></dd></dl>
+
+<p>このモジュールは<code>make-text-progress-bar</code>という手続きを1つだけ提供
+します。この手続きはプログレスバーの機能をクロージャに包んでそれを返し
+ます。
+</p>
+<dl>
+<dt><a name="index-make_002dtext_002dprogress_002dbar"></a><u>Function:</u> <b>make-text-progress-bar</b><i> :key header header-width bar-char bar-width num-width num-format time-width info info-width separator-char max-value port</i></dt>
+<dd>
+<p>プログレスバー上の操作を包んだ手続きを返します。返された手続きに操作を
+示すシンボルとオプションで数値を引数として渡して使います。
+</p>
+<dl compact="compact">
+<dt> <code><var>proc</var> 'show</code></dt>
+<dd><p>プログレスバーを再表示する。他のどの操作も状態の再表示を行います。
+したがって、現在のステータスを再表示しなければない特別な理由がないかぎ
+りこれを使う必要はありません。
+</p>
+</dd>
+<dt> <code><var>proc</var> 'set <var>value</var></code></dt>
+<dd><p>現在の値を<var>value</var>にセットし、プログレスバーを再表示します。
+<var>value</var>が最大値を超えていたら、超過分を切り捨て最大値にします。
+</p>
+</dd>
+<dt> <code><var>proc</var> 'inc <var>value</var></code></dt>
+<dd><p><var>value</var>分だけ現在の値を増し、プログレスバーを再表示します。現在の
+値が最大値を超えたら、超過分を切り捨て最大値にします。
+</p>
+</dd>
+<dt> <code><var>proc</var> 'finish</code></dt>
+<dd><p>プログレスバーを「終了」状態にし、再表示します。時間部はトータルの経過
+時間を表示します。また、表示行末は<code>#\newline</code>とし、上書きされない
+ようにします。プログレスバーはいったん「終了」状態になれば、「進捗中」
+状態に戻す方法はありません。
+</p>
+</dd>
+<dt> <code><var>proc</var> 'set-info <var>text</var></code></dt>
+<dd><p>“info”部に表示されるテキストを変更します。
+info部を使うには、<code>make-text-progress-bar</code>の<var>info-width</var>キーワード
+引数に正の値が指定されている必要があります。
+</p>
+
+</dd>
+<dt> <code><var>proc</var> 'set-header <var>text</var></code></dt>
+<dd><p>“header”部に表示されるテキストを変更します。
+</p></dd>
+</dl>
+
+<p>キーワード引数を使って表示をカスタマイズできます。
+</p><dl compact="compact">
+<dt> <var>header</var></dt>
+<dd><p>ヘッダ部に表示するテキスト。このテキストは、作られたプログレスバーに
+<code>set-header</code>メッセージを送ることで後で変更可能です。
+</p>
+</dd>
+<dt> <var>header-width</var></dt>
+<dd><p>ヘッダ部の幅、文字数で指定します。ヘッダ部のテキストは左詰めです。ヘッ
+ダ部に置くテキストが幅よりも長い場合には超過分の文字は切り捨てられます。
+デフォルトは14文字です。
+</p>
+</dd>
+<dt> <var>bar-char</var></dt>
+<dd><p>バーチャートを描くのに使う文字。デフォルトは<code>#\#</code>です。
+</p>
+</dd>
+<dt> <var>bar-width</var></dt>
+<dd><p>バーチャート部の幅で、文字数で指定します。デフォルトでは40文字です。
+</p>
+</dd>
+<dt> <var>num-width</var></dt>
+<dd><p>数値部の幅で、文字数で指定します。デフォルトでは9で、これを0に設定する
+と数値部を隠せます。
+</p>
+</dd>
+<dt> <var>num-format</var></dt>
+<dd><p>数値部を整形する手続き。引数が2つ渡されます。ひとつは現在の値、もうひ
+とつは最大値です。この手続きは文字列を返さなければなりません。デフォル
+トでは以下の手続きです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda (cur max)
+  (format "~d/~d" cur max))
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <var>time-width</var></dt>
+<dd><p>時間部の幅で、文字数で指定します。デフォルトでは7文字で、これを0に設定
+すると時間部を隠せます。
+</p>
+</dd>
+<dt> <var>info</var></dt>
+<dd><p>info部に表示されるテキストです。このテキストは、作られたプログレスバーに
+<code>set-info</code>メッセージを送ることで後から変更できます。
+info部を表示するには、<var>info-width</var>キーワード引数に正の値を
+与えておく必要があります。
+</p>
+</dd>
+<dt> <var>info-width</var></dt>
+<dd><p>info部の表示幅です。デフォルトは0で、info部は表示されません。
+</p>
+</dd>
+<dt> <var>separator-char</var></dt>
+<dd><p>バー部分の前後に置く文字です。デフォルトでは<code>#\|</code>です。
+セパレータを表示したくなければ、<code>#f</code>を渡します。
+</p>
+</dd>
+<dt> <var>max-value</var></dt>
+<dd><p>プログレスバーの最大値です。デフォルトでは100です。
+</p>
+</dd>
+<dt> <var>port</var></dt>
+<dd><p>プログレスバーを表示する出力ポートです。デフォルト値は
+<code>make-text-progress-bar</code>が呼ばれた時点での現在の出力ポートです。
+</p></dd>
+</dl>
+</dd></dl>
+
+<p>以下は簡単なカスタマイズをした例です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use text.progress)
+
+(define (main args)
+  (define (num-format cur max)
+    (format "~d/~d(~3d%)" cur max
+            (round-&gt;exact (/. (* cur 100) max))))
+
+  (let ((p (make-text-progress-bar :header "Example"
+                                   :header-width 10
+                                   :bar-char #\o
+                                   :num-format num-format
+                                   :num-width 13
+                                   :max-value 256)))
+    (do ((i 0 (+ i 1)))
+        ((= i 256) (p 'finish))
+      (p 'inc 1)
+      (sys-select #f #f #f 50000))))
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_168.html#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_170.html#text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

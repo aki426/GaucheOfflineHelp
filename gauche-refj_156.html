@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.30 rfc.sha - SHAメッセージダイジェスト</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.30 rfc.sha - SHAメッセージダイジェスト">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.30 rfc.sha - SHAメッセージダイジェスト">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_155.html#Quoted_002dprintable_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_157.html#URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002esha-_002d-SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088"></a>
+<h2 class="section">11.30 <code>rfc.sha</code> - SHAメッセージダイジェスト</h2>
+
+<dl>
+<dt><a name="index-rfc_002esha"></a><u>Module:</u> <b>rfc.sha</b></dt>
+<dd><a name="index-rfc_002esha-1"></a>
+<p>このモジュールは、RFC 4634で定義されている
+US Secure Hash Algorithmを実装しています。
+提供されるアルゴリズムはSHA-1, SHA-224, SHA-256, SHA-384および
+SHA-512です (後の4つを総称してSHA-2と呼ぶこともあります)。
+</p>
+<p>このモジュールは、util.digest (<a indepth="true" href="gauche-refj_175.html#g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.digest</code> - メッセージダイジェストフレームワーク</a>参照)
+を拡張しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rfc_002esha1"></a><u>Module:</u> <b>rfc.sha1</b></dt>
+<dd><a name="index-rfc_002esha1-1"></a>
+<p>これはSHA-1だけを提供していた古いモジュールです。互換性のため、
+この名前は<code>rfc.sha</code>の別名として残されています。
+新たに書くコードは<code>rfc.sha</code>を使ってください。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-_003csha1_003e"></a><u>Class:</u> <b>&lt;sha1&gt;</b></dt>
+<dt><a name="index-_003csha224_003e"></a><u>Class:</u> <b>&lt;sha224&gt;</b></dt>
+<dt><a name="index-_003csha256_003e"></a><u>Class:</u> <b>&lt;sha256&gt;</b></dt>
+<dt><a name="index-_003csha384_003e"></a><u>Class:</u> <b>&lt;sha384&gt;</b></dt>
+<dt><a name="index-_003csha512_003e"></a><u>Class:</u> <b>&lt;sha512&gt;</b></dt>
+<dd><a name="index-sha1"></a>
+<a name="index-sha224"></a>
+<a name="index-sha256"></a>
+<a name="index-sha384"></a>
+<a name="index-sha512"></a>
+<p>これらのクラスのインスタンスは、SHAダイジェストアルゴリズムの内部状態を
+保持しています。
+</p>
+<p>このクラスは、<code>util.digest</code>フレームワークのインターフェース、
+<code>digest-update!</code>、<code>digest-final!</code>、<code>digest</code>、
+<code>digest-string</code>を実装しています。
+これらのメソッドの詳細な説明は、<a indepth="true" href="gauche-refj_175.html#g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.digest</code> - メッセージダイジェストフレームワーク</a>を
+参照して下さい。
+</p></dd></dl>
+
+<p>ダイジェスタフレームワークに加えて、このモジュールはショートカット
+手続きを提供します。
+</p>
+<dl>
+<dt><a name="index-sha1_002ddigest"></a><u>Function:</u> <b>sha1-digest</b></dt>
+<dt><a name="index-sha224_002ddigest"></a><u>Function:</u> <b>sha224-digest</b></dt>
+<dt><a name="index-sha256_002ddigest"></a><u>Function:</u> <b>sha256-digest</b></dt>
+<dt><a name="index-sha384_002ddigest"></a><u>Function:</u> <b>sha384-digest</b></dt>
+<dt><a name="index-sha512_002ddigest"></a><u>Function:</u> <b>sha512-digest</b></dt>
+<dd><p>現在の入力ポートからデータをEOFまで読み込み、そのダイジェストを
+不完全文字列で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sha1_002ddigest_002dstring"></a><u>Function:</u> <b>sha1-digest-string</b><i> string</i></dt>
+<dt><a name="index-sha224_002ddigest_002dstring"></a><u>Function:</u> <b>sha224-digest-string</b><i> string</i></dt>
+<dt><a name="index-sha256_002ddigest_002dstring"></a><u>Function:</u> <b>sha256-digest-string</b><i> string</i></dt>
+<dt><a name="index-sha384_002ddigest_002dstring"></a><u>Function:</u> <b>sha384-digest-string</b><i> string</i></dt>
+<dt><a name="index-sha512_002ddigest_002dstring"></a><u>Function:</u> <b>sha512-digest-string</b><i> string</i></dt>
+<dd><p><var>string</var>のデータをダイジェストし、その結果を不完全文字列で
+返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_155.html#Quoted_002dprintable_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_157.html#URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

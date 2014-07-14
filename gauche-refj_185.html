@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.59 util.trie - Trie</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.59 util.trie - Trie">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.59 util.trie - Trie">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="util_002etrie-_002d-Trie"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_186.html#g_t_00e3_0083_0088_00e3_0083_009d_00e3_0083_00ad_00e3_0082_00b8_00e3_0082_00ab_00e3_0083_00ab_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002etrie-_002d-Trie-1"></a>
+<h2 class="section">11.59 <code>util.trie</code> - Trie</h2>
+
+<dl>
+<dt><a name="index-util_002etrie"></a><u>Module:</u> <b>util.trie</b></dt>
+<dd><a name="index-util_002etrie-1"></a>
+<p>このモジュールは<em>Trie</em>を提供します。<em>Trie</em>はディレクトリに似
+たデータ構造で、キーを値に写像します。また、キーは任意のシーケンスです。
+内部的にはデータはツリーとして保持されます。このとき各ノードがキーシー
+ケンスの各要素に対応します。キーの検索は O(n) で、n はキーの長さです。
+したがって、全体のエントリ数には余り影響を受けません。また、キーが共通
+の接頭辞をもつような値の集合を簡単にみつけられます。
+</p>
+<p>以下のサンプルを見れば考え方が理解できると思います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define t (make-trie))   ;; create a trie
+
+(trie-put! t "pho" 3)    ;; populate the trie
+(trie-put! t "phone" 5)
+(trie-put! t "phrase" 6)
+
+(trie-get t "phone")  ⇒ 5  ;; lookup
+
+(trie-common-prefix t "pho")       ;; common prefix search
+  ⇒ (("phone" . 5) ("pho" . 3))
+(trie-common-prefix-keys t "ph")
+  ⇒ ("phone" "pho" "phrase")
+</pre></td></tr></tbody></table>
+
+<p>Trieでは文字列キーを使うことが多いですが、それに限定される必要はありま
+せん。あらゆるシーケンス(See section <a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>)をキーにすることが
+できます。キーの型が違えば、別のキーとして扱われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(trie-put! t '(#\p #\h #\o) 8)  ;; different key from "pho"
+</pre></td></tr></tbody></table>
+
+<p>Trieは<code>&lt;collection&gt;</code>を継承しており、コレクションフレームワークを
+ビルダも含めて実装しています。それゆえ、ジェネリックなコレクション操作
+をTrieに適用することが可能です(<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>参照)。
+反復するとTrieの各要素がキーと値の対として現れます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003ctrie_003e"></a><u>Class:</u> <b>&lt;trie&gt;</b></dt>
+<dd><p>Trieクラス。パブリックなスロットはありません。trieを操作するには以下の
+手続きを使ってください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dtrie"></a><u>Function:</u> <b>make-trie</b><i> :optional tab-make tab-get tab-put! tab-fold</i></dt>
+<dd><p>空のtrieを生成し返します。4つのオプション引数があり、これらは、
+内部木のノードをどのようにマージするかをカスタマイズする手続きです。
+</p>
+<p>それぞれのノードは子のノードを格納するテーブルを持つことができます。
+キーシーケンスの要素でインデックスできます。(たとえば、trieがキーとし
+え文字列を使っているとすると、ノードのテーブルは文字でインデックスされ
+ています。)
+</p>
+<dl compact="compact">
+<dt> <code>tab-make</code></dt>
+<dd><p>引数なしの手続き。呼ばれるとノード用の空テーブルを生成し返します。
+</p></dd>
+<dt> <code>tab-get <var>tab</var> <var>elt</var></code></dt>
+<dd><p><var>elt</var>でインデックスされた子ノードを返すか、あるいは<var>elt</var>に対応
+する子がテーブルにない場合には <code>#f</code>を返します。
+</p></dd>
+<dt> <code>tab-put! <var>tab</var> <var>elt</var> <var>child-node</var></code></dt>
+<dd><p><var>child-node</var>が<code>#f</code>でなければ、<var>child-node</var>に<var>elt</var>とい
+うインデックスをつけて保存します。<var>child-node</var>が<code>#f</code>なら
+<var>elt</var>のインデックスをもつエントリを削除します。どちらの場合にも
+この手続きは更新されたテーブルを返します。
+</p></dd>
+<dt> <code>tab-fold <var>tab</var> <var>proc</var> <var>seed</var></code></dt>
+<dd><p><var>tab</var>内の各インデックスと要素ごとに<var>proc</var>を呼びます。シード値
+が順に渡されていきます。シード値の初期値は<var>seed</var>です。すなわち、
+<var>proc</var>の型は<code>(index, node, seed) -&gt; seed</code> のような型というこ
+とになります。返り値は最後の<var>proc</var>の適用結果です。
+</p></dd>
+</dl>
+
+<p>デフォルトでは<code>eqv?</code>-ハッシュ可能であることが仮定されます。すなわ
+ち、以下の手続きが使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">tab-make: (lambda () (make-hash-table 'eqv?))
+
+tab-get:  (lambda (tab k) (hash-table-get tab k #f))
+
+tab-put!: (lambda (tab k v)
+            (if v
+              (hash-table-put! tab k v)
+              (hash-table-delete! tab k))
+            tab)
+
+tab-fold: hash-table-fold
+</pre></td></tr></tbody></table>
+
+<p>以下の例では子を管理するのに連想リストを用いるtrieを作成しています。
+文字列キーの比較は大文字小文字を無視する方法で行っています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-trie list
+           (cut assoc-ref &lt;&gt; &lt;&gt; #f char-ci=?)
+           (lambda (t k v)
+             (if v
+               (assoc-set! t k v char-ci=?)
+               (alist-delete! k t char-ci=?)))
+           (lambda (t f s) (fold f s t)))
+</pre></td></tr></tbody></table>
+
+<p><code>tab-put!</code>が更新されたテーブルを返すというのは重要で、これのおか
+げで、テーブル構造をおてがるに置き換えることができます。たとえば、
+子の数が少い場合にはテーブルに連想リストを使い、いったん子の数がある閾
+値を越えたら、(文字コードでインデックスされた)ベクタを使うように設計す
+ることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie"></a><u>Function:</u> <b>trie</b><i> params kv …</i></dt>
+<dd><p>初期の内容が<var>kv</var> … であるようなtrieを構成します。ここで、
+<var>kv</var>はキーと値の対です。<var>params</var>はtrieを生成するときに
+<code>make-trie</code>に渡される引数のリストです。以下の例は2つのエントリ
+とデフォルトのテーブル手続をもつtrieを生成します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(trie '() '("foo" . a) '("bar" . b))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dwith_002dkeys"></a><u>Function:</u> <b>trie-with-keys</b><i> params key …</i></dt>
+<dd><p>キーにだけ関心がある場合には便利な<code>trie</code>。各値はキーと同じ。以下
+の例では2つのエントリとデフォルトのテーブル手続をもつtrieを生成します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(trie-with-keys '() "foo" "bar")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-trie_003f"></a><u>Function:</u> <b>trie?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がtrieなら<code>#t</code>を返し、さもなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dnum_002dentries"></a><u>Function:</u> <b>trie-num-entries</b><i> trie</i></dt>
+<dd><p><var>trie</var>中のエントリの数を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dexists_003f"></a><u>Function:</u> <b>trie-exists?</b><i> trie key</i></dt>
+<dd><p><var>trie</var>が<var>key</var>というキーのエントリを含む場合には<code>#t</code>を返し、
+さもなければ、<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dget"></a><u>Function:</u> <b>trie-get</b><i> trie key :optional fallback</i></dt>
+<dd><p><var>trie</var>中の<var>key</var>をもつエントリがあれば、それにむすびついている
+値を返します。そのようなエントリがない場合、<var>fallback</var>が与えられて
+いればそれを返し、さもなければ、エラーシグナルがあがります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dput_0021"></a><u>Function:</u> <b>trie-put!</b><i> trie key value</i></dt>
+<dd><p><var>key</var>に結びついた<var>value</var>を<var>trie</var>に挿入します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dupdate_0021"></a><u>Function:</u> <b>trie-update!</b><i> trie key proc :optional fallback</i></dt>
+<dd><p><var>trie</var>中のエントリの検索が一度きりしか起らないことをのぞけば以下の
+コードのように動きます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((val (trie-get trie key fallback)))
+  (trie-put! trie key (proc val)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-trie_002ddelete_0021"></a><u>Function:</u> <b>trie-delete!</b><i> trie key</i></dt>
+<dd><p><var>trie</var>から<var>key</var>に関連するエントリを削除します。
+そのようなエントリがない場合にはこの手続きはなにもしません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002d_003elist"></a><u>Function:</u> <b>trie-&gt;list</b><i> trie</i></dt>
+<dd><p><var>trie</var>の各エントリを<code>(<var>key</var> . <var>value</var>)</code>という対にして
+すべてのエントリの対のリストを返します。エントリの順序は未定義です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dkeys"></a><u>Function:</u> <b>trie-keys</b><i> trie</i></dt>
+<dt><a name="index-trie_002dvalues"></a><u>Function:</u> <b>trie-values</b><i> trie</i></dt>
+<dd><p>それぞれ、<var>trie</var>のすべてのキーのリスト、すべての値のリストを返しま
+す。順序は未定義です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002d_003ehash_002dtable"></a><u>Function:</u> <b>trie-&gt;hash-table</b><i> trie ht-type</i></dt>
+<dd><p><var>ht-type</var>タイプのハッシュテーブル(ハッシュテーブルのタイプについて
+は<a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">ハッシュテーブル</a>を参照)を作成し、<var>trie</var>のすべてのキーと値の対を
+セットします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dcommon_002dprefix"></a><u>Function:</u> <b>trie-common-prefix</b><i> trie prefix</i></dt>
+<dt><a name="index-trie_002dcommon_002dprefix_002dkeys"></a><u>Function:</u> <b>trie-common-prefix-keys</b><i> trie prefix</i></dt>
+<dt><a name="index-trie_002dcommon_002dprefix_002dvalues"></a><u>Function:</u> <b>trie-common-prefix-values</b><i> trie prefix</i></dt>
+<dd><p><var>prefix</var>ではじまるキーをもつエントリをすべて集め、
+<code>trie-common-prefix</code>はその各エントリを<code>(key . value)</code>の対にし
+たリストを返します。<code>trie-common-prefix-keys</code>は、キーのリストを
+<code>trie-common-prefix-values</code>は値のリストを返します。返されるリスト
+のエントリの順序は未定義です。
+<var>trie</var>に指定した<var>prefix</var>をもつキーのエントリがなければ、
+空リストが返されます。
+</p>
+<p>接頭辞照合ではシーケンスの型を考慮しないことに注意してください。
+<var>trie</var>のなかに<code>"foo"</code>と<code>(#\f #\o #\o)</code>に対応するエントリ
+があれば、<code>(trie-common-prefix trie "foo")</code>はその両方を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dcommon_002dprefix_002dfold"></a><u>Function:</u> <b>trie-common-prefix-fold</b><i> trie prefix proc seed</i></dt>
+<dd><p><var>prefix</var>ではじまるキーをもつ各エントリに対して、<var>proc</var>を3つの
+引数、エントリのキー、値、現在のシード値で呼びます。<var>seed</var>は最初の
+シード値として使われ、<var>proc</var>が返す値は次の<var>proc</var>の呼び出しのシー
+ド値として使われます。<var>proc</var>が返した最後の値が
+<code>trie-common-prefix-fold</code>から返ります。
+<var>proc</var>が適用される順序は未定義です。<var>trie</var>が<var>prefix</var>を持つ
+キーのエントリを含まない場合には<var>proc</var>が呼ばれることはなく、
+<var>seed</var>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dcommon_002dprefix_002dmap"></a><u>Function:</u> <b>trie-common-prefix-map</b><i> trie prefix proc</i></dt>
+<dt><a name="index-trie_002dcommon_002dprefix_002dfor_002deach"></a><u>Function:</u> <b>trie-common-prefix-for-each</b><i> trie prefix proc</i></dt>
+<dd><p><code>map</code>や<code>for-each</code>を<code>fold</code>を合せたのと同じように、
+<var>trie-common-prefix-fold</var>に合せたものです。
+<code>trie-common-prefix-map</code>は<var>proc</var>をマッチするエントリのキーと
+値に適用し結果をリストにあつめます。
+<code>trie-common-prefix-for-each</code>も同じく<var>proc</var>を適用しますが
+結果は捨てます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-trie_002dfold"></a><u>Function:</u> <b>trie-fold</b><i> trie proc seed</i></dt>
+<dt><a name="index-trie_002dmap"></a><u>Function:</u> <b>trie-map</b><i> trie proc</i></dt>
+<dt><a name="index-trie_002dfor_002deach"></a><u>Function:</u> <b>trie-for-each</b><i> trie proc</i></dt>
+<dd><p>これらの手続きはcommon-prefix版とおなじような働きをしますが、
+<var>trie</var>全体をトラバースします。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_186.html#g_t_00e3_0083_0088_00e3_0083_009d_00e3_0083_00ad_00e3_0082_00b8_00e3_0082_00ab_00e3_0083_00ab_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.29 rfc.quoted-printable - Quoted-printableエンコーディング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.29 rfc.quoted-printable - Quoted-printableエンコーディング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.29 rfc.quoted-printable - Quoted-printableエンコーディング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Quoted_002dprintable_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_154.html#MIME_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_156.html#SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002equoted_002dprintable-_002d-Quoted_002dprintable_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">11.29 <code>rfc.quoted-printable</code> - Quoted-printableエンコーディング</h2>
+
+<dl>
+<dt><a name="index-rfc_002equoted_002dprintable"></a><u>Module:</u> <b>rfc.quoted-printable</b></dt>
+<dd><a name="index-rfc_002equoted_002dprintable-1"></a>
+<p>このモジュールでは、RFC 2045 (<a indepth="true" href="gauche-refj_189.html#rfc2045">RFC2045</a>参照)の
+セクション6.7で定義されている、Quoted-printableフォーマットにエンコード/から
+デコードするためのいくつかの関数を定義しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-quoted_002dprintable_002dencode"></a><u>Function:</u> <b>quoted-printable-encode</b><i> :key line-width binary</i></dt>
+<dd><p>現在の入力ポートからバイトストリームを読み込み、それをQuoted-printable
+フォーマットにエンコードし、現在の出力ポートへ結果の文字ストリームを
+書き出します。この変換は、現在の入力ポートからEOFを読み出すと終了します。
+キーワード引数<var>line-width</var>は、出力に現れる行の最大長を指定します。
+エンコードされた行の長さがこの値を越えそうな場合は、「ソフトラインブレーク」が
+適宜挿入され、各行の長さがこの値を越えないように調整されます。
+ソフトラインブレークはquoted-printableフォーマットのデコード時に
+取り除かれます。
+<var>line-width</var>のデフォルト値は76です。(最小の意味のある値は4です。)
+<var>line-width</var>に<code>#f</code>または<code>0</code>を渡せば、
+ソフトラインブレークは挿入されません。
+デフォルトでは、<code>quoted-printable-encode</code>は入力中の改行に対して
+<code>CR-LF</code>シーケンスを出力します(「ハードラインブレーク」)。
+しかし、<var>binary</var>キーワード引数に真の値が与えられた場合、
+入力中のオクテット<code>#x0a</code>および<code>#x0d</code>はそれぞれ
+<code>=0A</code>、<code>=0D</code>のようにエンコードされます。
+詳しくはRFC2045の6.7節を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-quoted_002dprintable_002dencode_002dstring"></a><u>Function:</u> <b>quoted-printable-encode-string</b><i> string :key line-width binary</i></dt>
+<dd><p><var>string</var>の内容をQuoted-printableエンコードされたフォーマットに
+変換します。入力の文字列は、完全文字列でも不完全文字列でも構いません。
+常にバイトシーケンスとして処理されます。
+</p>
+<p>キーワード引数は<code>quoted-printable-encode</code>と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-quoted_002dprintable_002ddecode"></a><u>Function:</u> <b>quoted-printable-decode</b></dt>
+<dd><p>現在の入力ポートから文字ストリームを読み込み、それをQuoted-printable
+フォーマットからデコードし、結果のバイトストリームを現在の出力ポートへ
+書き出します。
+この変換は、EOFを読み出すと終了します。
+不正なシーケンス(’=’の後に16進文字が続かない、など)に出会うと、それらを
+リテラルのまま出力へコピーします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-quoted_002dprintable_002ddecode_002dstring"></a><u>Function:</u> <b>quoted-printable-decode-string</b><i> string</i></dt>
+<dd><p>Quoted-printableエンコードされた文字列<var>string</var>をデコードし、
+その結果を文字列で返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_154.html#MIME_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_156.html#SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.31 rfc.uri - URIの解析と作成</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.31 rfc.uri - URIの解析と作成">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.31 rfc.uri - URIの解析と作成">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_157.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_156.html#SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_158.html#zlib_00e5_009c_00a7_00e7_00b8_00ae_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002euri-_002d-URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090"></a>
+<h2 class="section">11.31 <code>rfc.uri</code> - URIの解析と作成</h2>
+
+<dl>
+<dt><a name="index-rfc_002euri"></a><u>Module:</u> <b>rfc.uri</b></dt>
+<dd><a name="index-rfc_002euri-1"></a>
+<p>RFC 2396 (<a indepth="true" href="gauche-refj_189.html#rfc2396">RFC2396</a>)で定義されている
+Uniform Resource Identifiers をパーズする関数を提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-uri_002dparse"></a><u>Function:</u> <b>uri-parse</b><i> uri</i></dt>
+<dt><a name="index-uri_002dscheme_0026specific"></a><u>Function:</u> <b>uri-scheme&amp;specific</b><i> uri</i></dt>
+<dt><a name="index-uri_002ddecompose_002dhierarchical"></a><u>Function:</u> <b>uri-decompose-hierarchical</b><i> specific</i></dt>
+<dt><a name="index-uri_002ddecompose_002dauthority"></a><u>Function:</u> <b>uri-decompose-authority</b><i> authority</i></dt>
+<dd><p>URIの一般的なパーザです。これらの関数はURIエンコーディングを
+デコードしません。URIスキームによってどの部分をデコードすべきかが
+異なるからです。パージングを行った後に、後述の<code>uri-decode</code>等を
+使ってデコードを行ってください。
+</p>
+<p><code>uri-parse</code>は最も手軽な手続きで、uriを以下に示す部分に
+分割し、多値で返します。
+もし該当する部分がuriに無かった場合は、その部分には<code>#f</code>が返ります。
+</p><ul>
+<li>
+URIスキームを文字列で。
+(例： <code>"mailto:foo@example.com"</code>の<code>"mailto"</code>)。
+</li><li>
+authorityパートのuser-infoを文字列で。
+(例： <code>ftp://anonymous@ftp.example.com/pub/foo</code>の<code>"anonymous"</code>)。
+</li><li>
+authorityパートのhostnameを文字列で。
+(例： <code>ftp://anonymous@ftp.example.com/pub/foo</code>の
+<code>"ftp.example.com"</code>)。
+</li><li>
+authorityパートのport番号を整数で。
+(例： <code>http://www.example.com:8080/</code>の<code>8080</code>)。
+</li><li>
+pathパート。
+(例： <code>http://www.example.com/index.html</code>の<code>"/index.html"</code>)。
+</li><li>
+queryパート。
+(例： <code>http://www.example.com/search?key=xyz&amp;lang=en</code>の
+<code>"key=xyz&amp;lang=en"</code>)。
+</li><li>
+fragmentパート。
+(例： <code>http://www.example.com/document.html#section4</code>の
+<code>"section4"</code>)。
+</li></ul>
+
+<p>以下の手続きはより詳細に、段階をふんでuriを分割してゆくものです。
+</p>
+<p><code>uri-scheme&amp;specific</code> は URI <var>uri</var> を引数に取り、
+スキーム部分と、そのスキーム特有の部分を表す2つの値を返します。
+<var>uri</var> がスキーム部分を持たない場合、<var>#f</var> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(uri-scheme&amp;specific "mailto:sclaus@north.pole")
+  ⇒ "mailto" <span class="roman">and</span> "sclaus@north.pole"
+(uri-scheme&amp;specific "/icons/new.gif")
+  ⇒ #f <span class="roman">and</span> "/icons/new.gif"
+</pre></td></tr></tbody></table>
+
+<p>URI が階層的な記法を用いている場合、すなわち、
+“<code>//<var>authority</var>/<var>path</var>?<var>query</var>#<var>fragment</var></code>”
+のような場合、スキーム特有の部分を <code>uri-decompose-hierarchical</code>
+に渡すと、<var>authority</var>、<var>path</var>、<var>query</var>、<var>fragment</var>
+の4つの値が返ります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(uri-decompose-hierarchical "//www.foo.com/about/company.html")
+  ⇒ "www.foo.com"<span class="roman">,</span> "/about/company.html"<span class="roman">,</span> #f <span class="roman">and</span> #f
+(uri-decompose-hierarchical "//zzz.org/search?key=%3fhelp")
+  ⇒ "zzz.org"<span class="roman">,</span> "/search"<span class="roman">,</span> "key=%3fhelp" <span class="roman">and</span> #f
+(uri-decompose-hierarchical "//jjj.jp/index.html#whatsnew")
+  ⇒ "jjj.jp"<span class="roman">,</span> "/index.html"<span class="roman">,</span> #f <span class="roman">and</span> "whatsnew"
+(uri-decompose-hierarchical "my@address")
+  ⇒ #f<span class="roman">,</span> #f<span class="roman">,</span> #f <span class="roman">and</span> #f
+</pre></td></tr></tbody></table>
+
+<p>さらに、階層的 URI の <var>authority</var> の部分を
+<code>uri-decompose-authority</code> に渡すと、<var>userinfo</var>、
+<var>host</var>、<var>port</var> が返ります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(uri-decompose-authority "yyy.jp:8080")
+  ⇒ #f<span class="roman">,</span> "yyy.jp" <span class="roman">and</span> "8080"
+(uri-decompose-authority "mylogin@yyy.jp")
+  ⇒ "mylogin"<span class="roman">,</span> "yyy.jp" <span class="roman">and</span> #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-uri_002dcompose"></a><u>Function:</u> <b>uri-compose</b><i> :key scheme userinfo host port authority path path* query fragment specific</i></dt>
+<dd><p>与えられたコンポーネントから URI を構成します。
+妥当な URI を作成するためのコンポーネントの組み合わせはたくさんあります。
+以下のダイアグラムは、考え得る組み合わせの方法を示しています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">        /-----------------specific-------------------\
+        |                                            |
+ scheme-+------authority-----+-+-------path*---------+-
+        |                    | |                     |
+        \-userinfo-host-port-/ \-path-query-fragment-/
+</pre></td></tr></tbody></table>
+
+<p>キーワード引数に <code>#f</code> が与えられた場合、それはキーワード引数が
+指定されないことと等価です。これは URI をパーズした結果を渡す場合に
+特に有用です。
+</p>
+<p>コンポーネントに適切でない文字が含まれている場合は、
+<code>url-compose</code> に渡す前に正しくエスケープされなければなりません。
+</p>
+<p>いくつかの例を示します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(uri-compose :scheme "http" :host "foo.com" :port 80
+             :path "/index.html" :fragment "top")
+  ⇒ "http://foo.com:80/index.html#top"
+
+(uri-compose :scheme "http" :host "foo.net"
+             :path* "/cgi-bin/query.cgi?keyword=foo")
+  ⇒ "http://foo.net/cgi-bin/query.cgi?keyword=foo"
+
+(uri-compose :scheme "mailto" :specific "a@foo.org")
+  ⇒ "mailto:a@foo.org"
+
+(receive (authority path query fragment)
+   (uri-decompose-hierarchical "//foo.jp/index.html#whatsnew")
+ (uri-compose :authority authority :path path
+              :query query :fragment fragment))
+  ⇒ "//foo.jp/index.html#whatsnew"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-uri_002dmerge"></a><u>Function:</u> <b>uri-merge</b><i> base-uri relative-uri relative-uri2 …</i></dt>
+<dd><p>引数は、完全な、あるいは部分的なURIを表す文字列です。
+この手続きは、RFC3986 Section 5.2. “Relative Resolution” に
+示されるアルゴリズムに従い、<var>relative-uri</var>を<var>base-uri</var>からの相対
+として解決します。
+</p>
+<p><var>relative-uri2</var> … が与えられた場合は、まず<var>relative-uri</var>
+が<var>base-uri</var>を基準に解決され、その結果を新たな基準として次の
+<var>relative-uri2</var>を解決し、以下同様に続けます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(uri-merge "http://example.com/foo/index.html" "a/b/c")
+ ⇒ "http://example.com/foo/a/b/c"
+
+(uri-merge "http://example.com/foo/search?q=abc" "../about#me")
+ ⇒ "http://example.com/about#me"
+
+(uri-merge "http://example.com/foo" "http://example.net/bar")
+ ⇒ "http://example.net/bar"
+
+(uri-merge "http://example.com/foo/" "q" "?xyz")
+ ⇒ "http://example.com/foo/q?xyz"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-uri_002ddecode"></a><u>Function:</u> <b>uri-decode</b><i> :key :cgi-decode</i></dt>
+<dt><a name="index-uri_002ddecode_002dstring"></a><u>Function:</u> <b>uri-decode-string</b><i> string :key :cgi-decode :encoding</i></dt>
+<dd><p>URI エンコーディング、すなわち、<code>%</code>でエスケープされた URI 文字列を
+デコードします。<code>uri-decode</code> は現在の入力ポートから入力を受け取り、
+デコードした結果を現在の出力ポートに書き出します。
+<code>uri-decode-string</code> は <var>string</var> を入力とし、デコードした
+文字列を返します。
+</p>
+<p><var>cgi-decode</var> が真の場合は、<code>+</code> がスペース文字に置換されます。
+</p>
+<p><code>uri-decode-string</code>には、外部の文字エンコーディングを指定する
+<var>encoding</var>キーワード引数を与えることができます。この引数が与えれた
+場合、デコードされたオクテットの列を指定された文字エンコーディングであると
+してGaucheの内部文字エンコーディングへと変換したものが返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-uri_002dencode"></a><u>Function:</u> <b>uri-encode</b><i> :key :noescape</i></dt>
+<dt><a name="index-uri_002dencode_002dstring"></a><u>Function:</u> <b>uri-encode-string</b><i> string :key :noescape :encoding</i></dt>
+<dd><p>安全でない文字を、<code>%</code>によるエスケープでエンコードします。
+<code>uri-encode</code> は現在の入力ポートから入力を受け取り、
+結果を現在の出力ポートに書き出します。
+<code>uri-encode-string</code> は <var>string</var> を入力とし、エンコードした
+文字列を返します。
+</p>
+<p>デフォルトでは、RFC3986 で"非予約文字"として規定されていない文字は
+エスケープされます。<var>noescape</var> 引数に異なる文字セットを渡すことで、
+それらがエンコードされるのを抑止することができます。
+例えば古いRFC2396では"非予約文字"がいくつか多かったのですが、
+<code>*rfc2396-unreserved-char-set*</code> (下記参照) を渡すことで
+それらの文字がエスケープされるのを防ぐことができます。
+</p>
+<p>マルチバイト文字は、デフォルトではGauche のネイティブなマルチバイト表現の
+オクテット・ストリームとしてエンコードされます。ただし
+<code>uri-encode-string</code>には<var>encoding</var>キーワード引数を渡すことができて、
+その場合はまず<var>string</var>が指定された文字エンコーディングへと変換されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002arfc2396_002dunreserved_002dchar_002dset_002a"></a><u>Constant:</u> <b>*rfc2396-unreserved-char-set*</b></dt>
+<dt><a name="index-_002arfc3986_002dunreserved_002dchar_002dset_002a"></a><u>Constant:</u> <b>*rfc3986-unreserved-char-set*</b></dt>
+<dd><p>これらの定数はそれぞれ、RFC2396とRFC3986で定義されている
+「非予約文字」の文字集合に束縛されています。
+(文字集合の操作については、<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>および<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a>
+を参照して下さい。)
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_156.html#SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_158.html#zlib_00e5_009c_00a7_00e7_00b8_00ae_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

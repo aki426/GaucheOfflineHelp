@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.40 text.gettext - 地域化メッセージ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.40 text.gettext - 地域化メッセージ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.40 text.gettext - 地域化メッセージ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_165.html#g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_167.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002egettext-_002d-_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8"></a>
+<h2 class="section">11.40 <code>text.gettext</code> - 地域化メッセージ</h2>
+
+<dl>
+<dt><a name="index-text_002egettext"></a><u>Module:</u> <b>text.gettext</b></dt>
+<dd><a name="index-text_002egettext-1"></a>
+<p>このモジュールは地域化メッセージを扱うユーティリティを提供します。
+API は GNU の gettext と互換性があり、メッセージは ‘<tt>*.po</tt>’ および
+‘<tt>*.mo</tt>’ ファイルから読み込まれます。それゆえ、GNU の gettext toolchain
+をつかって地域化メッセージを準備することができます。しかし、このコードは
+Alex Shinn によってスクラッチから書き起こされたものであり、GNU の
+gettext ライブラリには依存していません。
+</p>
+<p>この実装は GNU の gettext API を以下のように拡張したものです。
+</p><ul>
+<li>
+複数のメッセージファイルから、カスケードされた方法で読み込むことができます。
+これにより、アプリケーションはメッセージファイルの部分を共有できます。
+</li><li>
+複数のロケール/ドメインを同時に扱えます。
+</li></ul>
+
+<p>SRFI-29 (<a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096"><code>srfi-29</code> - 地域化</a>参照) はこれとは別のメッセージの地域化
+機構を提供しています。ポータブルなプログラムでは、SRFI-29 の方がよいこと
+もありますが、一般には、Gauche スクリプトでは、<code>text.gettext</code> の
+方を推奨します。それは、既存のメッセージファイルとの互換性と柔軟性の
+ためです。
+</p></dd></dl>
+
+<a name="gettext_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae-API"></a>
+<h3 class="subheading">gettext-互換の API</h3>
+
+<dl>
+<dt><a name="index-textdomain"></a><u>Function:</u> <b>textdomain</b><i> domain-name :optional locale dirs cdir cached? lookup-cached?</i></dt>
+<dd><p>アプリケーション用に、デフォルトのドメインとそのほかのパラメータを
+設定します。この設定は、以降の <code>gettext</code> の呼出しに影響を与えます。
+</p>
+<p><var>domain</var> は文字列または文字列のリストで、ドメイン(‘<tt>.mo</tt>’ あるいは
+‘<tt>.po</tt>’ ファイル名)を C の gettext と同じように指定します。
+<code>#f</code> を <var>domain-name</var> として渡すと、デフォルトのドメインアクセサ
+手続きが得られます。また、複数のドメインを <var>domain-name</var>にあたえる
+ことができます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(textdomain '("myapp" "gimp"))  ; search 1st myapp, then gimp
+(gettext "/File/Close")         ; "Close" from gimp unless overridden
+</pre></td></tr></tbody></table>
+
+<p><var>locale</var> は文字列または文字列のリストで、標準的なUnixのフォーマット
+<code>LANG[_REGION][.ENCODING]</code> です。フォールバックを指定するロケール
+のリストを渡すこともできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(textdomain "myapp" '("ru" "uk"))  ; search 1st Russian then Ukranian,
+(gettext "Hello, World!")          ; which are somewhat similar
+</pre></td></tr></tbody></table>
+
+<p><var>dirs</var> は実際のメッセージカタログを含む ‘<tt>LOCALE/CDIR/</tt>’
+ディレクトリのサーチパスです。これは常にシステムのデフォルト(たとえば、
+‘<tt>"/usr/share/locale"</tt>’)に追加されます。そして、コロンで区切られた
+<code>GETTEXT_PATH</code> 環境変数を継承します。
+</p>
+<p><var>cdir</var> はカテゴリーディレクトリで、既定値を <code>LC_CATEGORY</code>
+環境変数または、適当なシステム既定値(たとえば <code>LC_MESSAGES</code>)に
+設定します。一般にはこれを指定する必要はありません。
+</p>
+<p><var>cached?</var> は個別のメッセージをキャッシュするかを意味し、デフォルトは
+<code>#t</code> です。
+</p>
+<p><var>lookup-cached?</var>
+は、これらのパラメータで生成されるディスパッチをキャッシュするかどうか
+を意味し、デフォルトは <code>#t</code> です。
+</p>
+<p><code>textdomain</code> はこれらのパラメータを内部の <code>make-gettext</code> に
+渡し、その結果を、<code>gettext</code> で使われるグローバルなディスパッチに
+束縛します。これらのクロージャを複数の別々のドメインやロケールを一度に
+扱うのに便利なように、手で構築することができます。(これらは
+サーバ環境で便利です。) 後述の <code>make-gettext</code> を参照してください。
+</p>
+<p><code>textdomain</code> はそのドメインの情報をもつ <em>アクセサ手続き</em>を
+返します。詳細については、後述の <code>make-gettext</code> を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gettext"></a><u>Function:</u> <b>gettext</b><i> msg-id</i></dt>
+<dd><p><var>msg-id</var> の翻訳されたメッセージを返します。もし、翻訳された
+メッセージがなければ、<var>msg-id</var> それ自身を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ngettext"></a><u>Function:</u> <b>ngettext</b><i> msg-id :optional msg-id2 num</i></dt>
+<dd><p><var>gettext</var>と似ていますが、複数形を処理するのに使うことが
+できます。単数形のメッセージを <var>msg-id</var> へ、複数形のメッセージを
+<code>msg-id2</code> に渡します。<var>num</var> 引数は、複数形を決定
+するのに使われます。もし、メッセージカタログが見つからなければ、
+<var>num</var> が 1 のときは、<var>msg-id</var> が返り、そうでなければ、
+<var>msg-id2</var> が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bindtextdomain"></a><u>Function:</u> <b>bindtextdomain</b><i> domain dirs</i></dt>
+<dd><p>ドメイン <var>domain</var> のサーチパスを <var>dirs</var> に設定します。
+単一のディレクトリ名であったり、ディレクトリのリストであったりします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dgettext"></a><u>Function:</u> <b>dgettext</b><i> domain msg-id</i></dt>
+<dt><a name="index-dcgettext"></a><u>Function:</u> <b>dcgettext</b><i> domain msg-id locale</i></dt>
+<dd><p><var>domain</var> 中の <var>msg-id</var> の翻訳されたメッセージを返します。
+<code>dcgettext</code> は <var>locale</var> も引数としてとります。
+</p></dd></dl>
+
+<a name="g_t_00e4_00bd_008e_00e6_00b0_00b4_00e6_00ba_0096_00e3_0081_00ae_00e6_009f_0094_00e8_00bb_009f_00e3_0081_00aa-API"></a>
+<h3 class="subheading">低水準の柔軟な API</h3>
+
+<p>以下の手続きはより柔軟性のあるインタフェースで、この上で、gettext-互換の
+API が書かれています。
+</p>
+<dl>
+<dt><a name="index-make_002dgettext"></a><u>Function:</u> <b>make-gettext</b><i> :optional domain locale dirs gettext-cached? lookup-cached?</i></dt>
+<dd><p><em>アクセサ手続き</em> を生成して返します。返された手続きは、
+地域化されたメッセージを検索するメソッドをカプセル化しています。
+</p>
+<p>引数の意味は上述の <code>textdomain</code> と同じです。
+実際は、<code>textdomain</code> は <code>make-gettext</code> を呼び、その後、
+それは、結果をこのグローバルパラメータに束縛します。<code>make-gettext</code>
+を直接呼んで、自分自身で、アクセサ手続きを管理することもできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define my-gettext (make-gettext "myapp"))
+(define _ (my-gettext 'getter))
+(_ "Hello, World!")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_165.html#g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_167.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

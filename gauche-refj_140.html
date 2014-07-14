@@ -1,0 +1,976 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.14 file.util - ファイルシステムユーティリティ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.14 file.util - ファイルシステムユーティリティ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.14 file.util - ファイルシステムユーティリティ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_140.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_139.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00ab_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="file_002eutil-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<h2 class="section">11.14 <code>file.util</code> - ファイルシステムユーティリティ</h2>
+
+<dl>
+<dt><a name="index-file_002eutil"></a><u>Module:</u> <b>file.util</b></dt>
+<dd><a name="index-file_002eutil-1"></a>
+<p>ファイルやディレクトリを扱う便利な手続き群を提供します。
+これらの手続きは<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">ファイルシステム</a>で述べられたプリミティブなシステム手続きの上に
+構築されています。
+</p>
+<p>このモジュール内の多くの手続きは<var>follow-link?</var>というキーワード引数を取ります。
+これは手続きがシンボリックリンクに出会ったときの動作を指定します。<var>follow-link?</var>が
+真であれば、手続きはリンクの指す先のファイルに作用します。これがデフォルトの振舞いです。
+<var>follow-link?</var>に<code>#f</code>が渡された場合は手続きはリンクそのものに作用します。
+</p></dd></dl>
+
+<p>名前つけ規則に関する注記：ファイルやディレクトリを
+作成するのに<code>"create"</code>という語を使う処理系と<code>"make"</code>を
+使う処理系があります。ファイルやディレクトリを削除するのにも<code>"remove"</code>と
+<code>"delete"</code>の流派があります。どちらも同じくらい広く使われているようなので、
+Gaucheでは<em>両方の</em>名前を提供することにしました。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">11.14.1 ディレクトリユーティリティ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_008d_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">11.14.2 パスネームユーティリティ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">11.14.3 ファイル属性ユーティリティ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">11.14.4 ファイル操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab">11.14.5 ロックファイル</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_008d_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3-1"></a>
+<h3 class="subsection">11.14.1 ディレクトリユーティリティ</h3>
+
+<dl>
+<dt><a name="index-current_002ddirectory"></a><u>Function:</u> <b>current-directory</b><i> :optional new-directory</i></dt>
+<dd><p>引数無しで呼ばれた場合、カレントディレクトリを返します。
+文字列<var>new-directory</var>が与えられた場合はプロセスのカレントディレクトリを
+<var>new-directory</var>に変更します。変更が出来なかった場合はエラーとなります。
+</p>
+<p>この関数はChezSchemeやMzSchemeなどいくつかのScheme処理系に見られます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-home_002ddirectory"></a><u>Function:</u> <b>home-directory</b><i> :optional user</i></dt>
+<dd><p>名前または整数のユーザidで与えられたユーザ<var>user</var>のホームディレクトリを
+返します。<var>user</var>が省略された場合はカレントユーザが使われます。
+与えられたユーザが見付けられないか、ホームディレクトリを決定できなかった場合は
+<code>#f</code>が返されます。
+</p>
+<p>Windowsネイティブ環境では、この関数はカレントユーザに対してのみ動作します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-temporary_002ddirectory"></a><u>Parameter:</u> <b>temporary-directory</b></dt>
+<dd><p>一時ファイルを作るのに適したディレクトリ名を保持しているパラメータです。
+デフォルトの値は<code>sys-tmpdir</code>の戻り値です (<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d">パス名</a>参照)。
+<code>sys-tmpdir</code>との違いは、これはパラメータなので
+アプリケーションが実行時に変更できることです。
+ライブラリは柔軟性を高めるためにできるだけ<code>sys-tmpdir</code>よりは
+こちらを利用するのが良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-directory_002dlist"></a><u>Function:</u> <b>directory-list</b><i> path :key children? add-path? filter filter-add-path?</i></dt>
+<dd><p>ディレクトリ<var>path</var>中のエントリのリストを返します。
+リストは文字列順にソートされます。
+</p>
+<p>デフォルトではエントリのベースネーム(パスの最後のコンポーネント)のみが
+返されますが、キーワード引数<var>add-path?</var>に真の値が与えられた時は
+<var>path</var>が各エントリの前に追加されます。
+<var>children?</var>に真の値が与えられた時は、カレントディレクトリと親ディレクトリが
+リストから除かれます。
+</p>
+<p><var>filter</var>引数は、もし与えられれば、一つの引数を取る
+手続きでなければなりません。ディレクトリ中の各エントリを引数としてその手続きが呼ばれ、
+真を返したエントリのみが結果に含まれます。
+<var>filter</var>に与えられるエントリはデフォルトではベース名のみですが、
+引数<var>filter-add-path?</var>が真ならば<var>path</var>が前に追加された名前となります。
+</p>
+<p><var>path</var>がディレクトリでない場合はエラーが報告されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(directory-list "test")
+ ⇒ ("." ".." "test.scm" "test.scm~")
+
+(directory-list "test" :add-path? #t)
+ ⇒ ("test/." "test/.." "test/test.scm" "test/test.scm~")
+
+(directory-list "test" :children? #t)
+ ⇒ ("test.scm" "test.scm~")
+
+(directory-list "test" :children? #t :add-path? #t
+   :filter (lambda (e) (not (string-suffix? "~" e))))
+ ⇒ ("test/test.scm")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-directory_002dlist2"></a><u>Function:</u> <b>directory-list2</b><i> path :key children? add-path? filter follow-link?</i></dt>
+<dd><p><code>directory-list</code>に似ていますが、ふたつの値を返します。最初の値は
+<var>path</var>内にあるサブディレクトリのリストで、次の値はそれ以外のエントリのリストです。
+キーワード引数<var>children?</var>、<code>add-path?</code>、<var>filter</var>は
+<code>directory-list</code>と同じ意味をもちます。
+</p>
+<p>偽の値を<var>follow-link?</var>に与えると、<var>path</var>内のシンボリックリンクを
+辿りません；すなわち、<var>path</var>内にディレクトリへのシンボリックリンクがあった場合、
+デフォルト、もしくは<var>follow-link?</var>に真の値が与えられた場合は
+それは最初のリスト(サブディレクトリ)に入りますが、<var>follow-link?</var>
+に偽の値が与えられた場合は後者のリスト(その他のエントリ)に入ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-directory_002dfold"></a><u>Function:</u> <b>directory-fold</b><i> path proc seed :key lister follow-link?</i></dt>
+<dd><p>ディレクトリ探索の最も基本的な手続きです。基本的な動作は以下に示すような再帰的なものです。
+</p>
+<ul>
+<li>
+<var>path</var>がディレクトリでない場合は<code>(<var>proc</var> <var>path</var> <var>seed</var>)</code> を
+評価し、結果を返します。
+</li><li>
+<var>path</var>がディレクトリであった場合、まず
+<var>(<var>lister</var> <var>path</var> <var>seed</var>)</var> を評価します。
+手続き<var>lister</var>は2つの値、パス名のリストと次のseedとなる値を
+返さなければなりません。
+続いて、<code>directory-fold</code>が各パス名に対して再帰的に呼ばれます。
+各呼び出しの結果が次の再帰呼び出しの<var>seed</var>の値に使われます。
+</li></ul>
+
+<p>デフォルトの<var>lister</var>は<code>directory-list</code>を次のように呼び出すものです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda (path seed)
+  (values (directory-list path :add-path? #t :children? #t)
+          seed))
+</pre></td></tr></tbody></table>
+
+<p><var>lister</var>は<var>path</var>自身への参照 (<code>"."</code>) やその親ディレクトリへの参照を
+返してはなりません。また、<var>lister</var>の戻り値は現在のディレクトリからアクセス可能な
+パス名でなければなりません。例えば<var>path</var>が<code>"/usr/lib/foo"</code>であり、
+そのディレクトリが<code>"libfoo.a"</code>と<code>"libfoo.so"</code>を含んでいた場合、
+<var>lister</var>は<code>'("/usr/lib/foo/libfoo.a" "/usr/lib/foo/libfoo.so")</code>
+のようなリストを返す必要があります。
+</p>
+<p>キーワード引数<var>follow-link?</var>はディレクトリを指しているシンボリックリンクに対して
+<var>lister</var>を呼ぶかどうかを決定します。<var>follow-link?</var>が真(デフォルト値)である
+場合はそのようなシンボリックリンクに対しても<var>lister</var>が呼ばれます。
+一方、<var>follow-link?</var>が偽であればシンボリックリンクに対しては<var>proc</var>が呼ばれます。
+</p>
+<p>次の例は、与えられたpath以下からemacsのバックアップファイル ("~"で終る名を持つファイル)
+のリストを返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use srfi-13) ;; for string-suffix?
+(directory-fold path
+                (lambda (entry result)
+                  (if (string-suffix? "~" entry)
+                      (cons entry result)
+                      result))
+                '())
+</pre></td></tr></tbody></table>
+
+<p>次の例は与えられたpath以下全てのファイルとディレクトリ名をリストにして
+返します。<var>lister</var>引数を使ってディレクトリ名そのものを結果に
+含めていることに注目して下さい。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(directory-fold path cons '()
+  :lister (lambda (path seed)
+            (values (directory-list path :add-path? #t :children? #t)
+                    (cons path seed))))
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002ddirectory_002a"></a><u>Function:</u> <b>make-directory*</b><i> name :optional perm</i></dt>
+<dt><a name="index-create_002ddirectory_002a"></a><u>Function:</u> <b>create-directory*</b><i> name :optional perm</i></dt>
+<dd><p>ディレクトリ<var>name</var>を作成します。<var>name</var>に至るパスが存在しない
+場合は必要なディレクトリが作成されます (Unixの<code>mkdir -p</code>コマンドと
+同様です)。ディレクトリ<var>name</var>が既に存在していた場合は何もしません。
+<var>perm</var>は作成されるディレクトリのパーミッションビットを指定します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-remove_002ddirectory_002a"></a><u>Function:</u> <b>remove-directory*</b><i> name</i></dt>
+<dt><a name="index-delete_002ddirectory_002a"></a><u>Function:</u> <b>delete-directory*</b><i> name</i></dt>
+<dd><p>ディレクトリ<var>name</var>とその内容を再帰的に消去します
+(Unixの<code>rm -r</code>コマンドと同様です)。シンボリックリンクは辿られません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002ddirectory_002a"></a><u>Function:</u> <b>copy-directory*</b><i> src dst :key if-exists backup-suffix safe keep-timestamp keep-mode follow-link?</i></dt>
+<dd><p><var>src</var>が通常のファイルであれば、<code>copy-file</code>と同じように
+その内容を<var>dst</var>にコピーします。しかし<var>src</var>がディレクトリの場合は、
+再帰的にディレクトリを辿り、その全てを<var>dst</var>へとコピーします。
+<code>cp -r</code>コマンドに相当するものだと考えて良いでしょう。
+</p>
+<p><var>src</var>がディレクトリの場合、デフォルトではその下にあるシンボリックリンクは
+辿られず、リンクそのものがコピーされます。リンク先の内容をもコピーしたい
+場合は<var>follow-link?</var>キーワード引数に真の値を与えてください。
+つまり、<var>follow-link?</var>キーワード引数のデフォルト値は<code>#f</code>です。
+(このデフォルト値は<code>copy-file</code>と逆であることに注意してください。
+<code>copy-file</code>では<var>follow-link?</var>はデフォルトで真であり、
+リンクそのものをコピーしたい場合に明示的に<code>#f</code>を与える必要があります。)
+</p>
+<p>他のキーワード引数の意味は<code>copy-file</code>と同じです。
+詳細は<code>copy-file</code>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-create_002ddirectory_002dtree"></a><u>Function:</u> <b>create-directory-tree</b><i> dir spec</i></dt>
+<dd><p><var>spec</var>で指定されるディレクトリツリーを<var>dir</var>の下に作成します。
+特定のディレクトリ構造を一気にセットアップする際に便利です。
+</p>
+<p><var>spec</var>引数は次に示される構造をもつS式です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;spec&gt; : &lt;name&gt;                             ; 空のファイル
+       | (&lt;name&gt; &lt;option&gt; ...)              ; 空のファイル
+       | (&lt;name&gt; &lt;option&gt; ... &lt;string&gt;)     ; 固定内容のファイル
+       | (&lt;name&gt; &lt;option&gt; ... &lt;procedure&gt;)  ; 内容を生成するファイル
+       | (&lt;name&gt; &lt;option&gt; ... (&lt;spec&gt; ...)) ; ディレクトリ
+
+&lt;name&gt; : 文字列かシンボル
+
+&lt;option&gt; ... : キーワードと値の交代リスト
+</pre></td></tr></tbody></table>
+
+<p><var>spec</var>の最初と2番目の形式では、名前<var>name</var>を持つ空のファイルが作られます。
+3番目の形式では与えられた文字列がファイルの内容となります。
+</p>
+<p>4番目の形式では、手続きがファイルのパス名を引数として呼び出され、
+その手続きがcurrent output portに出力した内容がファイルの内容となります。
+引数に渡されるパス名は<var>dir</var>引数からの相対パスです。
+手続きが呼ばれる時、その親ディレクトリは既につくられています。
+</p>
+<p>最後の形式は、名前<var>name</var>を持つディレクトリを作成し、
+その子供として再帰的に指定された<var>spec</var>によるファイル/ディレクトリを作成します。
+</p>
+<p><var>option</var>によって、作られるファイル/ディレクトリの属性を細かく指定できます。
+今のところ、次のオプションが認識されます。
+</p>
+<dl compact="compact">
+<dt> <code>:mode <var>mode</var></code></dt>
+<dd><p>整数<var>mode</var>でパーミッションのモードビットを指定します。
+</p></dd>
+<dt> <code>:owner <var>uid</var></code></dt>
+<dt> <code>:group <var>gid</var></code></dt>
+<dd><p>整数<var>uid</var>/<var>gid</var>で作成されるエントリのオーナー/グループを指定します。
+作成されるエントリのオーナー/グループを変更するには、
+呼び出すプロセスに特権が必要かもしれません。
+</p></dd>
+<dt> <code>:symlink <var>path</var></code></dt>
+<dd><p>ファイルを作成する<var>spec</var>でのみ有効なオプションで、
+<var>path</var>を指すシンボリックリンクを作成します。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-check_002ddirectory_002dtree"></a><u>Function:</u> <b>check-directory-tree</b><i> dir spec</i></dt>
+<dd><p><var>spec</var>で記述されるディレクトリ階層が<var>dir</var>の下に存在するかどうかを
+調べ、存在すれば<code>#t</code>、そうでなければ<code>#f</code>を返します。
+</p>
+<p><var>spec</var>の形式は上で説明した<code>create-directory-tree</code>と同じです。
+</p>
+<p><var>spec</var>がオプションを含んでいる場合、該当するファイル/ディレクトリの
+属性もそのオプションに合致するかどうかチェックされます。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_008d_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_008d_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3-1"></a>
+<h3 class="subsection">11.14.2 パスネームユーティリティ</h3>
+
+<dl>
+<dt><a name="index-build_002dpath"></a><u>Function:</u> <b>build-path</b><i> base-path component …</i></dt>
+<dd><p>パス名のコンポーネント<var>component</var>を<var>base-path</var>に追加します。
+<var>Component</var>はシンボル<code>up</code>または<code>same</code>であっても
+構いません; Unixではそれらは<code>".."</code>または<code>"."</code>と等価です。
+このAPIはMzSchemeから採られました。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-absolute_002dpath_003f"></a><u>Function:</u> <b>absolute-path?</b><i> path</i></dt>
+<dt><a name="index-relative_002dpath_003f"></a><u>Function:</u> <b>relative-path?</b><i> path</i></dt>
+<dd><p><var>path</var>がそれぞれ絶対パスまたは相対パスならば<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-expand_002dpath"></a><u>Function:</u> <b>expand-path</b><i> path</i></dt>
+<dd><p><var>path</var>がチルダ表記を含んでいたらそれを展開したものを返します。
+そうでなければ<var>path</var>そのものを返します。この手続きは<var>path</var>が
+存在しアクセス可能であるかどうかはチェックしません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-resolve_002dpath"></a><u>Function:</u> <b>resolve-path</b><i> path</i></dt>
+<dd><p><var>path</var>を<code>expand-path</code>と同様に展開し、
+続いて<var>path</var>の各コンポーネントに対してそれがシンボリックリンクであればリンク先の
+ものに置き換えてゆきます。<var>path</var>が存在しないパスを指していたり、
+シンボリックリンクの先が存在しなかったり、読み出せないディレクトリがあった場合は
+エラーとなります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-simplify_002dpath"></a><u>Function:</u> <b>simplify-path</b><i> path</i></dt>
+<dd><p><var>path</var>から、親ディレクトリへの参照(<code>".."</code>)と自分自身への参照(<code>"."</code>)を
+出来る限り取り除きます。この手続きはファイルシステムへはアクセスしません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-decompose_002dpath"></a><u>Function:</u> <b>decompose-path</b><i> path</i></dt>
+<dd><p>パス名<var>path</var>のディレクトリ部、拡張子を除いたファイル名、
+そして拡張子の3つの値を返します。パス名が拡張子を持たない場合、
+最後の値は<code>#f</code>になります。パス名がディレクトリセパレータで
+終わっている場合は2番目と3番目の値が<code>#f</code>になります。
+(後置されたディレクトリセパレータに関するこの取扱いは、
+<code>sys-dirname</code>/<code>sys-basename</code>と異なることに注意して下さい。
+<code>sys-dirname</code>等は後置されたディレクトリセパレータを無視するという
+シェル等の慣習に従っています。)
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(decompose-path "/foo/bar/baz.scm")
+  ⇒ "/foo/bar", "baz", "scm"
+(decompose-path "/foo/bar/baz")
+  ⇒ "/foo/bar", "baz", #f
+
+(decompose-path "baz.scm")
+  ⇒ ".", "baz", "scm"
+(decompose-path "/baz.scm")
+  ⇒ "/", "baz", "scm"
+
+;; Boundary cases
+(decompose-path "/foo/bar/baz.")
+  ⇒ "/foo/bar", "baz", ""
+(decompose-path "/foo/bar/.baz")
+  ⇒ "/foo/bar", ".baz", #f
+(decompose-path "/foo/bar.baz/")
+  ⇒ "/foo/bar.baz", #f, #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-path_002dextension"></a><u>Function:</u> <b>path-extension</b><i> path</i></dt>
+<dt><a name="index-path_002dsans_002dextension"></a><u>Function:</u> <b>path-sans-extension</b><i> path</i></dt>
+<dd><p>それぞれ、<var>path</var>の拡張子と、<var>path</var>から拡張子を除いたものを返します。
+<var>path</var>が拡張子を持っていない場合はそれぞれ<code>#f</code>と<var>path</var>が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(path-extension "/foo/bar.c")       ⇒ "c"
+(path-sans-extension "/foo/bar.c")  ⇒ "/foo/bar"
+
+(path-extension "/foo/bar")         ⇒ #f
+(path-sans-extension "/foo/bar")    ⇒ "/foo/bar"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-path_002dswap_002dextension"></a><u>Function:</u> <b>path-swap-extension</b><i> path newext</i></dt>
+<dd><p><var>path</var>の拡張子が<var>newext</var>に置換されたものが返されます。<code>path</code>が
+拡張子を持たない場合は、<var>path</var>に "." と<var>newext</var>が追加されます。
+</p>
+<p><var>newext</var>が<code>#f</code>の場合は、<var>path</var>の拡張子が除かれたものが
+返されます。すなわち、
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(path-swap-extension "/foo/bar.c" "o")  ⇒ "/foo/bar.o"
+(path-swap-extension "/foo/bar.c" #f)   ⇒ "/foo/bar"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-find_002dfile_002din_002dpaths"></a><u>Function:</u> <b>find-file-in-paths</b><i> name :key paths pred</i></dt>
+<dd><p>名前<var>name</var>を持ち、述語<var>pred</var>を満たすファイルをパス名のリスト<var>paths</var>
+から探します。見つかった場合はファイルの絶対パス名を、見つからなかった場合は
+<code>#f</code>を返します。
+</p>
+<p><var>name</var>が絶対パス名で与えられた場合はそれが存在するかどうかと
+<var>pred</var>を満たすかどうかのみがチェックされます。
+</p>
+<p><var>paths</var>のデフォルト値は環境変数<code>PATH</code>から取られます。また、
+<var>pred</var>のデフォルト値は<code>file-is-executable?</code>
+(<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ファイル属性ユーティリティ</a>参照)です。すなわち、デフォルトでは
+この手続きはコマンドサーチパスから実行可能ファイルを探すのに使えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(find-file-in-paths "ls")
+  ⇒ "/bin/ls"
+
+;; <span class="roman">アプリケーション"myapp"のユーザプレファレンスファイルを探す例</span>
+(find-file-in-paths "userpref"
+  :paths `(,(expand-path "~/.myapp")
+           "/usr/local/share/myapp"
+           "/usr/share/myapp")
+  :pred  file-is-readable?)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-null_002ddevice"></a><u>Function:</u> <b>null-device</b></dt>
+<dd><p>nullデバイス名を返します。cygwinを含むunixプラットフォームでは
+<code>"/dev/null"</code>、mingwを含むWindowsネイティブプラットフォームでは
+<code>"NUL"</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-console_002ddevice"></a><u>Function:</u> <b>console-device</b></dt>
+<dd><p>コンソールデバイス名を返します。cygwinを含むunixプラットフォームでは
+<code>"/dev/tty"</code>、mingwを含むWindowsネイティブプラットフォームでは
+<code>"CON"</code>が返されます。
+</p>
+<p>そのデバイスが実際に現在のプロセスから利用可能であるかどうかはチェックされません。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_008d_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3-1"></a>
+<h3 class="subsection">11.14.3 ファイル属性ユーティリティ</h3>
+
+<dl>
+<dt><a name="index-file_002dtype"></a><u>Function:</u> <b>file-type</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dperm"></a><u>Function:</u> <b>file-perm</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dmode-1"></a><u>Function:</u> <b>file-mode</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dino"></a><u>Function:</u> <b>file-ino</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002ddev"></a><u>Function:</u> <b>file-dev</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002drdev"></a><u>Function:</u> <b>file-rdev</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dnlink"></a><u>Function:</u> <b>file-nlink</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002duid"></a><u>Function:</u> <b>file-uid</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dgid"></a><u>Function:</u> <b>file-gid</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dsize"></a><u>Function:</u> <b>file-size</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002datime"></a><u>Function:</u> <b>file-atime</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dmtime"></a><u>Function:</u> <b>file-mtime</b><i> path :key follow-link?</i></dt>
+<dt><a name="index-file_002dctime"></a><u>Function:</u> <b>file-ctime</b><i> path :key follow-link?</i></dt>
+<dd><p>これらの手続きは<var>path</var>で示されるファイルやディレクトリのアトリビュートを
+返します。アトリビュート名は<code>&lt;sys-stat&gt;</code>のスロット名に対応しています。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>を参照して下さい。<var>path</var>で示されるファイルが
+存在しなければ<code>#f</code>が返されます。
+</p>
+<p><var>path</var>がシンボリックリンクだった場合、オプショナルな引数
+<var>follow-link?</var> に偽の値が与えられていない限り、これらの手続きは
+リンクの指す先のファイルに関する情報を返します。
+</p>
+<p>MzSchemeとChickenには<code>file-size</code>があります。
+Chickenには<code>file-modification-time</code>があり、これは<code>file-mtime</code>と
+同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-file_002dis_002dreadable_003f"></a><u>Function:</u> <b>file-is-readable?</b><i> path</i></dt>
+<dt><a name="index-file_002dis_002dwritable_003f"></a><u>Function:</u> <b>file-is-writable?</b><i> path</i></dt>
+<dt><a name="index-file_002dis_002dexecutable_003f"></a><u>Function:</u> <b>file-is-executable?</b><i> path</i></dt>
+<dd><p><var>path</var>が存在して、現在の実効ユーザがそれぞれ読み取り/書き込み/実行可能なら<code>#t</code>を
+返します。
+このAPIはSTkから取られました。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-file_002dis_002dsymlink_003f"></a><u>Function:</u> <b>file-is-symlink?</b><i> path</i></dt>
+<dd><p><var>path</var>が存在して、それがシンボリックリンクなら<code>#t</code>を返します。
+(参照：<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>の<code>file-is-regular?</code>, <code>file-is-directory?</code>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-file_002deq_003f"></a><u>Function:</u> <b>file-eq?</b><i> path1 path2</i></dt>
+<dt><a name="index-file_002deqv_003f"></a><u>Function:</u> <b>file-eqv?</b><i> path1 path2</i></dt>
+<dt><a name="index-file_002dequal_003f"></a><u>Function:</u> <b>file-equal?</b><i> path1 path2</i></dt>
+<dd><p><var>path1</var>と<var>path2</var>で示されるファイルを比較します。
+<code>file-eq?</code>と<code>file-eqv?</code>は<var>path1</var>と<var>path2</var>が
+全く同一のファイルを参照しているかどうか、すなわち、同じデバイス上にあり同じ
+inode番号を持つかどうかをチェックします。二つの手続きの違いは、
+<code>path1</code>や<var>path2</var>の最後のコンポーネントがシンボリックリンクで
+あった場合に、<var>file-eq?</var>はリンクそのものの比較をするが
+<code>file-eqv?</code>はリンクを辿った先のファイルの比較をする、という点です。
+</p>
+<p><code>file-equal?</code>は<var>path1</var>と<var>path2</var>をその内容まで考慮して比較します。
+すなわち、二つのファイルが<code>file-eqv?</code>の意味で同一でなかった場合、
+<code>file-equal?</code>はファイルの内容を比較し、全てが一致した場合に<code>#t</code>を返します。
+</p>
+<p><var>path1</var>と<var>path2</var>ともにディレクトリが与えられた場合の
+<code>file-equal?</code>の動作は未定義です。将来、ディレクトリ内容を
+スキャンするような拡張が加えられるかもしれません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-file_002dmtime_003d_003f"></a><u>Generic Function:</u> <b>file-mtime=?</b><i> f1 f2</i></dt>
+<dt><a name="index-file_002dmtime_003c_003f"></a><u>Generic Function:</u> <b>file-mtime&lt;?</b><i> f1 f2</i></dt>
+<dt><a name="index-file_002dmtime_003c_003d_003f"></a><u>Generic Function:</u> <b>file-mtime&lt;=?</b><i> f1 f2</i></dt>
+<dt><a name="index-file_002dmtime_003e_003f"></a><u>Generic Function:</u> <b>file-mtime&gt;?</b><i> f1 f2</i></dt>
+<dt><a name="index-file_002dmtime_003e_003d_003f"></a><u>Generic Function:</u> <b>file-mtime&gt;=?</b><i> f1 f2</i></dt>
+<dd><p>二つのファイルの変更時間を比較します。それぞれの引数に対して、
+次のような型のオブジェクトが渡せるようなメソッドが定義されています。
+</p>
+<ul>
+<li>
+文字列のパス名。そのパス名で示されるファイルから変更時間が取られます。
+</li><li>
+<code>&lt;sys-stat&gt;</code>オブジェクト (See section <a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>)。
+stat構造体から変更時間が取られます。
+</li><li>
+<code>&lt;time&gt;</code>オブジェクト。その示す時間が変更時間と考えられます。
+</li><li>
+数値。変更時間をUnix Epochからの秒数で表したものと見なされます。
+</li></ul>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; <span class="roman">"foo.c" より "foo.o" が新しいかどうか調べる</span>
+(file-mtime&gt;? "foo.c" "foo.o")
+
+;; <span class="roman">"foo.log"が過去24時間以内に更新されたかどうかを調べる</span>
+(file-mtime&gt;? "foo.c" (- (sys-time) 86400))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-file_002dctime_003d_003f"></a><u>Generic Function:</u> <b>file-ctime=?</b><i> f1 f2</i></dt>
+<dt><a name="index-file_002datime_003d_003f"></a><u>Generic Function:</u> <b>file-atime=?</b><i> f1 f2</i></dt>
+<dd><a name="index-file_002dctime_003c_003f"></a>
+<a name="index-file_002dctime_003c_003d_003f"></a>
+<a name="index-file_002dctime_003e_003f"></a>
+<a name="index-file_002dctime_003e_003d_003f"></a>
+<a name="index-file_002datime_003c_003f"></a>
+<a name="index-file_002datime_003c_003d_003f"></a>
+<a name="index-file_002datime_003e_003f"></a>
+<a name="index-file_002datime_003e_003d_003f"></a>
+<p><code>file-mtime=?</code>と同じですが、ファイルの属性変更時間とアクセス時間に
+関して比較します。
+<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>を使う関数も同様に定義されています。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h3 class="subsection">11.14.4 ファイル操作</h3>
+
+<dl>
+<dt><a name="index-touch_002dfile"></a><u>Function:</u> <b>touch-file</b><i> path :key (time #f) (type #f) (create #t)</i></dt>
+<dt><a name="index-touch_002dfiles"></a><u>Function:</u> <b>touch-files</b><i> paths :key (time #f) (type #f) (create #t)</i></dt>
+<dd><p><var>path</var>もしくはリスト<var>paths</var>中の各パスの
+タイムスタンプを現在の時刻に更新します。
+指定されたパスが存在しなかった場合、キーワード引数<var>create</var>が<code>#f</code>でなければ、
+その名前で大きさゼロのファイルが作成されます。
+</p>
+<p>キーワード引数<var>time</var>が与えられて<code>#f</code>でない場合、それは
+非負の実数でなければなりません。現在の時刻のかわりにその値がタイムスタンプとして使われます。
+</p>
+<p>キーワード引数<var>type</var>は<code>#f</code>(デフォルト)か、シンボル<code>atime</code>もしくは
+<code>mtime</code>です。シンボルの場合は、それぞれアクセス時刻か変更時刻のみが更新されます。
+</p>
+<p>註：<code>touch-files</code>はファイルをひとつづつ処理するので、各ファイルの
+タイムスタンプが完全に同一にはならない可能性があります。
+</p>
+<p>これらの手続きはシステムコール<code>sys-utime</code>を使って作られています
+(<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002dfile"></a><u>Function:</u> <b>copy-file</b><i> src dst :key if-exists backup-suffix safe keep-timestamp keep-mode follow-link?</i></dt>
+<dd><p>ファイル<var>src</var>を<var>dst</var>へコピーします。コピー元ファイル<var>src</var>は
+存在していなければなりません。コピー先ファイル<var>dst</var>が存在していた場合の
+ふるまいはキーワード引数<var>if-exists</var>によって以下のように指定されます。
+</p>
+<dl compact="compact">
+<dt> <code>:error</code></dt>
+<dd><p>(デフォルト) <var>dst</var>が存在していたらエラーを通知する。
+</p></dd>
+<dt> <code>:supersede</code></dt>
+<dd><p><var>dst</var>を<code>src</code>のコピーで置き換える。
+</p></dd>
+<dt> <code>:backup</code></dt>
+<dd><p><var>dst</var>の名前を変えてキープする。
+</p></dd>
+<dt> <code>#f</code></dt>
+<dd><p><var>dst</var>が存在していたらコピーをせず<code>#f</code>を返す。
+</p></dd>
+</dl>
+
+<p><code>copy-file</code>はコピーが完了したら<code>#t</code>を返します。
+</p>
+<p><var>src</var>がシンボリックリンクであった場合、<code>copy-file</code>は
+デフォルトでリンクを辿ります。つまり、ファイルの実体がコピーされます。
+<var>src</var>が存在しないパスを指すシンボリックリンクであった場合は
+エラーが通知されます。
+</p>
+<p>キーワード引数<var>follow-link?</var>に<code>#f</code>を与えることで、
+<code>copy-link</code>にシンボリックリンクそのものをコピーさせることも
+できます。この場合、<var>src</var>が存在しないパスを指すシンボリックリンクで
+あっても構いません。
+</p>
+<p><var>if-exists</var>が<code>:backup</code>である場合、
+<var>dst</var>がリネームされる名前は
+<var>dst</var>にキーワード引数<var>backup-suffix</var>で指定されるサフィックスを
+付けたものとなります。デフォルト値は<code>".orig"</code>です。
+</p>
+<p>デフォルトでは<code>copy-file</code>は直接<var>dst</var>にコピーを行いますが、
+キーワード引数<var>safe</var>に真の値が与えられた場合は、<var>dst</var>と同じディレクトリ
+内の一時ファイルにまずコピーし、それが完了した時点で<var>dst</var>へとリネームします。
+コピーが何らかの理由で中断された場合、ファイルシステムはコピー前の状態へと
+「ロールバック」されます。
+</p>
+<p>キーワード引数<var>keep-timestamp</var>に真の値が与えられた場合は、
+<code>copy-file</code>はコピー後にコピー先のファイルのタイムスタンプを
+コピー元のタイムスタンプに合わせます。
+</p>
+<p>キーワード引数<var>keep-mode</var>に真の値が与えられた場合は、
+コピー先のファイルのパーミッションビットはコピー元のそれに合わせられます。
+<var>keep-mode</var>が偽の場合(デフォルト)は、コピー先が既に存在して
+<var>safe</var>引数が偽の場合にコピー先のもとのパーミッションが保持され、
+そうでなければ<code>#o666</code>がumaskセッティングによってマスクされた
+値となります。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-move_002dfile"></a><u>Function:</u> <b>move-file</b><i> src dst :key if-exists backup-suffix</i></dt>
+<dd><p>ファイル<var>src</var>を<var>dst</var>へ移動します。移動元ファイル<var>src</var>は
+存在していなければなりません。移動先ファイル<var>dst</var>が存在した場合の
+ふるまいはキーワード引数<var>if-exists</var>によって以下のように指定されます。
+</p><dl compact="compact">
+<dt> <code>:error</code></dt>
+<dd><p>(デフォルト) <var>dst</var>が存在していたらエラーを通知する。
+</p></dd>
+<dt> <code>:supersede</code></dt>
+<dd><p><var>dst</var>を<code>src</code>で置き換える。
+</p></dd>
+<dt> <code>:backup</code></dt>
+<dd><p><var>dst</var>の名前を変えてキープする。
+</p></dd>
+<dt> <code>#f</code></dt>
+<dd><p><var>dst</var>が存在していたら移動をせず<code>#f</code>を返す。
+</p></dd>
+</dl>
+
+<p><code>move-file</code>は移動が完了したら<code>#t</code>を返します。
+</p>
+<p><var>if-exists</var>が<code>:backup</code>である場合、<var>dst</var>がリネームされる
+名前は<var>dst</var>にキーワード引数<var>backup-suffix</var>で指定されるサフィックスを
+付けたものとなります。デフォルト値は<code>".orig"</code>です。
+</p>
+<p>ファイル<var>src</var>と<var>dst</var>は別のファイルシステム上にあっても構いません。
+その場合、<code>move-file</code>はまず<var>src</var>を<var>dst</var>と同じディレクトリの
+一時ファイルにコピーし、それを<var>dst</var>にリネームし、それから
+<var>src</var>を消去します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-remove_002dfiles"></a><u>Function:</u> <b>remove-files</b><i> paths</i></dt>
+<dt><a name="index-delete_002dfiles"></a><u>Function:</u> <b>delete-files</b><i> paths</i></dt>
+<dd><p>リスト<var>paths</var>中の各パスを削除します。パスがファイルの場合は
+<code>unlink</code>し、ディレクトリの場合は<code>remove-directory*</code>を
+使って再帰的にその内容を消去します。存在しないパスは単に無視されます。
+</p>
+<p><code>delete-files</code>は<code>remove-files</code>の別名です。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-file_002d_003estring"></a><u>Function:</u> <b>file-&gt;string</b><i> filename options …</i></dt>
+<dt><a name="index-file_002d_003elist"></a><u>Function:</u> <b>file-&gt;list</b><i> reader filename options …</i></dt>
+<dt><a name="index-file_002d_003estring_002dlist"></a><u>Function:</u> <b>file-&gt;string-list</b><i> filename options …</i></dt>
+<dt><a name="index-file_002d_003esexp_002dlist"></a><u>Function:</u> <b>file-&gt;sexp-list</b><i> filename options …</i></dt>
+<dd><p>ファイル <var>filename</var> から読み込むための便利手続き。
+これらの手続きは、まず、指定された名前のファイルをオープンし、その
+オープンしたファイルに対してそれぞれ <code>port-&gt;string</code>、
+<code>port-&gt;list</code>、<code>port-&gt;string-list</code> および <code>port-&gt;sexp-list</code>
+を呼びます(<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">入力ユーティリティ手続き</a>参照)。すべての内容が読み込まれる
+かまたは読み込み中にエラーシグナルがあがれば、ファイルはクローズされます。
+</p>
+<p>これらの手続きは<code>call-with-input-file</code>と同じキーワード引数を取ります。
+ファイルが見つからなかった場合の振舞いは
+キーワード引数<code>:if-does-not-exist</code>によって指定できます。
+それが<code>:error</code>ならエラーが報告され、
+<code>#f</code>なら<code>#f</code>が返されます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_141.html#g_t_00e5_00ae_009a_00e6_0095_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab-1"></a>
+<h3 class="subsection">11.14.5 ロックファイル</h3>
+
+<p>Exclusive creation of files or directories is often used
+for inter-process locking.   The following procedure provides
+a packaged interface for it.
+</p>
+<dl>
+<dt><a name="index-with_002dlock_002dfile"></a><u>Function:</u> <b>with-lock-file</b><i> lock-name thunk :key type retry-interval                       retry-limit secondary-lock-name retry2-interval                       retry2-limit perms abandon-timeout</i></dt>
+<dd>
+<p>Exclusively creates a file or a directory (<em>lock file</em>)
+with <var>lock-name</var>, then executes <var>thunk</var>.
+After <var>thunk</var> returns, or an error is thrown in it,
+the lock file is removed.  When <var>thunk</var> returns normally,
+its return values become the return values of <code>with-lock-file</code>.
+</p>
+<p>If the lock file already exists, <code>with-lock-file</code> waits and retries
+getting the lock until timeout reaches.  It can be configured by
+the keyword arguments.
+</p>
+<p>There’s a chance that <code>with-lock-file</code> leaves the lock file
+when it gets a serious error situation and doesn’t have the opportunity
+to clean up.  You can allow <code>with-lock-file</code> to <em>steal</em>
+the lock if its timestamp is too old; say, if you know that the
+applications usually locks just for seconds, and you find the lock
+file is 10 minutes old, then it’s likely that the previous
+process was terminated abruptly and couldn’t clean it up.
+You can also configure this behavior by the keyword arguments.
+</p>
+<p>Internally, <em>two</em> lock files are used to implement this
+stealing behavior safely.  The creation and removal of the primary
+lock file (named by <var>lock-name</var> argument) are guarded by
+the secondary lock file (named by <var>secondary-lock-file</var> argument,
+defaulted by <code>.2</code> suffix attached to <var>lock-name</var>).
+The secondary lock is aquired for a very short period so there’s
+much less chance to be left behind by abnormal terminations.
+If it happens, however, we just give up; we don’t steal the
+secondary lock.
+</p>
+<p>If <code>with-lock-file</code> couldn’t get a lock before timeout,
+a <code>&lt;lock-file-failure&gt;</code> condition is thrown.
+</p>
+<p>Here’s a list of keyword arguments.
+</p>
+<dl compact="compact">
+<dt> <var>type</var></dt>
+<dd>
+<p>It can be either one of the symbols <code>file</code> or <code>directory</code>.
+</p>
+<p>If it is <code>file</code>, we use a lock file, relying on the <code>O_EXCL</code>
+exclusive creation flag of <code>open(2)</code>.  It works for most platforms;
+however, some NFS implementation may not implement the exclusive
+semantics properly.   This is the default value.
+</p>
+<p>If it is <code>directory</code>, we use a lock directory, relying on the
+atomicity of <code>mkdir(2)</code>.  It should work for any platforms,
+but it may be slower than <code>file</code>.
+</p>
+</dd>
+<dt> <var>retry-interval</var></dt>
+<dt> <var>retry-limit</var></dt>
+<dd>
+<p>Accepts a nonnegative real number that specifies either
+the interval to attempt to acquire the primary lock, or the maximum
+time we should keep retrying, respecively, in seconds.
+The default value is 1 second interval and 10 second limit.
+To prevent retrying, give 0 to <var>retry-limit</var>.
+</p>
+</dd>
+<dt> <var>secondary-lock-name</var></dt>
+<dd>
+<p>The name of the secondary lock file (or directory).  If omitted,
+<var>lock-name</var> with a suffix <code>.2</code> attached is used.
+</p>
+</dd>
+<dt> <var>retry2-interval</var></dt>
+<dt> <var>retry2-limit</var></dt>
+<dd>
+<p>Like <var>retry-interval</var> and <var>retry-limit</var>, but these specify
+interval and timeout for the secondary lock file.  The possibility
+of secondary lock file collision is usually pretty low, so
+you would hardly need to tweak these.  The default values are
+1 second interval and 10 second limit.
+</p>
+</dd>
+<dt> <var>perms</var></dt>
+<dd>
+<p>Specify the permission bitmask of the lock file or directory,
+in a nonnegative exact integer.  The default is <code>#o644</code> for
+a lock file and <code>#o755</code> for a lock directory.
+</p>
+<p>Note that to control who can acquire/release/steal the lock,
+what matters is
+the permission of the directory in which the lock file/directory,
+not the permission of the lock file/directory itself.
+</p>
+</dd>
+<dt> <var>abandon-timeout</var></dt>
+<dd>
+<p>Specifies the period in seconds.  If the primary lock file is
+older than that, <code>with-lock-file</code> steals the lock.
+To prevent stealing, give <code>#f</code> to this argument.
+The default value is 600 seconds.
+</p>
+</dd>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003clock_002dfile_002dfailure_003e"></a><u>Condition type:</u> <b>&lt;lock-file-failure&gt;</b></dt>
+<dd><p>A condition indicating that <code>with-lock-file</code> couldn’t
+obtain the lock.  Inherits <code>&lt;error&gt;</code>.
+</p>
+<dl>
+<dt><a name="index-lock_002dfile_002dname"></a><u>Instance Variable of &lt;lock-file-failure&gt;:</u> <b>lock-file-name</b></dt>
+<dd><p>The primary lock file name.
+</p></dd></dl>
+</dd></dl>
+
+<p>Gauche also provides OS-supported file locking feature,
+<code>fcntl</code> lock, via <code>gauche.fcntl</code> module.
+Whether you want to use <code>fcntl</code> lock or <code>with-lock-file</code>
+will depend on your application.
+</p>
+<p>These are the advantages of the <code>fcntl</code> lock:
+</p>
+<ul>
+<li>
+The lock is removed when the process dies without explicitly unlocking it.
+</li><li>
+You can directly lock the file you’re touching.
+</li><li>
+You can lock a part of a file.
+</li><li>
+You can have shared and exclusive locks.
+</li></ul>
+
+<p>In common situations, probably the most handy property is the
+first one; you don’t need to worry about leaving lock behind
+unexpected process termination.
+</p>
+<p>However, there are a couple of shortcomings in <code>fcntl</code> locks.
+</p>
+<ul>
+<li>
+It is not guaranteed to work across different platforms,
+and/or NFS-mounted filesystems.
+</li><li>
+The lock is per-process, per-file.  If you have a lock in a file,
+then calls a library that also locks the file, the lock always
+succeeds.  Worse, if the library unlocks the file,
+the lock is completely removed, while the caller doesn’t know
+about it.  It also means that, in order to prevent multiple threads
+in a process from accessing the same file, you have to use
+mutex along the fcntl lock.
+</li></ul>
+
+<p>Especially because of the second point, it is very difficult
+to use <code>fcntl</code> lock unless you have total control over and knowledge
+of the entire application.
+It is ok to use the <code>fcntl</code> lock by the application code to lock
+the application-specific file.
+Library developers have difficulty, however, to make sure any potential
+user of the library won’t try to lock the same file as the library tries
+to lock (usually it can’t be done).
+</p>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_141.html#g_t_00e5_00ae_009a_00e6_0095_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

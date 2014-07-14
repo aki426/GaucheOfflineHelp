@@ -1,0 +1,824 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.12 文字列</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.12 文字列">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.12 文字列">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_50.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a1_00a8_00e8_00a8_0098" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097-1"></a>
+<h2 class="section">6.12 文字列</h2>
+
+<dl>
+<dt><a name="index-_003cstring_003e"></a><u>Builtin Class:</u> <b>&lt;string&gt;</b></dt>
+<dd><a name="index-string"></a>
+<p>文字列のクラスです。Gaucheでは、文字列は文字のシーケンスともバイトのシーケンスとも
+みなすことができます。
+</p></dd></dl>
+
+<p>GaucheではSchemeの文字列は、内部的には、変更不可能なオブジェクト(文字列実体)を
+用いて表現されている、ということを強調しておきます。
+文字列が変更可能であるR5RSの仕様を満たすために、Schemeレベルの文字列は
+文字列実体への間接ポインタとなっています。文字列を変更すると、
+変更を反映した新しいstring bodyが作成され、Schemeレベルの文字列が
+新しい文字列実体を指すように変更されます。
+</p>
+<p>このことから、文字列操作の性能を見積る場合に注意が必要です。
+</p>
+<ul>
+<li>
+文字列のコピーは、それがどんなに長い文字列であっても常にO(1)です。
+文字列実体は共有されるからです。
+</li><li>
+部分文字列を取る操作も通常はO(1)です。文字列実体を部分的に共有するからです。
+メモリ管理上の都合から文字列実体の一部がコピーされる可能性はありますが、
+ほとんどの場合はO(1)とみなして構いません。(ただし、マルチバイト文字処理の都合上、
+文字インデックスで文字列の途中を指定する操作は別途O(N)を要する場合があります)
+</li><li>
+一方で、文字列の変更はたとえ1文字の変更であっても、文字列実体の長さNに
+比例したO(N)のコストを必要とします。
+</li></ul>
+
+<p>Gaucheはそもそも文字列の変更に関して全く最適化を行っていません。
+<code>(string-set! s k c)</code>は、k番目の文字の前後の部分文字列を取って、
+c一文字の文字列を間に挟んで継ぎ足すことで新たな文字列を作るのと
+全く同じコストがかかります。
+文字列を変更不可として扱う方が良いプログラミングスタイルだと考えるからです。
+<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090">文字列の構築子</a>も参照してください。
+</p>
+<p>R5RSに定義されている文字列操作は非常に限られています。
+Gaucheでは追加の組込み手続きのほか、
+SRFI-13に定義されている豊富な文字列ライブラリを備えています。
+SRFI-13については<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>を参照してください。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a1_00a8_00e8_00a8_0098">6.12.1 文字列の表記</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e">6.12.2 文字列に関する述語</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090">6.12.3 文字列の構築子</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a3_009c_00e9_0096_0093">6.12.4 文字列の補間</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4">6.12.5 文字列のアクセスと変更</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083">6.12.6 文字列の比較</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">6.12.7 文字列を扱うその他の手続き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e4_00b8_008d_00e5_00ae_008c_00e5_0085_00a8_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097">6.12.8 不完全文字列</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a1_00a8_00e8_00a8_0098"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a1_00a8_00e8_00a8_0098-1"></a>
+<h3 class="subsection">6.12.1 文字列の表記</h3>
+
+<dl>
+<dt><a name="index-_0022"></a><u>Reader syntax:</u> <b><code>"</code></b><i>…<code>"</code></i></dt>
+<dd><p>[R5RS+]
+リテラル文字列です。ダブルクオートの中では、
+以下のエスケープシーケンスが認識されます。
+</p>
+<dl compact="compact">
+<dt> <code>\"</code></dt>
+<dd><p>[R5RS] ダブルクオート文字
+</p></dd>
+<dt> <code>\\</code></dt>
+<dd><p>[R5RS] バックスラッシュ文字
+</p></dd>
+<dt> <code>\n</code></dt>
+<dd><p>改行文字 (ASCII 0x0a)
+</p></dd>
+<dt> <code>\r</code></dt>
+<dd><p>復帰文字 (ASCII 0x0d)
+</p></dd>
+<dt> <code>\f</code></dt>
+<dd><p>フォームフィード (ASCII 0x0c)
+</p></dd>
+<dt> <code>\t</code></dt>
+<dd><p>タブ文字 (ASCII 0x09)
+</p></dd>
+<dt> <code>\0</code></dt>
+<dd><p>NUL文字 (ASCII 0x00)
+</p></dd>
+<dt> <code>\&lt;whitespace&gt;*&lt;newline&gt;&lt;whitespace&gt;*</code></dt>
+<dd><p>無視されます。長い文字列リテラルを読みやすさのために折り返す時に便利です。
+このエスケープシーケンスはR6RSで導入されました。
+</p></dd>
+<dt> <code>\x<var>NN</var></code></dt>
+<dd><p>2桁の16進数<var>NN</var>で指定されるバイト。
+このバイトは内部エンコーディングによって解釈されます。
+</p></dd>
+<dt> <code>\u<var>NNNN</var></code></dt>
+<dd><p>4桁の16進数<var>NNNN</var>によって示されるUCS2コードを持つ文字。
+</p></dd>
+<dt> <code>\U<var>NNNNNNNN</var></code></dt>
+<dd><p>8桁の16進数<var>NNNNNNNN</var>によって示されるUCS4コードを持つ文字。
+</p></dd>
+</dl>
+
+<p>GaucheがUTF-8以外の内部エンコーディングでコンパイルされていた場合、
+リーダーは<code>gauche.charconv</code>モジュールを使って
+エスケープシーケンス<code>\uNNNN</code>と<code>\UNNNNNNNN</code>の解釈を行います。
+</p>
+<p>下はバックスラッシュ-改行エスケープシーケンスの使用例です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define *message* "\
+  This is a long message \
+  in a literal string.")
+
+*message*
+  ⇒ "This is a long message in a literal string."
+</pre></td></tr></tbody></table>
+
+<p>‘message’ の後の空白に注意してください。‘in’の前の空白は読み込みルーチンによって
+無視されてしまうので、空白を入れたければ‘message’と続くバックスラッシュの間に
+入れる必要があります。もし文字列中に実際に改行文字を入れ、さらにその後の
+文字列をインデントさせたい場合は次のようにすると良いでしょう:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define *message/newline* "\
+  This is a long message, \
+  \n   with a line break.")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_0023_002a_0022"></a><u>Reader syntax:</u> <b><code>#*"</code></b><i>…<code>"</code></i></dt>
+<dd><p>不完全な文字列のリテラル表記です。完全な文字列と同様のエスケープシーケンスが
+使えます。
+</p>
+<p>’<code>#*</code>’ という構文はCommon Lispでビットベクタの表記に使われています。
+不完全な文字列は実際はバイトベクタであることから、類似点を認めてこの構文を
+採用しました。(もし将来必要になってビットベクタが実装されたとしても、
+この構文と共存できます)。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a1_00a8_00e8_00a8_0098" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e-1"></a>
+<h3 class="subsection">6.12.2 文字列に関する述語</h3>
+
+<dl>
+<dt><a name="index-string_003f"></a><u>Function:</u> <b>string?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>が文字列なら<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dimmutable_003f"></a><u>Function:</u> <b>string-immutable?</b><i> obj</i></dt>
+<dd><p><var>obj</var>が変更不可な文字列なら<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dincomplete_003f"></a><u>Function:</u> <b>string-incomplete?</b><i> obj</i></dt>
+<dd><p><var>obj</var>が不完全文字列なら<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a3_009c_00e9_0096_0093" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089_00e5_00ad_0090-1"></a>
+<h3 class="subsection">6.12.3 文字列の構築子</h3>
+
+<dl>
+<dt><a name="index-make_002dstring"></a><u>Function:</u> <b>make-string</b><i> k :optional char</i></dt>
+<dd><p>[R5RS]
+長さ<var>k</var>の文字列を作成して返します。
+<var>char</var>が与えられればそれで内容を満たします。<var>char</var>が与えられなければ
+空白文字で満たされます。常に完全な文字列が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-string 5 #\x) ⇒ "xxxxx"
+(make-string 5 #\ふ) ⇒ "ふふふふふ"
+</pre></td></tr></tbody></table>
+
+<p><code>make-string</code>で必要な長さの文字列をアロケートして、<code>string-set!</code>
+で順番に埋めて行くアルゴリズムは、Gaucheでは<em>極めて</em>非効率であることに
+注意してください。そのようなアルゴリズムは、文字列の内部表現とアロケーションメカニズムに
+関して不必要な仮定を置いており、Gaucheはその仮定とは合致しません。
+文字列の順次作成に適しているのは文字列ポートです
+(<a indepth="true" href="gauche-refj_60.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">文字列ポート</a>参照)。それが使えない場合、
+文字のリストを作成し、<code>list-&gt;string</code>で変換する方がまだ<code>make-string</code>と
+<code>string-set!</code>を使うより良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dbyte_002dstring"></a><u>Function:</u> <b>make-byte-string</b><i> k :optional byte</i></dt>
+<dd><p>大きさ<var>k</var>の不完全な文字列を作成して返します。
+<var>byte</var>が与えられた場合は、その下位1バイトで文字列の各バイトを初期化します。
+<var>byte</var>は正確な整数でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string-1"></a><u>Function:</u> <b>string</b><i> char …</i></dt>
+<dd><p>[R5RS]
+文字<var>char</var> … から構成された文字列を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-x_002d_003estring"></a><u>Generic Function:</u> <b>x-&gt;string</b><i> obj</i></dt>
+<dd><p>文字列への強制型変換手続きです。
+<var>obj</var>の文字列表現を返します。
+デフォルトのメソッドでは、文字列はそのまま返され、数値は<code>number-&gt;string</code>で、
+シンボルは<code>symbol-&gt;string</code>で変換され、その他のオブジェクトは<code>display</code>表現
+が使われます。
+</p>
+<p>他のクラスはこのメソッドを定義することにより、独自の変換関数を提供することができます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a3_009c_00e9_0096_0093"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a3_009c_00e9_0096_0093-1"></a>
+<h3 class="subsection">6.12.4 文字列の補間</h3>
+
+<p>「文字列の補間(string interpolation)」という用語は、
+PerlやPythonなど様々なスクリプト言語で、文字列リテラル内に式を埋め込んでおき
+実行時に式を評価した値をそのリテラル内に埋め込む機能を指します。
+</p>
+<p>Schemeはそのような機能を定義していませんが、Gaucheではリーダーマクロを使って
+文字列の補間を実装しました。
+</p>
+<dl>
+<dt><a name="index-_0023_0060"></a><u>Reader syntax:</u> <b><code>#`</code></b><i><var>string-literal</var></i></dt>
+<dd><p>文字列に評価されます。<var>string-literal</var>内に、<code>,<var>expr</var></code>
+というシーケンス(ここで<var>expr</var>は有効なScheme式の外部表現)が
+現われたら、<var>expr</var>が評価されてその結果がもとの位置に埋め込まれます。
+結果の文字列化には<code>x-&gt;string</code>が使われます(<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090">文字列の構築子</a>参照)。
+</p>
+<p>コンマと続く式とは、空白文字等を入れずに隣接していなければなりません。
+そうでない場合は置換されません。
+</p>
+<p>二つの連続するコンマは一つのリテラルのコンマ文字に置き換えられます。
+これによって、コンマと非空白文字の連続を<var>string-literal</var>に入れることができます。
+</p>
+<p>それ以外の<var>string-literal</var>内の文字シーケンスはそのままコピーされます。
+</p>
+<p><var>Expr</var>に単独の変数を使う場合で、それに続く文字列と変数名を区切りたい
+場合は、‘|’文字を使ったシンボルエスケープ構文が使えます。下の例の最後の
+2つを見て下さい。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#`"This is Gauche, version ,(gauche-version)."
+ ⇒ "This is Gauche, version 0.9.3.3."
+
+#`"Date: ,(sys-strftime \"%Y/%m/%d\" (sys-localtime (sys-time)))"
+ ⇒ "Date: 2002/02/18"
+
+(let ((a "AAA")
+      (b "BBB"))
+ #`"xxx ,a ,b zzz")
+ ⇒ "xxx AAA BBB zzz"
+
+#`"123,,456,,789"
+ ⇒ "123,456,789"
+
+(let ((n 5)) #`"R,|n|RS")
+ ⇒ "R5RS"
+
+(let ((x "bar")) #`"foo,|x|.")
+ ⇒ "foobar"
+</pre></td></tr></tbody></table>
+
+<p>実は、リーダーはこの構文をマクロ呼び出しへと変換し、それが最終的には
+<code>string-append</code>への呼び出しへと変換されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">#`"This is Gauche, version ,(gauche-version)."
+ ≡
+(string-append "This is Gauche, version "
+               (x-&gt;string (gauche-version))
+               ".")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p><em>この構文を採用した理由:</em>
+他のスクリプト言語では、‘<code>$expr</code>’ や ’<code>#{...}</code>’ が良く使われています。
+準クオート (<a indepth="true" href="gauche-refj_30.html#g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088">準クオート(Quasiquote)</a>参照) との類似性からこの構文を採用しました。
+変数名の区切りを明確にするのに‘|’を使う必要があるのは少々奇妙ですが、
+慣れたSchemeプログラマならコンマ構文を読むのは他の言語から借りた構文よりも
+楽だと思います。
+</p>
+<p>Schemeは他のスクリプト言語より一般的により多くの文字を変数名に使うことが出来ることに注意して下さい。
+結果として、変数の値を文字列に挿入する際、ほとんどの場合において変数名を‘|’で区切る
+必要があるでしょう。例えば、Perlでは
+<code>"$year/$month/$day $hour:$minutes:$seconds"</code>
+と書けたものが、Gaucheでは
+<code>#`",|year|/,|month|/,day ,|hour|:,|minutes|:,seconds"</code>
+と書かねばなりません。
+混乱を避けるためには、この構文内では常に直接の変数参照は‘|’で区切るようにしておくのが良いかもしれません。
+</p>
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a3_009c_00e9_0096_0093" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4-1"></a>
+<h3 class="subsection">6.12.5 文字列のアクセスと変更</h3>
+
+<dl>
+<dt><a name="index-string_002dlength"></a><u>Function:</u> <b>string-length</b><i> string</i></dt>
+<dd><p>[R5RS]
+文字列<var>string</var>の長さ(文字数)を返します。
+<var>string</var>は不完全な文字列であっても構いません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dsize"></a><u>Function:</u> <b>string-size</b><i> string</i></dt>
+<dd><p>文字列<var>string</var>の大きさを返します。文字列の大きさは、
+<var>string</var>が占めるメモリ上のバイト数で、これは文字列の内部エンコーディングに
+依存します。同じ文字列であっても内部エンコーディングが違えば違う大きさになる場合も
+あります。
+</p>
+<p>不完全な文字列では、文字列の長さと大きさは常に一致します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dref"></a><u>Function:</u> <b>string-ref</b><i> cstring k :optional fallback</i></dt>
+<dd><p>[R5RS+]
+完全な文字列<var>cstring</var>の<var>k</var>番目の文字を返します。
+不完全な文字列を渡すのはエラーです。
+</p>
+<p><var>k</var>が負数であったり<var>cstring</var>の長さと同じかそれ以上であった場合には
+エラーが報告されます。但し、引数<var>fallback</var>が与えられている場合にはエラーを
+報告せず<var>fallback</var>が返されます。これはGaucheの拡張です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dbyte_002dref"></a><u>Function:</u> <b>string-byte-ref</b><i> string k</i></dt>
+<dd><p>(多分、不完全な)文字列<var>string</var>の<var>k番目</var>のバイトを返します。
+戻り値は、0から255の範囲の整数です。<var>k</var>は0以上、
+<code>(string-size <var>string</var>)</code>より小でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dset_0021"></a><u>Function:</u> <b>string-set!</b><i> string k char</i></dt>
+<dd><p>[R5RS] <var>string</var>の<var>k</var>番目の文字を<var>char</var>で置き換えます。
+<var>k</var>は0以上、<code>(string-length <var>string</var>)</code>より小でなければ
+なりません。戻り値は未定義です。
+</p>
+<p><var>string</var>が不完全文字列の場合、<var>char</var>の下位8ビットの整数値は、
+<var>string</var>の<var>k</var>番目のバイトをセットするために使われます。
+</p>
+<p>パフォーマンス上の考慮点について、<code>make-string</code>の説明を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dbyte_002dset_0021"></a><u>Function:</u> <b>string-byte-set!</b><i> string k byte</i></dt>
+<dd><p><var>string</var>の<var>k</var>番目のバイトを整数<var>byte</var>で置き換えます。
+<var>byte</var>は0から255の範囲(255を含む)でなければなりません。
+<var>k</var>は0以上、<code>(string-size <var>string</var>)</code>より小である必要があります。
+<var>string</var>が完全文字列の場合、この操作により不完全文字列になります。
+戻り値は未定義です。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083-1"></a>
+<h3 class="subsection">6.12.6 文字列の比較</h3>
+
+<dl>
+<dt><a name="index-string_003d_003f"></a><u>Function:</u> <b>string=?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_002dci_003d_003f"></a><u>Function:</u> <b>string-ci=?</b><i> string1 string2</i></dt>
+<dd><p>[R5RS]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_003c_003f"></a><u>Function:</u> <b>string&lt;?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_003c_003d_003f"></a><u>Function:</u> <b>string&lt;=?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_003e_003f"></a><u>Function:</u> <b>string&gt;?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_003e_003d_003f"></a><u>Function:</u> <b>string&gt;=?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_002dci_003c_003f"></a><u>Function:</u> <b>string-ci&lt;?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_002dci_003c_003d_003f"></a><u>Function:</u> <b>string-ci&lt;=?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_002dci_003e_003f"></a><u>Function:</u> <b>string-ci&gt;?</b><i> string1 string2</i></dt>
+<dt><a name="index-string_002dci_003e_003d_003f"></a><u>Function:</u> <b>string-ci&gt;=?</b><i> string1 string2</i></dt>
+<dd><p>[R5RS]
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00b8_008d_00e5_00ae_008c_00e5_0085_00a8_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d-1"></a>
+<h3 class="subsection">6.12.7 文字列を扱うその他の手続き</h3>
+
+<dl>
+<dt><a name="index-substring"></a><u>Function:</u> <b>substring</b><i> string start end</i></dt>
+<dd><p>[R5RS]
+<var>string</var>の<var>start</var>番目の文字(これを含む)から、<var>end</var>番目の文
+字(これを含まない)までの部分文字列を返します。引数<var>start</var>および
+<var>end</var>は以下を満さなければなりません。
+<code>0 &lt;= <var>start</var> &lt; <var>N</var></code>、
+<code>0 &lt;= <var>end</var> &lt;= <var>N</var></code>、
+<code><var>start</var> &lt;= <var>end</var></code>。ただし、<var>N</var>は与えられた文字列の長
+さです。
+</p>
+<p><var>start</var>がゼロでかつ<var>end</var>が<var>N</var>の場合には、<var>string</var>のコ
+ピーが返ります。
+</p>
+<p>実は後述する拡張された<code>string-copy</code>は<code>substring</code>のスーパーセッ
+トになっています。この手続きの役割は主にR5RSとの互換性のためです。
+<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>のジェネリック版<code>subseq</code>も参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dappend"></a><u>Function:</u> <b>string-append</b><i> string …</i></dt>
+<dd><p>[R5RS]
+<var>string</var> …を連結した内容を含む文字列を新しくアロケートして返
+します。
+</p>
+<p><a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e5_008f_008d_00e8_00bb_00a2_00e3_0081_00a8_00e8_00bf_00bd_00e5_008a_00a0">文字列の反転と追加</a>の<code>string-concatenate</code>も参照
+してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003elist"></a><u>Function:</u> <b>string-&gt;list</b><i> string :optional start end</i></dt>
+<dt><a name="index-list_002d_003estring"></a><u>Function:</u> <b>list-&gt;string</b><i> list</i></dt>
+<dd><p>[R5RS+][SRFI-13]
+文字列を文字のリストへ、またはその逆の変換をします。
+</p>
+<p><code>string-&gt;list</code>にはオプショナル引数として開始、終了位置のインデッ
+クスを渡せます。これはSRFI-13で規定されています。
+</p>
+<p><var>list-&gt;string</var>では<var>list</var>の要素はすべて文字でなければなりません。
+そうでなければ、エラーシグナルがあがります。文字列や文字がまざったリス
+トから文字列を構成したい場合には<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089"><code>text.tree</code> - 怠惰なテキスト構築</a>にある
+<code>tree-&gt;string</code>が使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dcopy"></a><u>Function:</u> <b>string-copy</b><i> string :optional start end</i></dt>
+<dd><p>[R5RS+][SRFI-13]
+<var>string</var>のコピーを返します。<var>start</var>および/あるいは<var>end</var>の
+位置インデックスを渡すと元の文字列の部分文字列を取り出せます。
+(したがって<code>string-copy</code>は事実上<code>substring</code>のスーパーセット
+です)。
+</p>
+<p><var>start</var>引数のみを与えた場合には、部分文字列は<var>start</var>番目の文字
+(これを含む)から<var>string</var>の最後までで、それが返ります。
+<var>start</var>と<var>end</var>の両方を与えたときは、部分文字列は<var>start</var>番
+目の文字(これを含む)から、<var>end</var>番目の文字(これを含まない)までで、
+それが返ります。<var>start</var>と<var>end</var>が満すべき条件については
+前述の<code>substring</code>の項を見てください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dfill_0021"></a><u>Function:</u> <b>string-fill!</b><i> string char :optional start end</i></dt>
+<dd><p>[R5RS+][SRFI-13] <var>string</var> を <var>char</var> で埋めます。
+オプションの <var>start</var> と <var>end</var> は、影響を受ける領域を
+制限します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-fill! "orange" #\X)
+  ⇒ "XXXXXX"
+(string-fill! "orange" #\X 2 4)
+  ⇒ "orXXge"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002djoin"></a><u>Function:</u> <b>string-join</b><i> strs :optional delim grammer</i></dt>
+<dd><p>[SRFI-13] リスト <var>strs</var> 中にある文字列を、文字列 <var>delim</var> を’糊’
+として連結します。
+</p>
+<p>引数 <var>grammer</var> は、文字列がどのように連結されるかを指定する
+シンボルで、以下のうちの一つです。
+</p><dl compact="compact">
+<dt> <code>infix</code></dt>
+<dd><p>それぞれの文字列の間に <var>delim</var> を使います。このモードが
+デフォルトです。<var>strs</var> が空文字列かヌル文字列を含むリスト
+である場合は、曖昧に(適当に)動作します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-join '("apple" "mango" "banana") ", ")
+  ⇒ "apple, mango, banana"
+(string-join '() ":")
+  ⇒ ""
+(string-join '("") ":")
+  ⇒ ""
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>strict-infix</code></dt>
+<dd><p><code>infix</code> のように動作しますが、<var>strs</var> には空リストは
+許されません。したがって、曖昧さはありません。
+</p></dd>
+<dt> <code>prefix</code></dt>
+<dd><p><var>delim</var> をそれぞれの文字列の前に補います。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-join '("usr" "local" "bin") "/" 'prefix)
+  ⇒ "/usr/local/bin"
+(string-join '() "/" 'prefix)
+  ⇒ ""
+(string-join '("") "/" 'prefix)
+  ⇒ "/"
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>suffix</code></dt>
+<dd><p><var>delim</var> をそれぞれの文字列の後ろに補います。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-join '("a" "b" "c") "&amp;" 'suffix)
+  ⇒ "a&amp;b&amp;c&amp;"
+(string-join '() "&amp;" 'suffix)
+  ⇒ ""
+(string-join '("") "&amp;" 'suffix)
+  ⇒ "&amp;"
+</pre></td></tr></tbody></table>
+</dd>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002dscan"></a><u>Function:</u> <b>string-scan</b><i> string item :optional return</i></dt>
+<dt><a name="index-string_002dscan_002dright"></a><u>Function:</u> <b>string-scan-right</b><i> string item :optional return</i></dt>
+<dd><p><var>string</var> から <var>item</var> (文字列あるいは文字)を探します。
+<code>string-scan</code>は最も左にある一致を、
+<code>string-scan-right</code>は最も右にある一致を見つけます。
+</p>
+<p>引数 <var>return</var> は、<var>string</var> 中に <var>item</var> が見つかった
+場合にどの値が返されるかを指定します。それは以下のシンボルのうちの
+一つでなければなりません。
+</p>
+<dl compact="compact">
+<dt> <code>index</code></dt>
+<dd><p><var>item</var> が見つかった場合は<var>string</var> 内でのインデックス、
+そうでなければ <code>#f</code> を返します。これがデフォルトの振る舞いです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-scan "abracadabra" "ada") ⇒ 5
+(string-scan "abracadabra" #\c) ⇒ 4
+(string-scan "abracadabra" "aba") ⇒ #f
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>before</code></dt>
+<dd><p><var>item</var> よりも前にある <var>string</var> の部分文字列、あるいは
+<var>item</var> が見つからなければ <code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-scan "abracadabra" "ada" 'before) ⇒ "abrac"
+(string-scan "abracadabra" #\c 'before) ⇒ "abra"
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>after</code></dt>
+<dd><p><var>item</var> より後ろにある <var>string</var> の部分文字列、あるいは
+<var>item</var> が見つからなければ <code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-scan "abracadabra" "ada" 'after) ⇒ "bra"
+(string-scan "abracadabra" #\c 'after) ⇒ "adabra"
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>before*</code></dt>
+<dd><p><var>item</var> の前にある <var>string</var> の部分文字列と後ろにある
+<var>string</var> の部分文字列を返します。<var>item</var> が見つからない場合は、
+<code>(values #f #f)</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-scan "abracadabra" "ada" 'before*)
+  ⇒ "abrac" <span class="roman">and</span> "adabra"
+(string-scan "abracadabra" #\c 'before*)
+  ⇒ "abra" <span class="roman">and</span> "cadabra"
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>after*</code></dt>
+<dd><p><var>string</var> のうち、<var>item</var> の終端までの部分文字列とその残りを
+返します。<var>item</var> が見つからなかった場合は、<code>(values #f #f)</code>
+を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-scan "abracadabra" "ada" 'after*)
+  ⇒ "abracada" <span class="roman">and</span> "bra"
+(string-scan "abracadabra" #\c 'after*)
+  ⇒ "abrac" <span class="roman">and</span> "adabra"
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>both</code></dt>
+<dd><p><var>string</var> のうち、<var>item</var> の前と <var>item</var> の後ろの
+部分文字列を返します。<var>item</var> が見つからない場合、
+<code>(values #f #f)</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-scan "abracadabra" "ada" 'both)
+  ⇒ "abrac" <span class="roman">and</span> "bra"
+(string-scan "abracadabra" #\c 'both)
+  ⇒ "abra" <span class="roman">and</span> "adabra"
+</pre></td></tr></tbody></table>
+</dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002dsplit"></a><u>Function:</u> <b>string-split</b><i> string splitter</i></dt>
+<dd><p><var>string</var> を <var>splitter</var> で分割し、文字列のリストを返します。
+<var>splitter</var> には、文字、文字セット、文字列、正規表現、手続きが
+使えます。
+</p>
+<p><var>splitter</var> が文字の場合、その文字がデリミタとして使われます。
+</p>
+<p><var>splitter</var> が文字セットの場合は、その文字セットに含まれる文字の
+連続がデリミタとして使われます。
+</p>
+<p><var>splitter</var> に手続きが与えられた場合、<var>string</var> にある各文字に
+対してその手続きが呼ばれ、<var>splitter</var> が真の値を返すような連続した
+文字群がデリミタとして使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-split "/aa/bb//cc" #\/)    ⇒ ("" "aa" "bb" "" "cc")
+(string-split "/aa/bb//cc" "/")    ⇒ ("" "aa" "bb" "" "cc")
+(string-split "/aa/bb//cc" "//")   ⇒ ("/aa/bb" "cc")
+(string-split "/aa/bb//cc" #[/])   ⇒ ("" "aa" "bb" "cc")
+(string-split "/aa/bb//cc" #/\/+/) ⇒ ("" "aa" "bb" "cc")
+(string-split "/aa/bb//cc" #[\w])  ⇒ ("/" "/" "//" "")
+(string-split "/aa/bb//cc" char-alphabetic?) ⇒ ("/" "/" "//" "")
+
+;; some boundary cases
+(string-split "abc" #\/) ⇒ ("abc")
+(string-split ""    #\/) ⇒ ("")
+</pre></td></tr></tbody></table>
+
+<p><code>string-tokenize</code> (<a indepth="true" href="gauche-refj_115.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e6_0093_008d_00e4_00bd_009c">他の文字列操作</a>)
+も参照して下さい。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e4_00b8_008d_00e5_00ae_008c_00e5_0085_00a8_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00b8_008d_00e5_00ae_008c_00e5_0085_00a8_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097-1"></a>
+<h3 class="subsection">6.12.8 不完全文字列</h3>
+
+<p>Gaucheの内部エンコーディングで正当なマルチバイト文字で構成されていない
+ようなバイト列を含む文字列は「不完全文字列」となります。
+</p>
+<p>不完全文字列が生成される状況はいくつかあります。たとえば、バイナリデー
+タを文字列として読み込んだとき、マルチバイト文字の途中で切れた文字列を
+読み込んだとき、別の不完全文字列が連結された場合などです。
+</p>
+<p>不完全文字列は例外的な状況であるとみなすべきです。これまではバイト列処
+理を使っていましたが、現在はu8vector (<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照)を使うこ
+とができますので、将来のリリースでは削除する計画です。
+</p>
+<p>万が一、不完全文字列に出会ってしまったら以下の手続を使って完全文字列に
+変換することができます。
+</p>
+<dl>
+<dt><a name="index-string_002dincomplete_002d_003ecomplete"></a><u>Function:</u> <b>string-incomplete-&gt;complete</b><i> str :optional handling</i></dt>
+<dd><p>不完全文字列<var>str</var>の内容を再解釈して、あらたに完全文字列を返す。
+<var>handling</var>引数で<var>str</var>中の不正なバイト列の扱いかたを指定します。
+</p><dl compact="compact">
+<dt> <code>#f</code></dt>
+<dd><p><var>str</var>が不正なバイト列を含んでいる場合、変換を諦めて<code>#f</code>を返し
+ます。これがデフォルトのふるまいです。
+</p></dd>
+<dt> <code>:omit</code></dt>
+<dd><p>不正なバイト列を捨てます。常に完全文字列を返します。
+</p></dd>
+<dt> 1文字</dt>
+<dd><p>不正なバイト列中の各バイトを与えた文字で置き換えます。常に完全文字列を
+返します。
+</p></dd>
+</dl>
+<p><var>str</var>が完全文字列なら、そのコピーが返されます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

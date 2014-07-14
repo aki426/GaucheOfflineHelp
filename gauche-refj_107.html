@@ -1,0 +1,465 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.33 gauche.vport - 仮想ポート</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.33 gauche.vport - 仮想ポート">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.33 gauche.vport - 仮想ポート">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_106.html#g_t_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00a7_00e3_0083_00b3_00e7_0095_00aa_00e5_008f_00b7_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002evport-_002d-_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<h2 class="section">9.33 <code>gauche.vport</code> - 仮想ポート</h2>
+
+<dl>
+<dt><a name="index-gauche_002evport"></a><u>Module:</u> <b>gauche.vport</b></dt>
+<dd><a name="index-gauche_002evport-1"></a>
+<p><em>仮想ポート</em>あるいは手続き的ポートとは、その振舞いを
+Scheme でプログラム可能なポートです。
+</p>
+<p>このモジュールは 2 種類の仮想ポートを提供します。ひとつは、
+完全仮想ポートで、すべての I/O 操作でユーザが提供する手続きが
+呼出されるものです。もうひとつは、仮想バッファポートで、
+I/O 操作は内部バッファ上で行われ、ユーザが提供する手続きは
+バッファを一杯にするかフラッシュする必要がある場合にのみ
+呼出されます。
+</p>
+<p>このモジュールはさらに、ユニフォームベクタにより
+バックアップされる仮想バッファポートも提供します。
+これは仮想ポートの使用例でもあります。
+</p></dd></dl>
+
+<a name="g_t_00e5_00ae_008c_00e5_0085_00a8_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<h4 class="subsubheading">完全仮想ポート</h4>
+
+<p>このタイプの仮想ポートは、<code>&lt;virtual-input-port&gt;</code> クラス
+および <code>&lt;virtual-output-port&gt;</code> クラスで実現されています。
+適切なスロットに手続きをセットすることでポートの振舞いをカスタマイズ
+可能です。
+</p>
+<dl>
+<dt><a name="index-_003cvirtual_002dinput_002dport_003e"></a><u>Class:</u> <b>&lt;virtual-input-port&gt;</b></dt>
+<dd><a name="index-virtual_002dinput_002dport"></a>
+<p>このクラスのインスタンスは入力ポートとして使えます。
+このポートの振舞いはインスタンスのスロットに設定された値に依存します。
+</p>
+<p>まともな入力ポートとして動かすためには、少くとも、<code>getb</code> スロット
+あるいは <code>getc</code> スロットのどちらか一方は設定しなければなりません。
+さもなければ、このポートはすべての入力要求に対して EOF を返します。
+</p>
+<dl>
+<dt><a name="index-getb"></a><u>Instance Variable of &lt;virtual-input-port&gt;:</u> <b>getb</b></dt>
+<dd><p>設定されているのなら、その値は、引数を取らない手続きでなければなりません。
+バイナリ入力の要求のたびに、この手続きが呼ばれます。
+</p>
+<p>この手続きは、0 から 255 までの正確な整数を返すか、<code>#f</code>あるいは
+EOF オブジェクトを返さなければなりません。整数を返す場合には、
+それがこのポートから読みとられる値となります。それ以外の値を返す
+場合は、このポートは EOF を返します。
+</p>
+<p>このポートが文字入力を要求され、かつ、<code>getc</code> 手続きを持たない場合、
+このポートはこの手続きを呼び(複数回の可能性もある)文字全体を構築します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-getc"></a><u>Instance Variable of &lt;virtual-input-port&gt;:</u> <b>getc</b></dt>
+<dd><p>設定されているのなら、その値は、引数を取らない手続きでなければなりません。
+文字入力の要求のたびに、この手続きが呼ばれます。
+</p>
+<p>この手続きは文字を返すか、または<code>#f</code>あるいはEOFオブジェクトを返さなければ
+なりません。文字を返した場合には、それがこのポートから読みとられる値と
+なります。それ以外の値を返す場合は、このポートは EOF を返します。
+</p>
+<p>このポートがバイナリ入力を要求され、かつ、<code>getb</code> 手続きを持たない場合、
+このポートはこの手続きを呼び、文字をバイト列に変換し、それをこのポートから
+読みだされる値として使います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gets"></a><u>Instance Variable of &lt;virtual-input-port&gt;:</u> <b>gets</b></dt>
+<dd><p>設定されているなら、その値は、正の正確な整数の引数をひとつだけとる手続き
+でなければなりません。ブロックバイナリ入力、たとえば、
+<code>read-block</code>などが要求された場合に、呼出されます。
+</p>
+<p>そしてそれは文字列、 不完全文字列、 <code>#f</code>、 EOF オブジェクトを
+返さなくてはなりません. 文字列を返す場合は上記正の正確な整数によって
+指定された大きさを越えてはなりません。空文字列、 <code>#f</code>、EOF を
+返した場合はポートの終端にたどり着いたものとみなされます。
+(注意: 文字列大きさは文字数でなく文字列が占めるバイト数で指定されます。)
+</p>
+<p>この手続きは効率のためにあります。もし、この手続きが用意されて
+いなければ、このポートは、データブロックを準備するのに <code>getb</code>を
+繰り返し呼びます。場合によっては、ブロック入力を用意するほうが
+はるかに効率的です。(たとえば、メモリチャンクのブロックからの読みだし
+を行なうような場合です。)
+</p>
+<p>こうした利点を必要としないのなら、このスロットは未設定のままにして
+おいてもかまいません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ready"></a><u>Instance Variable of &lt;virtual-input-port&gt;:</u> <b>ready</b></dt>
+<dd><p>設定されているなら、その値は、真偽値をひとつだけとる手続きでなければ
+なりません。この手続きは、このポートに対して、<code>char-ready?</code>
+あるいは <code>byte-ready?</code> が呼ばれたときに呼出されます。設定した手続き
+が返す値が、これらの手続きの結果になります。
+</p>
+<p><code>char-ready?</code> が呼ばれたのなら、真偽値引数は <code>#t</code> です。
+<code>byte-ready?</code> が呼ばれたのなら、真偽値引数は <code>#f</code> になります。
+</p>
+<p>未設定なら、<code>char-ready?</code> および <code>byte-ready?</code> は
+このポートに対して常に、<code>#t</code> を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-close"></a><u>Instance Variable of &lt;virtual-input-port&gt;:</u> <b>close</b></dt>
+<dd><p>設定されているのなら、その値は引数を取らない手続きでなければなりません。
+その手続きはこのポートがクローズされるときに呼びだされ、返り値は
+捨てられます。このポートをクローズするときになんらかのアクションが
+必要でないのなら、未設定にしておけます。
+</p>
+<p>この手続きはファイナライザから呼ばれることもあり得ます。したがって、
+この手続きは慎重に書く必要があります。後述のファイナライズに
+関する注意を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-seek"></a><u>Instance Variable of &lt;virtual-input-port&gt;:</u> <b>seek</b></dt>
+<dd><p>設定されているのなら、その値は、オフセット引数とそれがどこからかを示す引数
+の 2つの引数をとる手続きでなければなりません。これらの引数の意味は、
+<code>port-seek</code> (<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a> 参照) のそれと同じです。
+この手続きは、次の読み出しが新しい位置から始められるように
+内部のリードポインタを調整しなければなりません。そして
+更新されたポインタ(ポート先頭からのバイトオフセット)
+を返さなければなりません。
+</p>
+<p>未設定なら、このポートに対する <code>port-seek</code> および <code>port-tell</code>
+の呼び出しは <code>#f</code> になります。
+</p>
+<p>この手続きは単に現在の位置を問合せるために、
+<code>offset</code> として 0 を、<code>whence</code> として <code>SEEK_CUR</code> を与えて
+呼び出すこともあることに注意してください。リードポインタの位置は知って
+いるが、動かすことができないという場合にも、この手続きを提供することが
+できます。上のような問合せには、現在位置を返し、そうでない場合には、
+<code>#f</code> を返します。
+</p></dd></dl>
+
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-_003cvirtual_002doutput_002dport_003e"></a><u>Class:</u> <b>&lt;virtual-output-port&gt;</b></dt>
+<dd><a name="index-virtual_002doutput_002dport"></a>
+<p>このクラスのインスタンスは出力ポートとして使えます。
+このポートの振舞いはインスタンスのスロットに設定された値に依存します。
+</p>
+<p>まともな出力ポートとして動かすためには、少くとも、<code>putb</code> スロット
+あるいは <code>putc</code> スロットのどちらか一方は設定しなければなりません。
+</p>
+<dl>
+<dt><a name="index-putb"></a><u>Instance Variable of &lt;virtual-output-port&gt;:</u> <b>putb</b></dt>
+<dd><p>設定されているなら、その値は、バイト値(0 から 255までの正確な整数)を
+ひとつだけ引数としてとる手続きでなければなりません。バイナリ出力
+の要求のたびに、この手続きが呼ばれます。この手続きの返り値は無視
+されます。
+</p>
+<p>このスロットが未設定の場合、バイナリ出力を要求されると、このポートは
+<code>&lt;io-unit-error&gt;</code> エラーを発生させることがあります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-putc"></a><u>Instance Variable of &lt;virtual-output-port&gt;:</u> <b>putc</b></dt>
+<dd><p>設定されているなら、それは文字をひとつ引数にとる手続きでなければなりません。
+文字出力の要求があるたびにこの手続きがよばれます。この手続きの返り値は
+無視されます。
+</p>
+<p>このスロットが未設定であっても、<code>putb</code> スロットが設定されていれば、
+この仮想ポートは文字をバイト列に展開してから、<code>putb</code> を呼びだします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-puts"></a><u>Instance Variable of &lt;virtual-output-port&gt;:</u> <b>puts</b></dt>
+<dd><p>設定されていれば、その値は、文字列(不完全なものである可能性もある)を
+ひとつ引数としてとる手続きでなければなりません。この手続きの返り値は
+無視されます。
+</p>
+<p>これは、効率のためにあります。このスロットが未設定であれば、この
+仮想ポートは、データのかたまりを出力するために、<code>putb</code>
+あるいは <code>putc</code> を繰り返し呼びます。もし、ひとかたまりの
+出力を効率的に実行可能なコードであれば、この手続きを提供できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-flush-1"></a><u>Instance Variable of &lt;virtual-output-port&gt;:</u> <b>flush</b></dt>
+<dd><p>設定されていれば、その値は引数をとらない手続きでなければなりません。
+ポートのフラッシュを要求されたときに呼ばれます(たとえば、<code>flush</code>
+がこのポートに対して呼ばれたとき、あるいは、このポートがクローズ
+されるとき)。
+</p>
+<p>この手続きは、ポートが何らかのバッファリングをおこなうか、なんらかの
+状態を持つような場合に便利です。ポートが状態をともなう操作を行わない
+のなら、これは未設定にしておけます。
+</p>
+<p>この手続きはファイナライザから呼ばれることがあります。したがって、
+特別な注意が必要です。後述のファイナライザに関する注意を
+参照してください。
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-close-1"></a><u>Instance Variable of &lt;virtual-output-port&gt;:</u> <b>close</b></dt>
+<dd><p><code>&lt;virtual-input-port&gt;</code> の <code>close</code> スロットと同様です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-seek-1"></a><u>Instance Variable of &lt;virtual-output-port&gt;:</u> <b>seek</b></dt>
+<dd><p><code>&lt;virtual-input-port&gt;</code> の <code>seek</code> スロットと同様です。
+</p></dd></dl>
+
+</dd></dl>
+
+<a name="g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_0090_00e3_0083_0083_00e3_0083_0095_00e3_0082_00a1_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<h4 class="subsubheading">仮想バッファポート</h4>
+
+<p>このタイプの仮想ポートは <code>&lt;buffered-input-port&gt;</code> クラス
+および <code>&lt;buffered-output-port&gt;</code> クラスで実現されています。
+適切なスロットに手続きを設定するこでポートの振舞いをカスタマイズ
+することができます。
+</p>
+<p>これらのポートは、内部バッファを持っており、そのバッファを満たすか
+フラッシュするかの必要があるときにのみ、Scheme の手続きが呼ばれます。
+通常、I/O毎に Scheme の手続きを呼ぶよりも遥かに効率がいいものです。
+実際の内部バッファリング機構は、GaucheのファイルI/Oポートと同じです。
+</p>
+<p>これらのポートはバッファとして <code>u8vector</code> を使います。詳細は、
+<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a> を参照してください。
+</p>
+<dl>
+<dt><a name="index-_003cbuffered_002dinput_002dport_003e"></a><u>Class:</u> <b>&lt;buffered-input-port&gt;</b></dt>
+<dd><a name="index-buffered_002dinput_002dport"></a>
+
+<p>このクラスのインスタンスは、入力ポートとして振舞います。
+これは以下のようなインスタンススロットを持ちます。
+意味のある入力ポートとして使うには少くとも、<code>fill</code> スロットを
+設定しなければなりません。
+</p>
+<dl>
+<dt><a name="index-fill"></a><u>Instance Variable of &lt;buffered-input-port&gt;:</u> <b>fill</b></dt>
+<dd><p>設定されているなら、<code>u8vector</code> の引数を一つとる手続きでなければ
+なりません。そのベクタの最初からデータを満たさなければなりません。
+要求されたものよりデータの残りが少ない場合には、
+ベクタ全体を満たす必要はありません。しかしながら、
+データが残っている場合には少くとも1バイトは満たさなければなりません。
+もしデータがまだ利用可能になっていなければ、なにがしかのデータが利用可能に
+なるまで待たなければなりません。
+</p>
+<p>この手続きは実際に満されたバイト数を返さなければなりません。ポートが
+EOFに達したことを示すために、0 または EOFオブジェクトを返すこともできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ready-1"></a><u>Instance Variable of &lt;buffered-input-port&gt;:</u> <b>ready</b></dt>
+<dd><p>設定されているなら、引数をとらない手続きでなければなりません。
+この手続きは、なにがしかの読み込み用データが利用可能になっていれば
+真の値を返し、そうでなければ、<code>#f</code>を返します。完全仮想ポートとはちがい、
+バイナリI/Oと文字I/Oを区別する必要はありません。
+</p>
+<p>このスロットが未定義の場合、このポートは常にデータが利用可能になっている
+とみなされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-close-2"></a><u>Instance Variable of &lt;buffered-input-port&gt;:</u> <b>close</b></dt>
+<dd><p>設定されていれば、引数をとらない手続きでなければなりません。この手続きは
+仮想バッファポートがクローズされるときに呼出されます。ポートがクローズ
+されるときに、なにがしかのクリーンアップを行うのでなければ、設定する必要
+はありません。
+</p>
+<p>この手続きは、ファイナライザから呼ばれる可能性がありますので、特別な
+注意が必要です。後述のファイナライズに関する注意書きを参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-filenum"></a><u>Instance Variable of &lt;buffered-input-port&gt;:</u> <b>filenum</b></dt>
+<dd><p>設定されているなら、このポートの使っているファイルディスクリプタ番号(正確な非負整数)
+を返す手続きでなければなりません。この手続きは <code>port-file-number</code>
+をこのポートに対して呼出したときに呼ばれます。
+</p>
+<p>そのようなファイルディスクリプタが存在していなければ、
+<code>#f</code> を返すことができます。
+あるいは、このスロットを未設定にしておくこともできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-seek-2"></a><u>Instance Variable of &lt;buffered-input-port&gt;:</u> <b>seek</b></dt>
+<dd><p>設定されているなら、オフセット引数とどこからかを示す引数の2つをとる
+手続きでなければなりません。これは、前述の
+<code>&lt;virtual-input-port&gt;</code>のseek 手続きと同じように動作します。
+</p>
+<p>この手続きはファイナライザから呼ばれる可能性があり、特別な注意が
+必要です。後述のファイナライズに関する注意を参照してください。
+</p></dd></dl>
+
+<p>これらのスロットの値以外に、当該ポートの内部バッファのサイズを設定する
+のには<var>make</var>メソッドに<code>:buffer-size</code>というキーワード引数で非
+負の正確な整数を渡します。<code>:buffer-size</code>が省略されるか、0 が渡さ
+れた場合にはシステムのデフォルトのバッファサイズ(たとえば、8kとか)が使
+われます。<code>:buffer-size</code>はインスタンススロットではないので、バッ
+ファポートのインスタンスを生成したあとで設定することはできません。以下
+は 64K のバッファを使うバッファの作り方の例です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make &lt;buffered-input-port&gt; :buffer-size 65536 :fill my-filler)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cbuffered_002doutput_002dport_003e"></a><u>Class:</u> <b>&lt;buffered-output-port&gt;</b></dt>
+<dd><a name="index-buffered_002doutput_002dport"></a>
+
+<p>このクラスのインスタンスは出力ポートとして振舞います。これは、以下のような
+インスタンススロットを持ちます。少くとも <code>flush</code> は設定しなければ
+なりません。
+</p>
+<dl>
+<dt><a name="index-flush-2"></a><u>Instance Variable of &lt;buffered-output-port&gt;:</u> <b>flush</b></dt>
+<dd><p>設定されているなら、<code>u8vector</code>のバッファとフラグという2つの
+引数をとる手続きでなければなりません。手続きはバッファ内のデータを
+どこかへ出力しなければならず、実際に出力したバイト数を返します。
+</p>
+<p>フラグが偽なら、この手続きはバッファ全体よりも少い(ただし、最低でも
+1バイト)の出力を行ってもかまいません。もしフラグが真ならば、この手続きは、
+バッファの内容をすべて出力しなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-close-3"></a><u>Instance Variable of &lt;buffered-output-port&gt;:</u> <b>close</b></dt>
+<dd><p><code>&lt;buffered-input-port&gt;</code> の <code>close</code> スロットと同様です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-filenum-1"></a><u>Instance Variable of &lt;buffered-output-port&gt;:</u> <b>filenum</b></dt>
+<dd><p><code>&lt;buffered-input-port&gt;</code> の <code>filenum</code> スロットと同様です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-seek-3"></a><u>Instance Variable of &lt;buffered-output-port&gt;:</u> <b>seek</b></dt>
+<dd><p><code>&lt;buffered-input-port&gt;</code> の <code>seek</code> スロットと同様です。
+</p></dd></dl>
+
+<p>これらのスロットの値以外に、当該ポートの内部バッファのサイズを設定する
+のには<var>make</var>メソッドに<code>:buffer-size</code>というキーワード引数で非
+負の正確な整数を渡します。詳しくは前述 <code>&lt;buffered-input-port&gt;</code>
+の項を見てください。
+</p>
+</dd></dl>
+
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<h4 class="subsubheading">ユニフォームベクタポート</h4>
+
+<p>以下の 2つの手続きは、ユニフォームベクタでバックアップされた、
+バッファ入/出力ポートを返します。読み込み元のベクタあるいは
+書き出し相手のベクタはどのようなユニフォームベクタであってもかまいませんが、
+実際の入出力時には<code>u8vector</code> にaliasされます
+(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">ユニフォームベクタの変換</a> の <code>uvector-alias</code> 参照)。
+</p>
+<p><code>pack</code>/<code>unpack</code>(<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"><code>binary.pack</code> - バイナリデータのパック</a>参照) と一緒に使うと
+バイナリのデータ構造をパースしたり、構築したりするのに便利です。
+また、仮想ポートの使い方の例でもあります。実装法に興味があれば、
+ソースツリーの ‘<tt>gauche/vport.scm</tt>’(あるいは ‘<tt>ext/vport/vport.scm</tt>’)
+を読んでください。
+</p>
+<dl>
+<dt><a name="index-open_002dinput_002duvector"></a><u>Function:</u> <b>open-input-uvector</b><i> uvector</i></dt>
+<dd><p>与えられたユニフォームベクタ <var>uvector</var>の最初からその内容を読む
+入力ポートを返します。読み込み動作が、<var>uvector</var>の終端に到達したら
+EOFが返されます。シーク操作も実装されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-open_002doutput_002duvector"></a><u>Function:</u> <b>open-output-uvector</b><i> uvector</i></dt>
+<dd><p>与えられた uvector をポートへのデータ出力で満たす出力ポートを返します。
+<var>uvector</var>が満杯になれば、それ以上のデータは黙って廃棄されます。
+シーク操作も実装されています。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00ba_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e6_00b3_00a8_00e6_0084_008f"></a>
+<h4 class="subsubheading">ファイナライズに関する注意</h4>
+
+<p>クローズされていない仮想ポートがガベージ・コレクションされると、
+クローズ手続きが呼ばれます(仮想バッファポートの場合は、
+フラッシュ手続きがクローズ手続きの前に呼ばれます)。これは、
+そのポートのファイナライザによって行われます。これはガベージ・コレクション
+処理の一部ですから(Scheme 手続きそのものはガーベッジ・コレクタの
+メインパートの外側で呼ばれているのですが、それでも)特別な注意が必要です。
+</p>
+<ul>
+<li>
+仮想ポートが参照しているオブジェクトが既にファイナライズされて
+しまっているということがあり得ます。たとえば、仮想ポート <var>X</var>
+は、<em>流し込み用</em>のポート <var>Y</var> への唯一の参照を保持しており、それに
+出力するものとします。<var>X</var>の <code>flush</code> 手続きは、その出力を
+<var>Y</var>へ送ります。もし<code>flush</code> 手続きがファイナライザから
+呼ばれた場合、<var>Y</var> のファイナライザが既に
+呼ばれていて、<var>Y</var> がクローズしてしまっていることがあるのです。
+従って <var>X</var> の <code>flush</code> 手続きは、<var>Y</var> が既にクローズして
+いるかどうかをチェックする必要があります。
+
+</li><li>
+いつ、どのスレッドでファイナライザが走るかを知ることはできません。
+それゆえ、仮想ポートの <code>close</code> あるいは <code>flush</code> などの
+手続きが、グローバルなリソースをロックしたり、アクセスしたりする
+必要のある場合には、デッドロックやアクセスの衝突を回避するために
+特に注意する必要があります。
+
+<p>単一スレッドのプログラムにおいても、ファイナライザは、Schemeの
+プログラムのいたるところで走る可能性があります。したがって、実質的に
+それは別のスレッドで走っていると考えておくべきです。
+</p></li></ul>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_106.html#g_t_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00a7_00e3_0083_00b3_00e7_0095_00aa_00e5_008f_00b7_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

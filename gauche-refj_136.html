@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.10 dbm.gdbm - GDBMインタフェース</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.10 dbm.gdbm - GDBMインタフェース">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.10 dbm.gdbm - GDBMインタフェース">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="GDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_135.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0dbm" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_137.html#NDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="dbm_002egdbm-_002d-GDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<h2 class="section">11.10 <code>dbm.gdbm</code> - GDBMインタフェース</h2>
+
+<dl>
+<dt><a name="index-dbm_002egdbm"></a><u>Module:</u> <b>dbm.gdbm</b></dt>
+<dd><a name="index-dbm_002egdbm-1"></a>
+<p>Provides interface to the gdbm library.  Extends <code>dbm</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cgdbm_003e"></a><u>Class:</u> <b>&lt;gdbm&gt;</b></dt>
+<dd><a name="index-gdbm"></a>
+<p><code>&lt;dbm&gt;</code> を継承します。GDBM ライブラリのための実装を提供します。
+このモジュールは、すでにあなたのシステムにすでに GDBM がある場合にのみ
+インストールされます(バージョン 1.8.0 が推奨されますが、いくつかの制限が
+あるだけで古い 1.7.x でも動作します)。
+</p>
+<dl>
+<dt><a name="index-sync"></a><u>Instance Variable of &lt;gdbm&gt;:</u> <b>sync</b></dt>
+</dl>
+<dl>
+<dt><a name="index-nolock"></a><u>Instance Variable of &lt;gdbm&gt;:</u> <b>nolock</b></dt>
+</dl>
+<dl>
+<dt><a name="index-bsize"></a><u>Instance Variable of &lt;gdbm&gt;:</u> <b>bsize</b></dt>
+</dl>
+</dd></dl>
+
+<p>統合された DBM インターフェース (See section <a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>dbm</code> - 汎用DBMインタフェース</a>) の
+他に、このモジュールでは GDBM API への直接のアクセスを提供する以下の
+低レベルな手続きを提供しています。これらの API の詳細については GDBM の
+マニュアルを見て下さい。
+</p>
+<dl>
+<dt><a name="index-gdbm_002dopen"></a><u>Function:</u> <b>gdbm-open</b><i> path :optional size rwmode fmode error-callback</i></dt>
+<dd>
+<dl>
+<dt><a name="index-GDBM_005fREADER"></a><u>Variable:</u> <b>GDBM_READER</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fWRITER"></a><u>Variable:</u> <b>GDBM_WRITER</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fWRCREAT"></a><u>Variable:</u> <b>GDBM_WRCREAT</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fNEWDB"></a><u>Variable:</u> <b>GDBM_NEWDB</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fFAST"></a><u>Variable:</u> <b>GDBM_FAST</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fSYNC"></a><u>Variable:</u> <b>GDBM_SYNC</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fNOLOCK"></a><u>Variable:</u> <b>GDBM_NOLOCK</b></dt>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-gdbm_002dclose"></a><u>Function:</u> <b>gdbm-close</b><i> gdbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-gdbm_002dclosed_003f"></a><u>Function:</u> <b>gdbm-closed?</b><i> gdbm-object</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-gdbm_002dstore"></a><u>Function:</u> <b>gdbm-store</b><i> key value :optional flag</i></dt>
+<dd>
+
+<dl>
+<dt><a name="index-GDBM_005fINSERT"></a><u>Variable:</u> <b>GDBM_INSERT</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fREPLACE"></a><u>Variable:</u> <b>GDBM_REPLACE</b></dt>
+</dl>
+
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dfetch"></a><u>Function:</u> <b>gdbm-fetch</b><i> gdbm-object key</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002ddelete"></a><u>Function:</u> <b>gdbm-delete</b><i> gdbm-object key</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dfirstkey"></a><u>Function:</u> <b>gdbm-firstkey</b><i> gdbm-object</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dnextkey"></a><u>Function:</u> <b>gdbm-nextkey</b><i> gdbm-object key</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dreorganize"></a><u>Function:</u> <b>gdbm-reorganize</b><i> gdbm-object</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dsync"></a><u>Function:</u> <b>gdbm-sync</b><i> gdbm-object</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dexists_003f"></a><u>Function:</u> <b>gdbm-exists?</b><i> gdbm-object key</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dstrerror"></a><u>Function:</u> <b>gdbm-strerror</b><i> errno</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-gdbm_002dsetopt"></a><u>Function:</u> <b>gdbm-setopt</b><i> gdbm-object option value</i></dt>
+<dd>
+<dl>
+<dt><a name="index-GDBM_005fCACHESIZE"></a><u>Variable:</u> <b>GDBM_CACHESIZE</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fFASTMODE"></a><u>Variable:</u> <b>GDBM_FASTMODE</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fSYNCMODE"></a><u>Variable:</u> <b>GDBM_SYNCMODE</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fCENTFREE"></a><u>Variable:</u> <b>GDBM_CENTFREE</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-GDBM_005fCOALESCEBLKS"></a><u>Variable:</u> <b>GDBM_COALESCEBLKS</b></dt>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-gdbm_002dversion"></a><u>Function:</u> <b>gdbm-version</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-gdbm_002derrno"></a><u>Function:</u> <b>gdbm-errno</b></dt>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_135.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0dbm" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_137.html#NDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

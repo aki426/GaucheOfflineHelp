@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.26 rfc.json - JSONのパーズと構築</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.26 rfc.json - JSONのパーズと構築">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.26 rfc.json - JSONのパーズと構築">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="JSON_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_151.html#ICMP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_153.html#MD5_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002ejson-_002d-JSON_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089"></a>
+<h2 class="section">11.26 <code>rfc.json</code> - JSONのパーズと構築</h2>
+
+<dl>
+<dt><a name="index-rfc_002ejson"></a><u>Module:</u> <b>rfc.json</b></dt>
+<dd><a name="index-rfc_002ejson-1"></a>
+<p>RFC4627で規定される、JSON形式をパーズしてS式に直す手続きと、
+S式をJSON形式に変換する手続きが提供されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cjson_002dparse_002derror_003e"></a><u>Condition type:</u> <b>&lt;json-parse-error&gt;</b></dt>
+<dd><p>パーズ手続き<code>parse-json</code>と<code>parse-json-string</code>は、
+無効なJSON構文に出会った時にこのコンディションを投げます。
+<code>&lt;error&gt;</code>を継承し、次のスロットを追加で持ちます。
+</p>
+<dl>
+<dt><a name="index-position-1"></a><u>Instance Variable of &lt;json-parse-error&gt;:</u> <b>position</b></dt>
+<dd><p>エラーが起きた入力位置(文字数)。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-parse_002djson"></a><u>Function:</u> <b>parse-json</b><i> :optional input-port</i></dt>
+<dd><p>JSON表記を<var>input-port</var> (省略された場合はcurrent-input-port)から
+読み込みパーズして、結果をS式で返します。
+パーズエラーが起きた場合は<code>&lt;json-parse-error&gt;</code>コンディションを投げます。
+</p>
+<p>下のテーブルに、JSONのデータ型がどのようにSchemeにマップされるかを示します。
+(将来は、このマッピングをカスタマイズできるようにするかもしれません。)
+</p>
+<dl compact="compact">
+<dt> <code>true</code>, <code>false</code>, <code>null</code></dt>
+<dd><p>シンボル<code>true</code>, <code>false</code> and <code>null</code>。
+</p></dd>
+<dt> 配列</dt>
+<dd><p>Schemeのベクタ。
+</p></dd>
+<dt> オブジェクト</dt>
+<dd><p>Schemeの連想リスト。キーは文字列で、値はSchemeオブジェクト。
+</p></dd>
+<dt> 数値</dt>
+<dd><p>Schemeの不正確な実数。
+</p></dd>
+<dt> 文字列</dt>
+<dd><p>Schemeの文字列。
+</p></dd>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-parse_002djson_002dstring"></a><u>Function:</u> <b>parse-json-string</b><i> str</i></dt>
+<dd><p>文字列<var>str</var>をJSONとしてパーズし、結果をS式で返します。
+パーズエラーが起きた場合は<code>&lt;json-parse-error&gt;</code>コンディションを投げます。
+</p>
+<p>JSONのデータ型とSchemeの型とのマッピングについては上の<code>parse-json</code>
+を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cjson_002dconstruct_002derror_003e"></a><u>Condition type:</u> <b>&lt;json-construct-error&gt;</b></dt>
+<dd><p><code>construct-json</code>と<code>construct-json-string</code>は、
+JSONに変換できないSchemeオブジェクトを見つけるとこのコンディションを投げます。
+<code>&lt;error&gt;</code>を継承し、次のスロットを追加で持ちます。
+</p>
+<dl>
+<dt><a name="index-object-1"></a><u>Instance Variable of &lt;json-construct-error&gt;:</u> <b>object</b></dt>
+<dd><p>JSON表現に変換できなかったSchemeオブジェクト。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-construct_002djson"></a><u>Function:</u> <b>construct-json</b><i> obj :optional output-port</i></dt>
+<dt><a name="index-construct_002djson_002dstring"></a><u>Function:</u> <b>construct-json-string</b><i> obj</i></dt>
+<dd><p>Schemeオブジェクト<var>obj</var>のJSON表現を作ります。
+<code>construct-json</code>は結果を<var>output-port</var>に書き出します。デフォルトは
+current-output-portです。<code>construct-json-string</code>は結果を文字列で返します。
+RFC4627はJSONテキストはobjectかarrayであると定めているので、
+<var>obj</var>はJSONオブジェクトかJSON配列へと変換できるSchemeオブジェクト
+でなければなりません。
+</p>
+<p><var>obj</var>がJSONにマップできないオブジェクトを含んでいた場合は
+<code>&lt;json-consturct-error&gt;</code>コンディションが投げられます。
+JSONとScheme間のマッピングについては上の<code>parse-json</code>のエントリを
+参照してください。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_151.html#ICMP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_153.html#MD5_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

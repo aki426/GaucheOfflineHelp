@@ -1,0 +1,739 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.3 gauche.cgen - Cコードの生成</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.3 gauche.cgen - Cコードの生成">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.3 gauche.cgen - Cコードの生成">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_76.html#g_t_00e5_00a4_0089_00e6_008f_009b_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Generating-C-source-files" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002ecgen-_002d-C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090"></a>
+<h2 class="section">9.3 <code>gauche.cgen</code> - Cコードの生成</h2>
+
+<p>Significant part of Gauche is written in Gauche or S-expression
+based DSL.  During the building process, they are converted
+into C sources and then compiled by C compiler.
+The <code>gauche.cgen</code> module and its submodules expose
+the functionality Gauche build process is using to the general use.
+</p>
+<p>Required features for a C code generator differ greatly among
+applications, and too much scaffolding could be a constraint
+for the module users.  So, instead of providing a single
+solid framework, we provide a set of loosely coupled modules
+so that you can combine necessary features freely.  In fact,
+some of Gauche build process only use <code>gauche.cgen.unit</code>
+and <code>gauche.cgen.literal</code> (see ‘<tt>src/builtin-syms.scm</tt>’,
+for example).
+</p>
+<dl>
+<dt><a name="index-gauche_002ecgen"></a><u>Module:</u> <b>gauche.cgen</b></dt>
+<dd><a name="index-gauche_002ecgen-1"></a>
+<p>This is a convenience module that extends
+<code>gauche.cgen.unit</code>, <code>gauche.cgen.literal</code>,
+<code>gauche.cgen.type</code> and <code>gauche.cgen.cise</code> together.
+</p></dd></dl>
+
+<p>Usually you can just use <code>gauche.cgen</code> and don’t need
+to think about individual submodules.
+The following subsections are organized by submodules
+only for the convenience of explanation.
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Generating-C-source-files">9.3.1 Generating C source files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  gauche.cgen.unit
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Generating-Scheme-literals">9.3.2 Generating Scheme literals</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  gauche.cgen.literals
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Conversions-between-Scheme-and-C">9.3.3 Conversions between Scheme and C</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  gauche.cgen.type
+</td></tr>
+<tr><td align="left" valign="top"><a href="#C-in-S-expression">9.3.4 CiSE - C in S expression</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  gauche.cgen.cise
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Generating-C-source-files"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Generating-Scheme-literals" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Generating-C-source-files-1"></a>
+<h3 class="subsection">9.3.1 Generating C source files</h3>
+
+<p>One of the tricky issues about generating C source is that
+you have to put several fragments of code in different
+parts of the source file, even you want to say just one thing?that is,
+sometimes you have to put declaration before the actual definition,
+plus some setup code that needs to be run at initialization time.
+</p>
+<a name="Creating-a-frame"></a>
+<h4 class="subsubheading">Creating a frame</h4>
+
+<dl>
+<dt><a name="index-_003ccgen_002dunit_003e"></a><u>Class:</u> <b>&lt;cgen-unit&gt;</b></dt>
+<dd><a name="index-cgen_002dunit"></a>
+<p>A <em>cgen-unit</em> is a unit of C source generation.
+It corresponds to one .c file, and optionally one .h file.
+During the processing, a "current unit" is kept in a parameter
+<code>cgen-current-unit</code>, and most cgen APIs implicitly work to it.
+</p>
+<p>The following slot are for public use.  They are used to tailor
+the output.  Usually you set those slots at initializatoin time.
+The effect is undefined if you change them in the middle of
+code geneartion process.
+</p>
+<dl>
+<dt><a name="index-name-3"></a><u>Instance Variable of &lt;cgen-unit&gt;:</u> <b>name</b></dt>
+<dd><p>A string to name this unit.  This is used for the default name
+of the generated files (‘<tt><var>name</var>.c</tt>’ and ‘<tt><var>name</var>.h</tt>’)
+and the suffix of the default name of initialization function.
+Other cgen modules may use this to generate names.  Avoid using
+characters that are valid for C identifiers.
+</p>
+<p>You can override those default names by setting the other slots.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-c_002dfile"></a><u>Instance Variable of &lt;cgen-unit&gt;:</u> <b>c-file</b></dt>
+<dt><a name="index-h_002dfile"></a><u>Instance Variable of &lt;cgen-unit&gt;:</u> <b>h-file</b></dt>
+<dd><p>The name of the C source file and header file, in strings.
+If they are <code>#f</code> (by default), the value of name slot
+is used as the file name, with extension <code>.c</code> or <code>.h</code>
+is attached, respectively.
+</p>
+<p>To get the file names to be generated, use <code>cgen-unit-c-file</code>
+and <code>cugen-unit-h-file</code> generic functions, instead of reading
+these slots.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-preamble"></a><u>Instance Variable of &lt;cgen-unit&gt;:</u> <b>preamble</b></dt>
+<dd><p>A list of strings to be inserted at the top of the generated sources.
+The default value is <code>("/* Generated by gauche.cgen */")</code>.
+Each string appears in its
+own line.  Usually you don’t need anything
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-init_002dprologue"></a><u>Instance Variable of &lt;cgen-unit&gt;:</u> <b>init-prologue</b></dt>
+<dt><a name="index-init_002depilogue"></a><u>Instance Variable of &lt;cgen-init&gt;:</u> <b>init-epilogue</b></dt>
+<dd><p>A string to start or to end the initialization function, respectively.
+The default value of <code>init-prologue</code> is
+<code>"void Scm_Init_NAME(void) {"</code> where <code>NAME</code> is the
+value of the <code>name</code> slot.  The default value of <code>init-epilogue</code>
+is just <code>"}"</code>.  Each appears in its own line.
+</p>
+<p>To get the default initialization function name, use <code>cgen-unit-init-name</code>
+generic function.
+</p>
+<p>To customize initialization function name, arguments and/or return type,
+set <code>init-prologue</code>.
+</p>
+<p>The content of initialization function is filled by the code
+fragments registered by <code>cgen-init</code>.
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dcurrent_002dunit"></a><u>Parameter:</u> <b>cgen-current-unit</b></dt>
+<dd><p>A parameter to keep the current cgen-unit.
+</p></dd></dl>
+
+<p>A typical flow of generating C code is as follows:
+</p>
+<ol>
+<li>
+Create a <code>&lt;cgen-unit&gt;</code> and make it the current unit.
+</li><li>
+Call code insertion APIs with code fragments.  Fragments are accumulated
+in the current unit.
+</li><li>
+Call <em>emit</em> method on the unit, which generates a C file
+and optionally a header file.
+</li></ol>
+
+<dl>
+<dt><a name="index-cgen_002demit_002dc"></a><u>Generic Function:</u> <b>cgen-emit-c</b><i> cgen-unit</i></dt>
+<dt><a name="index-cgen_002demit_002dh"></a><u>Generic Function:</u> <b>cgen-emit-h</b><i> cgen-unit</i></dt>
+<dd><p>Write the accumulated code fragments in <var>cgen-unit</var> to a
+C source file and C header file.  The name of the files are
+determined by calling <code>cgen-unit-c-file</code> and <code>cgen-unit-h-file</code>,
+respectively.  If the files already exist, its content is overwritten;
+you can’t gradually write to the files.
+So, usually these procedures are called at the last step of the code
+generation.
+</p>
+<p>We’ll explain the details of how each file is organized under
+“Filling the content” section below.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dunit_002dc_002dfile"></a><u>Generic Function:</u> <b>cgen-unit-c-file</b><i> cgen-unit</i></dt>
+<dt><a name="index-cgen_002dunit_002dh_002dfile"></a><u>Generic Function:</u> <b>cgen-unit-h-file</b><i> cgen-unit</i></dt>
+<dd><p>Returns a string that names C source and header file for
+<var>cgen-unit</var>, respectively.  The default method first
+looks at <code>c-file</code> or <code>h-file</code> slot of the
+<var>cgen-unit</var>, and if it is <code>#f</code>, use the value of <code>name</code>
+slot and appends an extension <code>.c</code> or <code>.h</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dunit_002dinit_002dname"></a><u>Generic Function:</u> <b>cgen-unit-init-name</b><i> cgen-unit</i></dt>
+<dd><p>Returns a string that names the initialization function
+generated to C.  It is used to create the default
+<code>init-prologue</code> value.
+</p></dd></dl>
+
+<a name="Filling-the-content"></a>
+<h4 class="subsubheading">Filling the content</h4>
+
+<p>There are four parts to which you can add C code
+fragment.  Within each part, code fragments are rendered in the
+same order as added.
+</p>
+<dl compact="compact">
+<dt> extern</dt>
+<dd><p>This part is put into the header file, if exists.
+</p></dd>
+<dt> decl</dt>
+<dd><p>Placed at the beginning of the C source, after the standard
+prologue.
+</p></dd>
+<dt> body</dt>
+<dd><p>Placed in the C source, following the ’decl’ part.
+</p></dd>
+<dt> init</dt>
+<dd><p>Placed inside the initialization function, which appears at
+the end of the C source.
+</p></dd>
+</dl>
+
+<p>The following procedures are the simple way to put a souce
+code fragments in an appropriate part:
+</p>
+<dl>
+<dt><a name="index-cgen_002dextern"></a><u>Function:</u> <b>cgen-extern</b><i> code …</i></dt>
+<dt><a name="index-cgen_002ddecl"></a><u>Function:</u> <b>cgen-decl</b><i> code …</i></dt>
+<dt><a name="index-cgen_002dbody"></a><u>Function:</u> <b>cgen-body</b><i> code …</i></dt>
+<dt><a name="index-cgen_002dinit"></a><u>Function:</u> <b>cgen-init</b><i> code …</i></dt>
+<dd><p>Put code fragments <var>code</var> … to the appropriate parts.
+Each fragment must be a string.
+</p></dd></dl>
+
+<p>This is an almost minimal example to show the typical usage.
+After running this code you’ll get <code>my-cfile.c</code> and
+<code>my-cfile.h</code> in the current directory.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.cgen)
+
+(define *unit* (make &lt;cgen-unit&gt; :name "my-cfile"))
+
+(parameterize ([cgen-current-unit *unit*])
+  (cgen-decl "#include &lt;stdio.h&gt;")
+  (cgen-init "printf(stderr, \"initialization function\\n\");")
+  (cgen-body "void foo(int n) { printf(stderr, \"got %d\\n\", n); }")
+  (cgen-extern "void foo(int n);")
+  )
+
+(cgen-emit-c *unit*)
+(cgen-emit-h *unit*)
+</pre></td></tr></tbody></table>
+
+<p>These are handy escaping procedures; they are useful even
+if you don’t use other parts of the <code>cgen</code> modules.
+</p>
+<dl>
+<dt><a name="index-cgen_002dsafe_002dname"></a><u>Function:</u> <b>cgen-safe-name</b><i> string</i></dt>
+<dt><a name="index-cgen_002dsafe_002dname_002dfriendly"></a><u>Function:</u> <b>cgen-safe-name-friendly</b><i> string</i></dt>
+<dt><a name="index-cgen_002dsafe_002dcomment"></a><u>Function:</u> <b>cgen-safe-comment</b><i> string</i></dt>
+<dd><p>Escapes characters invalid in C identifiers or C comments.
+</p>
+<p>With <code>cgen-safe-name</code>, characters other than ASCII alphabets
+and digits are converted to a form <code>_XX</code>, where <code>XX</code> is
+hexadecimal notation of the character code.  (Note that the character
+<code>_</code> is also converted.)  So the returned string can be used
+safely as a C identifier.  The mapping is injective, that is,
+if the source strings differ, the result string always differ.
+</p>
+<p>On the other hand, <code>cgen-safe-name-friendly</code> convers
+the input string into more readable C identifier.  <code>-&gt;</code> becomes
+<code>_TO</code> (e.g. <code>char-&gt;integer</code> becomes <code>char_TOinteger</code>),
+other <code>-</code> and <code>_</code> become <code>_</code>,
+<code>?</code> becomes <code>P</code> (e.g. <code>char?</code> becomes <code>charP</code>),
+<code>!</code> becomes <code>X</code> (e.g. <code>set!</code> becomes <code>setX</code>),
+<code>&lt;</code> and <code>&gt;</code> become <code>_LT</code> and <code>_GT</code> respectively.
+Other special characters except <code>_</code> are converted to <code>_XX</code>
+as in <code>cgen-safe-name</code>.  The mapping is not injective; e.g.
+both <code>read-line</code> and <code>read_line</code> map to <code>read_line</code>.
+Use this only when you think some human needs to read the generated
+C code (which is not recommended, by the way.)
+</p>
+<p>Much simpler is <code>c-safe-comment</code>, which just converts
+<code>/*</code> and <code>*/</code> into <code>/ *</code> and <code>* /</code> (a space
+between those two characters), so that it won’t terminate the
+comment inadvertently.  (Technically, escaping only <code>*/</code> suffice,
+but some simple-minded C parser might be confused by <code>/*</code> in the
+comments).   The conversion isn’t injective as well.
+</p></dd></dl>
+
+<p>If you want to conditionalize a fragment by C preprocessor
+<code>#ifdef</code>s, use the following macro:
+</p>
+<dl>
+<dt><a name="index-cgen_002dwith_002dcpp_002dcondition"></a><u>Macro:</u> <b>cgen-with-cpp-condition</b><i> cpp-expr body …</i></dt>
+<dd><p>Code fragments submitted in <var>body</var> … are protected
+by <code>#if <var>cpp-expr</var></code> and <code>#endif</code>.
+</p>
+<p>If <var>cpp-expr</var> is a string, it is emitted literally:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cgen-with-cpp-condition "defined(FOO)"
+  (cgen-init "foo();"))
+
+;; will generate:
+#if defined(FOO)
+foo();
+#endif /* defined(FOO) */
+</pre></td></tr></tbody></table>
+
+<p>You can also construct <var>cpp-expr</var> by S-expr.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;cpp-expr&gt; : &lt;string&gt;
+           | (defined &lt;cpp-expr&gt;)
+           | (not &lt;cpp-expr&gt;)
+           | (&lt;n-ary-op&gt; &lt;cpp-expr&gt; &lt;cpp-expr&gt; ...)
+           | (&lt;binary-op&gt; &lt;cpp-expr&gt; &lt;cpp-expr&gt;)
+
+&lt;n-ary-op&gt; : and | or | + | * | - | /
+
+&lt;binary-op&gt; : &gt; | &gt;= | == | &lt; | &lt;= | !=
+            | logand | logior | lognot | &gt;&gt; | &lt;&lt;
+</pre></td></tr></tbody></table>
+
+<p>Example:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cgen-with-cpp-condition '(and (defined FOO)
+                               (defined BAR))
+  (cgen-init "foo();"))
+
+;; will generate:
+#if ((defined FOO)&amp;&amp;(defined BAR))
+foo();
+#endif /* ((defined FOO)&amp;&amp;(defined BAR)) */
+</pre></td></tr></tbody></table>
+
+<p>You can nest <code>cgen-with-cpp-condition</code>.
+</p></dd></dl>
+
+<a name="Submitting-code-fragments-for-more-than-one-parts"></a>
+<h4 class="subsubheading">Submitting code fragments for more than one parts</h4>
+
+<p>When you try to abstract code generation process,
+calling individual procedures for each parts (e.g. <code>cgen-body</code>
+or <code>cgen-init</code>) becomes tedious, since such higher-level
+constructs are likely to require generating code fragments
+to various parts.  Instead, you can create a customized class
+that handles submission of fragments to appropriate parts.
+</p>
+<dl>
+<dt><a name="index-_003ccgen_002dnode_003e"></a><u>Class:</u> <b>&lt;cgen-node&gt;</b></dt>
+<dd><a name="index-cgen_002dnode"></a>
+<p>A base class to represent a set of code fragments.
+</p>
+<p>The state of C preprocessor condition (set by <code>with-cgen-cpp-condition</code>)
+is captured when an instance of the subclass of this class is
+created, so generating appropriate <code>#if</code>s and <code>#endif</code>s are
+automatically handled.
+</p></dd></dl>
+
+<p>You subclass <code>&lt;cgen-node&gt;</code>, then define method(s) to
+one or more of the following generic functions:
+</p>
+<dl>
+<dt><a name="index-cgen_002demit_002dxtrn"></a><u>Generic Function:</u> <b>cgen-emit-xtrn</b><i> cgen-node</i></dt>
+<dt><a name="index-cgen_002demit_002ddecl"></a><u>Generic Function:</u> <b>cgen-emit-decl</b><i> cgen-node</i></dt>
+<dt><a name="index-cgen_002demit_002dbody"></a><u>Generic Function:</u> <b>cgen-emit-body</b><i> cgen-node</i></dt>
+<dt><a name="index-cgen_002demit_002dinit"></a><u>Generic Function:</u> <b>cgen-emit-init</b><i> cgen-node</i></dt>
+<dd><p>These generic functions are called during writing out
+the C source within <code>cgen-emit-c</code> and <code>cgen-emit-h</code>.
+Inside these methods, anything written out to the
+current output port goes into the output file.
+</p>
+<p>While generating <code>.h</code> file by <code>cgen-emit-h</code>,
+<code>cgen-emit-xtrn</code> method for all submitted nodes are
+called in order of submission.
+</p>
+<p>While generating <code>.c</code> file by <code>cgen-emit-c</code>,
+<code>cgen-emit-decl</code> method for all submitted nodes are
+called first, then <code>cgen-emit-body</code> method, then
+<code>cgen-emit-init</code> method.
+</p>
+<p>If you don’t specialize any one of these method, it doesn’t
+generate code in that part.
+</p></dd></dl>
+
+<p>Once you define your subclass and create an instace,
+you can submit it to the current cgen unit by this procedure:
+</p>
+<dl>
+<dt><a name="index-cgen_002dadd_0021"></a><u>Function:</u> <b>cgen-add!</b><i> cgen-node</i></dt>
+<dd><p>Submit <var>cgen-node</var> to the current cgen unit.
+If the current unit is not set, <var>cgen-node</var> is simply ignored.
+</p></dd></dl>
+
+<p>In fact, the procedures <code>cgen-extern</code>, <code>cgen-decl</code>,
+<code>cgen-body</code> and <code>cgen-init</code> are just a convenience
+wrapper to create an internal subclass specialized to generate
+code fragment only to the designated part.
+</p>
+
+<hr size="6">
+<a name="Generating-Scheme-literals"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Generating-C-source-files" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Conversions-between-Scheme-and-C" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Generating-Scheme-literals-1"></a>
+<h3 class="subsection">9.3.2 Generating Scheme literals</h3>
+
+<p>Sometimes you want to refer to a Scheme constant value in C code.
+It is trivial if the value is a simple thing like Scheme boolean
+(<code>SCM_TRUE</code>, <code>SCM_FALSE</code>), characters (<code>SCM_MAKE_CHAR(code)</code>),
+small integers (<code>SCM_MAKE_INT(value)</code>), etc.  You can directly
+write it in C code.  However, once you step outside of these simple
+values, it gets tedious quickly, involving static data declarations
+and/or runtime initialization code.
+</p>
+<p>For example, to get a Scheme value of a list of symbols <code>(a b c)</code>,
+you have to (1) create <code>ScmString</code>s for the names of the symbols,
+(2) pass them to <code>Scm_Intern</code> to get Scheme symbols, then
+(3) call <code>Scm_Cons</code>es (or a convenience macro <code>SCM_LIST3</code>) to
+build a list.
+</p>
+<p>With <code>gauche.cgen</code>, those code can be generated automatically.
+</p>
+<p>NOTE: If you use <code>cgen-literal</code>, make sure you call
+<code>(cgen-decl "#include &lt;gauche.h&gt;")</code> to include ‘<tt>gauche.h</tt>’
+before the first call of <code>cgen-literal</code>, which may insert
+declarations that ness ‘<tt>gauche.h</tt>’.
+</p>
+<dl>
+<dt><a name="index-cgen_002dliteral"></a><u>Function:</u> <b>cgen-literal</b><i> obj</i></dt>
+<dd><p>Returns an <code>&lt;cgen-literal&gt;</code> object for a Scheme object <var>obj</var>,
+and submit necessary declarations and initialization code to the
+current cgen unit.
+</p></dd></dl>
+
+<p>For the above example, you can just call <code>(cgen-literal '(a b c))</code>
+and the C code to set up the Scheme literal of the list of three
+symbols will be generated.
+</p>
+<p>The result of <code>cgen-literal</code> is an instance of <code>&lt;cgen-literal&gt;</code>;
+the detail of the class isn’t for public use, but you can use it
+to refer the created literal in C code.
+</p>
+<dl>
+<dt><a name="index-cgen_002dcexpr"></a><u>Generic Function:</u> <b>cgen-cexpr</b><i> cgen-literal</i></dt>
+<dd><p>Returns a C code expression fragment of type <code>ScmObj</code>,
+which represents the Scheme literal value.
+</p>
+<p>The following example creates a C function <code>printabc</code> that prints
+the literal value <code>(a b c)</code>, created by <code>cgen-literal</code>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define *unit* (make &lt;cgen-unit&gt; :name "foo"))
+(parameterize ((cgen-current-unit *unit*))
+  (let1 lit (cgen-literal '(a b c))
+    (cgen-body
+     (format "void printabc() { Scm_Printf(SCM_CUROUT, \"%S\", ~a); }"
+             (cgen-c-name lit)))))
+(cgen-emit-c *unit*)
+</pre></td></tr></tbody></table>
+
+<p>If you examine the generated file ‘<tt>foo.c</tt>’, you’ll get a
+general idea of how it is handled.
+</p></dd></dl>
+
+<p>One advantage of <code>cgen-literal</code> is that it tries to share
+the same literal whenever possible.  If you call
+<code>(cgen-literal '(a b c))</code> twice in the same cgen unit,
+you’ll get one instance of cgen-literal.  If you call
+<code>(cgen-literal '(b c))</code> then, it will share the tail
+of the original list <code>(a b c)</code>.  So you can just use
+<code>cgen-literal</code> whenever you need to have Scheme literal
+values, without worrying about generating excessive amount of
+duplicated code.
+</p>
+<p>Certain Scheme objects cannot be generated as a literal; for example,
+an opened port can’t, since it carries lots of runtime information.
+</p>
+<p>(There’s a machinery to allow programmers to extend the cgen-literal
+behavior for new types.  The API isn’t fixed yet, though.)
+</p>
+
+<hr size="6">
+<a name="Conversions-between-Scheme-and-C"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Generating-Scheme-literals" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#C-in-S-expression" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Conversions-between-Scheme-and-C-1"></a>
+<h3 class="subsection">9.3.3 Conversions between Scheme and C</h3>
+
+<p>In the C world, any Scheme object is uniformly of type <code>ScmObj</code>.
+But it is often the case that you need to narrow down to the
+specific type and convert it to a C value.  Gauche maintains
+a database of how to typecheck and map Scheme value to C value and
+vice versa.
+</p>
+<p>Note that the mapping isn’t one-to-one: Scheme <code>&lt;integer&gt;</code>
+can be mapped to C’s <code>short</code>, <code>long</code>, <code>unsigned int</code>,
+or even just <code>ScmObj</code> if the C routine wants to cover bignums.
+So each mapping has its own name.  For historical reasons, each
+mapping is called <em>stub type</em>.  The names of stub types look
+like Scheme type but its semantics differ from Scheme type.
+Remember: Each stub type represents a specific mapping between a
+Scheme type and a C type.
+</p>
+<p>Each stub type has a <em>C-predicate</em>,
+a <em>boxer</em> and an <em>unboxer</em>, each of them is a Scheme
+string for the name of a C function or C macro.
+A C-predicate takes <var>ScmObj</var> object and returns C boolean
+value that if the given object has a valid type and range for the
+stub type.
+A boxer takes C object and converts it to a Scheme object; it
+usually involves wrapping or <em>boxing</em> the C value in a
+tagged pointer or object, hence the name.
+An unboxer does the opposite: takes a Scheme object and convert
+it to a C value.  The Scheme object must be checked by the C-predicate
+before being passed to the unboxer.
+</p>
+<p>The following table shows the predefined stub types.
+Note that the most of aggregate types has one to one mappings.
+The difficult ones are numeric types and strings.
+Scheme numbers can represent much wider range of numbers
+than C, so you have to narrow down according to the capability
+of C routine.  Scheme strings have byte size and character length,
+and the body may not be NULL-terminated; so the <code>&lt;string&gt;</code>
+stub type maps Scheme string to <code>ScmString*</code>.  For the convenience,
+you can use <code>&lt;const-cstring&gt;</code>, which creates NUL-terminated
+C string; beware that it may incur some copying cost.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">Stub type    Scheme       C           Notes
+-----------------------------------------------------------------
+&lt;fixnum&gt;     &lt;integer&gt;    int         Integers within fixnum range
+&lt;integer&gt;    &lt;integer&gt;    ScmObj      Any exact integers
+&lt;real&gt;       &lt;real&gt;       double      Value converted to double
+&lt;number&gt;     &lt;number&gt;     ScmObj      Any numbers
+
+&lt;int&gt;        &lt;integer&gt;    int         Integers representable in C
+&lt;int8&gt;       &lt;integer&gt;    int
+&lt;int16&gt;      &lt;integer&gt;    int
+&lt;int32&gt;      &lt;integer&gt;    int
+&lt;short&gt;      &lt;integer&gt;    short
+&lt;long&gt;       &lt;integer&gt;    long
+&lt;uint&gt;       &lt;integer&gt;    uint        Integers representable in C
+&lt;uint8&gt;      &lt;integer&gt;    uint
+&lt;uint16&gt;     &lt;integer&gt;    uint
+&lt;uint32&gt;     &lt;integer&gt;    uint
+&lt;ushort&gt;     &lt;integer&gt;    ushort
+&lt;ulong&gt;      &lt;integer&gt;    ulong
+&lt;float&gt;      &lt;real&gt;       float       Unboxed value casted to float
+&lt;double&gt;     &lt;real&gt;       double      Alias of &lt;real&gt;
+
+&lt;boolean&gt;    &lt;boolean&gt;    int         Boolean value
+&lt;char&gt;       &lt;char&gt;       ScmChar     Note: not a C char
+
+&lt;void&gt;       -            void        (Used only as a return type.
+                                        Scheme function returns #&lt;undef&gt;)
+
+&lt;string&gt;     &lt;string&gt;     ScmString*  Note: not a C string
+
+&lt;const-cstring&gt; &lt;string&gt;  const char* For arguments, string is unboxed
+                                      by Scm_GetStringConst.
+                                      For return values, C string is boxed
+                                      by SCM_MAKE_STR_COPYING.
+
+&lt;pair&gt;       &lt;pair&gt;       ScmPair*
+&lt;list&gt;       &lt;list&gt;       ScmObj
+&lt;string&gt;     &lt;string&gt;     ScmString*
+&lt;symbol&gt;     &lt;symbol&gt;     ScmSymbol*
+&lt;keyword&gt;    &lt;keyword&gt;    ScmKeyword*
+&lt;vector&gt;     &lt;vector&gt;     ScmVector*
+&lt;uvector&gt;    &lt;uvector&gt;    ScmUVector*
+&lt;s8vector&gt;   &lt;s8vector&gt;   ScmS8Vector*
+&lt;u8vector&gt;   &lt;u8vector&gt;   ScmU8Vector*
+&lt;s16vector&gt;  &lt;s16vector&gt;  ScmS16Vector*
+&lt;u16vector&gt;  &lt;u16vector&gt;  ScmU16Vector*
+&lt;s32vector&gt;  &lt;s32vector&gt;  ScmS32Vector*
+&lt;u32vector&gt;  &lt;u32vector&gt;  ScmU32Vector*
+&lt;s64vector&gt;  &lt;s64vector&gt;  ScmS64Vector*
+&lt;u64vector&gt;  &lt;u64vector&gt;  ScmU64Vector*
+&lt;f16vector&gt;  &lt;f16vector&gt;  ScmF16Vector*
+&lt;f32vector&gt;  &lt;f32vector&gt;  ScmF32Vector*
+&lt;f64vector&gt;  &lt;f64vector&gt;  ScmF64Vector*
+
+&lt;hash-table&gt; &lt;hash-table&gt; ScmHashTable*
+&lt;tree-map&gt;   &lt;tree-map&gt;   ScmTreeMap*
+
+&lt;char-set&gt;   &lt;char-set&gt;   ScmCharSet*
+&lt;regexp&gt;     &lt;regexp&gt;     ScmRegexp*
+&lt;regmatch&gt;   &lt;regmatch&gt;   ScmRegMatch*
+&lt;port&gt;       &lt;port&gt;       ScmPort*
+&lt;input-port&gt;  &lt;input-port&gt; ScmPort*
+&lt;output-port&gt; &lt;output-port&gt; ScmPort*
+&lt;procedure&gt;  &lt;procedure&gt;  ScmProcedure*
+&lt;closure&gt;    &lt;closure&gt;    ScmClosure*
+&lt;promise&gt;    &lt;promise&gt;    ScmPromise*
+
+&lt;class&gt;      &lt;class&gt;      ScmClass*
+&lt;method&gt;     &lt;method&gt;     ScmMethod*
+&lt;module&gt;     &lt;module&gt;     ScmModule*
+&lt;thread&gt;     &lt;thread&gt;     ScmVM*
+&lt;mutex&gt;      &lt;mutex&gt;      ScmMutex*
+&lt;condition-variable&gt; &lt;condition-variable&gt; ScmConditionVariable*
+</pre></td></tr></tbody></table>
+
+<p>A stub type can have a <em>maybe</em> variation, denoted by
+<code>?</code> suffix; e.g. <code>&lt;string&gt;?</code>.  It is a union type of
+the base type and boolean false (for <code>&lt;string&gt;?</code>, it
+can be either <code>&lt;string&gt;</code> or <code>#f</code>.)   In the C world,
+boolean false is mapped to <code>NULL</code> pointer.  It is convenient
+to pass a C value that allowed to be NULL back and forth?if
+you pass <code>#f</code> from the Scheme world it comes out <code>NULL</code> to
+the C world, and vice versa.   The maybe variation is only
+meaningful when the C type is a pointer type.
+</p>
+<dl>
+<dt><a name="index-_003ccgen_002dtype_003e"></a><u>Class:</u> <b>&lt;cgen-type&gt;</b></dt>
+<dd><p>An instance of this class represents a stub type.
+It can be looked up by name such as <code>&lt;const-cstring&gt;</code> by
+<code>cgen-type-from-name</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dtype_002dfrom_002dname"></a><u>Function:</u> <b>cgen-type-from-name</b><i> name</i></dt>
+<dd><p>Returns an instance of <code>&lt;cgen-type&gt;</code> that has <var>name</var>.
+If the name is unknown, <code>#f</code> is returned.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgen_002dbox_002dexpr"></a><u>Function:</u> <b>cgen-box-expr</b><i> cgen-type c-expr</i></dt>
+<dt><a name="index-cgen_002dunbox_002dexpr"></a><u>Function:</u> <b>cgen-unbox-expr</b><i> cgen-type c-expr</i></dt>
+<dt><a name="index-cgen_002dpred_002dexpr"></a><u>Function:</u> <b>cgen-pred-expr</b><i> cgen-type c-expr</i></dt>
+<dd><p><var>c-expr</var> is a string denotes a C expression.
+Returns a string of C expression that boxes, unboxes, or
+typechecks the <var>c-expr</var> according to the <var>cgen-type</var>.
+</p>
+<p>;; suppose foo() returns char*
+(cgen-box-expr
+ (cgen-type-from-name ’&lt;const-cstring&gt;)
+ "foo()")
+ ⇒ "SCM_MAKE_STR_COPYING(foo())"
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="C-in-S-expression"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Conversions-between-Scheme-and-C" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="CiSE-_002d-C-in-S-expression"></a>
+<h3 class="subsection">9.3.4 CiSE - C in S expression</h3>
+
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Conversions-between-Scheme-and-C" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>3.7 Gaucheのモジュールを書く</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 3.7 Gaucheのモジュールを書く">
+<meta name="keywords" content="Gauche ユーザリファレンス: 3.7 Gaucheのモジュールを書く">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_18.html#g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_20.html#g_t_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_0091_00e3_0083_0083_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f-1"></a>
+<h2 class="section">3.7 Gaucheのモジュールを書く</h2>
+
+<p>Gaucheのライブラリはモジュール毎に整理されています。Gaucheはどんな形式でも、
+有効なScheme式が書かれてさえいればロードすることができますが、
+Gaucheのライブラリは一定の形式を保って書かれています。
+Gauche用にまとまったSchemeコードを書いたら、それをモジュール形式にしておくと
+再利用がしやすくなるでしょう。
+</p>
+<p>通常ひとつのファイルで
+ひとつのモジュールを定義しますが、モジュールを複数のファイルに分けることもできます。
+まずひとつのファイルでモジュールを定義する方法を説明します。
+Gaucheのライブラリで使われているテンプレートは次のような形式です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; モジュールのインタフェースの定義
+(define-module foo
+  (use xxx)
+  (use yyy)
+  (export foo1 foo2 foo3)
+  )
+;; モジュール本体
+(select-module foo)
+
+… module body …
+
+</pre></td></tr></tbody></table>
+
+<p>このファイルは“foo.scm”という名で、<code>*load-path*</code>にあるディレクトリの
+いずれかに置かれなければなりません。
+</p>
+<p>まず、<code>define-module</code>フォームがモジュール<code>foo</code>を作成します。
+<code>define-module</code>フォーム内で、このモジュールが依存している他のモジュール
+を ‘<code>use</code>’ マクロを使ってロードし、このモジュールがエクスポートするシンボルを
+‘<code>export</code>’ 構文を使って指定します。(これらの構文の詳細は<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e">モジュールの定義と選択</a>を
+参照して下さい)。
+</p>
+<p>これらの<code>use</code>フォームや<code>export</code>フォームは必ずしも<code>define-module</code>
+フォームの先頭に置く必要はありませんが、このようにファイルの最初の方に固めておくことで、
+<code>foo</code>が依存しているモジュール群や<code>foo</code>が提供するシンボル等が
+一覧しやすくなります。
+</p>
+<p>次の、‘<code>select-module</code>’ フォームにより、それ以降のScheme式が
+モジュール<code>foo</code>の中で評価されます。モジュールの内容を全て<code>define-module</code>の中に
+書いてしまうことも出来ますが、最後の括弧を閉じ忘れやすいことや、エディタのインデントが
+狂うことなどから、あまりお薦めしません。
+</p>
+<p><code>select-module</code>フォームの後には、モジュールの内容であるScheme式を自由に書けます。
+それらはモジュール<code>foo</code>の中で評価されます。モジュール内で定義するトップレベルの
+束縛のうち、明示的に‘export’で指定されたシンボルのみが、このモジュールをインポートする他の
+モジュールから見えます。
+</p>
+<p>これで、他のプログラムは ‘<code>(use foo)</code>’ とするだけでこのモジュールの機能が
+利用可能になります。もしモジュールをサイト全体で利用できるようにしたければ、<code>gosh</code>内で
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(gauche-site-library-directory)
+</pre></td></tr></tbody></table>
+<p>を評価して得られるディレクトリに<code>foo.scm</code>を置いて下さい。
+</p>
+<p>モジュールの名前空間のトップに新たなモジュールを追加するのに気が引ける場合は、
+モジュールを階層的に構成することもできます。Gaucheのモジュールの多くは既に階層的に
+構成されています。具体的なモジュール例は<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081">ライブラリモジュール - 概要</a>を参照して下さい。
+例えば、<code>text.tr</code>モジュールは “<code>text/tr.scm</code>” ファイルに
+実装されています。パス名の区切り文字‘/’がモジュール名ではピリオドになることに
+注意して下さい。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_18.html#g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_20.html#g_t_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_0091_00e3_0083_0083_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

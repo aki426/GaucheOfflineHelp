@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.55 util.record - SLIB-互換のレコード型</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.55 util.record - SLIB-互換のレコード型">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.55 util.record - SLIB-互換のレコード型">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_180.html#g_t_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_182.html#util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002erecord-_002d-SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"></a>
+<h2 class="section">11.55 <code>util.record</code> - SLIB-互換のレコード型</h2>
+
+<dl>
+<dt><a name="index-util_002erecord"></a><u>Module:</u> <b>util.record</b></dt>
+<dd><a name="index-util_002erecord-1"></a>
+<p>このモジュールは、Guile と SLIB とに互換性のあるレコード型 API を提供します。
+これは、Gauche のオブジェクトシステム上に構築されています。
+</p>
+<p>便利なマクロ <code>define-record-type</code> を提供する <a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>gauche.record</code> - レコード型</a> も
+参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002drecord_002dtype"></a><u>Function:</u> <b>make-record-type</b><i> type-name field-names</i></dt>
+<dd><p>あらしいレコード型を表わす新しいクラスを返します。
+(これは SLIB では <em>レコード型記述子</em>とよばれているものです。)
+Gauche では、この新しいクラスは <code>&lt;record&gt;</code> のサブクラスです
+(<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>gauche.record</code> - レコード型</a> 参照)。
+</p>
+<p><var>type-name</var> はデバッグの目的で使われる文字列です。
+これは、シンボルに変換され、この新しいクラスの名前として設定されます。
+<var>field-names</var> はフィールド名のシンボルのリストです。
+各々のフィールドはこの新しいクラスのスロットとして実装されます。
+</p></dd></dl>
+
+<p>以下の手続きでは、<var>rtd</var> は <code>make-record-type</code> によって
+生成されたクラスです。
+</p>
+<dl>
+<dt><a name="index-record_002dconstructor"></a><u>Function:</u> <b>record-constructor</b><i> rtd :optional field-names</i></dt>
+<dd><p>与えられた <var>rtd</var> レコード型のインスタンスを構築する手続きを
+返します。返された手続きは <var>field-names</var> とちょうど同じ数の
+引数をとります。<var>field-names</var> のデフォルトは <code>'()</code> です。
+それぞれの引数は <var>field-names</var> の対応するフィールドの初期値を
+設定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-record_002dpredicate"></a><u>Function:</u> <b>record-predicate</b><i> rtd</i></dt>
+<dd><p>一つの引数をとり、与えられた引数が <var>rtd</var> と同じ型であり、その場合に
+限り <code>#t</code> を返す手続きを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-record_002daccessor"></a><u>Function:</u> <b>record-accessor</b><i> rtd field-name</i></dt>
+<dd><p><var>rtd</var> 型の <var>field-name</var> によって名付けられたフィールドへの
+アクセサ手続きを返します。このアクセサ手続きは、<var>rtd</var> のインスタンスを
+一つとり、そのフィールドの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-record_002dmodifier"></a><u>Function:</u> <b>record-modifier</b><i> rtd field-name</i></dt>
+<dd><p><var>rtd</var> 型の <var>field-name</var> によって名付けられたフィールドへの
+モディファイア手続きを返します。このモディファイア手続きは、
+<var>rtd</var> のインスタンスと値のふたつの引数をとり、その引数を
+指定されたフィールドに設定します。
+</p></dd></dl>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define rtd (make-record-type "my-record" '(a b c)))
+
+rtd ⇒ #&lt;class my-record&gt;
+
+(define make-my-record (record-constructor rtd '(a b c)))
+
+(define obj (make-my-record 1 2 3))
+
+obj ⇒ #&lt;my-record 0x819d9b0&gt;
+
+((record-predicate? rtd) obj)  ⇒ #t
+
+((record-accessor rtd 'a) obj) ⇒ 1
+((record-accessor rtd 'b) obj) ⇒ 2
+((record-accessor rtd 'c) obj) ⇒ 3
+
+((record-modifier rtd 'a) obj -1)
+
+((record-accessor rtd 'a) obj) ⇒ -1
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_180.html#g_t_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_182.html#util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

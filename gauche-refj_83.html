@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.9 gauche.hook - フック</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.9 gauche.hook - フック">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.9 gauche.hook - フック">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0095_00e3_0083_0083_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_82.html#Generator-operations" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_84.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002ehook-_002d-_00e3_0083_0095_00e3_0083_0083_00e3_0082_00af"></a>
+<h2 class="section">9.9 <code>gauche.hook</code> - フック</h2>
+
+<dl>
+<dt><a name="index-gauche_002ehook"></a><u>Module:</u> <b>gauche.hook</b></dt>
+<dd><a name="index-gauche_002ehook-1"></a>
+<p>フックオブジェクトを提供します。これは、特定のタイミングで
+呼び出されるクロージャのリストを管理するものです。
+</p>
+<p>フックのAPIはGuileのそれと上方互換で、下記のように拡張されています。
+</p><ul>
+<li>
+Gaucheのオブジェクトシステムをベースにしています。
+ほとんどのAPIはメソッドなので、フックの機能を拡張することが
+できます。
+</li><li>
+フックオブジェクトはそれ自身適用可能です。<code>run-hook</code>を使う必要は
+ありません。
+</li><li>
+フックから手続きを削除するメソッドは、SRFI-1やその他との一貫性の
+ために<code>delete-hook!</code>と呼ばれます。
+Guileとの互換性のために、<code>remove-hook!</code>が<code>delete-hook!</code>の
+エイリアスとして定義されています。
+</li></ul>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003chook_003e"></a><u>Class:</u> <b>&lt;hook&gt;</b></dt>
+<dd><a name="index-hook"></a>
+<p>フックのクラスで、一度に呼び出される手続きのリストを保持しています。
+</p>
+<p><code>&lt;hook&gt;</code>クラスには<code>object-apply</code>メソッドが定義されているので、
+あたかもそれが手続きであるかのようにフックオブジェクトを“適用”できます。
+フックオブジェクトを適用すると、登録されている全ての手続きが呼び出されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dhook"></a><u>Function:</u> <b>make-hook</b><i> :optional (arity 0)</i></dt>
+<dd><p>与えられたアリティ(正の整数でなければなりません)とともに新しい
+フックオブジェクトを作成します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hook_003f"></a><u>Function:</u> <b>hook?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がフックオブジェクトであれば、真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hook_002dempty_003f"></a><u>Function:</u> <b>hook-empty?</b><i> hook</i></dt>
+<dd><p><var>hook</var>の手続きリストが空なら、真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-add_002dhook_0021"></a><u>Method:</u> <b>add-hook!</b><i> (hook &lt;hook&gt;) proc :optional (append? #f)</i></dt>
+<dd><p>手続き<var>proc</var>を<var>hook</var>に追加します。
+<var>append?</var>が与えられ真であれば、<var>proc</var>はリストの最後に
+追加されます。そうでなければ、<var>proc</var>はリストの最初に追加
+されます。
+<var>proc</var>は、<code>make-hook</code>時に与えられたアリティとともに
+呼ばれなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-delete_002dhook_0021"></a><u>Method:</u> <b>delete-hook!</b><i> (hook &lt;hook&gt;) proc</i></dt>
+<dt><a name="index-remove_002dhook_0021"></a><u>Method:</u> <b>remove-hook!</b><i> (hook &lt;hook&gt;) proc</i></dt>
+<dd><p><var>hook</var>の手続きリストから<var>proc</var>を削除します。
+Guileとの互換性のためだけに、<code>remove-hook!</code>が<code>delete-hook!</code>の
+エイリアスとなっています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reset_002dhook_0021"></a><u>Method:</u> <b>reset-hook!</b><i> (hook &lt;hook&gt;)</i></dt>
+<dd><p><var>hook</var>の手続きリストを空にします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hook_002d_003elist"></a><u>Method:</u> <b>hook-&gt;list</b><i> (hook &lt;hook&gt;)</i></dt>
+<dd><p><var>hook</var>の手続きリストのコピーを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-run_002dhook"></a><u>Method:</u> <b>run-hook</b><i> (hook &lt;hook&gt;) arg …</i></dt>
+<dd><p><var>hook</var>の手続きを、<var>arg</var> …を引数として順番に呼び出します。
+引数の数は、<code>make-hook</code>時に与えられたアリティにマッチしなければ
+なりません。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_82.html#Generator-operations" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_84.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

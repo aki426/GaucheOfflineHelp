@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.5 control.thread-pool - スレッドプール</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.5 control.thread-pool - スレッドプール">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.5 control.thread-pool - スレッドプール">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_130.html#A-common-job-descriptor-for-control-modules" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_132.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="control_002ethread_002dpool-_002d-_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab"></a>
+<h2 class="section">11.5 <code>control.thread-pool</code> - スレッドプール</h2>
+
+<dl>
+<dt><a name="index-control_002ethread_002dpool"></a><u>Module:</u> <b>control.thread-pool</b></dt>
+<dd><a name="index-control_002ethread_002dpool-1"></a>
+<p>スレッドプールを提供します。Gaucheがpthreadサポート付きでコンパイルされている
+場合にのみ利用可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cthread_002dpool_003e"></a><u>Class:</u> <b>&lt;thread-pool&gt;</b></dt>
+<dd><a name="index-thread_002dpool"></a>
+<p>スレッドプールオブジェクトのクラスです。ワーカースレッドのセットを保持し、
+投入されたジョブを非同期に実行します。
+</p>
+<p>現在の実装では、プールのサイズ (スレッド数) は固定で、プール作成時に
+指定しなければなりません。いずれスレッド数を動的に増減させる機能を
+追加する予定です。
+</p>
+<p>また、ジョブのキューの最大長を指定することもできます。ジョブのキューが
+一杯になると、空きができるまでは新たなジョブを投入することができなくなります
+(下記の<code>add-job!</code>参照)。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-_003cthread_002dpool_002dshut_002ddown_003e"></a><u>Condition type:</u> <b>&lt;thread-pool-shut-down&gt;</b></dt>
+<dd><p>スレッドプールが<code>terminate-all!</code>によって停止され、
+新規のジョブを受け付けていないことを示すコンディションです。
+<code>&lt;error&gt;</code>を継承します。次のスロットが提供されます。
+</p>
+<dl>
+<dt><a name="index-pool"></a><u>Instance Variable of &lt;thread-pool-shut-down&gt;:</u> <b>pool</b></dt>
+<dd><p>例外の原因となったスレッドプールオブジェクト
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dthread_002dpool"></a><u>Function:</u> <b>make-thread-pool</b><i> size :key (max-backlog 0)</i></dt>
+<dd><p>大きさ(ワーカースレッド数)<var>size</var>のスレッドプールを作成して返します。
+省略可能引数<var>max-backlog</var>によってジョブのバックログの最大値を
+指定することもできます。0を与えた場合(デフォルト)は無制限です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dpool_002dresults"></a><u>Function:</u> <b>thread-pool-results</b><i> pool</i></dt>
+<dd><p>ジョブをスレッドプールに投入する際に、ジョブの結果を知る必要があるかどうかを
+指定することができます。結果を要求した場合は、終了したジョブレコードが
+プール中の結果キュー(<code>&lt;mt-queue&gt;</code>オブジェクト)にエンキューされます。
+この手続きは、プールの結果キューを返します。
+<code>&lt;mt-queue&gt;</code>の詳細については<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc"><code>util.queue</code> - キュー</a>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-thread_002dpool_002dshut_002ddown_003f"></a><u>Function:</u> <b>thread-pool-shut-down?</b><i> pool</i></dt>
+<dd><p>スレッドプールが停止され、新規のジョブを受け付けていない場合に<code>#t</code>を、
+そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-add_002djob_0021"></a><u>Function:</u> <b>add-job!</b><i> pool thunk :optional (need-result #f) (timeout #f)</i></dt>
+<dd><p><var>thunk</var>がスレッドプール<var>pool</var>のスレッドにより実行されるように設定します。
+<code>job</code>レコードを返します。
+(<a indepth="true" href="gauche-refj_130.html#A-common-job-descriptor-for-control-modules"><code>control.job</code> - A common job descriptor for control modules</a>参照)。
+</p>
+<p>返される<code>job</code>レコードはwaitableにはなっていません。結果を知る必要が
+ある場合は、省略可能引数<var>need-result</var>に真の値を渡してください。
+そうするとジョブが終了した時点 (正常終了でも異常終了でも) で、
+<code>job</code>レコードがスレッドプールの<code>result-queue</code>に
+入るので、そのキューから結果を受け取ることができます。
+<var>need-result</var>を省略したり偽値を渡した場合は、ジョブが終了しても
+<code>job</code>レコードは<code>result-queue</code>に入れられません。
+</p>
+<p>返される<code>job</code>レコードにはタイムスタンプが付加され、
+受付時間、実行開始時間、実行終了時間が記録されます。
+(ジョブがまだ実行されていなかったり、終了されていない場合は、対応する
+タイムスタンプは<code>#f</code>になっています)。
+ジョブがどのくらいキューの中で待たされ、どのくらい実行にかかったかを
+知るのに便利でしょう。
+</p>
+<p>スレッドプールが非負の<code>max-backlog</code>値を持ち、
+既にその数だけジョブが待ち行列に入っている場合は、
+<code>add-job!</code>は待ち行列に空きができるまでブロックします。
+<var>timeout</var>引数に、実数値の秒数、あるいは絶対時刻を指定する<code>&lt;time&gt;</code>
+オブジェクトを渡すことでタイムアウトを指定できます。タイムアウトに
+達した場合は、<code>add-job!</code>はジョブを作らずに<code>#f</code>を返します。
+<var>timeout</var>引数を省略するか、<code>#f</code>を渡した場合はタイムアウトが設定されません。
+</p>
+<p>(註: この動作は0.9.1から変更されました。0.9.1では、<code>add-job!</code>は
+タイムアウト引数を取らず、常にタイムアウトに0秒が指定されたかのように
+振る舞っていました。現在のバージョンで同じ動作をさせるには、<var>timeout</var>引数
+に0を明示的に渡します。)
+</p>
+<p>スレッドプールが停止していた場合、この手続きは
+<code>&lt;thread-pool-shut-down&gt;</code>コンディションを投げます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-wait_002dall"></a><u>Function:</u> <b>wait-all</b><i> pool :optional (timeout #f) (check-interval #e5e8)</i></dt>
+<dd><p>ジョブ待ち行列が空になり、すべての実行中のジョブも終了するまで待ちます。
+終了待ちは<var>check-interval</var>にナノ秒で指定される間隔でスレッドプールを
+ポールすることで行われます。すべてのジョブが終了したら<code>#t</code>を返します。
+</p>
+<p>秒数を表す実数か、絶対時刻を表す<code>&lt;time&gt;</code>オブジェクトを<var>timeout</var>
+引数に渡すことで、タイムアウトを指定できます。タイムアウトに達した場合は、
+<code>wait-all</code>は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-terminate_002dall_0021"></a><u>Function:</u> <b>terminate-all!</b><i> pool :key (force-timeout #f) (cancel-queued-jobs #f)</i></dt>
+<dd><p>投入されたジョブがすべて終了するのを待ち、すべてのスレッドを終了させます。
+ひとたびこの手続きを呼ぶと、スレッドプール<var>pool</var>は新規のジョブを受けつけ
+ません。この状態のスレッドプールに対して<code>add-job!</code>を呼ぶと
+<code>&lt;thread-pool-shut-down&gt;</code>コンディションが投げられます。
+この手続きはアプリケーションのシャットダウン時などに呼ばれることを意図しています。
+</p>
+<p>デフォルトでは、この手続きはまずキューに既に投入されたジョブが全て処理されるのを
+待ち、それからスレッドを穏やかに終了させます。
+</p>
+<p>真の値を<var>cancel-queued-jobs</var>引数に与えると、キューに入っているが
+まだ開始されていないジョブは直ちにキャンセルされます。それらのジョブの
+ステータスには<code>killed</code>がセットされます。
+ただし、既に開始されたジョブについてはキャンセルされません。
+</p>
+<p>既に開始されたジョブも中断したい場合は、
+タイムアウト値(秒数を表す実数か、絶対時刻を表す<code>&lt;time&gt;</code>オブジェクト)を
+<var>force-timeout</var>引数に渡します。
+タイムアウトに達した時点で残っているスレッドは強制終了され、実行中のジョブも
+キャンセルされます。
+</p>
+<p>スレッドの強制終了は極端な処置です。終了されるスレッドは、適切なクリーンアップを
+行う機会も与えられないかもしれません。したがって通常は、
+スレッドが処理中のジョブを終わらせるための適切な時間的猶予を与えるのが良いでしょう。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_130.html#A-common-job-descriptor-for-control-modules" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_132.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

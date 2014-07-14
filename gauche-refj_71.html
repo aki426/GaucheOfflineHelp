@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>8. ライブラリモジュール - 概要</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 8. ライブラリモジュール - 概要">
+<meta name="keywords" content="Gauche ユーザリファレンス: 8. ライブラリモジュール - 概要">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_70.html#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e9_0081_00a9_00e7_0094_00a8_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_72.html#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081-1"></a>
+<h1 class="chapter">8. ライブラリモジュール - 概要</h1>
+
+<p>続くいくつかの章で、Gaucheのディストリビューションに含まれる
+ライブラリモジュールを解説します。
+これらのモジュールを使うにあたっては、特に断りのない限り、
+モジュールをロードしてimportすることが必要です
+(通常は<code>use</code>マクロが使えます。<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8">モジュールの使用</a>参照)。
+</p>
+<p>いくつかのモジュールは「オートロードされる」と表記されています。
+この場合は、そのモジュールを使うにあたってあらかじめモジュールをロードしたり
+<code>use</code>しておく必要はありません。そのモジュールの束縛が使われた時点で、
+モジュールが自動的にロードされインポートされます。オートロードの
+詳細については<a indepth="true" href="gauche-refj_61.html#Autoload">Autoload</a>を参照してください。
+</p>
+<p>付属ライブラリの数が増えるにつれ、必要なライブラリを探すのが難しく
+なりつつあります。迷ったら、<a indepth="true" href="gauche-refj_72.html#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9">必要なライブラリの探し方</a>を
+見てみて下さい。目的に合わせてライブラリをカテゴライズしています。
+</p>
+<p>この章に続く3つの章で、各ライブラリについて詳細に記述します。
+各章は名前でグループ化されています。
+<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab">ライブラリモジュール - Gauche拡張モジュール</a>では<code>gauche.*</code>という
+名前を持つモジュールを説明します。これらはある意味Gaucheの基本的な
+機能なのですが、使われる頻度が少ないために別モジュールになったというものです。
+(いくつかのモジュールはもっと付加的なものですが、歴史的理由からここにあります)。
+<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI">ライブラリモジュール - SRFI</a>ではSRFIの機能を提供するモジュールを
+扱います。<code>srfi-</code>で始まる名前を持ちます。
+いくつかのSRFIについてはGaucheのコアに組み込みになっているため、
+この章には現れないことに注意してください。サポートされているSRFIの
+完全なリストについては<a indepth="true" href="gauche-refj_5.html#g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0">標準への準拠</a>を見て下さい。
+<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ライブラリモジュール - ユーティリティ</a>では残りのモジュールに
+ついて説明します。データベースインタフェース、ファイルシステム、
+ネットワークプロトコル、その他様々なライブラリがあります。
+</p>
+<p>実行時にプログラムが特定のモジュールやライブラリの存在を検査できる
+手続きがいくつか提供されています。
+詳しくは<a indepth="true" href="gauche-refj_61.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ライブラリの操作</a>を参照して下さい。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_72.html#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9">8.1 必要なライブラリの探し方</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_73.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e5_0091_00bd_00e5_0090_008d_00e8_00a6_008f_00e5_0089_0087">8.2 ライブラリの命名規則</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_70.html#g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e9_0081_00a9_00e7_0094_00a8_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_72.html#g_t_00e5_00bf_0085_00e8_00a6_0081_00e3_0081_00aa_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_008e_00a2_00e3_0081_0097_00e6_0096_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

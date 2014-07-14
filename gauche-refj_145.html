@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.19 rfc.base64 - Base64エンコーディング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.19 rfc.base64 - Base64エンコーディング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.19 rfc.base64 - Base64エンコーディング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Base64_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_146.html#HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002ebase64-_002d-Base64_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">11.19 <code>rfc.base64</code> - Base64エンコーディング</h2>
+
+<dl>
+<dt><a name="index-rfc_002ebase64"></a><u>Module:</u> <b>rfc.base64</b></dt>
+<dd><a name="index-rfc_002ebase64-1"></a>
+<p>このモジュールでは、RFC 2045 (<a indepth="true" href="gauche-refj_189.html#rfc2045">RFC2045</a>)の6.3節
+およびRFC 3548 (<a indepth="true" href="gauche-refj_189.html#rfc3548">RFC3548</a>)で
+定義されている Base64 フォーマットへエンコード/デコードするいくつかの
+手続きを定義しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-base64_002dencode"></a><u>Function:</u> <b>base64-encode</b><i> :key line-width</i></dt>
+<dd><p>現在の入力ポートからバイト・ストリームを読み込み、それを Base64 フォーマットに
+エンコードし、現在の出力ポートに文字ストリームとして書き出します。
+現在の入力ポートから EOF を読み込むと変換を終了します。
+</p>
+<p>一行あたりの文字数が<var>line-width</var>に与えられた文字数を越えないように、
+改行文字が適切に出力に挿入されます。<var>line-width</var>のデフォルト値は
+RFC2045に従い76となっています。<var>line-width</var>に<code>#f</code>または<code>0</code>
+を与えることで改行を抑制することができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-base64_002dencode_002dstring"></a><u>Function:</u> <b>base64-encode-string</b><i> string :key line-width</i></dt>
+<dd><p><var>string</var> の内容を Base64 でエンコードされたフォーマットに変換します。
+入力となる文字列は、完全文字列でも不完全文字列でも良いです。
+常にバイト・シーケンスとして扱われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-base64_002ddecode"></a><u>Function:</u> <b>base64-decode</b></dt>
+<dd><p>現在の入力ポートから文字ストリームを読み込み、それを Base64 フォーマットとして
+デコードし、現在の出力ポートにバイトストリームとして書き出します。
+変換は EOF か、終端文字 (<code>=</code>) を読み込むと終了します。
+Base64 でエンコードされた文字として適当でない文字は沈黙のまま無視されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-base64_002ddecode_002dstring"></a><u>Function:</u> <b>base64-decode-string</b><i> string</i></dt>
+<dd><p>Base64 でエンコードされた文字列 <var>string</var> をデコードして文字列を返します。
+変換は <var>string</var> の終わりか、終端文字 (<code>=</code>) で終了します。
+Base64 でエンコードされた文字として適当でない文字は沈黙のまま無視されます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_146.html#HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

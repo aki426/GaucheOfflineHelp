@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.7 順次実行</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.7 順次実行">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.7 順次実行">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_29.html#g_t_00e7_00b9_00b0_00e3_0082_008a_00e8_00bf_0094_00e3_0081_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c-1"></a>
+<h2 class="section">4.7 順次実行</h2>
+
+
+<dl>
+<dt><a name="index-begin"></a><u>Special Form:</u> <b>begin</b><i> form …</i></dt>
+<dd><p>[R5RS]
+<var>form</var>を順に評価し、最後の値を返します。
+</p>
+<p><code>Begin</code>は<code>let</code>のような「ブロック」を作成するわけではありません。
+すなわち、一般的には<var>form</var> …の先頭に「内部のdefine (internal define)」を
+置くことはできません。意味的には、<code>begin</code>はまるで<var>form</var> …が
+<code>begin</code>を囲むコンテクスト中に展開されているかのように振舞います。
+例えば、トップレベルに次のような式があった場合、それは2つのトップレベルのdefineと
+同等です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(begin (define x 1) (define y 2))
+</pre></td></tr></tbody></table>
+
+<p>よりトリッキーな例:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ()
+  (begin
+    (define x 2)
+    (begin
+      (define y 3)
+    ))
+  (+ x y))
+
+  ≡
+
+(let ()
+  (define x 2)
+  (define y 3)
+  (+ x y))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-begin0"></a><u>Macro:</u> <b>begin0</b><i> exp0 exp1 …</i></dt>
+<dd><p><var>exp0</var>, <var>exp1</var>, … を評価し、<var>exp0</var>の結果を返します。
+この名前はMzSchemeから取られました。これはCommonLispで
+<code>prog1</code>と呼ばれているものです。
+</p>
+<p><code>begin</code>と違って、これは「ブロック」を構成します。
+<code>begin0</code>フォームは次のように展開されるからです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(receive tmp <var>exp0</var>
+  <var>exp1</var> …
+  (apply values tmp))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_29.html#g_t_00e7_00b9_00b0_00e3_0082_008a_00e8_00bf_0094_00e3_0081_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.54 util.rbtree - 赤黒木</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.54 util.rbtree - 赤黒木">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.54 util.rbtree - 赤黒木">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_181.html#SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002erbtree-_002d-_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8"></a>
+<h2 class="section">11.54 <code>util.rbtree</code> - 赤黒木</h2>
+
+<p>バージョン0.8.10から、バランス木オブジェクトは<code>&lt;tree-map&gt;</code>として
+組込みになっています (<a indepth="true" href="gauche-refj_54.html#g_t_00e3_0083_0084_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097">ツリーマップ</a>参照)。内部的には赤黒木が使われています。
+アプリケーションは<code>&lt;rbtree&gt;</code>ではなく<code>&lt;tree-map&gt;</code>を使うことが
+推奨されます。このモジュールは互換性のために残されています。
+</p>
+<dl>
+<dt><a name="index-util_002erbtree"></a><u>Module:</u> <b>util.rbtree</b></dt>
+<dd><a name="index-util_002erbtree-1"></a>
+<p>このモジュールは、赤黒木 (red-black tree、2色木)を扱う手続きを提供します。
+</p>
+<p>赤黒木は平衡な(バランスの取れた) 2分木の一種です。nノードからなる木
+に対する基本的な操作(要素の探索、挿入、削除、最初および最大の要素の
+取得、要素の順次アクセス)は、O(log n)で行われます。赤黒木に追加する
+要素のキーは、要素間に全順序関係が定義されていなければなりません。
+</p>
+<p>util.rbtreeのAPIはハッシュテーブルのAPIに似せて作られており、ユーザ
+は赤黒木を、キーの大小で順序付けられたハッシュテーブルのように扱う
+ことができます (<a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">ハッシュテーブル</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003crbtree_003e"></a><u>Class:</u> <b>&lt;rbtree&gt;</b></dt>
+<dd><p>赤黒木のクラスです。<code>&lt;sequence&gt;</code>を継承しているので、
+<code>gauche.sequence</code>で定義されるAPIを使うことができます。
+シーケンスとして扱うときの各要素は、キーと値のペアです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002drbtree"></a><u>Function:</u> <b>make-rbtree</b><i> key=? key&lt;?</i></dt>
+<dd><p><code>&lt;rbtree&gt;</code>オブジェクトを作成して返します。<var>key=?</var>、<var>key&lt;?</var>はそれぞれ引
+数を2つ受け取り真偽値を返す手続きであり、要素のキーが渡されます。
+<var>key=?</var>は、2つの引数a, b が同値の場合に真を、それ以外の場合に<code>#f</code>を
+返す手続きです。<var>key&lt;?</var>は、<code>a &lt; b</code>が成り立つ場合に真を、それ以外の
+場合に<code>#f</code>を返す手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dcopy"></a><u>Function:</u> <b>rbtree-copy</b><i> rbtree</i></dt>
+<dd><p>赤黒木<var>rbtree</var>のコピーを作り、それを返します。返された赤黒木に対す
+る破壊的操作は、元の赤黒木に影響を与えません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dempty_003f"></a><u>Function:</u> <b>rbtree-empty?</b><i> rbtree</i></dt>
+<dd><p>赤黒木<var>rbtree</var>が要素を持たないなら<code>#t</code>を、そうでなければ<code>#f</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dnum_002dentries"></a><u>Function:</u> <b>rbtree-num-entries</b><i> rbtree</i></dt>
+<dd><p>赤黒木<var>rbtree</var>内の要素の個数を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dexists_003f"></a><u>Function:</u> <b>rbtree-exists?</b><i> rbtree key</i></dt>
+<dd><p>赤黒木<var>rbtree</var>にキー<var>key</var>を持つエントリがあれば<code>#t</code>を、
+そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dget"></a><u>Function:</u> <b>rbtree-get</b><i> rbtree key :optional fallback</i></dt>
+<dd><p>キー<var>key</var>を赤黒木<var>rbtree</var>から探します。見つかれば<var>key</var>に対応する値を返
+します。キーが見つからなかった場合、<var>fallback</var>が与えられていればそれ
+を返し、そうでなければエラーを報告します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dput_0021"></a><u>Function:</u> <b>rbtree-put!</b><i> rbtree key value</i></dt>
+<dd><p>キー<var>key</var>と対応する値<var>value</var>を赤黒木<var>rbtree</var>に挿入します。もし、<var>key</var>と、
+<var>key=?</var>における意味で同じキーがすでに存在する場合、キーに対応する値
+は新たな値に置き換えられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002ddelete_0021"></a><u>Function:</u> <b>rbtree-delete!</b><i> rbtree key</i></dt>
+<dd><p>赤黒木<var>rbtree</var>からキー<var>key</var>を持つエントリを削除します。<var>key</var>を持つエン
+トリが実際に存在して削除された場合は<code>#t</code>を、エントリが存在しなかっ
+た場合は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dupdate_0021"></a><u>Function:</u> <b>rbtree-update!</b><i> rbtree key proc :optional fallback</i></dt>
+<dd><p><code>rbtree-push!</code>等のより一般的なバージョンです。赤黒木の探索が一度
+しか行われないことを除いては、基本的に次のように動作します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((tmp (proc (rbtree-get <var>rbtree</var> <var>key</var> <var>fallback</var>))))
+  (rbtree-put! <var>rbtree</var> <var>key</var> tmp)
+  tmp)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dpush_0021"></a><u>Function:</u> <b>rbtree-push!</b><i> rbtree key value</i></dt>
+<dd><p>赤黒木<var>rbtree</var>中の、キー<var>key</var>に対応する値に<var>value</var>をコンスし、それを<var>key</var>
+に対する新たな値とします。もし<var>key</var>に対応する値がまだ無ければ、新た
+なエントリが作成され、<code>(list <var>value</var>)</code>がその値となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dpop_0021"></a><u>Function:</u> <b>rbtree-pop!</b><i> rbtree key :optional fallback</i></dt>
+<dd><p>赤黒木<var>rbtree</var>中のキー<var>key</var>に対応する値が存在し、かつペアであった場合
+に、そのエントリの値を元の値のcdrで置き換え、元の値のcarを返します。
+<var>key</var>に対応する値が存在しないかペアではなかった場合、赤黒木<var>rbtree</var>は
+変更されず、<var>fallback</var>が与えられていればそれが返され、与えられていな
+ければエラーが報告されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dmin"></a><u>Function:</u> <b>rbtree-min</b><i> rbtree :optional fallback</i></dt>
+<dt><a name="index-rbtree_002dmax"></a><u>Function:</u> <b>rbtree-max</b><i> rbtree :optional fallback</i></dt>
+<dd><p>それぞれ、赤黒木<var>rbtree</var>に含まれる最小および最大のキーを探索し、その
+キーと値のペアを返します。赤黒木<var>rbtree</var>が空だった場合は、<var>fallback</var>が
+指定されていればそれを返し、そうでなければエラーを報告します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dextract_002dmin_0021"></a><u>Function:</u> <b>rbtree-extract-min!</b><i> rbtree :optional fallback</i></dt>
+<dt><a name="index-rbtree_002dextract_002dmax_0021"></a><u>Function:</u> <b>rbtree-extract-max!</b><i> rbtree :optional fallback</i></dt>
+<dd><p>それぞれ、赤黒木<var>rbtree</var>に含まれる最小および最大のキーを探索し、そ
+のエントリを赤黒木<var>rbtree</var>から削除したうえで、そのキーと値のペアを
+返します。赤黒木<var>rbtree</var>が空だった場合は、<var>fallback</var>が指定されていれば
+それを返し、そうでなければエラーを報告します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dfold"></a><u>Function:</u> <b>rbtree-fold</b><i> rbtree proc seed</i></dt>
+<dt><a name="index-rbtree_002dfold_002dright"></a><u>Function:</u> <b>rbtree-fold-right</b><i> rbtree proc seed</i></dt>
+<dd><p><var>rbtree</var>の各要素に対し、<code>(key, value, seed) -&gt; seed</code> の型を持つ
+<var>proc</var>を適用してゆきます。
+<code>rbtree-fold</code>と<code>rbtree-fold-right</code>の違いは
+<code>fold</code>の<code>fold-right</code>違いと同じ、すなわち
+結合の方向にあります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">rbtree-fold:
+  (proc Kn Vn (proc Kn-1 Vn-1 ... (proc K0 V0 seed)))
+
+rbtree-fold-right
+  (proc K0 V0 (proc K1 V1 ... (proc Kn Vn seed)))
+</pre></td></tr></tbody></table>
+
+<p>例:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define tree (alist-&gt;rbtree '((3 . a) (7 . b) (5 . c)) = &lt;))
+
+(rbtree-fold tree list* '())
+   ⇒ (7 b 5 c 3 a)
+(rbtree-fold-right tree list* '())
+   ⇒ (3 a 5 c 7 b)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002dkeys"></a><u>Function:</u> <b>rbtree-keys</b><i> rbtree</i></dt>
+<dt><a name="index-rbtree_002dvalues"></a><u>Function:</u> <b>rbtree-values</b><i> rbtree</i></dt>
+<dd><p>それぞれ、赤黒木<var>rbtree</var>内の全てのキーまたは値をリストにして返しま
+す。返されるリストの要素はキーの昇順に並んでいます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rbtree_002d_003ealist"></a><u>Function:</u> <b>rbtree-&gt;alist</b><i> rbtree</i></dt>
+<dd><p>赤黒木<var>rbtree</var>含まれる要素を連想リストにして返します。返される連
+想リストのキーは昇順に並んでいます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-alist_002d_003erbtree"></a><u>Function:</u> <b>alist-&gt;rbtree</b><i> alist key=? key&lt;?</i></dt>
+<dd><p><var>key=?</var>, <var>key&lt;?</var> によって新たな赤黒木を作成し、
+連想リスト<var>alist</var>に含まれる要素を追加し、その木を返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_181.html#SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

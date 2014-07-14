@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.6 変数束縛</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.6 変数束縛">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.6 変数束縛">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_28.html#g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b-1"></a>
+<h2 class="section">4.6 変数束縛</h2>
+
+<dl>
+<dt><a name="index-let"></a><u>Special Form:</u> <b>let</b><i> ((var expr) …) body …</i></dt>
+<dt><a name="index-let_002a"></a><u>Special Form:</u> <b>let*</b><i> ((var expr) …) body …</i></dt>
+<dt><a name="index-letrec"></a><u>Special Form:</u> <b>letrec</b><i> ((var expr) …) body …</i></dt>
+<dd><p>[R5RS]
+各変数<var>var</var>が<var>expr</var>の値に束縛されているローカルな環境を作成し、
+その中で<var>body</var> …を評価します。<var>var</var>はシンボルでなければ
+ならず、重複があってはなりません。<var>body</var> …の最後の式の値が
+このフォームの値となります。
+</p>
+<p>これらの3つのフォームの違いは、<var>expr</var>が評価される時点のスコープにあります。
+<code>let</code>は<var>expr</var>を<var>let</var>フォームに入る前の環境において評価します。
+<code>let*</code>は<var>expr</var>を順に、それ以前の<var>var</var>が束縛された環境において評価して
+ゆきます。<var>letrec</var>は全ての<var>var</var>が仮想的に不定の値に束縛された環境において
+各<var>expr</var>を評価します。<var>letrec</var>は相互再帰的なローカル関数を定義する場合に
+必要です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define x 'top-x)
+
+(let  ((x 3) (y x)) (cons x y)) ⇒ (3 . top-x)
+(let* ((x 3) (y x)) (cons x y)) ⇒ (3 . 3)
+
+(let ((cons (lambda (a b) (+ a b)))
+      (list (lambda (a b) (cons a (cons b 0)))))
+  (list 1 2))  ⇒ (1 2 . 0)
+
+(letrec ((cons (lambda (a b) (+ a b)))
+         (list (lambda (a b) (cons a (cons b 0)))))
+  (list 1 2))  ⇒ 3
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-let1"></a><u>Macro:</u> <b>let1</b><i> var expr body …</i></dt>
+<dd><p>変数が一つしか無い場合の便利なマクロです。次のように展開されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((<var>var</var> <var>expr</var>)) <var>body</var> …)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-if_002dlet1"></a><u>Macro:</u> <b>if-let1</b><i> var expr then</i></dt>
+<dt><a name="index-if_002dlet1-1"></a><u>Macro:</u> <b>if-let1</b><i> var expr then else</i></dt>
+<dd><p>このマクロは次のようなイディオムを簡素化します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let1 <var>var</var> <var>expr</var>
+  (if <var>var</var> <var>then</var> <var>else</var>))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-rlet1"></a><u>Macro:</u> <b>rlet1</b><i> var expr body …</i></dt>
+<dd><p>このマクロは次のようなイディオムを簡素化します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let1 <var>var</var> <var>expr</var>
+  <var>body</var> …
+  <var>var</var>)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-and_002dlet_002a"></a><u>Macro:</u> <b>and-let*</b><i> (binding …) body …</i></dt>
+<dd><p>[SRFI-2]
+簡単に言うと、このフォームは<code>let*</code>のように動作しますが、
+<var>bindings</var>中の式が<code>#f</code>に評価されたらそこで評価を打ち切り
+<code>#f</code>を返します。
+</p>
+<p>各<var>binding</var>は以下のいずれかの形式でなければなりません。
+</p><dl compact="compact">
+<dt> <var>(variable expression)</var></dt>
+<dd><p><var>expression</var>が評価されます。それが真の値を返したら、その値が<var>variable</var>
+に束縛され、次の<var>binding</var>へと進みます。もう<var>binding</var>が無ければ
+<var>body</var> …が評価されます。もし<var>expression</var>が<code>#f</code>を返したら、
+評価を打ち切り、<code>and-let*</code>から<code>#f</code>を返します。
+</p></dd>
+<dt> <var>(expression)</var></dt>
+<dd><p>この形式では<var>variable</var>が省略されています。<var>Expression</var>が評価され、
+その結果は評価を続行するか打ち切るかを判断するためにのみ使われます。
+</p></dd>
+<dt> <var>bound-variable</var></dt>
+<dd><p>この形式では<var>bound-variable</var>は束縛変数を示す識別子でなければなりません。
+その変数の値が偽でなければ評価を続行します。
+</p></dd>
+</dl>
+
+<p>いくつか例を挙げます。次のコードは連想リスト<var>alist</var>から<var>key</var>を
+探し、見つかったらその値を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(and-let* ((entry (assoc key alist))) (cdr entry))
+</pre></td></tr></tbody></table>
+
+<p>もし<var>arg</var>が正確な整数の文字列表現だった場合は<var>num</var>を返し、そうでなければ
+0を返します：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(or (and-let* ((num (string-&gt;number arg))
+               ( (exact? num) )
+               ( (integer? num) ))
+      num)
+    0)
+</pre></td></tr></tbody></table>
+
+<p>以下のコードはとあるサーバーのポート番号をいくつかの可能性
+(環境変数、設定ファイル…)の中から探す仮想的なコードです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(or (and-let* ((val (sys-getenv "SERVER_PORT")))
+      (string-&gt;number val))
+    (and-let* ((portfile (expand-path "~/.server_port"))
+               ( (file-exists? portfile) )
+               (val (call-with-input-string portfile port-&gt;string)))
+      (string-&gt;number val))
+    8080) ; default
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-fluid_002dlet"></a><u>Macro:</u> <b>fluid-let</b><i> ((var val) …) body …</i></dt>
+<dd><p>動的スコープの変数をエミュレートするマクロです。
+<var>var</var>は<code>fluid-let</code>フォームを含むスコープで定義されている
+変数でなければなりません。<var>val</var>は式です。
+<code>fluid-let</code>はまず<var>val</var>を評価し、
+<var>val</var>を<var>var</var>に動的スコープで束縛して<var>body</var> … を評価します。
+</p>
+<p>マルチスレッド環境下では、<var>var</var>の値の変化は全てのスレッドから見えます。
+このフォームは主として他の処理系のコードを移植する際の利便性のために
+追加されました。スレッドローカルな動的状態を実現するには、
+パラメータオブジェクト(<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>参照)を
+使って下さい。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define x 0)
+
+(define (print-x) (print x))
+
+(fluid-let ((x 1))
+  (print-x))  ⇒ ;; prints 1
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-receive"></a><u>Special Form:</u> <b>receive</b><i> formals expression body …</i></dt>
+<dd><p>[SRFI-8]
+この構文により、多値を受け取ることができます。
+<var>formals</var>はシンボルのリストです。不完全なリストであっても構いません。
+<var>expression</var>が評価され、返された値がlambda形式の引数の束縛と
+同じようにして<var>formals</var>内の変数と束縛され、その環境下で<var>body</var> …が
+評価されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (divrem n m)
+  (values (quotient n m) (remainder n m)))
+
+(receive (q r) (divrem 13 4) (list q r))
+  ⇒ (3 1)
+
+(receive all (divrem 13 4) all)
+  ⇒ (3 1)
+
+(receive (q . rest) (divrem 13 4) (list q rest))
+  ⇒ (3 (1))
+</pre></td></tr></tbody></table>
+
+<p>なお、<a indepth="true" href="gauche-refj_56.html#g_t_00e5_00a4_009a_00e5_0080_00a4">多値</a>の<code>call-with-values</code>は
+<code>receive</code>と等価な手続き的インタフェースです。
+多値を複数のトップレベル変数に束縛するには、<code>define-values</code>
+(<a indepth="true" href="gauche-refj_31.html#g_t_00e5_00ae_009a_00e7_00be_00a9">定義</a>参照) が使えます。
+また、SRFI-11 (<a indepth="true" href="gauche-refj_114.html#Let_002dvalues"><code>srfi-11</code> - Let-values</a>) の<code>let-values</code>と
+<code>let*-values</code>は<code>let</code>のような形式で多値を扱うことができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rec"></a><u>Macro:</u> <b>rec</b><i> var expr</i></dt>
+<dt><a name="index-rec-1"></a><u>Macro:</u> <b>rec</b><i> (name . vars) expr …</i></dt>
+<dd><p>[SRFI-31]
+再帰的な参照のある式の評価を行うマクロです。
+</p>
+<p>最初の形式は、<var>var</var>が<var>expr</var>の結果に束縛される状態で<var>expr</var>を
+評価します。
+2番目の形式は以下の形式と等価です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rec <var>name</var> (lambda <var>vars</var> <var>expr</var> …))
+</pre></td></tr></tbody></table>
+
+<p>例：
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; constant infinite stream
+(rec s (cons 1 (delay s)))
+
+;; factorial function
+(rec (f n)
+  (if (zero? n)
+      1
+      (* n (f (- n 1)))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_28.html#g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

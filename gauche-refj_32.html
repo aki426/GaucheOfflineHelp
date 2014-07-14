@@ -1,0 +1,752 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.11 モジュール</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.11 モジュール">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.11 モジュール">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_32.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_31.html#g_t_00e5_00ae_009a_00e7_00be_00a9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e3_0082_00bb_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0086_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-1"></a>
+<h2 class="section">4.11 モジュール</h2>
+
+<p>この章では、GaucheのモジュールのセマンティクスとAPIを述べます。
+Gaucheで使われているモジュールの書法については<a indepth="true" href="gauche-refj_19.html#Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">Gaucheのモジュールを書く</a>も
+併せて参照して下さい。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e3_0082_00bb_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0086_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b9">4.11.1 モジュールのセマンティクス</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00a8_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa">4.11.2 モジュールとライブラリ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e">4.11.3 モジュールの定義と選択</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8">4.11.4 モジュールの使用</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e7_00b6_0099_00e6_0089_00bf">4.11.5 モジュールの継承</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">4.11.6 モジュールイントロスペクション</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab">4.11.7 組み込みモジュール</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e3_0082_00bb_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0086_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00a8_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e3_0082_00bb_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0086_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b9-1"></a>
+<h3 class="subsection">4.11.1 モジュールのセマンティクス</h3>
+
+<p>モジュールは、シンボルを束縛へとマップするオブジェクトで、
+グローバル変数の解決に影響を与えます。
+</p>
+<p>CommonLispのパッケージは名前からシンボルへのマッピングを行いますが、
+Gaucheでは同じ名前を持つシンボルは原則として<code>eq?</code>です
+(例外はインターンされていないシンボルです。<a indepth="true" href="gauche-refj_45.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab">シンボル</a>参照)。
+しかし、Gaucheのシンボルは「値」のスロットを持っていません。
+モジュールによってシンボルに対応する束縛が見付けられ、値はそこに
+格納されています。
+モジュールが違えば同じシンボルは別々の束縛へとマップされ、違う値を
+返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; 二つのモジュールAとBを作成し、グローバル変数'x'をその中で定義
+(define-module A (define x 3))
+(define-module B (define x 4))
+
+;;  #&lt;symbol 'x'&gt; ---[module A]--&gt; #&lt;binding that has 3&gt;
+(with-module A x) ⇒ 3
+
+;;  #&lt;symbol 'x'&gt; ---[module B]--&gt; #&lt;binding that has 4&gt;
+(with-module B x) ⇒ 4
+</pre></td></tr></tbody></table>
+
+<p>モジュールは、自身が持つ一部または全ての束縛を他のモジュールからも
+使えるように<em>export</em>することができます。あるモジュールXが他の
+モジュールYを<em>import</em>すると、
+モジュールYでexportされている束縛が元のモジュールXから見えるようになります。
+モジュールはいくつでも他のモジュールをimportすることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-module A
+  (export pi)
+  (define pi 3.1416))
+
+(define-module B
+  (export e)
+  (define e 2.71828))
+
+(define-module C
+  (import A B))
+
+(select-module C)
+(* pi e) ⇒ 8.539748448
+</pre></td></tr></tbody></table>
+
+<p>また、モジュールは継承することもできます。
+既存のモジュールを継承したモジュールに新しい束縛を足してexportすることにより、
+既存のモジュールを拡張することができます。新しいモジュールの内部からは、
+継承元のモジュールの束縛が(exportされていないものも含め)全て見えます。
+(新しく作られるモジュールはデフォルトで<code>gauche</code>モジュールを継承しています。
+新しいモジュールから<code>gauche</code>の組込み手続き等が使えるのはそのためです)。
+外からは、新しいモジュールには元のモジュールの全てのexportされた束縛と
+新たに追加されexportされた束縛が見えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; Module A defines and exports deg-&gt;rad.
+;; A binding of pi is not exported.
+(define-module A
+  (export deg-&gt;rad)
+  (define pi 3.1416)   ;; not exported
+  (define (deg-&gt;rad deg) (* deg (/ pi 180))))
+
+;; Module Aprime defines and exports rad-&gt;deg.
+;; The binding of pi is visible from inside Aprime.
+(define-module Aprime
+  (extend A)
+  (export rad-&gt;deg)
+  (define (rad-&gt;deg rad) (* rad (/ 180 pi))))
+
+;; Module C imports Aprime.
+(define-module C
+  (import Aprime)
+  ;; Here, both deg-&gt;rad and rad-&gt;deg are visible,
+  ;; but pi is not visible.
+  )
+</pre></td></tr></tbody></table>
+
+<p>コンパイル中のどの時点でも、「カレントモジュール」が一意に決定され、
+グローバル変数の束縛はそのカレントモジュールを起点に探されます。
+その変数の束縛が見付かれば、変数参照の式はその束縛へアクセスするコードとして
+コンパイルされます。もしコンパイラが束縛を見付けられなかった場合、
+変数参照の式はカレントモジュールでマークされ、束縛の解決はランタイムへと
+先送りされます。すなわち、ランタイムにその変数が使われる時点で
+再びマークされていたモジュールから束縛の探索が行われます
+(ランタイムでのカレントモジュールからでは無いことに注意)。
+束縛が見付かれば、束縛へアクセスするコードがコンパイルされたコード列に
+挿入されます。見付からなければ’undefined variable’エラーが報告されます。
+</p>
+<p>グローバル変数に対して適切な束縛がひとたび発見されれば、
+その束縛へのアクセスはコンパイルされたコードに埋め込まれ、
+その変数の束縛の探索は二度と行われません。
+</p>
+<p><code>define</code>や<code>define-syntax</code>等の定義を行う特殊形式は
+カレントモジュールに束縛を挿入します。これは、importしたり継承したりしている
+モジュールの同名の束縛をシャドウします。
+</p>
+<p>グローバル変数の束縛の解決は次の手順で行われます。
+まずカレントモジュールが探されます。次に、importしているモジュールが
+importされた逆の順番に並べられ、それぞれについてその
+モジュールおよびそのモジュールの先祖(継承されているモジュール)が順に探されます。
+importは遷移的ではありません；importされたモジュールがimportしているモジュール…
+というふうに再帰的に辿ることはしません。
+最後に、カレントモジュールの先祖が順に探されます。
+</p>
+<p>この順序は、複数のモジュールで同じ名前が定義され、あなたのモジュールが
+その両方をインポートしている場合に重要になります。
+その名前があなたのモジュールで
+定義されていないとして、もしモジュール<code>A</code>がまずimportされ、
+次に<code>B</code>がimportされている場合、あなたのコードは<code>B</code>の
+束縛を見ることになります。
+</p>
+<p><code>A</code>をimportして<code>B</code>をimportした後に再び<code>A</code>をimport
+した場合、後のimportの方が効力を持ちます。すなわち、<code>A</code>の束縛が
+見えることになります。
+</p>
+<p>もし、二つのモジュールが同名の束縛をエクスポートしており、
+その両方にアクセスしたければ、一方もしくは両方の名前にプレフィクスを
+つけることができます。詳しくは<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8">モジュールの使用</a>を参照してください。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00a8_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e3_0082_00bb_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0086_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00a8_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa-1"></a>
+<h3 class="subsection">4.11.2 モジュールとライブラリ</h3>
+
+<p>モジュールは実行時データ構造です。実行時に任意の名前のモジュールを
+手続き的に作成することができます。
+</p>
+<p>しかしほとんどのライブラリは、固有の名前空間を生成するために
+モジュールを用います。これにより、どの束縛をライブラリ使用者に
+見せるかを制御できます。
+</p>
+<p>通常ライブラリは1つ以上のSchemeソースファイル形式で提供されます。
+したがって、ファイル名をモジュール名に対応づける(またはその逆の)
+規約にしておけば便利です。そうすれば、たとえば、ライブラリーファイルを
+ロードしたり、<code>use</code> マクロを使ってモジュールを一動作で、
+インポートしたりできます。
+</p>
+<p>当分の間、Gauche はこの対応づけのための単純なルールを使用します。すなわち、
+モジュール名は、例えば <code>gauche.mop.validator</code> のように ‘<code>.</code>’
+(ピリオド)記号で階層的に区切って構成されます。このようなモジュールが
+要求されても、現在の実行時環境に存在しない場合には、Gauche は
+ピリオド記号をディレクトリ区切りに変換して <code>gauche/mop/validator</code>
+のようにモジュール名からパス名に変換します。その後、
+<code>gauche/mop/validator.scm</code> をロードパスから探します。
+</p>
+<p>これが単にデフォルトの振る舞いであることに注意してください。
+理論上、1つのSchemeソース・ファイルは多数のモジュールを含むことがあります。
+あるいは、1つのモジュール実装は多数のファイルにまたがることもありえます。
+将来、特別なケースのために、この対応付けをカスタマイズするフックを
+用意するかもしれません。したがって、モジュールおよびライブラリーファイルを
+扱うルーチンを書く場合には、上記のデフォルトルールを盲目的に適用しないで
+ください。Gaucheは <code>module-name-&gt;path</code> と <code>path-&gt;module-name</code> という
+2つの対応づけ手続き(詳細に関しては、<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">モジュールイントロスペクション</a>参照)
+を用意しています。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00a8_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e-1"></a>
+<h3 class="subsection">4.11.3 モジュールの定義と選択</h3>
+
+<dl>
+<dt><a name="index-define_002dmodule"></a><u>Special Form:</u> <b>define-module</b><i> name body …</i></dt>
+<dd><p><var>name</var>はシンボルでなければなりません。
+名前<var>name</var>を持つモジュールが存在しなければまず作成します。
+それから、<var>body</var> … をモジュール<var>name</var>中で評価します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-select_002dmodule"></a><u>Special Form:</u> <b>select-module</b><i> name</i></dt>
+<dd><p>名前<var>name</var>を持つモジュールをカレントモジュールとします。
+その名前を持つモジュールが無ければエラーとなります。
+</p>
+<p><code>select-module</code>がSchemeファイルの中で用いられた場合、
+その効果はそのファイルの終了までに限られます。<code>select-module</code>を中で呼んでいる
+ファイルをloadやrequireしても、呼んだ側のカレントモジュールは影響を受けません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dmodule"></a><u>Special Form:</u> <b>with-module</b><i> name body …</i></dt>
+<dd><p>名前<var>name</var>を持つモジュールをカレントモジュールとした状態で<var>body</var> …
+を順に評価し、最後の結果を返します。該当するモジュールが存在しなければエラーとなります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002dmodule"></a><u>Special Form:</u> <b>current-module</b></dt>
+<dd><p>コンパイル時点でのカレントモジュールに評価されます。
+これは手続きではなく特殊形式です。
+Gaucheではモジュールはコンパイル時に静的に決定されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-module foo
+  (export get-current-module)
+  (define (get-current-module) (module-name (current-module))))
+
+(define-module bar
+  (import foo)
+  (get-current-module)) ⇒ foo <span class="roman">; not bar</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e7_00b6_0099_00e6_0089_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8-1"></a>
+<h3 class="subsection">4.11.4 モジュールの使用</h3>
+
+<dl>
+<dt><a name="index-export"></a><u>Special Form:</u> <b>export</b><i> symbol …</i></dt>
+<dd><p>カレントモジュールの中で、シンボル<var>symbol</var>に対応する束縛をexportします。
+exportされた束縛は、カレントモジュールをimportしたモジュール中で見えるようになります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-export_002dall"></a><u>Special Form:</u> <b>export-all</b></dt>
+<dd><p>カレントモジュール中の全ての束縛をexportします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-import"></a><u>Special Form:</u> <b>import</b><i> import-spec …</i></dt>
+<dd><p><var>import-spec</var>で指定されるモジュールがexportしている
+束縛のすべてもしくはいくつかを、カレントモジュール中で使えるようにします。
+<var>import-spec</var>は以下の形式です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;import-spec&gt; : &lt;module-name&gt;
+              | (&lt;module-name&gt; &lt;import-option&gt; ...)
+
+&lt;import-option&gt; : :only (&lt;symbol&gt; ...)
+                | :except (&lt;symbol&gt; ...)
+                | :rename ((&lt;symbol&gt; &lt;symbol&gt;) ...)
+                | :prefix &lt;symbol&gt;
+
+&lt;module-name&gt; : &lt;symbol&gt;
+</pre></td></tr></tbody></table>
+
+<p><var>module-name</var>で指定される名前のモジュールは
+このフォームがコンパイルされる時点までに存在していなければなりません。
+</p>
+<p>モジュールのimportは遷移的ではありません。
+つまり<code>module-name</code>で指定されたモジュールがその内部でimport
+しているモジュールは自動的にカレントモジュールにはimportされてません。
+モジュールの独立性を保つための設計です。この性質により、
+ライブラリモジュールの作者はいくら他のモジュールを
+importしようとも利用者の名前空間を不意に汚染してしまう心配はありません。
+(利用者からはそのモジュールでexportしている名前しか見えないからです。)
+</p>
+<p><var>import-option</var>は束縛がどのようにインポートされるかを制御します。
+<code>:only</code>がある場合、<code>&lt;symbol&gt; …</code>に挙げられた名前を
+持つ束縛のみがインポートされます。<code>:except</code>がある場合は逆に、
+エクスポートされている束縛のうち挙げられた名前を持つもの以外が
+インポートされます。<code>:rename</code>は各2要素のリストの最初の名前
+を持つ束縛が2番目の名前へとリネームされます。
+<code>:prefix</code>があると、元の名前の前に
+指定されるシンボルが付加された名前で束縛が見えるようになります。
+<var>import-option</var>が指定されなければ、<var>module-name</var>のすべての
+エクスポートされた束縛がプレフィクス無しでインポートされます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-module M (export x y)
+  (define x 1)
+  (define y 2)
+  (define z 3))
+
+(import M)
+
+x ⇒ 1
+z ⇒ <span class="roman">エラー。 zはMからエクスポートされなていない</span>
+
+(import (M :only (y)))
+
+x ⇒ <span class="roman">エラー。xは:onlyリストに含まれない。</span>
+
+(import (M :except (y)))
+
+y ⇒ <span class="roman">エラー。yは:exceptにより除外されている。</span>
+
+(import (M :prefix M:))
+
+x ⇒ <span class="roman">error</span>
+M:x ⇒ 1
+M:y ⇒ 2
+</pre></td></tr></tbody></table>
+
+<p>一つ以上のインポートオプションが与えられた場合、
+それは出現順に処理されます。すなわち、<code>:prefix</code>が
+最初に現れた場合、その後に来る<code>:only</code>や<code>:except</code>
+はプレフィックスつきの名前を使って指定しなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-use"></a><u>Macro:</u> <b>use</b><i> name :key only except rename prefix</i></dt>
+<dd><p>モジュールのインポートと必要に応じてファイルのロードを合わせて行う、
+便利なマクロです。基本的に、<code>(use foo)</code> は以下のふたつのフォームと
+等価です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(require "foo")
+(import foo)
+</pre></td></tr></tbody></table>
+<p>すなわち、まず名前“<code>foo</code>”を持つライブラリファイルが(まだロードされて
+いなければ)ロードされ、その中で定義されているモジュール<code>foo</code>をカレントモジュールに
+インポートします。
+</p>
+<p>キーワード引数<var>only</var>, <var>except</var>, <var>prefix</var>は
+<code>import</code>にインポートオプションとして渡されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use srfi-1 :only (iota) :prefix srfi-1:)
+
+(srfi-1:iota 3) ⇒ (0 1 2)
+</pre></td></tr></tbody></table>
+
+
+<p>ファイルのロードとモジュールとは直交する概念ですが、
+実用的にはモジュール毎にファイルを分割するのが便利です。
+必ずしもそうする必要は無く、<code>require</code> と <code>import</code> を別々に
+使っても構いません。が、Gaucheに附属してくるライブラリはすべて、
+<code>use</code> マクロで使えるように書かれています。
+</p>
+<p>もしモジュールが一つのファイルに収めるには大きすぎる場合、一つのメインファイルと
+いくつかのサブファイルに分けることも出来ます。メインファイルの中でモジュールを
+定義し、サブファイルをまとめてロードするか、オートロードを設定します。
+</p>
+<p>実際は、与えられたモジュール名からファイルのパス名を得るのに
+手続き<code>module-name-&gt;path</code>が使われます。デフォルトの変換規則は、
+モジュール名<var>name</var>中のピリオド‘<code>.</code>’を‘<code>/</code>’に置換
+するというものです。例えば<code>(use foo.bar.baz)</code>は
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(require "foo/bar/baz")
+(import foo.bar.baz)
+</pre></td></tr></tbody></table>
+<p>となります。これはあまりScheme風ではありませんが、便利ではあります。
+将来、このマッピングルールをカスタマイズする機構が導入されるかもしれません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e7_00b6_0099_00e6_0089_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e7_00b6_0099_00e6_0089_00bf-1"></a>
+<h3 class="subsection">4.11.5 モジュールの継承</h3>
+
+<p>export-importメカニズムは、次のような場合をうまく処理できません。
+</p>
+<ul>
+<li> 既存のモジュールとほぼ同等の機能を持つが、若干定義を足したり変更したり
+したモジュールを作りたい。
+</li><li> 相互に関連するいくつものモジュールを作成した。
+ユーザがこれらのモジュールを使う時に毎回いくつも ’use’ を並べないで済むように
+一つにまとめたい。
+</li></ul>
+
+<p>このような場合にモジュールの継承が使えます。
+</p>
+<dl>
+<dt><a name="index-extend"></a><u>Macro:</u> <b>extend</b><i> module-name …</i></dt>
+<dd><p>カレントモジュールが、<var>module-name</var> …に挙げられたモジュールを
+継承するようにします。それまでの継承の情報は捨てられ、<var>module-name</var> …
+から計算される継承情報が有効になります。
+</p>
+<p>新たに作られるモジュールはデフォルトで<code>gauche</code>モジュールを継承しています。
+例えばそのモジュールに<code>(extend scheme)</code>というフォームを入れた場合、
+その時点でそのモジュールは<code>scheme</code>モジュール(R5RSで定義された束縛
+のみを含む)を直接継承するようになります。したがって、そのフォームの後で
+’import’ やその他<code>gauche</code>特有の束縛はそのモジュール内では
+使えなくなります。
+</p>
+<p><var>module-name</var>に挙げられたモジュールがまだ存在しなかった場合、
+<code>extend</code>は<code>use</code>と同じメカニズムを使ってファイルをロードすることを
+試みます。
+</p>
+<p>モジュールは複数のモジュールを継承することができます。
+丁度、クラスが複数のクラスを継承できるのと同じようにです。
+多重継承の場合、次のようにしてモジュール間の優先順位が決められます。
+</p>
+<p>各モジュールは<em>module precedence list</em>というモジュールのリストを
+持っています。そこにリストされた順に束縛が探されます。
+モジュールが複数のモジュールを多重継承した場合、継承される各モジュールの
+module precedence listを、次に挙げる制約を満たすようにマージ
+したものが新たなmodule precedence listとなります：
+(1) あるmodule precedence listでモジュールAがモジュールBより前に現れていたら、
+結果のmodule precedence listでもAはBより前に現れる：
+(2) モジュールAがモジュールBより<code>extend</code>フォームで前に現れていたら、
+結果のmodule precedence listでもAはBより前に現れる。
+この条件を満たすようなmodule precedence listが構成できない場合はエラーとなります。
+</p></dd></dl>
+
+<p>例えばあなたがライブラリを3つのモジュール、
+<code>mylib.base</code>、<code>mylib.util</code>、<code>mylib.system</code>に分けて
+書いたとしましょう。次のように書けば、これらのモジュールを
+一つの<code>mylib</code>モジュールに見せることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-module mylib
+  (extend mylib.system mylib.util mylib.base))
+</pre></td></tr></tbody></table>
+
+<p>このライブラリモジュールのユーザは <code>(use mylib)</code> とするだけで
+全てのサブモジュールのexportされた束縛を利用することができるようになります。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e7_00b6_0099_00e6_0089_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3-1"></a>
+<h3 class="subsection">4.11.6 モジュールイントロスペクション</h3>
+
+<p>この節では、実行時にモジュールを操作する手続きをリストします。
+これらの手続きにより、例えばモジュールの内部を調べたり、手続き的に
+新しいモジュールを作成したり、特定のモジュールやライブラリの存在を
+調べたりすることができます。ただし、モジュールは第一にコンパイル時の
+構造であることを忘れないでください。実行時にモジュールをいじくるのは、
+十分にモジュールの構造を理解した上で行ってください。
+</p>
+<dl>
+<dt><a name="index-_003cmodule_003e"></a><u>Builtin Class:</u> <b>&lt;module&gt;</b></dt>
+<dd><a name="index-module"></a>
+<p>モジュールクラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-module_003f"></a><u>Function:</u> <b>module?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がモジュールなら真の値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-find_002dmodule"></a><u>Function:</u> <b>find-module</b><i> name</i></dt>
+<dd><p>名前がシンボル<var>name</var>であるようなモジュールを返します。
+その名前をもつモジュールが存在しなければ、<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dmodule"></a><u>Function:</u> <b>make-module</b><i> name :key if-exists</i></dt>
+<dd><p>シンボルの名前<var>name</var>を持つモジュールを作成して返します。
+その名前を持つモジュールが既に存在していた場合、その動作は
+<var>if-exists</var>キーワード引数で指定されます。
+<var>if-exists</var>引数が<code>:error</code>である場合（デフォルト）、
+エラーが報告されます。それが<code>#f</code>である場合は単に<code>#f</code>が返されます。
+</p>
+<p>モジュールを実行時に動的に生成することは、通常のスクリプトでは
+あまり必要とはされません。既に書かれたプログラムの解釈においては、
+モジュールは名前で指定されている必要があるからです。
+構文<code>define-module</code>、<code>import</code>、<code>extend</code>、<code>with-module</code>
+等はモジュールそのものではなくモジュール名を取ります。
+これは、モジュールが本質的にコンパイル時の構造であるためです。
+しかし、動的に作られるモジュールが有用な場合もあります?プログラムそのものが、
+動的に作られる場合です。<code>eval</code>にモジュールを渡して、
+そのような動的に作られたプログラムがそのモジュールの中で
+コンパイルされ評価されるようにできます。
+</p>
+<p>また、<var>name</var>に<code>#f</code>を渡すことで無名のモジュールを作ることもできます。
+無名のモジュールは<code>find-module</code>で探すことはできませんし、
+他のモジュールから<code>import</code>することも<code>extend</code>されることも
+できません（<code>import</code>や<code>extend</code>はモジュール名を必要とするからです）。
+無名のモジュールは、一時的に隔離された名前空間を動的に作りたい時に
+便利です。例えばネットワークで接続されたプログラムから送られた式を
+その中で評価して、コネクションが終了したら名前空間ごと捨ててしまうという
+ような場合です。無名のモジュールはシステムの内部辞書に登録されないので、
+モジュールへの参照が無くなればガベージコレクトされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-all_002dmodules"></a><u>Function:</u> <b>all-modules</b></dt>
+<dd><p>現在存在する全ての名前付きモジュールのリストを返します。
+無名のモジュールは含まれません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-module_002dname"></a><u>Function:</u> <b>module-name</b><i> module</i></dt>
+<dt><a name="index-module_002dimports"></a><u>Function:</u> <b>module-imports</b><i> module</i></dt>
+<dt><a name="index-module_002dexports"></a><u>Function:</u> <b>module-exports</b><i> module</i></dt>
+<dt><a name="index-module_002dtable"></a><u>Function:</u> <b>module-table</b><i> module</i></dt>
+<dd><p>モジュールオブジェクトのアクセスメソッドです。
+<var>module</var>の名前(シンボル)、<var>module</var>がインポートしているモジュールのリスト、
+エクスポートしているシンボルのリスト、そして
+シンボルから束縛へのマップを行うハッシュテーブルを返します。
+</p>
+<p>もし<var>module</var>が全てのシンボルをエクスポートしている場合は、<code>module-exports</code>
+は<code>#t</code>を返します。
+</p>
+<p>モジュールオブジェクト以外が渡された場合はエラーになります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-module_002dparents"></a><u>Function:</u> <b>module-parents</b><i> module</i></dt>
+<dt><a name="index-module_002dprecedence_002dlist"></a><u>Function:</u> <b>module-precedence-list</b><i> module</i></dt>
+<dd><p>モジュールの継承に関する情報を返します。
+<code>module-parents</code>は<var>module</var>が直接継承しているモジュールのリストを
+返します。<code>module-precedence-list</code>は<var>module</var>のmodule precedence
+list (<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e7_00b6_0099_00e6_0089_00bf">モジュールの継承</a>参照) を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-global_002dvariable_002dbound_003f"></a><u>Function:</u> <b>global-variable-bound?</b><i> module symbol</i></dt>
+<dd><p><var>symbol</var>のグローバルなバインディングが<var>module</var>から
+可視であれば、真を返します。<var>module</var>はモジュールオブジェクトか
+既存のモジュール名を示すシンボルでなければなりません。
+</p>
+<p>註: 以前、この手続きの機能は<code>symbol-bound?</code>という手続きで
+実現されていました。<code>symbol-bound?</code>は非推奨となり、新しいコードは
+<code>global-variable-bound?</code>を使わねばなりません。
+この変更の理由は、<code>symbol-bound?</code>がカレントモジュールをデフォルトと
+しており、またその名前からも、グローバルな束縛値があたかも
+(CommonLispのように)シンボルそのものの属性であるかのような誤解を招いて
+いたからです。そのせいで、特にコンパイル時と実行時でカレントモジュールが
+異なるような場合に多くの混乱が生じていました。
+新しい名前とAPIは、グローバルな束縛値についてモジュールに問い合わせている
+ということを明確にしています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-global_002dvariable_002dref"></a><u>Function:</u> <b>global-variable-ref</b><i> module symbol :optional default</i></dt>
+<dd><p>モジュール<var>module</var>から可視の、シンボル<var>symbol</var>のグローバルな
+束縛値を返します。<var>module</var>はモジュールオブジェクトか
+既存のモジュール名を示すシンボルでなければなりません。
+<var>symbol</var>に対する可視のグローバル束縛が無い場合は、
+<var>default</var>引数があたえられていればその値を返し、
+無ければエラーを通知します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-module_002dname_002d_003epath"></a><u>Function:</u> <b>module-name-&gt;path</b><i> symbol</i></dt>
+<dd><p>モジュール名<var>symbol</var>を、パス名の一部(<code>require</code>や<code>provide</code>が
+使うような)へと変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-path_002d_003emodule_002dname"></a><u>Function:</u> <b>path-&gt;module-name</b><i> string</i></dt>
+<dd><p><code>module-name-&gt;path</code>の逆関数です。
+</p></dd></dl>
+
+<p>特定のライブラリやモジュールがシステムにインストールされて使える状態にあるか
+調べたりする場合は、<a indepth="true" href="gauche-refj_61.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ライブラリの操作</a>を参照して下さい。
+</p>
+<hr size="6">
+<a name="g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-1"></a>
+<h3 class="subsection">4.11.7 組み込みモジュール</h3>
+
+<p>Gauche起動時にいくつかのモジュールがあらかじめ定義されています。
+</p>
+<dl>
+<dt><a name="index-null"></a><u>Builtin Module:</u> <b>null</b></dt>
+<dd><a name="index-null-1"></a>
+<p>このモジュールはR5RSで述べられている"null environment"に相当します。
+R5RSの構文要素への束縛だけを含んだモジュールです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-scheme"></a><u>Builtin Module:</u> <b>scheme</b></dt>
+<dd><a name="index-scheme-1"></a>
+<p>このモジュールは<code>null</code>モジュール内の束縛全てに加えて、
+R5RSで定義されている全ての手続きの束縛を含みます。
+</p></dd></dl>
+
+<p><code>select-module</code>によって一度<code>null</code>や<code>scheme</code>モジュールに
+入ると、そこから他のモジュールに移ることはできなくなることに注意してください。
+これらのモジュールからは、あらゆるモジュール操作構文が不可視だからです。
+</p>
+<dl>
+<dt><a name="index-gauche"></a><u>Builtin Module:</u> <b>gauche</b></dt>
+<dd><a name="index-gauche-1"></a>
+<p>このモジュールは<code>scheme</code>モジュール内の全ての束縛に加え、
+Gaucheの組込み手続きや構文が含まれています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-user"></a><u>Builtin Module:</u> <b>user</b></dt>
+<dd><a name="index-user-1"></a>
+<p>このモジュールはユーザコードがコンパイルされる既定のモジュールです。
+<code>gauche</code>モジュール内の全ての束縛がインポートされています。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

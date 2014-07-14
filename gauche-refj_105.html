@@ -1,0 +1,1120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.31 gauche.uvector - ユニフォームベクタ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.31 gauche.uvector - ユニフォームベクタ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.31 gauche.uvector - ユニフォームベクタ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_105.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_104.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002euvector-_002d-_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"></a>
+<h2 class="section">9.31 <code>gauche.uvector</code> - ユニフォームベクタ</h2>
+
+<dl>
+<dt><a name="index-gauche_002euvector"></a><u>Module:</u> <b>gauche.uvector</b></dt>
+<dd><a name="index-gauche_002euvector-1"></a>
+<p>SRFI-4(<a indepth="true" href="gauche-refj_189.html#srfi_002d4">SRFI-4</a>)に定義されている、
+要素が同一の数値型であるようなベクタを提供します。
+</p>
+<p>Gaucheの実装は、SRFI-4の仕様を次のように拡張しています。
+</p><ul>
+<li>
+いくつかの手続きはSRFI-4に無い省略可能な引数を取ります。
+<code><var>TAG</var>vector-&gt;list</code>は省略可能なstartとendのインデックスを取り、
+<code><var>TAG</var>vector-ref</code>は省略可能なデフォルト値を取ります。
+</li><li>
+追加の手続き： コピー(<code><var>TAG</var>vector-copy</code>,
+<code><var>TAG</var>vector-copy!</code>)、
+変換 (<code><var>TAG</var>vector-&gt;vector</code>, <code>vector-&gt;<var>TAG</var>vector</code>)、
+及び各種算術演算(<code><var>TAG</var>vector-add</code>等)。
+</li><li>
+コレクションフレームワーク (<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>参照)と
+シーケンスフレームワーク (<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>参照)の実装。
+例えば <code>map</code>, <code>for-each</code>, <code>ref</code>, <code>subseq</code>等の
+メソッドがSRFI-4ベクタに対して使えます。
+</li><li>
+16ビット浮動小数点数のベクタ<code>f16vector</code>のサポート。
+フォーマットはハイダイナミックレンジイメージ等に使われている、
+1符号ビット、5指数ビット、10仮数ビットです。
+</li></ul>
+
+<p>通常のベクタではなくSRFI-4ベクタを使うことにより得られる利点がいくつかあります。
+まず、SRFI-4ベクタは通常のベクタよりもコンパクトです。
+いくつかのオペレーション(特に、Gaucheの拡張仕様であるベクタ上の数値演算)では、
+型検査と型変換を個々の要素に対して行わなくても良いため、
+極めて効率の良い演算が可能です。さらに、
+数値の配列を扱う外部のライブラリとのインタフェースが容易です。
+例えば、GaucheのOpenGLバインディングではSRFI-4ベクタを多用しています。
+</p></dd></dl>
+<p>以下の10タイプのベクタが定義されます。
+</p><dl compact="compact">
+<dt> <em>s8vector</em></dt>
+<dd><p>要素が -2^7 から 2^7-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>u8vector</em></dt>
+<dd><p>要素が 0 から 2^8-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>s16vector</em></dt>
+<dd><p>要素が -2^15 から 2^15-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>u16vector</em></dt>
+<dd><p>要素が 0 から 2^16-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>s32vector</em></dt>
+<dd><p>要素が -2^31 から 2^31-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>u32vector</em></dt>
+<dd><p>要素が 0 から 2^32-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>s64vector</em></dt>
+<dd><p>要素が -2^63 から 2^63-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>u64vector</em></dt>
+<dd><p>要素が 0 から 2^64-1 の間の正確な整数であるベクタ
+</p></dd>
+<dt> <em>f16vector</em></dt>
+<dd><p>要素が、16ビット浮動小数点数(half floatとしても知られている)で表現
+し得るような不正確な実数であるベクタ
+</p></dd>
+<dt> <em>f32vector</em></dt>
+<dd><p>要素が、GaucheをコンパイルしたCコンパイラの<code>float</code>で表現し得るような
+不正確な実数(通常IEEE単精度浮動少数点数)であるベクタ
+</p></dd>
+<dt> <em>f64vector</em></dt>
+<dd><p>要素が、GaucheをコンパイルしたCコンパイラの<code>double</code>で表現し得るような
+不正確な実数(通常IEEE倍精度浮動少数点数)であるベクタ
+</p></dd>
+</dl>
+
+<p>ベクタの型が許す範囲外の値を格納しようとした場合、通常はエラーとなります。
+いくつかの手続きは省略可能な引数<var>clamp</var>によって、
+そのような場合に別のふるまいを指定することができます。
+<var>clamp</var>には以下のいずれかの値を与えることが出来ます。
+</p><dl compact="compact">
+<dt> <code>#f</code></dt>
+<dd><p>デフォルト (エラーを通知)
+</p></dd>
+<dt> <code>high</code></dt>
+<dd><p>高い方の値をクランプ、すなわち、格納しようとする値が許される値の最大値より大きかった
+場合は、可能な最大値を代わりに格納します。
+</p></dd>
+<dt> <code>low</code></dt>
+<dd><p>低い方の値をクランプ、すなわち、格納しようとする値が許される値の最小値より大きかった
+場合は、可能な最小値を代わりに格納します。
+</p></dd>
+<dt> <code>both</code></dt>
+<dd><p>高いほうと低いほうの両方の値をクランプします。
+</p></dd>
+</dl>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-&gt;u8vector '(-1))         ⇒ <span class="roman">error</span>
+(list-&gt;u8vector '(-1) 'low)    ⇒ #u8(0)
+(list-&gt;u8vector '(-1) 'high)   ⇒ <span class="roman">error</span>
+(list-&gt;u8vector '(3000) 'high) ⇒ #u8(255)
+(list-&gt;u8vector '(-100 20 300) 'both) ⇒ #u8(0 20 255)
+</pre></td></tr></tbody></table>
+
+<p>以下の記述では、<code><var>TAG</var></code>は
+<code>s8</code>, <code>u8</code>, <code>s16</code>, <code>u16</code>,
+<code>s32</code>, <code>u32</code>, <code>s64</code>, <code>u64</code>,
+<code>f16</code>, <code>f32</code>, <code>f64</code>
+のいずれにも置き換えて読むことができるものとします。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e6_0093_008d_00e4_00bd_009c">9.31.1 ユニフォームベクタの基本操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">9.31.2 ユニフォームベクタの変換</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e6_0095_00b0_00e5_0080_00a4_00e6_00bc_0094_00e7_00ae_0097">9.31.3 ユニフォームベクタの数値演算</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">9.31.4 ユニフォームベクタのブロック入出力</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h3 class="subsection">9.31.1 ユニフォームベクタの基本操作</h3>
+
+<dl>
+<dt><a name="index-_003c-1"></a><u>Builtin Class:</u> <b>&lt;</b><i><var>TAG</var>vector&gt;</i></dt>
+<dd><a name="index-s8vector"></a>
+<a name="index-u8vector"></a>
+<a name="index-s16vector"></a>
+<a name="index-u16vector"></a>
+<a name="index-s32vector"></a>
+<a name="index-u32vector"></a>
+<a name="index-s64vector"></a>
+<a name="index-u64vector"></a>
+<a name="index-f16vector"></a>
+<a name="index-f32vector"></a>
+<a name="index-f64vector"></a>
+<p><var>TAG</var>vectorのクラス。<code>&lt;sequence&gt;</code>を継承します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_0023TAG_0028n-_2026_0029"></a><u>Reader Syntax:</u> <b><code>#<var>TAG</var>(<var>n</var> …)</code></b></dt>
+<dd><p>リテラルの単一型のベクタを記述します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">#s8(3 -2 4)
+#u32(4154 88357 2 323)
+#f32(3.14 0.554525 -3.342)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAGvector_003f"></a><u>Function:</u> <b><var>TAG</var>vector?</b><i> <span class="roman"><var>obj</var></span></i></dt>
+<dd><a name="index-s8vector_003f"></a>
+<a name="index-u8vector_003f"></a>
+<a name="index-s16vector_003f"></a>
+<a name="index-u16vector_003f"></a>
+<a name="index-s32vector_003f"></a>
+<a name="index-u32vector_003f"></a>
+<a name="index-s64vector_003f"></a>
+<a name="index-u64vector_003f"></a>
+<a name="index-f16vector_003f"></a>
+<a name="index-f32vector_003f"></a>
+<a name="index-f64vector_003f"></a>
+<p>[SRFI-4]
+<var>obj</var>が<var>TAG</var>vectorなら<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TAGvector"></a><u>Function:</u> <b><var>TAG</var>vector</b><i> <span class="roman"><var>x</var> …</span></i></dt>
+<dd><a name="index-s8vector-1"></a>
+<a name="index-u8vector-1"></a>
+<a name="index-s16vector-1"></a>
+<a name="index-u16vector-1"></a>
+<a name="index-s32vector-1"></a>
+<a name="index-u32vector-1"></a>
+<a name="index-s64vector-1"></a>
+<a name="index-u64vector-1"></a>
+<a name="index-f16vector-1"></a>
+<a name="index-f32vector-1"></a>
+<a name="index-f64vector-1"></a>
+<p>[SRFI-4]
+数値<var>x</var> … を要素に持つ<var>TAG</var>vectorを作成して返します。
+正確な整数のベクタに対しては、数値は正確な整数でなければならず、
+また有効な範囲内の値でなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(s8vector 1 2 3) ⇒ #s8(1 2 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002d"></a><u>Function:</u> <b>make-</b><i><var>TAG</var>vector <span class="roman"><var>len</var> <var>:optional</var> <var>fill</var></span></i></dt>
+<dd><a name="index-make_002ds8vector"></a>
+<a name="index-make_002du8vector"></a>
+<a name="index-make_002ds16vector"></a>
+<a name="index-make_002du16vector"></a>
+<a name="index-make_002ds32vector"></a>
+<a name="index-make_002du32vector"></a>
+<a name="index-make_002ds64vector"></a>
+<a name="index-make_002du64vector"></a>
+<a name="index-make_002df16vector"></a>
+<a name="index-make_002df32vector"></a>
+<a name="index-make_002df64vector"></a>
+<p>[SRFI-4]
+長さ<var>len</var>の<var>TAG</var>vectorを作成して返します。各要素は<var>fill</var>で
+初期化されます。正確な整数のベクタに対しては、<var>fill</var>は正確な整数でなければならず、
+また有効な範囲内の値でなければなりません。
+<var>fill</var>が省略された場合、各要素の初期値は不定です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-u8vector 4 0) ⇒ #u8(0 0 0 0)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-length <span class="roman"><var>vec</var></span></i></dt>
+<dd><a name="index-s8vector_002dlength"></a>
+<a name="index-u8vector_002dlength"></a>
+<a name="index-s16vector_002dlength"></a>
+<a name="index-u16vector_002dlength"></a>
+<a name="index-s32vector_002dlength"></a>
+<a name="index-u32vector_002dlength"></a>
+<a name="index-s64vector_002dlength"></a>
+<a name="index-u64vector_002dlength"></a>
+<a name="index-f16vector_002dlength"></a>
+<a name="index-f32vector_002dlength"></a>
+<a name="index-f64vector_002dlength"></a>
+<p>[SRFI-4]
+<var>TAG</var>vector <var>vec</var>の長さを返します。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+<var>vec</var>の長さを知るのに、総称関数<code>size-of</code>を使うこともできます
+(<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>参照)。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(s16vector-length '#s16(111 222 333)) ⇒ 3
+
+(use gauche.collection)
+(size-of '#s16(111 222 333)) ⇒ 3
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-uvector_002dsize"></a><u>Function:</u> <b>uvector-size</b><i> uvector :optional start end</i></dt>
+<dd><p>この手続きは全てのユニフォームベクタに適用することができます。
+<var>uvector</var>のバイナリデータとしてのサイズをオクテット数で返します。
+</p>
+<p><var>start</var>および/または<var>end</var>が与えられた場合は、
+これらのインデックスの間のデータについてのみサイズが計算されます。
+<var>end</var>には、ベクタ終端を示すために<code>-1</code>を与えることもできます。
+返される値は
+<code>(write-block <var>uvector</var> port <var>start</var> <var>end</var>)</code> によって
+出力されるオクテット数と一致します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(uvector-size '#u8(1 2 3))        ⇒ 3
+(uvector-size '#u64(1 2 3))       ⇒ 24
+
+(uvector-size '#u32(0 1 2 3) 2)   ⇒ 8
+(uvector-size '#u32(0 1 2 3) 0 1) ⇒ 4
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-1"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-ref <span class="roman"><var>vec</var> <var>k</var> :optional <var>fallback</var></span></i></dt>
+<dd><a name="index-s8vector_002dref"></a>
+<a name="index-u8vector_002dref"></a>
+<a name="index-s16vector_002dref"></a>
+<a name="index-u16vector_002dref"></a>
+<a name="index-s32vector_002dref"></a>
+<a name="index-u32vector_002dref"></a>
+<a name="index-s64vector_002dref"></a>
+<a name="index-u64vector_002dref"></a>
+<a name="index-f16vector_002dref"></a>
+<a name="index-f32vector_002dref"></a>
+<a name="index-f64vector_002dref"></a>
+<p>[SRFI-4+]
+<var>TAG</var>vector <var>vec</var>の<var>k</var>番目の要素を返します。
+</p>
+<p><var>k</var>が有効な範囲外であった場合、通常はエラーが通知されますが、
+省略可能な引数<var>fallback</var>が与えられている場合はそれが返されます。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+総称関数<code>ref</code>を使うこともできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(u16vector-ref '#u16(111 222 333) 1) ⇒ 222
+
+(use gauche.collection)
+(ref '#u16(111 222 333) 1) ⇒ 222
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-2"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-set! <span class="roman"><var>vec</var> <var>k</var> <var>n</var> :optional <var>clamp</var></span></i></dt>
+<dd><a name="index-s8vector_002dset_0021"></a>
+<a name="index-u8vector_002dset_0021"></a>
+<a name="index-s16vector_002dset_0021"></a>
+<a name="index-u16vector_002dset_0021"></a>
+<a name="index-s32vector_002dset_0021"></a>
+<a name="index-u32vector_002dset_0021"></a>
+<a name="index-s64vector_002dset_0021"></a>
+<a name="index-u64vector_002dset_0021"></a>
+<a name="index-f16vector_002dset_0021"></a>
+<a name="index-f32vector_002dset_0021"></a>
+<a name="index-f64vector_002dset_0021"></a>
+<p>[SRFI-4+]
+<var>TAG</var>vector <var>vec</var>の<var>k</var>番目の要素に数値<var>n</var>をセットします。
+省略可能な引数<var>clamp</var>が、<var>n</var>が正しい範囲外の数であった場合の動作を指定します。
+デフォルトではエラーが通知されます。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+総称関数<code>ref</code>のsetter手続きを使うこともできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((v (s32vector -439 852 8933)))
+  (s32vector-set! v 1 4)
+  v)
+ ⇒ #s32vector(-439 4 8933)
+
+(use gauche.collection)
+(let ((v (s32vector -439 852 8933)))
+  (set! (ref v 1) 4)
+  v)
+ ⇒ #s32vector(-439 4 8933)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-3"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-fill! <span class="roman"><var>vec</var> <var>fill</var> :optional <var>start</var> <var>end</var></span></i></dt>
+<dd><a name="index-s8vector_002dfill_0021"></a>
+<a name="index-u8vector_002dfill_0021"></a>
+<a name="index-s16vector_002dfill_0021"></a>
+<a name="index-u16vector_002dfill_0021"></a>
+<a name="index-s32vector_002dfill_0021"></a>
+<a name="index-u32vector_002dfill_0021"></a>
+<a name="index-s64vector_002dfill_0021"></a>
+<a name="index-u64vector_002dfill_0021"></a>
+<a name="index-f16vector_002dfill_0021"></a>
+<a name="index-f32vector_002dfill_0021"></a>
+<a name="index-f64vector_002dfill_0021"></a>
+<p><var>vec</var>のすべて要素に<var>fill</var>をセットします。
+<var>start</var>と<var>end</var>で要素の範囲を指定することも出来ます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TAG-4"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-copy <span class="roman"><var>vec</var> :optional <var>start</var> <var>end</var></span></i></dt>
+<dd><a name="index-s8vector_002dcopy"></a>
+<a name="index-u8vector_002dcopy"></a>
+<a name="index-s16vector_002dcopy"></a>
+<a name="index-u16vector_002dcopy"></a>
+<a name="index-s32vector_002dcopy"></a>
+<a name="index-u32vector_002dcopy"></a>
+<a name="index-s64vector_002dcopy"></a>
+<a name="index-u64vector_002dcopy"></a>
+<a name="index-f16vector_002dcopy"></a>
+<a name="index-f32vector_002dcopy"></a>
+<a name="index-f64vector_002dcopy"></a>
+<p>ベクタ<var>vec</var>をコピーします。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合、
+それらは取り出される要素の範囲を制限します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(u8vector-copy '#u8(1 2 3 4))     ⇒ #u8(1 2 3 4)
+(u8vector-copy '#u8(1 2 3 4) 2)   ⇒ #u8(3 4)
+(u8vector-copy '#u8(1 2 3 4) 1 3) ⇒ #u8(2 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-5"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-copy! <span class="roman"><var>target</var> <var>tstart</var> <var>source</var> :optional <var>sstart</var> <var>send</var></span></i></dt>
+<dd><a name="index-s8vector_002dcopy_0021"></a>
+<a name="index-u8vector_002dcopy_0021"></a>
+<a name="index-s16vector_002dcopy_0021"></a>
+<a name="index-u16vector_002dcopy_0021"></a>
+<a name="index-s32vector_002dcopy_0021"></a>
+<a name="index-u32vector_002dcopy_0021"></a>
+<a name="index-s64vector_002dcopy_0021"></a>
+<a name="index-u64vector_002dcopy_0021"></a>
+<a name="index-f16vector_002dcopy_0021"></a>
+<a name="index-f32vector_002dcopy_0021"></a>
+<a name="index-f64vector_002dcopy_0021"></a>
+<p><var>target</var> および <var>source</var> はともに <i>TAG</i>vector でなければ
+なりません。さらに、<var>target</var> は変更可能でなければなりません。
+この手続きは、<var>source</var>の要素を、インデックス<var>sstart</var>から(これを含み)
+<var>send</var> までを、<var>target</var> へインデックス <var>tstart</var>からコピーします。
+<var>sstart</var>および<var>send</var>は省略可能で、その場合には、それぞれ、
+0 および <var>source</var>の長さが仮定されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((target (u8vector 0 1 2 3 4 5 6)))
+  (u8vector-copy! target 2 '#u8(10 11 12 13 14) 1 4)
+  target)
+ ⇒ #u8(0 1 11 12 13 6)
+</pre></td></tr></tbody></table>
+
+<p>もし、コピー元のベクタの <var>sstart</var> と <var>send</var> の間にある要素の
+数がコピー先のベクタの<var>tstart</var>以降の部分よりも大きければ、超過分の
+ベクタはだまって捨てられます。
+</p>
+<p><em>注意事項:</em> この手続きは以前はユニフォームベクタ <var>target</var> および
+<var>source</var> のみを引数としてとり、<var>source</var> の内容を <var>target</var> へ
+コピーするためだけに使われました。両方のベクタは同じ型で、同じ長さでなけ
+ればなりませんでした。この API は <code>string-copy!</code> (SRFI-13) および
+<code>vector-copy!</code> (SRFI-43)にあわせて現在の形式に改訂されています。
+旧来のインタフェースもバックワードコンパチビリティのためにサポートされて
+いますが、これは廃止予定で、将来のリリースではサポートされなくなります。
+</p></dd></dl>
+
+<p>コレクションやシーケンスフレームワークを使うと、さらに様々な操作を
+行うことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.collection)
+(use gauche.sequence)
+
+(fold + 0 '#s32(1 2 3 4)) ⇒ 10
+
+(map-to &lt;f32vector&gt; * '#f32(3.2 1.1 4.3) '#f32(-4.3 2.2 9.4))
+  ⇒ #f32(-13.760001 2.420000 40.420002)
+
+(subseq #u32(1 4 3 4 5) 2 4) ⇒ #u32(3 4)
+</pre></td></tr></tbody></table>
+
+
+<dl>
+<dt><a name="index-uvector_002dcopy_0021"></a><u>Function:</u> <b>uvector-copy!</b><i> target tstart source :optional sstart send</i></dt>
+<dd><p>これは<code><i>TAG</i>vector-copy!</code>の汎用バージョンです。
+コピー元<var>source</var>とコピー先<var>target</var>はユニフォームベクタであれば
+どの型でも許され、また両者の型が異なっていても構いません。
+ビット表現がそのままコピーされます。従って異なる型のユニフォームベクタ間で
+コピーした場合は、結果は数値の内部表現に依存します。
+そのような用法は、バイナリデータを扱う時には便利でしょう。
+</p>
+<p><var>tstart</var>は<var>target</var>の型によって解釈され、
+<var>sstart</var>と<var>send</var>は<var>source</var>の型によって解釈されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rlet1 v (make-u8vector 6 0)
+  (uvector-copy! v 1 '#u32(0 #x01020304 0) 1 2))
+ ⇒ #u8(0 1 2 3 4 0) or #u8(0 4 3 2 1 0)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e6_0095_00b0_00e5_0080_00a4_00e6_00bc_0094_00e7_00ae_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b-1"></a>
+<h3 class="subsection">9.31.2 ユニフォームベクタの変換</h3>
+
+<dl>
+<dt><a name="index-TAG-6"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-&gt;list <span class="roman"><var>vec</var> :optional <var>start</var> <var>end</var></span></i></dt>
+<dd><a name="index-s8vector_002d_003elist"></a>
+<a name="index-u8vector_002d_003elist"></a>
+<a name="index-s16vector_002d_003elist"></a>
+<a name="index-u16vector_002d_003elist"></a>
+<a name="index-s32vector_002d_003elist"></a>
+<a name="index-u32vector_002d_003elist"></a>
+<a name="index-s64vector_002d_003elist"></a>
+<a name="index-u64vector_002d_003elist"></a>
+<a name="index-f16vector_002d_003elist"></a>
+<a name="index-f32vector_002d_003elist"></a>
+<a name="index-f64vector_002d_003elist"></a>
+<p>[SRFI-4+]
+<var>TAG</var>vector <var>vec</var>をリストに変換します。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合、
+それらは取り出される要素の範囲を制限します。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+総称関数<code>coerce-to</code>を使うこともできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(u32vector-&gt;list '#u32(9 2 5)) ⇒ (9 2 5)
+
+(use gauche.collection)
+(coerce-to &lt;list&gt; '#u32(9 2 5)) ⇒ (9 2 5)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-7"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-&gt;vector <span class="roman"><var>vec</var> :optional <var>start</var> <var>end</var></span></i></dt>
+<dd><a name="index-s8vector_002d_003evector"></a>
+<a name="index-u8vector_002d_003evector"></a>
+<a name="index-s16vector_002d_003evector"></a>
+<a name="index-u16vector_002d_003evector"></a>
+<a name="index-s32vector_002d_003evector"></a>
+<a name="index-u32vector_002d_003evector"></a>
+<a name="index-s64vector_002d_003evector"></a>
+<a name="index-u64vector_002d_003evector"></a>
+<a name="index-f16vector_002d_003evector"></a>
+<a name="index-f32vector_002d_003evector"></a>
+<a name="index-f64vector_002d_003evector"></a>
+<p><var>TAG</var>vector <var>vec</var>をベクタに変換します。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合、
+それらは取り出される要素の範囲を制限します。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+総称関数<code>coerce-to</code>を使うこともできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(f32vector-&gt;vector '#f32(9.3 2.2 5.5))   ⇒ #(9.3 2.2 5.5)
+(f32vector-&gt;vector '#f32(9.3 2.2 5.5) 2) ⇒ #(5.5)
+
+(use gauche.collection)
+(coerce-to &lt;vector&gt; '#f32(9.3 2.2 5.5)) ⇒ #(9.3 2.2 5.5)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-list_002d_003e"></a><u>Function:</u> <b>list-&gt;</b><i><var>TAG</var>vector <span class="roman"><var>list</var> :optional <var>clamp</var></span></i></dt>
+<dd><a name="index-list_002d_003es8vector"></a>
+<a name="index-list_002d_003eu8vector"></a>
+<a name="index-list_002d_003es16vector"></a>
+<a name="index-list_002d_003eu16vector"></a>
+<a name="index-list_002d_003es32vector"></a>
+<a name="index-list_002d_003eu32vector"></a>
+<a name="index-list_002d_003es64vector"></a>
+<a name="index-list_002d_003eu64vector"></a>
+<a name="index-list_002d_003ef16vector"></a>
+<a name="index-list_002d_003ef32vector"></a>
+<a name="index-list_002d_003ef64vector"></a>
+<p>[SRFI-4+]
+リスト<var>list</var>を<var>TAG</var>vectorに変換します。
+省略可能な引数<var>clamp</var>が、リスト内の要素が正しい範囲外の数であった場合の
+動作を指定します。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+総称関数<code>coerce-to</code>を使うこともできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-&gt;s64vector '(9 2 5)) ⇒ #s64(9 2 5)
+
+(use gauche.collection)
+(coerce-to &lt;s64vector&gt; '(9 2 5)) ⇒ #s64(9 2 5)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-vector_002d_003e"></a><u>Function:</u> <b>vector-&gt;</b><i><var>TAG</var>vector <span class="roman"><var>vec</var> :optional <var>start</var> <var>end</var> <var>clamp</var></span></i></dt>
+<dd><a name="index-vector_002d_003es8vector"></a>
+<a name="index-vector_002d_003eu8vector"></a>
+<a name="index-vector_002d_003es16vector"></a>
+<a name="index-vector_002d_003eu16vector"></a>
+<a name="index-vector_002d_003es32vector"></a>
+<a name="index-vector_002d_003eu32vector"></a>
+<a name="index-vector_002d_003es64vector"></a>
+<a name="index-vector_002d_003eu64vector"></a>
+<a name="index-vector_002d_003ef16vector"></a>
+<a name="index-vector_002d_003ef32vector"></a>
+<a name="index-vector_002d_003ef64vector"></a>
+<p>ベクタ<var>vec</var>を<var>TAG</var>vectorに変換します。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合、
+それらは取り出される要素の範囲を制限します。
+省略可能な引数<var>clamp</var>が、ベクタ内の要素が正しい範囲外の数であった場合の
+動作を指定します。
+</p>
+<p>モジュール<code>gauche.collection</code>をインポートしていれば、
+総称関数<code>coerce-to</code>を使うこともできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(vector-&gt;f64vector '#(3.1 5.4 3.2)) ⇒ #f64(3.1 5.4 3.2)
+
+(use gauche.collection)
+(coerce-to &lt;f64vector&gt; '#(3.1 5.4 3.2)) ⇒ #f64(3.1 5.4 3.2)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003es8vector"></a><u>Function:</u> <b>string-&gt;s8vector</b><i> string :optional start end</i></dt>
+<dt><a name="index-string_002d_003eu8vector"></a><u>Function:</u> <b>string-&gt;u8vector</b><i> string :optional start end</i></dt>
+<dd><p>与えられた文字列の内部表現のバイト列と同じバイト列を持つs8vectorもしくは
+u8vectorを返します。省略可能な範囲引数<var>start</var>、<var>end</var>は、
+変換される文字列中の文字位置を指定します。
+</p>
+<p>これらの手続きは、文字を構成するバイト列をランダムにアクセスしたい場合などに
+有用です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-&gt;u8vector "abc") ⇒ #u8(97 98 99)
+
+;; 内部コードがEUCの場合
+(string-&gt;u8vector "いろは") ⇒ #u8(164 164 164 237 164 207)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003es8vector_0021"></a><u>Function:</u> <b>string-&gt;s8vector!</b><i> target tstart string :optional start end</i></dt>
+<dt><a name="index-string_002d_003eu8vector_0021"></a><u>Function:</u> <b>string-&gt;u8vector!</b><i> target tstart string :optional start end</i></dt>
+<dd><p><var>target</var> は、それぞれ s8vector あるいは u8vector でなければなりません。
+<var>target</var> は、変更可能でなければなりません。
+<var>string</var> の生バイト表現を <var>target</var> へインデックス <var>tstart</var>
+からコピーします。
+</p>
+<p><var>target</var> を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((target (make-u8vector 10 0)))
+  (string-&gt;u8vector! target 3 "abcde"))
+ ⇒ #u8(0 0 0 97 98 99 100 101 0 0)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-s8vector_002d_003estring"></a><u>Function:</u> <b>s8vector-&gt;string</b><i> vec :optional start end</i></dt>
+<dt><a name="index-u8vector_002d_003estring"></a><u>Function:</u> <b>u8vector-&gt;string</b><i> vec :optional start end</i></dt>
+<dd><p>与えられたs8vectorもしくはu8vector <var>vec</var>のバイト列と同じ内部バイト列を
+持つ文字列を作成して返します。省略可能な範囲引数<var>start</var>、<var>end</var>は、
+<var>vec</var>中の変換されるべき範囲をバイト位置で指定します。
+</p>
+<p><var>vec</var>中のバイト列が文字列の内部表現として不正な値を持っていた場合は、
+不完全な文字列が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003es32vector"></a><u>Function:</u> <b>string-&gt;s32vector</b><i> string :optional start end</i></dt>
+<dt><a name="index-string_002d_003eu32vector"></a><u>Function:</u> <b>string-&gt;u32vector</b><i> string :optional start end</i></dt>
+<dd><p>与えられた文字列<var>string</var>の各文字の内部コードを値として持つ
+s32vectorもしくはu32vectorを返します。
+省略可能な範囲引数<var>start</var>、<var>end</var>は、
+変換される文字列中の文字位置を指定します。
+</p>
+<p>これらの手続きは、文字列中の文字をランダムにアクセスする場合に便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-s32vector_002d_003estring"></a><u>Function:</u> <b>s32vector-&gt;string</b><i> vec :optional start end</i></dt>
+<dt><a name="index-u32vector_002d_003estring"></a><u>Function:</u> <b>u32vector-&gt;string</b><i> vec :optional start end</i></dt>
+<dd><p><var>start</var>と<var>end</var>を考えなければ、
+これらの手続きは次のコードのような動作をします：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda (vec) (map-to &lt;string&gt; integer-&gt;char vec)))
+</pre></td></tr></tbody></table>
+<p>省略可能な範囲引数<var>start</var>、<var>end</var>は、
+<var>vec</var>中の変換されるべき範囲を指定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-uvector_002dalias"></a><u>Function:</u> <b>uvector-alias</b><i> uvector-class vec :optional start end</i></dt>
+<dd><p>この手続きは、クラスが<var>uvector-class</var>であり、
+ユニフォームベクタ<var>vec</var>のメモリ領域を共有するような
+新しいユニフォームベクタを作成して返します。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合は
+<var>vec</var>の内容のうちそれらのインデックスで指定される範囲のみが使われます。
+メモリ領域が共有されているので、<var>vec</var>に加える変更は
+新しいベクタから見えますし、その逆も可能です。
+</p>
+<p>クラス<var>uvector-class</var>はユニフォームベクタのクラスでなければなりませんが、
+<var>vec</var>のクラスと一致している必要はありません。
+そのような場合は、新しいベクタは<var>vec</var>と同じメモリ領域の値を
+異なる値と解釈するかもしれません。
+例えば、次のコードはGaucheが走っているマシンが
+リトルエンディアンであるかビッグエンディアンであるかを判定します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((u8v (uvector-alias &lt;u8vector&gt; #u32(1))))
+  (if (zero? (u8vector-ref u8v 0))
+      'big-endian
+      'little-endian))
+</pre></td></tr></tbody></table>
+
+<p><var>uvector-class</var>がs8vectorかu8vector以外の場合、
+新しいベクタが指す領域は、そのベクタの要素のアラインメントの要請に
+したがっていなければなりません。
+ユニフォームベクタの開始点は常に全てのユニフォームベクタのアラインメント要請を
+満たします。したがって、例えばu8vectorからu32vectorを作成する場合、
+<var>start</var>および<var>end</var>は4の倍数でなければなりません
+(あるいは、<var>start</var>/<var>end</var>が省略された場合、<var>vec</var>の長さが
+4の倍数でなければなりません)。
+与えられたパラメータでアラインメントの要請が満たせない場合はエラーが通知されます。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e6_0095_00b0_00e5_0080_00a4_00e6_00bc_0094_00e7_00ae_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e6_0095_00b0_00e5_0080_00a4_00e6_00bc_0094_00e7_00ae_0097-1"></a>
+<h3 class="subsection">9.31.3 ユニフォームベクタの数値演算</h3>
+
+<dl>
+<dt><a name="index-TAG-8"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-add <span class="roman"><var>vec</var> <var>val</var> :optional <var>clamp</var></span></i></dt>
+<dt><a name="index-TAG-9"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-add! <span class="roman"><var>vec</var> <var>val</var> :optional <var>clamp</var></span></i></dt>
+<dt><a name="index-TAG-10"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-sub <span class="roman"><var>vec</var> <var>val</var> :optional <var>clamp</var></span></i></dt>
+<dt><a name="index-TAG-11"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-sub! <span class="roman"><var>vec</var> <var>val</var> :optional <var>clamp</var></span></i></dt>
+<dt><a name="index-TAG-12"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-mul <span class="roman"><var>vec</var> <var>val</var> :optional <var>clamp</var></span></i></dt>
+<dt><a name="index-TAG-13"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-mul! <span class="roman"><var>vec</var> <var>val</var> :optional <var>clamp</var></span></i></dt>
+<dd><a name="index-s8vector_002dadd"></a>
+<a name="index-s8vector_002dadd_0021"></a>
+<a name="index-s8vector_002dsub"></a>
+<a name="index-s8vector_002dsub_0021"></a>
+<a name="index-s8vector_002dmul"></a>
+<a name="index-s8vector_002dmul_0021"></a>
+<a name="index-u8vector_002dadd"></a>
+<a name="index-u8vector_002dadd_0021"></a>
+<a name="index-u8vector_002dsub"></a>
+<a name="index-u8vector_002dsub_0021"></a>
+<a name="index-u8vector_002dmul"></a>
+<a name="index-u8vector_002dmul_0021"></a>
+<a name="index-s16vector_002dadd"></a>
+<a name="index-s16vector_002dadd_0021"></a>
+<a name="index-s16vector_002dsub"></a>
+<a name="index-s16vector_002dsub_0021"></a>
+<a name="index-s16vector_002dmul"></a>
+<a name="index-s16vector_002dmul_0021"></a>
+<a name="index-u16vector_002dadd"></a>
+<a name="index-u16vector_002dadd_0021"></a>
+<a name="index-u16vector_002dsub"></a>
+<a name="index-u16vector_002dsub_0021"></a>
+<a name="index-u16vector_002dmul"></a>
+<a name="index-u16vector_002dmul_0021"></a>
+<a name="index-s32vector_002dadd"></a>
+<a name="index-s32vector_002dadd_0021"></a>
+<a name="index-s32vector_002dsub"></a>
+<a name="index-s32vector_002dsub_0021"></a>
+<a name="index-s32vector_002dmul"></a>
+<a name="index-s32vector_002dmul_0021"></a>
+<a name="index-u32vector_002dadd"></a>
+<a name="index-u32vector_002dadd_0021"></a>
+<a name="index-u32vector_002dsub"></a>
+<a name="index-u32vector_002dsub_0021"></a>
+<a name="index-u32vector_002dmul"></a>
+<a name="index-u32vector_002dmul_0021"></a>
+<a name="index-s64vector_002dadd"></a>
+<a name="index-s64vector_002dadd_0021"></a>
+<a name="index-s64vector_002dsub"></a>
+<a name="index-s64vector_002dsub_0021"></a>
+<a name="index-s64vector_002dmul"></a>
+<a name="index-s64vector_002dmul_0021"></a>
+<a name="index-u64vector_002dadd"></a>
+<a name="index-u64vector_002dadd_0021"></a>
+<a name="index-u64vector_002dsub"></a>
+<a name="index-u64vector_002dsub_0021"></a>
+<a name="index-u64vector_002dmul"></a>
+<a name="index-u64vector_002dmul_0021"></a>
+<a name="index-f16vector_002dadd"></a>
+<a name="index-f16vector_002dadd_0021"></a>
+<a name="index-f16vector_002dsub"></a>
+<a name="index-f16vector_002dsub_0021"></a>
+<a name="index-f16vector_002dmul"></a>
+<a name="index-f16vector_002dmul_0021"></a>
+<a name="index-f32vector_002dadd"></a>
+<a name="index-f32vector_002dadd_0021"></a>
+<a name="index-f32vector_002dsub"></a>
+<a name="index-f32vector_002dsub_0021"></a>
+<a name="index-f32vector_002dmul"></a>
+<a name="index-f32vector_002dmul_0021"></a>
+<a name="index-f64vector_002dadd"></a>
+<a name="index-f64vector_002dadd_0021"></a>
+<a name="index-f64vector_002dsub"></a>
+<a name="index-f64vector_002dsub_0021"></a>
+<a name="index-f64vector_002dmul"></a>
+<a name="index-f64vector_002dmul_0021"></a>
+<p>要素毎の計算手続きです。<var>vec</var>は<var>TAG</var>vectorでなければなりません。
+また、<var>val</var>は<var>vec</var>と同じ長さの<var>TAG</var>vectorかベクタかリスト、
+あるいは数値(整数ベクタに対しては正確な整数、実数ベクタに対しては実数)
+でなければなりません。
+</p>
+<p><var>val</var>が<var>TAG</var>vectorの場合、
+<var>vec</var>と対応する要素毎に加算、減算、乗算が行われ、
+結果が<var>TAG</var>vectorとして返されます。
+破壊的なバージョン(名前に‘!’がついているもの)では、<var>vec</var>が
+結果を格納するために再利用されます。
+演算の結果が<var>TAG</var>vectorの要素の値域外になった場合の動作は
+省略可能な引数<var>clamp</var>によって指定されます。
+(f32vectorとf64vectorでは、値域外になった要素にはinfinityが格納され、
+<var>clamp</var>の値は無視されます)。
+</p>
+<p><var>val</var>が数値である場合、<var>vec</var>の各要素とその数値の間で演算が行われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(s8vector-add '#s8(1 2 3 4) '#s8(5 6 7 8)) ⇒ #s8(6 8 10 12)
+(u8vector-sub '#u8(1 2 3 4) '#u8(2 2 2 2)) ⇒ <span class="roman">error</span>
+(u8vector-sub '#u8(1 2 3 4) '#u8(2 2 2 2) 'both) ⇒ #u8(0 0 1 2)
+
+(f32vector-mul '#f32(3.0 2.0 1.0) 1.5) ⇒ #f32(4.5 3.0 1.5)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-14"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-div <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dt><a name="index-TAG-15"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-div! <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dd><a name="index-f16vector_002ddiv"></a>
+<a name="index-f16vector_002ddiv_0021"></a>
+<a name="index-f32vector_002ddiv"></a>
+<a name="index-f32vector_002ddiv_0021"></a>
+<a name="index-f64vector_002ddiv"></a>
+<a name="index-f64vector_002ddiv_0021"></a>
+<p>要素毎の除算です。これらはf32vectorとf64vectorのみに対して定義されます。
+<var>val</var>は<var>vec</var>と同じ大きさの<var>TAG</var>vectorかベクタかリスト、
+あるいは実数でなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(f32vector-div '#f32(1.0 2.0 3.0) 2.0) ⇒ #f32(0.5 1.0 1.5)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-TAG-16"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-and <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dt><a name="index-TAG-17"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-and! <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dt><a name="index-TAG-18"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-ior <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dt><a name="index-TAG-19"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-ior! <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dt><a name="index-TAG-20"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-xor <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dt><a name="index-TAG-21"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-xor! <span class="roman"><var>vec</var> <var>val</var></span></i></dt>
+<dd><a name="index-s8vector_002dand"></a>
+<a name="index-s8vector_002dand_0021"></a>
+<a name="index-s8vector_002dior"></a>
+<a name="index-s8vector_002dior_0021"></a>
+<a name="index-s8vector_002dxor"></a>
+<a name="index-s8vector_002dxor_0021"></a>
+<a name="index-u8vector_002dand"></a>
+<a name="index-u8vector_002dand_0021"></a>
+<a name="index-u8vector_002dior"></a>
+<a name="index-u8vector_002dior_0021"></a>
+<a name="index-u8vector_002dxor"></a>
+<a name="index-u8vector_002dxor_0021"></a>
+<a name="index-s16vector_002dand"></a>
+<a name="index-s16vector_002dand_0021"></a>
+<a name="index-s16vector_002dior"></a>
+<a name="index-s16vector_002dior_0021"></a>
+<a name="index-s16vector_002dxor"></a>
+<a name="index-s16vector_002dxor_0021"></a>
+<a name="index-u16vector_002dand"></a>
+<a name="index-u16vector_002dand_0021"></a>
+<a name="index-u16vector_002dior"></a>
+<a name="index-u16vector_002dior_0021"></a>
+<a name="index-u16vector_002dxor"></a>
+<a name="index-u16vector_002dxor_0021"></a>
+<a name="index-s32vector_002dand"></a>
+<a name="index-s32vector_002dand_0021"></a>
+<a name="index-s32vector_002dior"></a>
+<a name="index-s32vector_002dior_0021"></a>
+<a name="index-s32vector_002dxor"></a>
+<a name="index-s32vector_002dxor_0021"></a>
+<a name="index-u32vector_002dand"></a>
+<a name="index-u32vector_002dand_0021"></a>
+<a name="index-u32vector_002dior"></a>
+<a name="index-u32vector_002dior_0021"></a>
+<a name="index-u32vector_002dxor"></a>
+<a name="index-u32vector_002dxor_0021"></a>
+<a name="index-s64vector_002dand"></a>
+<a name="index-s64vector_002dand_0021"></a>
+<a name="index-s64vector_002dior"></a>
+<a name="index-s64vector_002dior_0021"></a>
+<a name="index-s64vector_002dxor"></a>
+<a name="index-s64vector_002dxor_0021"></a>
+<a name="index-u64vector_002dand"></a>
+<a name="index-u64vector_002dand_0021"></a>
+<a name="index-u64vector_002dior"></a>
+<a name="index-u64vector_002dior_0021"></a>
+<a name="index-u64vector_002dxor"></a>
+<a name="index-u64vector_002dxor_0021"></a>
+<p>要素毎の論理(ビット)演算です。
+これらの手続きは整数ベクタに対してのみ定義されています。
+<var>val</var>は<var>vec</var>と同じ大きさの<var>TAG</var>vectorかベクタかリスト、
+あるいは正確な整数でなければなりません。<var>vec</var>の各要素と、対応する<var>val</var>の要素
+(<var>val</var>が非スカラー値の場合)もしくは<var>val</var>自身
+(<var>val</var>が整数の場合)とのビット毎のand, inclusive orまたはexclusive or
+が計算され、結果が<var>TAG</var>vectorで返されます。
+破壊的なバージョン(名前に‘!’がついているもの)では、<var>vec</var>が
+結果を格納するために再利用されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TAG-22"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-dot <span class="roman"><var>vec0</var> <var>vec1</var></span></i></dt>
+<dd><a name="index-s8vector_002ddot"></a>
+<a name="index-s16vector_002ddot"></a>
+<a name="index-s32vector_002ddot"></a>
+<a name="index-s64vector_002ddot"></a>
+<a name="index-u8vector_002ddot"></a>
+<a name="index-u16vector_002ddot"></a>
+<a name="index-u32vector_002ddot"></a>
+<a name="index-u64vector_002ddot"></a>
+<a name="index-f16vector_002ddot"></a>
+<a name="index-f32vector_002ddot"></a>
+<a name="index-f64vector_002ddot"></a>
+<p>ふたつの<var>TAG</var>vectorの内積を計算します。
+<var>vec0</var>と<var>vec1</var>の長さは等しくなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-TAG-23"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-range-check <span class="roman"><var>vec</var> <var>min</var> <var>max</var></span></i></dt>
+<dd><a name="index-s8vector_002drange_002dcheck"></a>
+<a name="index-s16vector_002drange_002dcheck"></a>
+<a name="index-s32vector_002drange_002dcheck"></a>
+<a name="index-s64vector_002drange_002dcheck"></a>
+<a name="index-u8vector_002drange_002dcheck"></a>
+<a name="index-u16vector_002drange_002dcheck"></a>
+<a name="index-u32vector_002drange_002dcheck"></a>
+<a name="index-u64vector_002drange_002dcheck"></a>
+<a name="index-f16vector_002drange_002dcheck"></a>
+<a name="index-f32vector_002drange_002dcheck"></a>
+<a name="index-f64vector_002drange_002dcheck"></a>
+<p><var>vec</var>は<var>TAG</var>vectorでなければなりません。
+<var>min</var>と<var>max</var>はそれぞれ、<var>vec</var>と同じ長さの<var>TAG</var>vector、
+ベクタ、リストのいずれかか、実数もしくは<code>#f</code>でなければなりません。
+</p>
+<p><var>vec</var>の各要素に対して、この手続きはそれが対応する<var>minval</var>と<var>maxval</var>
+の間にあるかどうかを検査します。<var>minval</var>と<var>maxval</var>も範囲に含みます。
+ここで、<var>minval</var>と<var>maxval</var>は、<var>min</var>/<var>max</var>が非スカラー値
+であれば<var>vec</var>の要素に対応するそれぞれの要素、
+<var>min</var>/<var>max</var>が数値であればその数値そのものです。
+<var>min</var>が<code>#f</code>の場合、最小値はマイナス無限大と考えられます。
+<var>max</var>が<code>#f</code>の場合、最大値はプラス無限大と考えられます。
+</p>
+<p><var>vec</var>の全ての要素が範囲内であった場合は<var>#f</var>が返されます。
+そうでなければ、範囲を外れた要素のうちもっとも左のものの<var>vec</var>内での
+インデックスが返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(u8vector-range-check '#u8(3 1 0 2) 0 3)  ⇒ #f
+(u8vector-range-check '#u8(3 1 0 2) 1 3)  ⇒ 2
+
+(u8vector-range-check '#u8(4 32 64 98) 0 '#u8(10 40 70 90))
+  ⇒ 3
+
+;; Range check in a program
+(cond
+ ((u8vector-range-check u8v 1 31)
+  =&gt; (lambda (i)
+      (errorf "~sth vector element is out of range: ~s"
+              i (u8vector-ref u8v i))))
+ (else (do-something u8v)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-TAG-24"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-clamp <span class="roman"><var>vec</var> <var>min</var> <var>max</var></span></i></dt>
+<dt><a name="index-TAG-25"></a><u>Function:</u> <b><var>TAG</var></b><i>vector-clamp! <span class="roman"><var>vec</var> <var>min</var> <var>max</var></span></i></dt>
+<dd><a name="index-s8vector_002dclamp"></a>
+<a name="index-s16vector_002dclamp"></a>
+<a name="index-s32vector_002dclamp"></a>
+<a name="index-s64vector_002dclamp"></a>
+<a name="index-u8vector_002dclamp"></a>
+<a name="index-u16vector_002dclamp"></a>
+<a name="index-u32vector_002dclamp"></a>
+<a name="index-u64vector_002dclamp"></a>
+<a name="index-f32vector_002dclamp"></a>
+<a name="index-f64vector_002dclamp"></a>
+<a name="index-s8vector_002dclamp_0021"></a>
+<a name="index-s16vector_002dclamp_0021"></a>
+<a name="index-s32vector_002dclamp_0021"></a>
+<a name="index-s64vector_002dclamp_0021"></a>
+<a name="index-u8vector_002dclamp_0021"></a>
+<a name="index-u16vector_002dclamp_0021"></a>
+<a name="index-u32vector_002dclamp_0021"></a>
+<a name="index-u64vector_002dclamp_0021"></a>
+<a name="index-f16vector_002dclamp_0021"></a>
+<a name="index-f32vector_002dclamp_0021"></a>
+<a name="index-f64vector_002dclamp_0021"></a>
+<p><var>vec</var>は<var>TAG</var>vectorでなければなりません。
+<var>min</var>と<var>max</var>はそれぞれ、<var>vec</var>と同じ長さの<var>TAG</var>vector、
+ベクタ、リストのいずれかか、実数もしくは<code>#f</code>でなければなりません。
+</p>
+<p><var>TAG</var>vector-range-checkと同じように、この手続きは<var>vec</var>の各要素が
+<var>min</var>および<var>max</var>で指定される最小値と最大値の間にあるかどうかを
+検査します。要素が最小値より小さかった場合はそれが最小値に置き換えられます。
+要素が最大値より大きかった場合はそれが最大値に置き換えられます。
+</p>
+<p><var>TAG</var>vector-clampは<var>vec</var>のコピーを作ってそれに対して
+クランプ操作を行います。<var>TAG</var>vector-clamp!は<var>vec</var>を直接
+変更します。どちらもクランプ操作が行われた後の<var>TAG</var>vectorを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(s8vector-clamp '#s8(8 14 -3 -22 0) -10 10) ⇒ #s8(8 10 -3 -10 0)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e6_0095_00b0_00e5_0080_00a4_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_106.html#g_t_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00a7_00e3_0083_00b3_00e7_0095_00aa_00e5_008f_00b7_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b-1"></a>
+<h3 class="subsection">9.31.4 ユニフォームベクタのブロック入出力</h3>
+
+<p>ユニフォームベクタは、メモリの固まりを抽象化しているものと考えることも
+できます。それなら、それをバイナリI/Oに使えないでしょうか。もちろんできます。
+</p>
+<dl>
+<dt><a name="index-read_002dblock_0021"></a><u>Function:</u> <b>read-block!</b><i> vec :optional iport start end endian</i></dt>
+<dd><p>与えられた入力ポート<var>iport</var>からデータの固まりを読みだし、それを
+ユニフォームベクタ<var>vec</var>に格納します。
+どんな種類のユニフォームベクタでも与えることができます。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合は、
+それらが<var>vec</var>中でデータが格納されるべき領域のインデックスの範囲を
+示します。<var>end</var>については-1で<var>vec</var>の最後を示すこともできます。
+その範囲外の<var>vec</var>の値は変更されません。
+<var>start</var>、<var>end</var>が与えられなかった場合は<var>vec</var>全体が使われます。
+<var>iport</var>が省略された場合はカレント入力ポートが使われます。
+</p>
+<p>要求された領域を埋め終る前に入力がEOFに達した場合は、ベクタの残りの部分は
+変更されません。
+</p>
+<p><code>read-block!</code>が呼ばれた時既に<var>iport</var>がEOFに達していた場合は
+EOFが、そうでなければ読まれた要素の数 (バイト数ではありません) が返されます。
+</p>
+<p><var>iport</var>がバッファードポートであり、そのバッファリングモードが
+‘modest’ か ‘none’ であった場合、<code>read-block!</code>は<var>iport</var>が
+EOFに達していなくても、<var>vec</var>を埋める前に戻ることがあります
+(バッファリングモードについては<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>)を参照して下さい。
+パイプやネットワークに接続されたポートはデフォルトでそのように振舞います。
+もし、十分なデータが到着することがわかっており、<var>vec</var>を確実に埋めたい場合は
+ポートのバッファリングモードを‘full’に変更して下さい。
+</p>
+<p>データはバイトストリームとして読まれるので、
+s8vectorとu8vector以外のユニフォームベクタを与えた場合は
+結果がエンディアンに影響を受けることに注意して下さい。
+省略可能引数<var>endian</var>によって、入力データのエンディアンを指定
+することができます。省略した場合はパラメータ<code>default-endian</code>の
+値が使われます。エンディアンの扱いについてより詳しくは<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3">エンディアン</a>を参照して
+ください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002dblock"></a><u>Function:</u> <b>write-block</b><i> vec :optional oport start end endian</i></dt>
+<dd><p>ユニフォームベクタ<var>vec</var>の内容を「そのまま」<var>oport</var>に書き出します。
+<var>oport</var>が省略された場合はカレント出力ポートが使われます。
+省略可能な引数<var>start</var>と<var>end</var>が与えられた場合は、
+それらのインデックスの範囲が示す<var>vec</var>の内容のみが出力されます。
+<var>end</var>に-1を渡して<var>vec</var>の最後を示すこともできます。
+この手続きの返す値は未定義です。
+</p>
+<p><code>s8vector</code>と<code>u8vector</code>以外のユニフォームベクタを与えた場合、
+<code>read-block!</code>と同じようにエンディアンの影響を受けることに注意して
+下さい。省略可能引数<var>endian</var>によって出力のエンディアンを
+指定できます。省略した場合はパラメータ<code>default-endian</code>の値が
+使われます (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3">エンディアン</a>参照)。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e6_0095_00b0_00e5_0080_00a4_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_106.html#g_t_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00a7_00e3_0083_00b3_00e7_0095_00aa_00e5_008f_00b7_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

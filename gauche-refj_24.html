@@ -1,0 +1,425 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.3 手続きを作る</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.3 手続きを作る">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.3 手続きを作る">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_24.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_23.html#g_t_00e3_0083_00aa_00e3_0083_0086_00e3_0083_00a9_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b-1"></a>
+<h2 class="section">4.3 手続きを作る</h2>
+
+<dl>
+<dt><a name="index-lambda"></a><u>Special Form:</u> <b>lambda</b><i> formals body …</i></dt>
+<dt><a name="index-_005e"></a><u>Special Form:</u> <b>^</b><i> formals body …</i></dt>
+<dd><p>[R5RS+]
+この式は評価されると手続きを生成します。この式が評価された時点の環境が手続き中に保持されます。
+手続きが呼ばれると、記憶された環境に引数の束縛を追加した環境中で<var>body</var> が順に評価され、
+最後の式の値が返されます。
+</p>
+<p><code>^</code>は<code>lambda</code>の短い別名です。これはGauche独自の拡張です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda (a b) (+ a b))
+  ⇒ <span class="roman">二つの引数を加算する手続き</span>
+
+((lambda (a b) (+ a b)) 1 2) ⇒ 3
+
+((^(a b) (+ a b)) 1 2)       ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p>Gaucheはまた、<code>lambda</code>が取る<var>formals</var>の構文を拡張し、
+省略可能引数やキーワード引数を簡単に指定できるようにしています。
+同じ機能は純粋なR5RSでも、可変長引数を自力で解析することで実現可能ですが、
+コードはより長く冗長になってしまいます。ポータブルなコードを書いているのでなければ
+拡張構文を使った方が良いでしょう。
+</p>
+<p><var>Formals</var> は以下のいずれかの形でなければなりません。
+</p><ul>
+<li>
+<code>(<var>variable</var> …)</code> :
+手続きは決まった数の引数を取ります。
+実引数がそれぞれ対応する<var>variable</var>に束縛されます。
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (a) a) 1)    ⇒ 1
+
+((lambda (a) a) 1 2)  ⇒ <i>error - wrong number of arguments</i>
+</pre></td></tr></tbody></table>
+
+</li><li>
+<code><var>variable</var></code> :
+手続きは不定個の引数を取ります。
+実引数は新しいリストに集められて、そのリストが<var>varible</var>に束縛されます。
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda a a) 1 2 3)  ⇒ (1 2 3)
+</pre></td></tr></tbody></table>
+
+</li><li>
+<code>(<var>variable_0</var> … <var>variable_N-1</var> . <var>variable_N</var>)</code> :
+手続きは少なくとも<var>N</var>個の引数を取ります。<var>N</var>個までの実引数は対応する<var>variable</var>
+に束縛されます。<var>N</var>個を越えた実引数は新しいリストに集められて
+<var>variable_N</var>に束縛されます。
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (a b . c) (print "a="a" b="b" c="c)) 1 2 3 4 5)
+ ⇒ <span class="roman">prints</span> a=1 b=2 c=(3 4 5)
+</pre></td></tr></tbody></table>
+
+</li><li>
+<code>(<var>variable</var> … <var>extended-spec</var> …)</code> :
+拡張引数指定です。ゼロ個以上の必須引数を示す変数のリストの後に、
+キーワード<code>:optional</code>、<code>:key</code>あるいは<code>:rest</code>で
+始まる<var>extended-spec</var>が続きます。
+
+<p><var>extended-spec</var>は省略可能引数指定、キーワード引数指定、残余引数指定の
+任意の組み合わせにより構成されます。
+</p>
+<dl compact="compact">
+<dt> <code>:optional <var>optspec</var> …</code></dt>
+<dd><p>省略可能引数を指定します。各<var>optspec</var>は以下のいずれかの形式です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>variable</var>
+(<var>variable</var> <var>init-expr</var>)
+</pre></td></tr></tbody></table>
+
+<p>仮引数<var>variable</var>は、対応する実引数が与えられればその値に、
+与えられなければ<var>init-expr</var>を評価した値に束縛されます。
+<var>optspec</var>が<code><var>variable</var></code>だけである場合は、
+実引数が省略された時の仮引数の値は<code>#&lt;undef&gt;</code>になります
+(<a indepth="true" href="gauche-refj_43.html#g_t_00e6_009c_00aa_00e5_00ae_009a_00e7_00be_00a9_00e5_0080_00a4">未定義値</a>参照)。
+</p>
+<p><var>init-expr</var>は対応する実引数が与えられなかった場合にのみ評価されます。
+<var>init-expr</var>の評価環境にはこの<var>optspec</var>に先立つ仮引数が含まれます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (a b :optional (c (+ a b))) (list a b c))
+ 1 2)    ⇒ (1 2 3)
+
+((lambda (a b :optional (c (+ a b))) (list a b c))
+ 1 2 -1) ⇒ (1 2 -1)
+
+((lambda (a b :optional c) (list a b c))
+ 1 2)    ⇒ (1 2 #&lt;undef&gt;)
+
+((lambda (:optional (a 0) (b (+ a 1))) (list a b))
+ )       ⇒ (0 1)
+</pre></td></tr></tbody></table>
+
+<p>必須引数と省略可能引数の総数よりも多い実引数が渡された場合、
+その手続きが<code>:key</code>や<code>:rest</code>引数指定を持っていない限りは
+エラーが通知されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (:optional a b) (list a b)) 1 2 3)
+ ⇒ <i>error - too many arguments</i>
+
+((lambda (:optional a b :rest r) (list a b r)) 1 2 3)
+ ⇒ (1 2 (3))
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <code>:key <var>keyspec</var> … [:allow-other-keys [<var>variable</var>]]</code></dt>
+<dd><p>キーワード引数を指定します。各<var>keyspec</var>は以下の形式のいずれかです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>variable</var>
+(<var>variable</var> <var>init-expr</var>)
+((<var>keyword</var> <var>variable</var>) <var>init-expr</var>)
+</pre></td></tr></tbody></table>
+
+<p>仮引数<var>variable</var>は、実引数に<var>variable</var>と同名のキーワードによる
+キーワード引数が与えられればその値に、そうでなければ<var>init-expr</var>を評価
+した値に束縛されます。<var>init-expr</var>の無い最初の形式では、実引数が
+与えられなければ<var>variable</var>は<code>#&lt;undef&gt;</code>に束縛されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define f (lambda (a :key (b (+ a 1)) (c (+ b 1)))
+            (list a b c)))
+
+(f 10)            ⇒ (10 11 12)
+(f 10 :b 4)       ⇒ (10 4 5)
+(f 10 :c 8)       ⇒ (10 11 8)
+(f 10 :c 1 :b 3)  ⇒ (10 3 1)
+</pre></td></tr></tbody></table>
+
+<p>三番目の形式では、仮引数の名前とは別に引数を与えるキーワードを指定できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (:key ((:aa a) -1)) a) :aa 2)
+  ⇒ 2
+</pre></td></tr></tbody></table>
+
+<p>デフォルトでは、キーワード引数指定をもつ手続きは、認識できないキーワード引数が
+与えられた場合にエラーを通知します。仮引数リストに<code>:allow-other-keys</code>を指定することで、
+この動作を抑制することができます。
+<code>:allow-other-keys</code>に続いて<var>variable</var>を与えれば、
+認識できなかったキーワード引数のリストが<var>variable</var>に束縛されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (:key a) a)
+ :a 1 :b 2)  ⇒ <i>error - unknown keyword :b</i>
+
+((lambda (:key a :allow-other-keys) a)
+ :a 1 :b 2)  ⇒ 1
+
+((lambda (:key a :allow-other-keys z) (list a z))
+ :a 1 :b 2)  ⇒ (1 (:b 2))
+</pre></td></tr></tbody></table>
+
+<p><code>:optional</code>引数指定と同時に使われた場合、キーワード引数はすべての
+省略可能引数が束縛された後の実引数リストから探されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (:optional a b :key c) (list a b c))
+ 1 2 :c 3)  ⇒ (1 2 3)
+
+((lambda (:optional a b :key c) (list a b c))
+ :c 3)      ⇒ (:c 3 #&lt;undef&gt;)
+
+((lambda (:optional a b :key c) (list a b c))
+ 1 :c 3)     ⇒ <i>error - keyword list not even</i>
+</pre></td></tr></tbody></table>
+
+
+</dd>
+<dt> <code>:rest <var>variable</var></code></dt>
+<dd>
+<p>残余引数を指定します。<code>:optional</code>引数指定が無い場合は、
+必須引数の束縛が済んだ後で残っている実引数のリストが<var>variable</var>に
+束縛されます。<code>:optional</code>引数指定がある場合は、
+必須引数とすべての省略可能引数の束縛が済んだ後で残っている実引数の
+リストが<var>variable</var>に束縛されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (a b :rest z) (list a b z))
+ 1 2 3 4 5)  ⇒ (1 2 (3 4 5))
+
+((lambda (a b :optional c d :rest z) (list a b c d z))
+ 1 2 3 4 5)  ⇒ (1 2 3 4 (5))
+
+((lambda (a b :optional c d :rest z) (list a b c d z))
+ 1 2 3)      ⇒ (1 2 3 #&lt;undef&gt; ())
+</pre></td></tr></tbody></table>
+
+<p>残余引数指定とキーワード引数指定の両方が与えられた場合、
+両者はともに、必須引数と省略可能引数が処理された後の実引数リストを処理の対象とします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((lambda (:optional a :rest r :key k) (list a r k))
+ 1 :k 3)  ⇒ (1 (:k 3) 3)
+</pre></td></tr></tbody></table>
+
+</dd>
+</dl>
+
+<p>R5RSの仕様範囲内で省略可能引数、キーワード引数を受け取るように
+書くこともできます。<a indepth="true" href="gauche-refj_56.html#g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0">省略可能引数のパージング</a>の
+<code>let-optionals*</code>、<code>let-keywords</code>、
+<code>let-keywords*</code>を参照してください。
+</p>
+</li></ul>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-_005ec"></a><u>Macro:</u> <b>^c</b><i> body …</i></dt>
+<dd><a name="index-_005e_005f"></a>
+<a name="index-_005ea"></a>
+<a name="index-_005eb"></a>
+<a name="index-_005ed"></a>
+<a name="index-_005ee"></a>
+<a name="index-_005ef"></a>
+<a name="index-_005eg"></a>
+<a name="index-_005eh"></a>
+<a name="index-_005ei"></a>
+<a name="index-_005ej"></a>
+<a name="index-_005ek"></a>
+<a name="index-_005el"></a>
+<a name="index-_005em"></a>
+<a name="index-_005en"></a>
+<a name="index-_005eo"></a>
+<a name="index-_005ep"></a>
+<a name="index-_005eq"></a>
+<a name="index-_005er"></a>
+<a name="index-_005es"></a>
+<a name="index-_005et"></a>
+<a name="index-_005eu"></a>
+<a name="index-_005ev"></a>
+<a name="index-_005ew"></a>
+<a name="index-_005ex"></a>
+<a name="index-_005ey"></a>
+<a name="index-_005ez"></a>
+<p><code>(lambda (<var>c</var>) <var>body</var> …)</code>の短縮表記です。
+<code>c</code>には<code>#[_a-z]</code>に含まれる任意の一文字が使えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map (^x (* x x)) '(1 2 3 4 5)) ⇒ (1 4 9 16 25)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-cut"></a><u>Macro:</u> <b>cut</b><i> expr-or-slot expr-or-slot2 …</i></dt>
+<dt><a name="index-cute"></a><u>Macro:</u> <b>cute</b><i> expr-or-slot expr-or-slot2 …</i></dt>
+<dd><p>[SRFI-26]
+手続きを簡潔に書ける便利なマクロです。
+いわゆる部分適用を実現するために使えます。
+</p>
+<p>各<var>expr-or-slot</var>は式またはシンボル<code>&lt;&gt;</code>でなければなりません。
+最後の<var>expr-or-slot</var>はシンボル<code>&lt;...&gt;</code>であっても構いません。
+<code>cut</code>は、そのフォーム中にある<code>&lt;&gt;</code>と同じ数の引数を取る
+<code>lambda</code>フォームに展開されます。そのフォームのボディには次の式が置かれます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  (<var>expr-or-slot</var> <var>expr-or-slot2</var> …)
+</pre></td></tr></tbody></table>
+<p>但し、各<code>&lt;&gt;</code>は対応する仮引数に置き換えられます。
+もしシンボル<code>&lt;...&gt;</code>が与えられていた場合、展開された<code>lambda</code>フォームは
+可変長引数を取る手続きとなり、作成される手続きに与えられたすべての引数が
+<var>expr-or-slot</var>を呼び出すのに使われます(下の4番目の例を参照のこと)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cut cons (+ a 1) &lt;&gt;)  ≡ (lambda (x2) (cons (+ a 1) x2))
+(cut list 1 &lt;&gt; 3 &lt;&gt; 5) ≡ (lambda (x2 x4) (list 1 x2 3 x4 5))
+(cut list)             ≡ (lambda () (list))
+(cut list 1 &lt;&gt; 3 &lt;...&gt;)
+   ≡ (lambda (x2 . xs) (apply list 1 x2 3 xs))
+(cut &lt;&gt; a b)           ≡ (lambda (f) (f a b))
+
+;; Usage
+(map (cut * 2 &lt;&gt;) '(1 2 3 4))
+(for-each (cut write &lt;&gt; port) exprs)
+</pre></td></tr></tbody></table>
+
+<p><code>cute</code>は<code>cut</code>とほぼ同じですが、<code>expr-or-slot</code>に与えられた
+フォームが手続きを作る前に評価される点が異なります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cute cons (+ a 1) &lt;&gt;)
+   ≡ (let ((xa (+ a 1))) (lambda (x2) (cons xa x2)))
+</pre></td></tr></tbody></table>
+
+<p>Gaucheには他にも二つほど、部分適用を簡潔に書く方法があります。
+下の<code>$</code>マクロ、及び組み込み手続きを<code>pa$</code>です
+(<a indepth="true" href="gauche-refj_56.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0093_00e3_0083_008d_00e3_0083_00bc_00e3_0082_00bf">コンビネータ</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_0024"></a><u>Macro:</u> <b>$</b><i> arg …</i></dt>
+<dd><p>関数適用をチェインするマクロです。Haskellの<code>$</code>にヒントを得ました
+(意味は異なりますが)。
+マクロ引数<var>arg</var> …中に<code>$</code>が出現すると、それが
+関数の最後の引数の区切りとなります。例えば次のコードでは、
+関数<code>f</code>の最後の引数が<code>(g c d …)</code>となります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ($ f a b $ g c d ...)
+  ≡ (f a b (g c d ...))
+</pre></td></tr></tbody></table>
+
+<p><code>$</code>はチェインすることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ($ f a b $ g c d $ h e f ...)
+  ≡ (f a b (g c d (h e f ...)))
+</pre></td></tr></tbody></table>
+
+<p><code>$</code>のかわりに<code>$*</code>が現れた場合は、最後の引数のかわりに
+「残りの引数全部」を示します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ($ f a b $* g c d ...)
+  ≡ (apply f a b (g c d ...))
+
+  ($ f a b $* g $ h $* hh ...)
+  ≡ (apply f a b (g (apply h (hh ...))))
+</pre></td></tr></tbody></table>
+
+<p>さらに、もし引数リストが<code>$</code>または<code>$*</code>で終わっていた場合は、
+式全体が「残りの引数(リスト)」を受け取ることを期待する手続きとなります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ($ f a b $ g c d $ h e f $)
+  ≡ (lambda (arg) (f a b (g c d (h e f arg))))
+  ≡ (.$ (cut f a b &lt;&gt;) (cut g c d &lt;&gt;) (cut h e f &lt;&gt;))
+
+  ($ f a b $ g c d $ h e f $*)
+  ≡ (lambda args (f a b (g c d (apply h e f args))))
+  ≡ (.$ (cut f a b &lt;&gt;) (cut g c d &lt;&gt;) (cut h e f &lt;...&gt;))
+</pre></td></tr></tbody></table>
+
+<p>関数的にコードを書いていると、関数呼び出しが深くネストすることが多くなります。
+しかしSchemeの構文はそのようなネストとあまり相性が良くありません。
+閉じ括弧が式の最後にずらずらと積み重なりますし、また通常のインデントルールでは
+コードが右のカラムにどんどん伸びていってしまいます。次の同等な二つの式を比べてみてください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(intersperse ":"
+             (map transform-it
+                  (delete-duplicates (map cdr
+                                          (group-sequence input)))))
+
+($ intersperse ":"
+   $ map transform-it
+   $ delete-duplicates
+   $ map cdr $ group-sequence input)
+</pre></td></tr></tbody></table>
+
+<p>これはあくまで好みの問題ですし、こういった構文糖衣は濫用されがちなので
+気をつけてください。けれどもスパイスのように、控えめな隠し味として使うと、
+しばしばとても有用です。
+</p>
+<p>コーナーケースとして、引数リストに<code>$</code>も<code>$*</code>も現れなかった場合は、
+単なる関数呼び出しになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ($ f a b c) ≡ (f a b c)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-case_002dlambda"></a><u>Macro:</u> <b>case-lambda</b><i> clause …</i></dt>
+<dd><p>[SRFI-16]
+それぞれの <var>clause</var> は (<var>formals</var> <var>expr</var> …) という形式
+でなければなりません。ここで、<var>formals</var> は <code>lambda</code> の仮引数
+リストです。
+</p>
+<p>この式は、評価されると可変数の引数をとり、<code>lambda</code> 式から結果として
+できる手続き同じレキシカルスコープをもつ手続きになります。この手続きが
+いくつかの引数とともに呼ばれると、<var>formals</var> と一致する引数に対応する
+最初の <var>clause</var> が選択されます。この引数の一致というのは、
+<code>lambda</code> 式の <var>formals</var> に対応するものとして指定されるものです。
+<code>formals</code> の変数は実引数に束縛され、 <var>expr</var> … がその
+環境内で評価されます。
+</p>
+<p>実際の引数がどの <var>clause</var> の <var>formals</var> にも一致しなければエラーです。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_23.html#g_t_00e3_0083_00aa_00e3_0083_0086_00e3_0083_00a9_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

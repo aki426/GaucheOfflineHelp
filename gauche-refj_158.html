@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.32 rfc.zlib - zlib圧縮ライブラリ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.32 rfc.zlib - zlib圧縮ライブラリ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.32 rfc.zlib - zlib圧縮ライブラリ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="zlib_00e5_009c_00a7_00e7_00b8_00ae_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_157.html#URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_159.html#SLIB_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002ezlib-_002d-zlib_00e5_009c_00a7_00e7_00b8_00ae_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"></a>
+<h2 class="section">11.32 <code>rfc.zlib</code> - zlib圧縮ライブラリ</h2>
+
+<dl>
+<dt><a name="index-rfc_002ezlib"></a><u>Module:</u> <b>rfc.zlib</b></dt>
+<dd><a name="index-rfc_002ezlib-1"></a>
+<p>このモジュールは、Zlib圧縮ライブラリに対するバインディングを提供します。
+Zlibのほとんどの機能がこのモジュールを通して利用可能です。
+</p>
+<p>Zlibは、ZLIB圧縮データフォーマット(RFC1950)、DEFLATE圧縮データフォー
+マット(RFC1951)、GZIPファイルフォーマット(RFC1952)の読み書きをサポー
+トするライブラリです。また、CRC32とAdler32チェックサムの計算のための
+関数も提供します。
+</p>
+<p>圧縮・展開機能はポートを通して提供されます。圧縮をチューンするパラ
+メータの詳細については、Zlibのドキュメントも合わせて参照してください。
+</p></dd></dl>
+
+<a name="Condition-types"></a>
+<h3 class="subheading">Condition types</h3>
+
+<p>Zlib処理中のエラーを示すために、以下のコンディションタイプが定義されています。
+</p>
+<dl>
+<dt><a name="index-_003czlib_002derror_003e"></a><u>Condition Type:</u> <b>&lt;zlib-error&gt;</b></dt>
+<dd><p><code>&lt;error&gt;</code>のサブクラスで、以下のコンディションタイプのスーパークラスです。
+このクラスはzlib特有のエラーをまとめて捕捉するための抽象クラスとして設けられています。
+<code>rfc.zlib</code>が投げるZlib固有のエラーは常に以下の特定のクラスのインスタンス、
+もしくはそのインスタンスを含む複合コンディションです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003czlib_002dneed_002ddict_002derror_003e"></a><u>Condition Type:</u> <b>&lt;zlib-need-dict-error&gt;</b></dt>
+<dt><a name="index-_003czlib_002dstream_002derror_003e"></a><u>Condition Type:</u> <b>&lt;zlib-stream-error&gt;</b></dt>
+<dt><a name="index-_003czlib_002ddata_002derror_003e"></a><u>Condition Type:</u> <b>&lt;zlib-data-error&gt;</b></dt>
+<dt><a name="index-_003czlib_002dmemory_002derror_003e"></a><u>Condition Type:</u> <b>&lt;zlib-memory-error&gt;</b></dt>
+<dt><a name="index-_003czlib_002dversion_002derror_003e"></a><u>Condition Type:</u> <b>&lt;zlib-version-error&gt;</b></dt>
+<dd><p><code>&lt;zlib-error&gt;</code>のサブクラスです。それぞれ、Zlibの
+<code>Z_NEED_DICT_ERROR</code>、
+<code>Z_STREAM_ERROR</code>、
+<code>Z_DATA_ERROR</code>、
+<code>Z_MEMORY_ERROR</code>、
+<code>Z_VERSION_ERROR</code>
+に対応します。
+</p>
+<p>データの読み出し時にエラーが発生した場合、
+<code>&lt;zlib-error&gt;</code>のサブクラスと
+<code>&lt;io-read-error&gt;</code>の合成コンディションが投げられます。入力が伴わ
+ない場合、例えば圧縮ストリームの初期化エラーのときには、合成され
+ていない<code>&lt;zlib-error&gt;</code>のサブクラスが投げられます。ただの引数の型の
+エラーのように、Zlibの関数が呼び出されない場合は、ただの<code>&lt;error&gt;</code>が
+投げられるかもしれません。
+</p></dd></dl>
+
+<a name="Compression_002fdecompression-ports"></a>
+<h3 class="subheading">Compression/decompression ports</h3>
+
+<dl>
+<dt><a name="index-_003cdeflating_002dport_003e"></a><u>Class:</u> <b>&lt;deflating-port&gt;</b></dt>
+<dt><a name="index-_003cinflating_002dport_003e"></a><u>Class:</u> <b>&lt;inflating-port&gt;</b></dt>
+<dd><p>圧縮と展開の機能はポートを通じて提供されます。
+<em>deflating port</em>は出力されたデータを圧縮する出力ポートです。
+<em>inflating port</em>は圧縮されたデータソースからデータを展開しつつ
+読み込む入力ポートです。
+</p>
+<p>inflating portが読み出す圧縮データが壊れていた場合、読み出し時に
+<code>&lt;io-read-error&gt;</code>と<code>&lt;zlib-data-error&gt;</code>の
+合成コンディションが投げられます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-open_002ddeflating_002dport"></a><u>Function:</u> <b>open-deflating-port</b><i> drain :key compression-level buffer-size window-bits memory-level strategy dictionary owner?</i></dt>
+<dd><p>新たな<code>&lt;deflating-port&gt;</code>のインスタンス、
+すなわち書き込まれたデータを圧縮し出力ポート<var>drain</var>に書き出す出力ポートを作成して、
+そのポートを返します。Zlibの関数<code>deflateInit2()</code>と
+<code>deflateSetDictionary()</code>とを合わせた手続きです。
+</p>
+<p><var>compression-level</var>には1から9の整数を指定することができ、
+大きい数が高い圧縮率を意味します。引数が省略された場合は、
+デフォルトの圧縮レベルと見なされます。これは通常6です。
+</p>
+<p><var>compression-level</var>をわかりやすく指定するために以下の定数が定義されています。
+</p>
+<dl>
+<dt><a name="index-Z_005fNO_005fCOMPRESSION"></a><u>Constant:</u> <b>Z_NO_COMPRESSION</b></dt>
+<dt><a name="index-Z_005fBEST_005fSPEED"></a><u>Constant:</u> <b>Z_BEST_SPEED</b></dt>
+<dt><a name="index-Z_005fBEST_005fCOMPRESSION"></a><u>Constant:</u> <b>Z_BEST_COMPRESSION</b></dt>
+<dt><a name="index-Z_005fDEFAULT_005fCOMPRESSION"></a><u>Constant:</u> <b>Z_DEFAULT_COMPRESSION</b></dt>
+</dl>
+
+<p><var>buffer-size</var>は、ポートのバッファサイズを指定します。デフォルトは4096バイトです。
+</p>
+<p><var>window-bits</var>はウィンドウサイズを指定します。
+通常この値は8から15までの整数で、圧縮に使われるウィンドウサイズの
+2を底とするlogをとった値です。
+大きい数であるだけ圧縮率が高くなりますが、
+そのぶんメモリの使用量が増加します。デフォルトは15です。
+</p>
+<p><var>window-bits</var>よって、2つばかり特別なモードを指定することができます。
+<var>window-bits</var>に-8から-15の整数を指定された場合は、
+ZLIBヘッダとトレイラのない生のdeflateデータを作成します。
+この場合Adler32チェックサムも計算されません。
+実際のウィンドウサイズは<var>window-bits</var>の絶対値によって計算されます。
+</p>
+<p><var>window-bits</var>が24から31の間である場合、
+ポートはgzipエンコーディングを使うようになります。すなわち、
+zlibラッパの代わりに、シンプルなgzipヘッダとトレイラが圧縮データの前後に書き出されます。
+gzipヘッダはファイル名やその他のデータ、コメントを持たず、変更時刻は0、
+ヘッダCRCはなし、OS名は不明を意味する255になります。gzipストリームが書き出
+されるときは、<code>zstream-adler32</code>で取得できるチェックサムはAdler32
+ではなくCRC32になります。
+実際のウィンドウサイズは <var>window-bits</var>-16 で決定されます。
+</p>
+<p><var>memory-level</var>は、圧縮の内部状態のためにどれだけのメモリを割り当て
+るかを指定するパラメータです。1ではメモリの使用量は最小ですが、遅
+くなり圧縮率が低下します。9では高速な処理のためにメモリが最も多く
+使われます。デフォルトは8です。
+</p>
+<p><var>strategy</var>で圧縮アルゴリズムをチューンできます。
+以下の定数が<var>strategy</var>に有効な値として定義されています。
+</p>
+<dl>
+<dt><a name="index-Z_005fDEFAULT_005fSTRATEGY"></a><u>Constant:</u> <b>Z_DEFAULT_STRATEGY</b></dt>
+<dd><p>通常のデータに適する、デフォルトのアルゴリズムを使います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-Z_005fFILTERED"></a><u>Constant:</u> <b>Z_FILTERED</b></dt>
+<dd><p>フィルタにより生成されたデータに適したアルゴリズムを使います。
+このようなデータは小さな値とランダムな分散を持つことが多いため、
+このアルゴリズムではハフマンエンコーディングをより優先し、
+文字列一致の使用をやや抑えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-Z_005fHUFFMAN_005fONLY"></a><u>Constant:</u> <b>Z_HUFFMAN_ONLY</b></dt>
+<dd><p>ハフマンエンコーディングのみを使います (文字列一致を使いません)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-Z_005fRLE"></a><u>Constant:</u> <b>Z_RLE</b></dt>
+<dd><p>マッチ距離を1に制限します (ランレングスエンコーディングを強制することになります)。
+<code>Z_HUFFMAN_ONLY</code>と同じくらい高速で、かつpngイメージデータに対して
+良い圧縮率が得られます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-Z_005fFIXED"></a><u>Constant:</u> <b>Z_FIXED</b></dt>
+<dd><p>動的ハフマンエンコーディングを禁止します。特殊なアプリケーションで、
+単純なデコーダを使いたい場合に便利です。
+</p></dd></dl>
+
+<p><var>strategy</var>の選択は圧縮率と速度にのみ影響を与えます。
+どの値を選んでも圧縮されたデータは正しく展開できます。
+</p>
+<p><var>dictionary</var>には圧縮に使う辞書を文字列で与えます。辞書を与える場合、
+圧縮と展開で全く同じものを使う必要があります。
+辞書の詳細についてはzlibのドキュメントを参照してください。
+</p>
+<p>デフォルトでは、deflating portはそれ自身がクローズされても
+<var>drain</var>をクローズしません。<var>drain</var>の後始末を気にしたくない
+場合は<var>owner?</var>引数に真の値を与えてください。
+その場合、deflating portがクローズされすべてのデータが書き出されたのちに
+<var>drain</var>は自動的にクローズされます。
+</p>
+<p>注意: deflating portは必ず明示的にクローズしてください。
+そうしなければ圧縮データの終わりの部分(バッファされているデータおよびトレイラ)が
+<var>drain</var>に書き出されないかもしれません。
+ポートを明示的にクローズせずにガベージ・コレクタに任せた場合、
+出力ポートのクローズ手続きはファイナラザから呼び出されることになります。
+複数のごみに対してファイナライザの呼ばれる順番は不定なので、
+deflating portより先に<var>drain</var>のファイナライザが呼ばれて
+そのポートがクローズされてしまうことがあります。
+こうなると、圧縮データの終わりの部分の出力がエラーになってしまいます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-open_002dinflating_002dport"></a><u>Function:</u> <b>open-inflating-port</b><i> source :key buffer-size window-bits dictionary owner?</i></dt>
+<dd><p>圧縮データを読み出せる入力ポート<var>source</var>を取り、
+新たな<code>&lt;inflating-port&gt;</code>のインスタンス、すなわち
+展開されたデータを読み出すことのできる入力ポートを作成し、そのポートを返します。
+これはZlibの関数<code>inflateInit2()</code>、<code>inflateSetDictionary()</code>
+を合わせた手続きです。
+</p>
+<p><var>buffer-size</var>、<var>owner?</var>の意味は
+<code>open-deflating-port</code>と同じです。
+</p>
+<p><var>window-bits</var>の意味もほぼ同じですが、
+32が足された値が与えられた場合にはZLIBとGZIPのヘッダ自動判定が有効になります。
+</p>
+<p><var>dictionary</var>は圧縮時の辞書と同じものを指定しなければなりません。
+辞書を使って圧縮されたデータを展開する際に、<var>dictionary</var>引数
+を指定しなかったり、異なる辞書を与えた場合は
+<code>&lt;io-read-error&gt;</code>と<code>&lt;zlib-need-dict-error&gt;</code>の
+合成コンディションが投げられます。
+</p></dd></dl>
+
+<a name="Operations-on-inflating_002fdeflating-ports"></a>
+<h3 class="subheading">Operations on inflating/deflating ports</h3>
+
+<dl>
+<dt><a name="index-zstream_002dtotal_002din"></a><u>Function:</u> <b>zstream-total-in</b><i> xflating-port</i></dt>
+<dt><a name="index-zstream_002dtotal_002dout"></a><u>Function:</u> <b>zstream-total-out</b><i> xflating-port</i></dt>
+<dt><a name="index-zstream_002dadler32"></a><u>Function:</u> <b>zstream-adler32</b><i> xflating-port</i></dt>
+<dt><a name="index-zstream_002ddata_002dtype"></a><u>Function:</u> <b>zstream-data-type</b><i> xflating-port</i></dt>
+<dd><p><var>xflating-port</var>はinflating portかdeflating portでなければ
+なりません。さもなくばエラーが通知されます。
+</p>
+<p><code>z_stream</code>構造体の<code>total_in</code>、<code>total_out</code>、
+<code>adlre32</code>および<code>data_type</code>フィールドの値を返します。
+</p>
+<p><code>data_type</code>フィールドの値は以下の定数のうちのいずれかです。
+</p>
+<dl>
+<dt><a name="index-Z_005fBINARY"></a><u>Constant:</u> <b>Z_BINARY</b></dt>
+<dt><a name="index-Z_005fTEXT"></a><u>Constant:</u> <b>Z_TEXT</b></dt>
+<dt><a name="index-Z_005fASCII"></a><u>Constant:</u> <b>Z_ASCII</b></dt>
+<dt><a name="index-Z_005fUNKNOWN"></a><u>Constant:</u> <b>Z_UNKNOWN</b></dt>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-zstream_002dparams_002dset_0021"></a><u>Function:</u> <b>zstream-params-set!</b><i> deflating-port :key compression-level strategy</i></dt>
+<dd><p>圧縮率とストラテジを動的に変更するための手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-zstream_002ddictionary_002dadler32"></a><u>Function:</u> <b>zstream-dictionary-adler32</b><i> deflating-port</i></dt>
+<dd><p>deflating portの作成時に辞書を指定すると、辞書のAdler32チェックサム
+が計算されます。この手続きはそのチェックサムを返します。
+<code>open-deflating-port</code>に辞書を与えなかったなら、<code>#f</code>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-deflating_002dport_002dfull_002dflush"></a><u>Function:</u> <b>deflating-port-full-flush</b><i> deflating-port</i></dt>
+<dd><p>ポートのデータをフルフラッシュし、圧縮状態をリセットします。
+展開ルーチンは<code>inflate-sync</code>手続きを使って
+入力をこの地点までスキップすることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-inflate_002dsync"></a><u>Function:</u> <b>inflate-sync</b><i> inflating-port</i></dt>
+<dd><p>圧縮データを、<code>deflating-port-full-flush</code>によって
+フルフラッシュしたポイントまで読み飛ばします。
+<code>&lt;zlib-data-error&gt;</code>が投げられたときに使用するとよいでしょう。
+フルフラッシュポイントに達したときは読み飛ばしたバイトの数を、EOFまで達
+したときは<code>#f</code>を返します。
+</p></dd></dl>
+
+<a name="Miscellaneous-API"></a>
+<h3 class="subheading">Miscellaneous API</h3>
+
+<dl>
+<dt><a name="index-zlib_002dversion"></a><u>Function:</u> <b>zlib-version</b></dt>
+<dd><p>Zlibのバージョンを文字列で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-deflate_002dstring"></a><u>Function:</u> <b>deflate-string</b><i> string options …</i></dt>
+<dd><p>与えられた文字列を圧縮し、zlib圧縮されたデータを文字列で返します。
+すべてのオプション引数はそのまま<code>open-deflating-port</code>に渡されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-inflate_002dstring"></a><u>Function:</u> <b>inflate-string</b><i> string options …</i></dt>
+<dd><p>Zlib圧縮されたデータを文字列で受け取り、展開されたデータを文字列で
+返します。
+すべてのオプション引数はそのまま<code>open-deflating-port</code>に渡されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gzip_002dencode_002dstring"></a><u>Function:</u> <b>gzip-encode-string</b><i> string options …</i></dt>
+<dt><a name="index-gzip_002ddecode_002dstring"></a><u>Function:</u> <b>gzip-decode-string</b><i> string options …</i></dt>
+<dd><p><code>deflate-string</code>および<code>inflate-string</code>と似ていますが、
+GZIPフォーマットを使います。これは
+<code>deflate-string</code>および<code>inflate-string</code>の
+<var>window-bits</var>に15以上の値指定するのと同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-crc32"></a><u>Function:</u> <b>crc32</b><i> string :optional checksum</i></dt>
+<dd><p>文字列<var>string</var>のCRC32チェックサムを計算して返します。<var>checksum</var>
+引数が与えられた場合は、それを<var>string</var>によるチェックサムで更新した
+値が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-adler32"></a><u>Function:</u> <b>adler32</b><i> string :optional checksum</i></dt>
+<dd><p>文字列<var>string</var>のAdler32チェックサムを計算して返します。<var>checksum</var>
+引数が与えられた場合は、それを<var>string</var>によるチェックサムで更新した
+値が返されます。
+</p>
+<p>Adler32はCRC32と比較して高速に計算することが可能なアルゴリズムです
+が、小さなデータのチェックサムの信頼性にいくらか問題があることがわ
+かっています。詳しくはRFC3309を見てください。これが問題になる場合
+はCRC32を使用してください。
+</p></dd></dl>
+
+
+
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_157.html#URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_159.html#SLIB_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

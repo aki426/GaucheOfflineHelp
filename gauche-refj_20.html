@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>3.8 拡張パッケージの使用</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 3.8 拡張パッケージの使用">
+<meta name="keywords" content="Gauche ユーザリファレンス: 3.8 拡張パッケージの使用">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_0091_00e3_0083_0083_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_19.html#Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_0091_00e3_0083_0083_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8-1"></a>
+<h2 class="section">3.8 拡張パッケージの使用</h2>
+
+<a name="g_t_00e3_0083_0091_00e3_0083_0083_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089_00e3_0081_00a8_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab"></a>
+<h3 class="subheading">パッケージの構築とインストール</h3>
+
+<p>Gauche にはまとまったライブラリが付属していますが、
+Gauche をプロダクション環境で利用するのにはとても十分とはいえません。
+利用可能な追加ライブラリもいくつもあります。こうしたライブラリを
+<em>拡張パッケージ</em>、あるいは単にパッケージといいます。それぞれの
+パッケージは追加機能を提供するひとつあるいはそれ以上のモジュールを
+提供します。ほとんどのパッケージは別のCのライブラリへのバインディングを
+提供しています。たとえば、グラフィックスライブラリとかデータベース
+クライアントなどです。もし、パッケージがいくぶんでもCのコードを含む
+場合は、利用するマシン上で、既にインストールされている Gauche システムを
+使って、そのコードをコンパイルする必要があります。
+</p>
+<p>通常、パッケージは圧縮 tarball の形式になっています。標準的には、
+「gzの解凍 + tarの展開 + configure + make + make install」とやればよいように
+なっています。パッケージのドキュメントを読めば、必要に応じて、
+<code>configure</code> スクリプトに与えるコマンドラインオプションで
+ライブラリを調整できるようになっています。
+</p>
+<p>Gauche 0.8 より、<code>gauche-package</code> というユーティリティスクリプトが
+インストールされるようになっています。これはパッケージの構築と
+インストールを自動化します。
+</p>
+<p>‘<tt>Package-1.0.tar.gz</tt>’ というパッケージをダウンロードしてきた
+としましょう。もし、このパッケージが慣例に従っていれば、やることは
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">$ gauche-package install Package-1.0.tar.gz
+</pre></td></tr></tbody></table>
+
+<p>とタイプするだけです。
+これで、gzip圧縮ファイルの解凍、tarアーカイブファイルの展開、
+‘<tt>Package-1.0</tt>’ サブディレクトリへの移動、configure スクリプトの
+実行、make、make install が行われます。デフォルトでは、
+<code>gauche-package</code> はカレントディレクトリに tarball を展開します。
+これをカスタマイズファイル(後述)で変更することができます。
+</p>
+<p>ファイルをインストールするのに特別な権限が必要な場合には、
+<code>--install-as</code> というオプションを使うと、<code>make install</code>
+部分が、<code>sudo</code> を使って実行されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">$ gauche-package install --install-as=root Package-1.0.tar.gz
+</pre></td></tr></tbody></table>
+
+<p>上手くいかない場合には、<code>gauche-package build Package-1.0.tar.gz</code>
+とやってパッケージの構築だけすることもできます。この場合、手で
+‘<tt>Package-1.0</tt>’ ディレクトリに移動して、<code>make install</code> を
+実行します。
+</p>
+<p>設定オプションを <code>-C</code> あるいは <code>--configure-options</code>
+というコマンドライン引数で与えられます。たとえば、
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">$ gauche-package install -C "--prefix=/usr/local" Package-1.0.tar.gz
+</pre></td></tr></tbody></table>
+
+<p>もしパッケージがこの新しい記述ファイルを採用しているなら、
+以前に指定した設定オプションを記憶していて、そのパッケージを
+再度インストールするときには、自動的にそれを再利用します。
+(パッケージ開発者の方は、Gauche のソースツリーにある、
+‘<tt>examples/spigot/README</tt>’ ファイルをチェックアウトすれば、
+どのように Gauche のパッケージマネージメントシステムがやっているかを
+見られます。)
+</p>
+<p>tarball がローカルディレクトリにない場合でも、ダウンロードしてくる
+URL を知っているなら、その URL を直接 <code>gauche-package</code> に与える
+ことができます。<code>gauche-package</code> は <code>http</code> および <code>ftp</code>
+を理解し、<code>wget</code> か <code>ncftpget</code> のどちらかを使って、その
+tarball をダウンロードし、configure および make を実行します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">$ gauche-package install http://www.example.com/Package-1.0.tar.gz
+</pre></td></tr></tbody></table>
+
+<a name="gauche_002dpackage-_00e3_0081_00ae_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_009e_00e3_0082_00a4_00e3_0082_00ba"></a>
+<h3 class="subheading"><code>gauche-package</code> のカスタマイズ</h3>
+
+<p><code>gauche-package</code> プログラムは ‘<tt>~/.gauche-package</tt>’ があれば、
+それを読みます。このファイルにはパラメータの連想リストが含まれて
+いなければなりません。こんな感じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(
+ (build-dir . "/home/shiro/tmp")
+ (gzip      . "/usr/local/bin/gzip")
+ (bzip2     . "/usr/local/bin/bzip2")
+ (tar       . "/usr/local/bin/gtar")
+)
+</pre></td></tr></tbody></table>
+
+<p>以下は、認識されるパラメータのリストです。
+設定ファイルにプログラムが与えられていなければ、<code>gauche-package</code>
+は <code>PATH</code> を探します。
+</p>
+<dl compact="compact">
+<dt> <code>build-dir</code></dt>
+<dd><p>tarball が展開されるディレクトリ。もし、URL が与えられれば、
+ダウンロードされたファイルはこのディレクトリに置かれます。
+</p></dd>
+<dt> <code>bzip2</code></dt>
+<dd><p><code>bzip2</code> プログラムへのパス
+</p></dd>
+<dt> <code>cat</code></dt>
+<dd><p><code>cat</code> プログラムへのパス
+</p></dd>
+<dt> <code>make</code></dt>
+<dd><p><code>make</code> プログラムへのパス
+</p></dd>
+<dt> <code>ncftpget</code></dt>
+<dd><p><code>ncftpget</code> プログラムへのパス
+</p></dd>
+<dt> <code>rm</code></dt>
+<dd><p><code>rm</code> プログラムへのパス
+</p></dd>
+<dt> <code>sudo</code></dt>
+<dd><p><code>sudo</code> プログラムへのパス
+</p></dd>
+<dt> <code>tar</code></dt>
+<dd><p><code>tar</code> プログラムへのパス
+</p></dd>
+<dt> <code>wget</code></dt>
+<dd><p><code>wget</code> プログラムへのパス
+</p></dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_19.html#Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

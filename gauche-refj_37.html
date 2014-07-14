@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>5.4 マクロユーティリティ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 5.4 マクロユーティリティ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 5.4 マクロユーティリティ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_37.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_36.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad_00e3_0081_00ae_00e5_00b1_0095_00e9_0096_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3-1"></a>
+<h2 class="section">5.4 マクロユーティリティ</h2>
+
+<dl>
+<dt><a name="index-syntax_002derror"></a><u>Macro:</u> <b>syntax-error</b><i> msg arg …</i></dt>
+<dt><a name="index-syntax_002derrorf"></a><u>Macro:</u> <b>syntax-errorf</b><i> fmt arg …</i></dt>
+<dd><p>これらは<code>error</code>と<code>errorf</code> (<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5">例外の通知</a>参照) と
+ほぼ同じですが、実行時ではなくマクロ展開時(すなわち、コンパイル時)に
+エラーを通知するところが異なります。
+</p>
+<p>これらの手続きは、マクロの誤った使い方を、
+マクロ展開ルーチンの出す複雑なエラーではなく、
+分かりやすい方法でユーザーに通知するのに使えます。
+そのため、<var>arg</var> …はまず下に述べる<code>unwrap-syntax</code>に渡されて
+内部の構文的束縛情報を取り除いた後でこれらの手続きに渡されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-syntax my-macro
+  (syntax-rules ()
+    ((_ a b)   (foo2 a b))
+    ((_ a b c) (foo3 a b c))
+    ((_ . ?)
+     (syntax-error "malformed my-macro" (my-macro . ?)))))
+
+(my-macro 1 2 3 4)
+  ⇒ <span class="roman">error: "malformed my-macro: (mymacro 1 2 3 4)"</span>
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-unwrap_002dsyntax"></a><u>Function:</u> <b>unwrap-syntax</b><i> form</i></dt>
+<dd><p><var>form</var>の内部的な構文情報を取り除きます。
+健全なマクロの実装のために、マクロ拡張ルーチンはマクロ内のシンボルを
+識別子(identifier)に置き換えます。識別子はそれが現れる構文的環境を
+捕捉します。それはコンパイラに取っては必要な情報ですが、
+エラーメッセージに現れるとユーザーを混乱させるもとにもなります。
+そこで、この手続きでは<var>form</var>中の識別子をもとのシンボルに
+置換しなおします。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_36.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad_00e3_0081_00ae_00e5_00b1_0095_00e9_0096_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

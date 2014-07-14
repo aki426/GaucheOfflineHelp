@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.16 srfi-60 - 整数に対するビット操作</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.16 srfi-60 - 整数に対するビット操作">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.16 srfi-60 - 整数に対するビット操作">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_124.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_123.html#Requiring-extensions" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Bitwise-operators" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d60-_002d-_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c"></a>
+<h2 class="section">10.16 <code>srfi-60</code> - 整数に対するビット操作</h2>
+
+<dl>
+<dt><a name="index-srfi_002d60"></a><u>Module:</u> <b>srfi-60</b></dt>
+<dd><a name="index-srfi_002d60-1"></a>
+<p>This srfi provides bit operations on integers, regarding them
+as 2’s complement representation.
+</p>
+<p>Most of the funcionalities in this module are already provided
+as builtin procedures (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).  This srfi
+defines popular aliases for many of those procedures, thus
+has better portability.  There are also several additional
+procedures than Gauche’s builtin bitwise operations.
+</p></dd></dl>
+
+<hr size="6">
+<a name="Bitwise-operators"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Integer-properties" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<h3 class="subsection">10.16.1 Bitwise operators</h3>
+
+<dl>
+<dt><a name="index-lognot-1"></a><u>Function:</u> <b>lognot</b><i> n</i></dt>
+<dt><a name="index-bitwise_002dnot"></a><u>Function:</u> <b>bitwise-not</b><i> n</i></dt>
+<dd><p>Same as builtin <code>lognot</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-logand-1"></a><u>Function:</u> <b>logand</b><i> n …</i></dt>
+<dt><a name="index-bitwise_002dand"></a><u>Function:</u> <b>bitwise-and</b><i> n …</i></dt>
+<dd><p>Same as builtin <code>logand</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-logior-1"></a><u>Function:</u> <b>logior</b><i> n …</i></dt>
+<dt><a name="index-bitwise_002dior"></a><u>Function:</u> <b>bitwise-ior</b><i> n …</i></dt>
+<dd><p>Same as builtin <code>logior</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-logxor-1"></a><u>Function:</u> <b>logxor</b><i> n …</i></dt>
+<dt><a name="index-bitwise_002dxor"></a><u>Function:</u> <b>bitwise-xor</b><i> n …</i></dt>
+<dd><p>Same as builtin <code>logxor</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bitwise_002dif"></a><u>Function:</u> <b>bitwise-if</b><i> mask n0 n1</i></dt>
+<dd><p>Returns integer, whose <var>n</var>-th bit is taken as follows:
+If the <var>n</var>-th bit of <var>mask</var> is 1, the <var>n</var>-th bit of <var>n0</var>;
+otherwise, the <var>n</var>-th bit of <var>n1</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(bitwise-if #b10101100 #b00110101 #b11001010)
+ ⇒ #b01100110
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-logtest-1"></a><u>Function:</u> <b>logtest</b><i> mask n</i></dt>
+<dt><a name="index-any_002dbits_002dset_003f"></a><u>Function:</u> <b>any-bits-set?</b><i> mask n</i></dt>
+<dd><p>Same as builtin <code>logtest</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<hr size="6">
+<a name="Integer-properties"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Bitwise-operators" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Bit-within-word" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<h3 class="subsection">10.16.2 Integer properties</h3>
+
+<dl>
+<dt><a name="index-logcount-1"></a><u>Function:</u> <b>logcount</b><i> n</i></dt>
+<dt><a name="index-bit_002dcount"></a><u>Function:</u> <b>bit-count</b><i> n</i></dt>
+<dd><p>Same as builtin <code>logcount</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-integer_002dlength-1"></a><u>Function:</u> <b>integer-length</b><i> n</i></dt>
+<dd><p>Same as builtin <code>integer-length</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-log2_002dbinary_002dfactors"></a><u>Function:</u> <b>log2-binary-factors</b><i> n</i></dt>
+<dt><a name="index-first_002dset_002dbit"></a><u>Function:</u> <b>first-set-bit</b><i> n</i></dt>
+<dd><p>Returns the number of factors of two of integer <var>n</var>; that is,
+returns a maximum <var>k</var> such that <code>(expt 2 k)</code> divides
+<var>n</var> without a remainder.
+It is the same as the index of the least significant <code>1</code> in <var>n</var>,
+hence the alias <code>first-set-bit</code>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(log2-binary-factors 0) ⇒ -1   ; <span class="roman">edge case</span>
+(log2-binary-factors 1) ⇒ 0
+(log2-binary-factors 2) ⇒ 1
+(log2-binary-factors 15) ⇒ 0
+(log2-binary-factors 16) ⇒ 4
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="Bit-within-word"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Integer-properties" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Field-of-bits" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<h3 class="subsection">10.16.3 Bit within word</h3>
+
+<dl>
+<dt><a name="index-logbit_003f-1"></a><u>Function:</u> <b>logbit?</b><i> index n</i></dt>
+<dt><a name="index-bit_002dset_003f"></a><u>Function:</u> <b>bit-set?</b><i> index n</i></dt>
+<dd><p>Same as builtin <code>logbit?</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002dbit-1"></a><u>Function:</u> <b>copy-bit</b><i> index n bit</i></dt>
+<dd><p>Same as builtin <code>copy-bit</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<hr size="6">
+<a name="Field-of-bits"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Bit-within-word" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Bit-as-booleans" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<h3 class="subsection">10.16.4 Field of bits</h3>
+
+<dl>
+<dt><a name="index-bit_002dfield-1"></a><u>Function:</u> <b>bit-field</b><i> n start end</i></dt>
+<dd><p>Same as builtin <code>bit-field</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002dbit_002dfield-1"></a><u>Function:</u> <b>copy-bit-field</b><i> to from start end</i></dt>
+<dd><p>Same as builtin <code>copy-bit-field</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ash-1"></a><u>Function:</u> <b>ash</b><i> n count</i></dt>
+<dt><a name="index-arithmetic_002dshift"></a><u>Function:</u> <b>arithmetic-shift</b><i> n count</i></dt>
+<dd><p>Same as builtin <code>ash</code> (See section <a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rotate_002dbit_002dfield"></a><u>Function:</u> <b>rotate-bit-field</b><i> n count start end</i></dt>
+<dd><p>Rotate the region of <var>n</var> between <var>start</var>-th bit (inclusive) and
+<var>end</var>-th bit (exclusive) by <var>count</var> bits.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rotate-bit-field #b110100100010000 -1 5 9)
+ ⇒ 26768 ; #b110100010010000
+
+(rotate-bit-field #b110100100010000 1 5 9)
+ ⇒ 26672 ; #b110100000110000
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-reverse_002dbit_002dfield"></a><u>Function:</u> <b>reverse-bit-field</b><i> n start end</i></dt>
+<dd><p>Reverse the order of bits of <var>n</var> between <var>start</var>-th bit
+(inclusive) and <var>end</var>-th bit (exclusive).
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(reverse-bit-field #b10100111 0 8)
+ ⇒ 229 ; #b11100101
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<hr size="6">
+<a name="Bit-as-booleans"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Field-of-bits" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_125.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e5_00a4_0089_00e6_0095_00b0_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<h3 class="subsection">10.16.5 Bit as booleans</h3>
+
+<dl>
+<dt><a name="index-integer_002d_003elist"></a><u>Function:</u> <b>integer-&gt;list</b><i> n :optional len</i></dt>
+<dd><p>Breaks <var>n</var> to each bits, representing <code>1</code> as <code>#t</code> and
+<code>0</code> as <code>#f</code>, LSB last, and returns a list of them.
+If a nonnegative integer <var>len</var> is given, it specifies the length
+of the result.   If it is omitted, <code>(integer-length n)</code> is used.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(integer-&gt;list 9)   ⇒ (#t #f #f #t)
+(integer-&gt;list 9 6) ⇒ (#f #f #t #f #f #t)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-list_002d_003einteger"></a><u>Function:</u> <b>list-&gt;integer</b><i> lis</i></dt>
+<dd><p>Takes a list of boolean values, replaces the true value for <code>1</code>
+and the false value for <code>0</code>, and compose an integer regarding
+each value as a binary digit.  If <var>n</var> is nonnegative integer,
+<code>(eqv? (list-&gt;integer (integer-&gt;list n)) n)</code> is true.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-&gt;integer '(#f #t #f #f #t)) ⇒ 9
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-booleans_002d_003einteger"></a><u>Function:</u> <b>booleans-&gt;integer</b><i> bool …</i></dt>
+<dd><p>≡ <code>(list-&gt;integer (list <var>bool</var> …))</code>
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Field-of-bits" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_125.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e5_00a4_0089_00e6_0095_00b0_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

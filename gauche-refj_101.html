@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.27 gauche.termios - 端末の制御</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.27 gauche.termios - 端末の制御">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.27 gauche.termios - 端末の制御">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_100.html#Syslog" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#POSIX-termios_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002etermios-_002d-_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1"></a>
+<h2 class="section">9.27 <code>gauche.termios</code> - 端末の制御</h2>
+
+<dl>
+<dt><a name="index-gauche_002etermios"></a><u>Module:</u> <b>gauche.termios</b></dt>
+<dd><a name="index-gauche_002etermios-1"></a>
+<p>このモジュールは端末の制御のための手続きを提供します。
+Unix環境では、低レベルAPIはモジュール名からわかるように
+POSIX termiosへのインタフェースを提供しています。
+さらに、このモジュールでは、システムがサポートしている場合には
+擬似 tty のインタフェースも提供しています。
+</p>
+<p>Windowsネイティブ環境ではPOSIX termiosインタフェースは使えません。
+Windows console APIは大きく違っているので、意味のあるエミュレーションを
+提供するのが難しいためです。低レベルのWindows console APIは
+<code>os.windows</code>モジュールで使うことができます(<a indepth="true" href="gauche-refj_143.html#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"><code>os.windows</code> - Windowsのサポート</a>参照)。
+ただし、このモジュールの高レベル端末制御手続きは、
+Windowsネイティブ環境でも使うことができます。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#POSIX-termios_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9">9.27.1 POSIX termiosインタフェース</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e7_00ab_00af_00e6_009c_00ab_00e5_0088_00b6_00e5_00be_00a1">9.27.2 共通の高レベル端末制御</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="POSIX-termios_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e7_00ab_00af_00e6_009c_00ab_00e5_0088_00b6_00e5_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="POSIX-termios_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9-1"></a>
+<h3 class="subsection">9.27.1 POSIX termiosインタフェース</h3>
+
+<p>ここに挙げる手続きは、機能シンボル<code>gauche.os.windows</code>が定義されて<em>いない</em>
+場合にのみ利用可能です。機能シンボルによってコードを切り替える方法は
+<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>の<code>cond-expand</code>を参照してください。
+</p>
+<dl>
+<dt><a name="index-_003csys_002dtermios_003e"></a><u>Builtin Class:</u> <b>&lt;sys-termios&gt;</b></dt>
+<dd><a name="index-sys_002dtermios"></a>
+<p>POSIX termios(7) の構造体です。
+</p>
+<dl>
+<dt><a name="index-iflag"></a><u>Instance Variable of &lt;sys-termios&gt;:</u> <b>iflag</b></dt>
+</dl>
+<dl>
+<dt><a name="index-oflag"></a><u>Instance Variable of &lt;sys-termios&gt;:</u> <b>oflag</b></dt>
+</dl>
+<dl>
+<dt><a name="index-cflag"></a><u>Instance Variable of &lt;sys-termios&gt;:</u> <b>cflag</b></dt>
+</dl>
+<dl>
+<dt><a name="index-lflag"></a><u>Instance Variable of &lt;sys-termios&gt;:</u> <b>lflag</b></dt>
+</dl>
+<dl>
+<dt><a name="index-cc"></a><u>Instance Variable of &lt;sys-termios&gt;:</u> <b>cc</b></dt>
+</dl>
+
+<p><code>iflag</code>、<code>oflag</code>、<code>cflag</code>、<code>lflag</code>の各スロットは、
+対応するビットマスクを非負の整数で表現した値を保持しています。
+</p>
+<p>また、<code>cc</code>スロットは<code>struct termios</code>の<code>c_cc</code>配列の
+<em>コピー</em>を返します。
+<code>c_cc</code>配列の値を変えたい場合は、変更したu8vectorを明示的に
+<code>cc</code>スロットに<code>set!</code>して下さい。
+</p>
+</dd></dl>
+
+<p>このセクションを通じて、引数 <var>port-or-fd</var> はポートオブジェクトか
+システムのファイルディスクリプタを表現する小さい整数かのどちらかです。
+<var>port</var>がシステム端末に結びついていないければ、エラーになります。
+(<code>sys-isatty?</code>を使えば<var>port</var>が端末と結びついているか
+どうかチェックできます。 <a indepth="true" href="gauche-refj_63.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a>参照)
+</p>
+<dl>
+<dt><a name="index-sys_002dtcgetattr"></a><u>Function:</u> <b>sys-tcgetattr</b><i> port-or-fd</i></dt>
+<dd><p><var>port-or-fd</var> と結びついている <code>&lt;sys-termios&gt;</code>オブジェクトの
+端末パラメータを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcsetattr"></a><u>Function:</u> <b>sys-tcsetattr</b><i> port-or-fd when termios</i></dt>
+<dd><p><var>port-or-fd</var>と結びついている端末のパラメータを <var>termios</var> に設定します。
+<var>termios</var> は <code>&lt;sys-termios&gt;</code> のインスタンスでなければなりません。
+</p>
+<p>整数の引数<var>when</var>はいつ変更を有効にするかを指定します。
+この引数用に3つの変数があらかじめ定義されています。
+</p><dl compact="compact">
+<dt> <code>TCSANOW</code></dt>
+<dd><a name="index-TCSANOW"></a>
+<p>変更を直ちに反映します。
+</p></dd>
+<dt> <code>TCSADRAIN</code></dt>
+<dd><a name="index-TCSADRAIN"></a>
+<p>変更を、すべてのペンディングになっている出力がフラッシュされた後に反映します。
+</p></dd>
+<dt> <code>TCSAFLUSH</code></dt>
+<dd><a name="index-TCSAFLUSH"></a>
+<p>変更を、すべてのペンディングになっている出力がフラッシュされ、かつ、
+すべてのペンディングになっている入力が破棄されたあとに反映します。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcsendbreak"></a><u>Function:</u> <b>sys-tcsendbreak</b><i> port-or-fd duration</i></dt>
+<dd><p>ゼロストリームを指定した時間、<var>port-or-fd</var>と結びついている端末に
+送出します。時間の単位はシステム依存です。詳しくは、お使いの
+システムのマニュアルページ tcsendbreak(3)を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcdrain"></a><u>Function:</u> <b>sys-tcdrain</b><i> port-or-fd</i></dt>
+<dd><p><var>port-or-fd</var>へのすべての出力が送出されるまで待ちます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcflush"></a><u>Function:</u> <b>sys-tcflush</b><i> port-or-fd queue</i></dt>
+<dd><p><var>port-or-fd</var>のバッファ内のデータを破棄します。<var>queue</var>には以下の値の
+どれかを指定します。
+</p><dl compact="compact">
+<dt> <code>TCIFLUSH</code></dt>
+<dd><a name="index-TCIFLUSH"></a>
+<p>受信データしたが読み込んではいないデータを破棄します。
+</p></dd>
+<dt> <code>TCOFLUSH</code></dt>
+<dd><a name="index-TCOFLUSH"></a>
+<p>書き出したが送出していないデータを破棄します。
+</p></dd>
+<dt> <code>TCIOFLUSH</code></dt>
+<dd><a name="index-TCIOFLUSH"></a>
+<p><code>TCIFLUSH</code> と <code>TCOFLUSH</code> の両方の動作をします。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcflow"></a><u>Function:</u> <b>sys-tcflow</b><i> port-or-fd action</i></dt>
+<dd><p><var>port-or-fd</var>のデータフローを<var>action</var>で制御します。<var>action</var>は
+以下の値のうちどれかです。
+</p><dl compact="compact">
+<dt> <code>TCOOFF</code></dt>
+<dd><a name="index-TCOOFF"></a>
+<p>出力の送出をサスペンドします。
+</p></dd>
+<dt> <code>TCOON</code></dt>
+<dd><a name="index-TCOON"></a>
+<p>出力の送出を再開します。
+</p></dd>
+<dt> <code>TCIOFF</code></dt>
+<dd><a name="index-TCIOFF"></a>
+<p>端末デバイスがシステムへの送出を止めるよう STOP 文字を送出する。
+</p></dd>
+<dt> <code>TCION</code></dt>
+<dd><a name="index-TCION"></a>
+<p>端末デバイスがシステムへの送出を再開するよう START 文字を送出する。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcgetpgrp"></a><u>Function:</u> <b>sys-tcgetpgrp</b><i> port-or-fd</i></dt>
+<dd><p><var>port-or-fd</var>の結びついている端末のプロセスのグループIDを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtcsetpgrp"></a><u>Function:</u> <b>sys-tcsetpgrp</b><i> port-or-fd pgrp</i></dt>
+<dd><p><var>port-or-fd</var>の結びついている端末のプロセスのグループIDを<var>pgrp</var>に
+設定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dcfgetispeed"></a><u>Function:</u> <b>sys-cfgetispeed</b><i> termios</i></dt>
+<dt><a name="index-sys_002dcfsetispeed"></a><u>Function:</u> <b>sys-cfsetispeed</b><i> termios speed</i></dt>
+<dt><a name="index-sys_002dcfgetospeed"></a><u>Function:</u> <b>sys-cfgetospeed</b><i> termios</i></dt>
+<dt><a name="index-sys_002dcfsetospeed"></a><u>Function:</u> <b>sys-cfsetospeed</b><i> termios speed</i></dt>
+<dd><p><var>termios</var>内の入出力スピード(ボーレート)を取得/設定します。スピードは
+以下の定義ずみの数値で表現されてます：
+<code>B0</code>、<code>B50</code>、<code>B75</code>、<code>B110</code>、<code>B134</code>、
+<code>B150</code>、<code>B200</code>、<code>B300</code>、<code>B600</code>、<code>B1200</code>、
+<code>B1800</code>、<code>B2400</code>、<code>B4800</code>、<code>B9600</code>、
+<code>B19200</code>、<code>B38400</code>。
+</p>
+<p>もっと速いボーレート、たとえば、<code>B57600</code>、
+<code>B115200</code> あるいは <code>B230400</code> をサポートしている
+システムもあります。<code>symbol-bound?</code>をつかえば、これらの
+オプションが定義されているかどうかをチェックできます。<code>B0</code>
+はコネクションを終了するのに使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dopenpty"></a><u>Function:</u> <b>sys-openpty</b><i> :optional term</i></dt>
+<dd><p>擬似 tty のペア、マスターとスレーブをオープンし、2つの
+ファイルディスクリプタの整数を返します。オプション引数 <var>term</var>
+が渡される場合は、<code>&lt;sys-termios&gt;</code>オブジェクトでなければなりません。
+これは、pty パラメータを設定します。
+</p>
+<p><code>open-input-fd-port</code>と<code>open-output-fd-port</code>の両方またはどちらか
+を返されたファイルディスクリプタに対するポートを生成するために使うことが
+できます(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>参照)。擬似端末の名前を得るには <code>sys-ttyname</code>
+を使います(<a indepth="true" href="gauche-refj_63.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a>参照)。
+</p>
+<p>この関数はシステムが <code>openpty(3)</code> をサポートしている場合にのみ利用
+可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dforkpty"></a><u>Function:</u> <b>sys-forkpty</b><i> :optional term</i></dt>
+<dd><p>擬似 ttyのペア、マスターとスレーブをオープンし、スレーブ sty を
+ログイン端末になるよう設定し、fork(2) します。
+</p>
+<p>二つの整数、最初の値は親プロセスに対しては子の pid の値で、0ならば
+子プロセスです。ふたつ目の値はマスター pty のファイルディスクリプタの
+値です。
+</p>
+<p>オプション引数 <var>term</var>が渡される場合は、それは<code>&lt;sys-termios&gt;</code>オブジェクト
+でなければなりません。これはスレーブ pty のパラメータを設定します。
+</p>
+<p>この関数はシステムが <code>forkpty(3)</code> をサポートしている場合にのみ利用
+可能です。
+</p>
+<p>注意: <code>sys-forkpty</code>には<code>sys-fork</code>と同様のマルチスレッドハザー
+ドの危険性があります。(詳細については<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照
+してください)。マルチスレッドプログラムでは後述の
+<code>sys-forkpty-and-exec</code>を利用してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dforkpty_002dand_002dexec"></a><u>Function:</u> <b>sys-forkpty-and-exec</b><i> command args :key iomap term sigmask</i></dt>
+<dd><p><code>sys-forkpty</code>して、ただちに指定した<var>command</var>を引数
+<var>args</var>で子プロセスで<code>exec</code>します。この関数にはマルチスレッド
+環境でもハザードを起こしません。
+</p>
+<p>引数<var>command</var>、<var>args</var>、<var>iomap</var>、<var>sigmask</var>の意味は
+<code>sys-exec</code>のものと同じです。(<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>を見て
+ください)。キーワード引数<var>term</var>が与えられれば、スレーブptyの初期化
+に使われます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e7_00ab_00af_00e6_009c_00ab_00e5_0088_00b6_00e5_00be_00a1"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#POSIX-termios_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_102.html#g_t_00e5_008d_0098_00e4_00bd_0093_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e7_00ab_00af_00e6_009c_00ab_00e5_0088_00b6_00e5_00be_00a1-1"></a>
+<h3 class="subsection">9.27.2 共通の高レベル端末制御</h3>
+
+<p>Currently we only have one high-level API.  We may add more as needed.
+</p>
+<dl>
+<dt><a name="index-without_002dechoing"></a><u>Function:</u> <b>without-echoing</b><i> iport proc</i></dt>
+<dd><p>If <var>iport</var> is an input port connected to a terminal,
+sets the terminal mode non-echoing and call <var>proc</var> with
+<var>iport</var> as an argument.  Before returning from
+<code>without-echoing</code>, or throwing an error,
+the terminal mode is reset to the original state when this
+procedure is called.  The procedure returns whatever value(s)
+<var>proc</var> returns.
+</p>
+<p>You can also pass <code>#f</code> to <var>iport</var>.  In that case,
+this procedure tries to open a console (<code>/dev/tty</code> on Unix,
+<code>CON</code> on Windows) and set the console mode, then calls
+<var>proc</var> with the opened input port.  An error is thrown
+if the procedure can not open a console.
+</p>
+<p>If <var>iport</var> is other than above, this procedure
+simply calls <var>proc</var> with <var>iport</var>.  This allows
+the caller to read password from redirected input,
+for example.
+</p>
+<p>Note: Because of an implementation issue, on Windows native
+platforms this procedure always changes console mode
+of the standard input handle when <code>iport</code> is either
+<code>#f</code> or a terminal input port.
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#POSIX-termios_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_102.html#g_t_00e5_008d_0098_00e4_00bd_0093_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

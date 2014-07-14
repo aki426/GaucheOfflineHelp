@@ -1,0 +1,581 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>7.1 オブジェクトシステムの紹介</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 7.1 オブジェクトシステムの紹介">
+<meta name="keywords" content="Gauche ユーザリファレンス: 7.1 オブジェクトシステムの紹介">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_66.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00ae_00e7_00b4_00b9_00e4_00bb_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00ae_00e7_00b4_00b9_00e4_00bb_008b-1"></a>
+<h2 class="section">7.1 オブジェクトシステムの紹介</h2>
+
+<p>この節では Gauche のオブジェクトシステムの基本的構造について手短かに
+説明します。Gauche のオブジェクトシステムは CLOS (Common-Listp Object System)
+に強く影響されています。CLOS やそれにかかわりのある TinyCLOS、STklos、
+あるいは Guile のオブジェクトシステムの経験がある方は、この節を飛ばして、
+次の節にいってもよいでしょう。
+</p>
+<p>CLOS 風のオブジェクトシステムでは 3 つの概念が中心的な役割をはたします。
+<em>クラス</em>、<em>ジェネリック関数</em>、それに<em>メソッド</em>です。
+</p>
+<p><em>クラス</em>はオブジェクトの構造を指定します。また、データ型も定義します
+(厳密にいうと、データ型とはちがうものですが、難しいところは今は
+おいておきましょう)。
+</p>
+<p>たとえば、2 次元空間の点は x 座標と y 座標で表現できます。点のクラスは
+<code>define-class</code> マクロを使って定義できます。もっとも手短かには、
+次のように定義できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;2d-point&gt; () (x y))
+</pre></td></tr></tbody></table>
+
+<p>(この節の例の定義コードは Gauche ソース配布物のなかの
+<code>examples/oointro.scm</code> にあります。)
+</p>
+<p>シンボル <code>&lt;2d-point&gt;</code> はクラスの名前です。グローバル変数
+<code>&lt;2d-point&gt;</code>はクラスオブジェクトに束縛されています。クラス名を
+<code>&lt;</code> と <code>&gt;</code> で囲むのは慣習にすぎません。<code>define-class</code>
+には任意のシンボルを渡すことができます。
+</p>
+<p><code>define-class</code>の第二引数は、直接のスーパークラスのリストです。
+これでこのクラスの継承を指定します。これについては後で説明します。
+</p>
+<p><code>define-class</code>の第三引数は<em>スロット</em>のリストです。
+スロットはなにかを格納しておく場所で、通常は各オブジェクトに対して、値を格納できます。
+これは、他のオジェクト指向言語では、フィールドとかインスタンス変数などと
+呼ばれているものに似たものです。しかし、スロットは単なる各オブジェクト毎の
+格納スペース以上の使い方ができます。
+</p>
+<p>さて、2 次元の点のクラスを定義しましたので、点のインスタンスを生成できます。
+クラスをジェネリック関数 <code>make</code> に渡してインスタンスを生成します。
+(ジェネリック関数がどんなものであるかは気にしないで下さい。今はある特殊な
+タイプの関数とだけ考えておいてください。)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a-point (make &lt;2d-point&gt;))
+
+a-point  ⇒ #&lt;&lt;2d-point&gt; 0x8117570&gt;
+</pre></td></tr></tbody></table>
+
+<p>対話モードで <code>gosh</code> を使っているなら、ジェネリック関数 <code>describe</code> を
+使って、インスタンスの内部を点検できます。
+便利なので、省略形として<code>d</code>という名前も定義されています。
+(詳細については、<a indepth="true" href="gauche-refj_84.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"><code>gauche.interactive</code> - インタラクティブセッション</a>参照)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (d a-point)
+#&lt;&lt;2d-point&gt; 0x8117570&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : #&lt;unbound&gt;
+  y         : #&lt;unbound&gt;
+</pre></td></tr></tbody></table>
+
+<p>スロットの値にアクセスあるいは値を変更するためには、それぞれ、
+<code>slot-ref</code> および <code>slot-set!</code> が使えます。これらの名前は
+STklos からとりました。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(slot-ref a-point 'x)  ;; a-point のスロット x にアクセス
+  ⇒ <span class="roman">error, since slot 'x doesn't have a value yet</span>
+
+(slot-set! a-point 'x 10.0)  ;; a-point のスロット x を 10.0 に設定
+
+(slot-ref a-point 'x)
+  ⇒ 10.0
+</pre></td></tr></tbody></table>
+
+<p>Gauche では、より短かい名前 <code>ref</code> も使えます。これを使えば
+srfi-17 の一般化された <code>set!</code> の構文が使えます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(ref a-point 'x) ⇒ 10.0
+
+(set! (ref a-point 'y) 20.0)
+
+(ref a-point 'y) ⇒ 20.0
+</pre></td></tr></tbody></table>
+
+<p>スロットの値が設定されていることを見てみましょう。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (d a-point)
+#&lt;&lt;2d-point&gt; 0x8117570&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : 10.0
+  y         : 20.0
+</pre></td></tr></tbody></table>
+
+<p>実際には、スロットにデフォルト値を設定できたり、インスタンス生成時に
+スロットに値を設定できると便利なことが多いです。このような情報は、
+<em>スロットオプション</em>で指定できます。<code>&lt;2d-point&gt;</code>の定義を
+次のように変更してみましょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;2d-point&gt; ()
+  ((x :init-value 0.0 :init-keyword :x :accessor x-of)
+   (y :init-value 0.0 :init-keyword :y :accessor y-of)))
+</pre></td></tr></tbody></table>
+
+<p>各スロットの指定は、前の例では一つのシンボルでしたが、こんどはリスト
+であることに注意してください。
+こんどは、リストの car 部分がスロット名の指定で、cdr 部分にいろいろな情報が
+はいります。<code>:init-value</code> のうしろの値はそのスロットのデフォルト値を
+定義しています。<code>:init-keyword</code>のうしろのキーワードは、生成時にスロットを
+初期化するために <code>make</code> に渡すことのできるキーワード引数を定義しています。
+キーワード <code>:accessor</code> のうしろの名前は、スロットへのアクセス/変更の
+ために使えるジェネリック関数に束縛されます。これは
+<code>slot-ref</code>/<code>slot-set!</code> のかわりに使います。
+</p>
+<p>ちょっとした対話セッションをみてみましょう。新しい <code>&lt;2d-point&gt;</code> クラスの
+インスタンスをつくります。スロットがデフォルト値で初期化されているのがわかり
+ますね。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define a-point (make &lt;2d-point&gt;))
+a-point
+gosh&gt; (d a-point)
+#&lt;&lt;2d-point&gt; 0x8148680&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : 0.0
+  y         : 0.0
+</pre></td></tr></tbody></table>
+
+<p>こんどは、キーワード引数で初期値を与えて、別のインスタンスを作ります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define b-point (make &lt;2d-point&gt; :x 50.0 :y -10.0))
+b-point
+gosh&gt; (d b-point)
+#&lt;&lt;2d-point&gt; 0x8155b80&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : 50.0
+  y         : -10.0
+</pre></td></tr></tbody></table>
+
+<p>アクセサは <code>slot-ref</code>/<code>slot-set!</code> より短かくなって便利に
+なりましたね。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (x-of a-point)
+0.0
+gosh&gt; (x-of b-point)
+50.0
+gosh&gt; (set! (y-of a-point) 3.33)
+#&lt;undef&gt;
+gosh&gt; (y-of a-point)
+3.33
+</pre></td></tr></tbody></table>
+
+<p>利用可能な全スロットオプションのリストは<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9">クラスの定義</a>にあります。
+ちょっと見ると、これらのスロットオプションの宣言は冗長に見えるかもしれません。
+システム側で初期化キーワードやアクセス名を自動的に定義する静的な仕組を
+用意することもできたかもしれません。
+しかしながら、CLOS 風のシステムでは柔軟性の方をより重視します。
+メタオブジェクトプロトコルと呼ばれる機構をもちいて、これらの
+スロットオプションがどのように解釈されるかをカスタマイズすることができます。
+また、自分用のスロットオプションを追加することもできます。
+詳しくは <a indepth="true" href="gauche-refj_70.html#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab">メタオブジェクトプロトコル</a> を見てください。
+</p>
+<p>また、似たような流儀で <code>&lt;2d-vector&gt;</code> クラスを定義できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;2d-vector&gt; ()
+  ((x :init-value 0.0 :init-keyword :x :accessor x-of)
+   (y :init-value 0.0 :init-keyword :y :accessor y-of)))
+</pre></td></tr></tbody></table>
+
+<p>そうです。同じアクセサ名を <code>x-of</code> のように使うことができます。
+これは事実上、多重定義されます。
+</p>
+<p>主流のオブジェクト指向言語に慣れた方は、そろそろ、メソッドはどこにあるのだと
+思い始めているかもしれません。いよいよメソッドの登場です。以下のフォームは、3 つの引数
+<var>pt</var>、<var>dy</var>、<var>dy</var> をとり、
+しかも<var>pt</var> は <code>&lt;2d-point&gt;</code> のインスタンスであるような
+メソッド <code>move-by!</code> を定義するものです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method move-by! ((pt &lt;2d-point&gt;) dx dy)
+  (inc! (x-of pt) dx)
+  (inc! (y-of pt) dy))
+</pre></td></tr></tbody></table>
+
+<p><code>define-method</code> マクロの第二引数は<em>メソッド特定化子リスト</em>を
+指定しています。これは、第一引数が <code>&lt;2d-point&gt;</code> のインスタンスで
+なければならないことを示し、第二、第三引数は任意の型でよいことを
+示しています。メソッド呼び出しの構文は通常関数の呼び出しと同じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (move-by! b-point 1.4 2.5)
+#&lt;undef&gt;
+gosh&gt; (d b-point)
+#&lt;&lt;2d-point&gt; 0x8155b80&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : 51.4
+  y         : -7.5
+</pre></td></tr></tbody></table>
+
+<p>別の特定化子によりこのメソッドを多重定義することが可能です。以下のように
+ベクタを使って点を動かすこともできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method move-by! ((pt &lt;2d-point&gt;) (delta &lt;2d-vector&gt;))
+  (move-by! pt (x-of delta) (y-of delta)))
+</pre></td></tr></tbody></table>
+
+<p>特定化はユーザ定義のクラスにだけ限定されているわけではありません。
+Gauche の組み込み型を使ってメソッドを特定化することもできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method move-by! ((pt &lt;2d-point&gt;) (c &lt;complex&gt;))
+  (move-by! pt (real-part c) (imag-part c)))
+</pre></td></tr></tbody></table>
+
+<p>以下はセッション例です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define d-vector (make &lt;2d-vector&gt; :x -9.0 :y 7.25))
+d-vector
+gosh&gt; (move-by! b-point d-vector)
+#&lt;undef&gt;
+gosh&gt; (d b-point)
+#&lt;&lt;2d-point&gt; 0x8155b80&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : 42.4
+  y         : -0.25
+gosh&gt; (move-by! b-point 3+2i)
+#&lt;undef&gt;
+gosh&gt; (d b-point)
+#&lt;&lt;2d-point&gt; 0x8155b80&gt; is an instance of class &lt;2d-point&gt;
+slots:
+  x         : 45.4
+  y         : -2.25
+</pre></td></tr></tbody></table>
+
+<p>メソッドがその主レシーバ <code>&lt;2d-point&gt;</code> によってのみディスパッチされる
+のではなく、その他の引数によってもディスパッチされているのがわかると思います。
+実は、第一引数は残りの引数に比べて何ら特別ではありません。
+CLOS 風のシステムではメソッドは特定のクラスに属するものではないのです。
+</p>
+<p>ではメソッドとはいったいなんでしょう。<code>move-by!</code> を点検してみると
+それが <code>&lt;generic&gt;</code> のインスタンスであり、ジェネリック関数であると
+わかります。(<code>describe</code> は可読性のために <code>methods</code> スロットの
+値の印字を途中で切っていることに注意してください。)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; move-by!
+#&lt;generic move-by! (3)&gt;
+gosh&gt; (d move-by!)
+#&lt;generic move-by! (3)&gt; is an instance of class &lt;generic&gt;
+slots:
+  name      : move-by!
+  methods   : (#&lt;method (move-by! &lt;2d-point&gt; &lt;complex&gt;)&gt; #&lt;method (move-
+gosh&gt; (ref move-by! 'methods)
+(#&lt;method (move-by! &lt;2d-point&gt; &lt;complex&gt;)&gt;
+ #&lt;method (move-by! &lt;2d-point&gt; &lt;2d-vector&gt;)&gt;
+ #&lt;method (move-by! &lt;2d-point&gt; &lt;top&gt; &lt;top&gt;)&gt;)
+</pre></td></tr></tbody></table>
+
+<p>ジェネリック関数は特別なタイプの関数だと言いましたが、Gauche ではこれは
+適用可能オブジェクトとして認識されます。それは、適用されるとその引数に
+対応して適切なメソッドを選択して、その選択されたメソッドを呼び出すという動作を
+行います。
+</p>
+<p>実際 <code>define-method</code> マクロがやっていることは、(1)もし与えられた
+名前のジェネリック関数がまだ存在していなければ、これを生成し、(2)与えられた
+特定化子と本体とでメソッドオブジェクトを生成し、(3)ジェネリック関数に
+そのメソッドオブジェクトを追加する、ということです。
+</p>
+<p>アクセサも同様にジェネリック関数で、<code>define-class</code> マクロが暗黙のうちに
+生成します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (d x-of)
+#&lt;generic x-of (2)&gt; is an instance of class &lt;generic&gt;
+slots:
+  name      : x-of
+  methods   : (#&lt;method (x-of &lt;2d-vector&gt;)&gt; #&lt;method (x-of &lt;2d-point&gt;)&gt;)
+</pre></td></tr></tbody></table>
+
+<p>主流の動的オジェクト指向言語では、クラスには多くの役割があります。
+クラスは構造と型を定義し、スロットとメソッドの名前空間を生成し、
+メソッドのディスパッチに責任をもちます。Gaucheでは、名前空間は
+モジュールによって管理し、メソッドのディスパッチはジェネリック関数で
+あつかいます。
+</p>
+<p>オブジェクトの印字表現は、デフォルトでは、あまりユーザにやさしくありません。
+Gauche の <code>write</code> および <code>display</code> 関数は、どのように印字して
+よいかわからないインスタンスにであうと、ジェネリック関数 <code>write-object</code>
+を呼びます。定義したクラスのインスタンスをどのように印字するかを
+カスタマイズするために、そのクラスに特定したメソッドを定義することができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method write-object ((pt &lt;2d-point&gt;) port)
+  (format port "[[~a, ~a]]" (x-of pt) (y-of pt)))
+
+(define-method write-object ((vec &lt;2d-vector&gt;) port)
+  (format port "&lt;&lt;~a, ~a&gt;&gt;" (x-of vec) (y-of vec)))
+</pre></td></tr></tbody></table>
+
+<p>で、どうなったかというと、
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; a-point
+[[0.0, 3.33]]
+gosh&gt; d-vector
+&lt;&lt;-9.0, 7.25&gt;&gt;
+</pre></td></tr></tbody></table>
+
+<p>srfi-10 のフォーマットを満すように印字表現をカスタマイズし、読み込み時
+構築子を定義すれば、自分の定義したクラスのインスタンスを、組み込み
+オブジェクトと同様に書き出し、読み戻しできます。詳しくは
+<a indepth="true" href="gauche-refj_60.html#g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf">読み込み時コンストラクタ</a> を見てください。
+</p>
+<p>いくつかの組み込み関数はユーザ定義オブジェクトに対して同様の方法で
+機能拡張できます。たとえば、<code>object-equal?</code> を特定化すれば、
+<code>equal?</code> を使ってインスタンスの比較ができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method object-equal? ((a &lt;2d-point&gt;) (b &lt;2d-point&gt;))
+  (and (equal? (x-of a) (x-of b))
+       (equal? (y-of a) (y-of b))))
+
+(equal? (make &lt;2d-point&gt; :x 1 :y 2) (make &lt;2d-point&gt; :x 1 :y 2))
+  ⇒ #t
+
+(equal? (make &lt;2d-point&gt; :x 1 :y 2) (make &lt;2d-point&gt; :x 2 :y 1))
+  ⇒ #f
+
+(equal? (make &lt;2d-point&gt; :x 1 :y 2) 'a)
+  ⇒ #f
+
+(equal? (list (make &lt;2d-point&gt; :x 1 :y 2)
+              (make &lt;2d-point&gt; :x 3 :y 4))
+        (list (make &lt;2d-point&gt; :x 1 :y 2)
+              (make &lt;2d-point&gt; :x 3 :y 4)))
+  ⇒ #t
+</pre></td></tr></tbody></table>
+
+<p>もっとおもしろい例を見てみましょう。描画可能な <code>&lt;shape&gt;</code> というクラス
+を考えます。
+基本クラスとして、色や線の太さといった共通属性をスロットに持たせます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;shape&gt; ()
+  ((color     :init-value '(0 0 0) :init-keyword :color)
+   (thickness :init-value 2 init-keyword :thickness)))
+</pre></td></tr></tbody></table>
+
+<p>インスタンスを生成する際、<code>make</code> はジェネリック関数 <code>initialize</code>
+を呼びます。この関数は init-keyword や init-value を処理するようなスロットの
+面倒を見ます。この <code>initialize</code> メソッドを特定化することによって、初期化
+の振舞いをカスタマイズすることができます。<code>initialize</code> メソッドは二つの
+引数とともに呼ばれます。ひとつは新しく生成されたインスタンス、もうひとつは
+<code>make</code> にわたされた引数のリストです。
+</p>
+<p><code>initialize</code> メソッドを <code>&lt;shape&gt;</code> クラス用に定義し、生成された
+shape が自動的にグローバルなリストに登録されるようにしましょう。
+システムのもつ <code>initialize</code> の振舞いを完全に置き換えたくはないという
+ことに注意してください。init-keyword は相変わらず扱う必要があるからです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define *shapes* '())  ;; グローバルな shape のリスト
+
+(define-method initialize ((self &lt;shape&gt;) initargs)
+  (next-method)  ;; このシステムがスロットの初期化処理をするようにする
+  (push! *shapes* self)) ;; 自分自身をグローバルなリストに登録する
+</pre></td></tr></tbody></table>
+
+<p>仕掛けは、特別なメソッド <code>next-method</code> にあります。これは
+メソッド本体の中でしか使えません。同じジェネリック関数の
+<em>特定化の度合がより低いメソッド</em>を呼びます。これは、典型的には
+スーパークラスの同じメソッドを呼ぶということを意味します。
+ほとんどのオジェクト指向言語には、スーパークラスのメソッドを呼ぶという
+概念があります。多重引数ディスパッチと多重継承のために <code>next-method</code>
+は少し複雑にはなっていますが、基本的なアイディアは同じです。
+</p>
+<p>さて、では <code>&lt;shape&gt;</code> のスーパークラスはなんでしょう。実は、
+すべての Scheme で定義されたクラスは <code>&lt;object&gt;</code> というクラスを
+継承します。スロットのめんどうを見ているのは、<code>&lt;object&gt;</code> の
+初期化メソッドなのです。自分で定義した <code>initialize</code> メソッド中で
+<code>next-method</code> を呼びだしたあとでは、すべてのスロットが
+正しくイニシャライズされたとみなせます。というわけで、自分で定義した
+<code>initialize</code> のなかで通常、最初にすべきことは <code>next-method</code>
+を呼ぶことです。
+</p>
+<p>上のコードを点検してみましょう。<code>(make &lt;shape&gt; args …)</code> を呼ぶと、
+システムは <code>&lt;shape&gt;</code> のインスタンスのためのメモリを確保し、
+<code>initialize</code> ジェネリック関数を、そのインスタンスと <code>args …</code>
+で呼びます。これは、いま自分で定義した <code>initialize</code> にディスパッチ
+されます。その中で <code>next-method</code> よび、それがこんどは <code>&lt;object&gt;</code>
+クラスの <code>initialize</code> メソッドをよびます。これでこのインスタンスは
+init-value と init-keyword で初期化されます。<code>next-method</code> からもどった
+あと、新しい <code>&lt;shape&gt;</code> インスタンスをグローバルの shape リストに
+<code>*shapes*</code> に登録します。
+</p>
+<p>この <code>&lt;shape&gt;</code> クラスは shape の抽象的概念を表現しているにすぎません。
+では、いくつかの具体的な描画可能な shape を <code>&lt;shape&gt;</code> の
+<em>サブクラス化</em>によって定義しましょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;point-shape&gt; (&lt;shape&gt;)
+  ((point  :init-form (make &lt;2d-point&gt;) :init-keyword :point)))
+
+(define-class &lt;polyline-shape&gt; (&lt;shape&gt;)
+  ((points :init-value '() :init-keyword :points)
+   (closed :init-value #f  :init-keyword :closed)))
+</pre></td></tr></tbody></table>
+
+<p><code>define-class</code> の第二引数に注目してください。これは
+<code>&lt;point-shape&gt;</code> および <code>&lt;polyline-shape&gt;</code> が <code>&lt;shape&gt;</code>
+クラスのスロットを継承していることを示しています。そして <code>&lt;shape&gt;</code>
+クラスが受け入れるものはすべて、それらのサブクラスでも受け入れらること
+も示しています。
+</p>
+<p><code>&lt;point-shape&gt;</code> には <code>point</code> というスロットがひとつ追加
+されています。このスロットはこの節の最初で定義した、<code>&lt;2d-point&gt;</code> の
+インスタンスを持ちます。<code>&lt;polyline-shape&gt;</code> クラスは点のリスト、
+フラグを格納します。フラグは多角形のラインが終点と始点つないでいるか
+どうかを指定します。
+</p>
+<p>継承はとりあつかいに注意が必要な強力な機構です。うっかりするとすぐに
+追跡不能なコードができあがります。(Paul Graham は『百年の言語』という
+記事のなかで、「オブジェクト指向プログラミングはスパゲッティコードを
+書くための持続的な方法を提供してくれる。」と言っているように。)
+経験則からいうとサブタイプが必要なときにサブクラスを作るのがよいようです。
+スロットの継承は付随するなにかではありますが、サブクラス化のための
+主要な理由にしてはいけません。<code>&lt;point-shape&gt;</code> クラスでやったように
+サブストラクチャを「インクルード」することは常にできるのです。
+</p>
+<p><code>&lt;point-shape&gt;</code> クラスに新しいスロットオプションがあらわれました。
+<code>:init-form</code> というスロットオプションは、init-keyword が
+<code>make</code> に与えられなかったときのそのスロットのデフォルト値を指定します。
+しかし、クラス定義時に評価される <code>:init-value</code> の値とはちがって、
+この <code>:init-form</code> をともなう値はシステムが実際のその値を必要とした
+ときに評価されます。したがって、<code>&lt;point-shape&gt;</code> のインスタンス
+では、<code>&lt;point-shape&gt;</code> インスタンスが <code>:point</code> キーワード引数を
+わたされずに生成されたときにのみ、デフォルトの <code>&lt;2d-point&gt;</code>
+インスタンスが生成されます。
+</p>
+<p>shape は別のデバイスに別の方法で描画され得ます。いまのところは、
+PostScript 出力だけを考慮しましょう。<code>draw</code> メソッドに多相性を持たせる
+ために、PostScript 出力デバイス <code>&lt;ps-device&gt;</code> を定義します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;ps-device&gt; () ())
+</pre></td></tr></tbody></table>
+
+<p>こうすると、<code>&lt;shape&gt;</code> および <code>&lt;ps-device&gt;</code> の両方に特定化した
+<code>draw</code> メソッドを書くことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method draw ((self &lt;shape&gt;) (device &lt;ps-device&gt;))
+  (format #t "gsave\n")
+  (draw-path self device)
+  (apply format #t "~a ~a ~a setrgbcolor\n" (ref self 'color))
+  (format #t "~a setlinewidth\n" (ref self 'thickness))
+  (format #t "stroke\n")
+  (format #t "grestore\n"))
+</pre></td></tr></tbody></table>
+
+<p>このコードでは <var>device</var> 引数はメソッド本体内では使われていません。
+メソッドディスパッチのためのみに使われます。いずれ別の出力デバイス
+を必要になったら、そのデバイスに特定化した <code>draw</code> メソッドを
+追加することができます。
+</p>
+<p>上の <code>draw</code> メソッドは共通の仕事をしますが、実際の描画は
+それぞれのサブクラス用に特定化された方法で行わなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method draw-path ((self &lt;point-shape&gt;) (device &lt;ps-device&gt;))
+  (apply format #t "newpath ~a ~a 1 0 360 arc closepath\n"
+         (point-&gt;list (ref self 'point))))
+
+(define-method draw-path ((self &lt;polyline-shape&gt;) (device &lt;ps-device&gt;))
+  (let ((pts (ref self 'points)))
+    (when (&gt;= (length pts) 2)
+      (format #t "newpath\n")
+      (apply format #t "~a ~a moveto\n" (point-&gt;list (car pts)))
+      (for-each (lambda (pt)
+                  (apply format #t "~a ~a lineto\n" (point-&gt;list pt)))
+                (cdr pts))
+      (when (ref self 'closed)
+        (apply format #t "~a ~a lineto\n" (point-&gt;list (car pts))))
+      (format #t "closepath\n"))))
+
+;; utility method
+(define-method point-&gt;list ((pt &lt;2d-point&gt;))
+  (list (x-of pt) (y-of pt)))
+</pre></td></tr></tbody></table>
+
+<p>最後にもう少しだけ、ハックしましょう。<code>draw</code> メソッドを
+shape のリストに対しても動作するようにします。こうすれば、
+同一ページ内で複数の shape をひつまとめで描画できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method draw ((shapes &lt;list&gt;) (device &lt;ps-device&gt;))
+  (format #t "%%\n")
+  (for-each (cut draw &lt;&gt; device) shapes)
+  (format #t "showpage\n"))
+</pre></td></tr></tbody></table>
+
+<p>これで簡単な図を書けるようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use srfi-1)      ;; for iota
+(use math.const)  ;; for constant pi
+
+(define (shape-sample)
+
+  ;; creates 5 corner points of pentagon
+  (define (make-corners scale)
+    (map (lambda (i)
+           (let ((pt (make &lt;2d-point&gt;)))
+             (move-by! pt (make-polar scale (* i 2/5 pi)))
+             (move-by! pt 200 200)
+             pt))
+         (iota 5)))
+
+  (set! *shapes* '())  ;; clear the shape list
+  (let* ((corners (make-corners 100)))
+    ;; a pentagon in green
+    (make &lt;polyline-shape&gt;
+      :color '(0 1 0) :closed #t
+      :points corners)
+    ;; a star-shape in red
+    (make &lt;polyline-shape&gt;
+      :color '(1 0 0) :closed #t
+      :points (list (list-ref corners 0)
+                    (list-ref corners 2)
+                    (list-ref corners 4)
+                    (list-ref corners 1)
+                    (list-ref corners 3)))
+    ;; put dots in each corner of the star
+    (for-each (cut make &lt;point-shape&gt; :point &lt;&gt;)
+              (make-corners 90))
+    ;; draw the shapes
+    (draw *shapes* (make &lt;ps-device&gt;)))
+  )
+</pre></td></tr></tbody></table>
+
+<p>関数 <code>shape-sample</code> は現在の出力ポートに簡単な PostScript の描画コード
+を書き出します。これを以下のような式でファイルに出力し、GhostScriptなどの
+PostScriptビューワで結果を見てください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-output-to-file "oointro.ps" shape-sampe)
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,845 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>7.2 クラス</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 7.2 クラス">
+<meta name="keywords" content="Gauche ユーザリファレンス: 7.2 クラス">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_66.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00ae_00e7_00b4_00b9_00e4_00bb_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9-1"></a>
+<h2 class="section">7.2 クラス</h2>
+
+<p>この節では、Gauche におけるクラスについて詳しく説明します。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9">7.2.1 クラスの定義</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_00b6_0099_00e6_0089_00bf">7.2.2 継承</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">7.2.3 クラスオブジェクト</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">7.2.4 スロット定義オブジェクト</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9">7.2.5 クラスの再定義</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e4_00be_008b">7.2.6 クラスの定義例</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00b6_0099_00e6_0089_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9-1"></a>
+<h3 class="subsection">7.2.1 クラスの定義</h3>
+
+<p>クラスを定義するには、<code>define-class</code> マクロを使います。
+</p>
+<dl>
+<dt><a name="index-define_002dclass"></a><u>Macro:</u> <b>define-class</b><i> name supers (slot-spec …) option …</i></dt>
+<dd><p>引数によって指定されたクラスオブジェクトを作成し、それを <var>name</var> に
+グローバルに束縛します。このマクロはトップレベルでのみ使うことができます。
+</p>
+<p><var>Supers</var> はそのクラスが継承する直接のスーパークラスのリストです。
+多重継承も使えます。継承の詳細については<a href="#g_t_00e7_00b6_0099_00e6_0089_00bf">継承</a> を参照して下さい。
+</p>
+<p><var>Slot-spec</var> は「スロット」の仕様で、他の言語ではよく
+「フィールド」や「インスタンス変数」と呼ばれるものです
+(<var>slot-spec</var> を使って「クラス変数」を指定することもできます)。
+<var>slot-spec</var> の最も単純なフォームはシンボルそのもので、その名前が
+スロットであるものです。あるいは、最初の要素がシンボルで残りの要素が
+キーワードと値が交互に来るリストを渡すこともできます。
+</p>
+<p>このリストフォームは、スロットの名前を定義するだけでなく、そのスロットの
+振る舞いも定義します。スロットの定義については以下で説明します。
+</p>
+<p>最後に、<var>option</var> … は、クラスオブジェクトがどのように
+作られるかを指定する、キーワードと値が交互に来るリストです。
+</p>
+<p>このマクロでは1つのキーワード引数、<code>:metaclass</code> により、
+メタクラス(他のクラスをインスタンス化するクラス)を指定できます。
+他のオプションはクラスオブジェクトを作成するために、<code>make</code>
+メソッドに渡されます。メタクラスの使用方法については、
+<a indepth="true" href="gauche-refj_70.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b7_00e3_0082_00a8_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">クラスのインスタンシエーション</a>を参照。
+</p></dd></dl>
+
+<p>スロットの指定はリストで、以下のようなフォームであるべきです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>slot-name</var> :option1 value1 :option2 value2 …)
+</pre></td></tr></tbody></table>
+
+<p>各キーワード(<code>option1</code> など) は <em>slot option</em> を与えます。
+デフォルトでは、以下のスロットオプションが認識されます。
+メタクラスを定義することで、デフォルト以外のスロットオプションを
+追加できます。
+</p>
+<dl compact="compact">
+<dt> <code>:allocation</code></dt>
+<dd><p>このスロットのアロケーションタイプを指定します。これは、このスロットが
+どのように値を格納するかを指定します。以下のようなキーワード値が
+標準クラスによって認識されます。プログラマは、自分用のメタクラスを定義し、
+これら以外のアロケーションタイプを認識するように、このクラスを拡張すること
+ができます。
+</p>
+<dl compact="compact">
+<dt> <code>:instance</code></dt>
+<dd><p>スロットは各インスタンス毎にアロケートされます。したがって、おのおのの
+インスタンスは別々の値をもてます。これは、いわゆる「インスタンス
+変数」の振舞いを実現します。<code>:allocation</code> スロットオプションが
+省略された場合、これがデフォルトとなります。
+</p></dd>
+<dt> <code>:class</code></dt>
+<dd><p>スロットはクラスオブジェクト自身にアロケートされます。したがって、おのおのの
+インスタンスはこのスロットの同じ値を共有します。これは、いわゆる
+「クラス変数」の振舞いを実現します。このスロットの値は、すべてのサブクラス
+でも共有されます。(ただし、サブクラスの定義がこのスロットをシャドウする
+場合には、そのかぎりではありません。)
+</p></dd>
+<dt> <code>:each-subclass</code></dt>
+<dd><p><code>class</code> アロケーションと似ていますが、スロットはクラス毎にアロケート
+されます。すなわち、このスロットは、このクラスのすべてのインスタンスで
+共有されますが、サブクラスのインスタンスには共有されません。
+</p></dd>
+<dt> <code>:virtual</code></dt>
+<dd><p>このタイプのスロット用には格納領域はアロケートされません。このスロット
+にアクセスすると以下で説明する <code>:slot-ref</code> および <code>:slot-set!</code>
+オプションで与えられた手続きが呼ばれます。いいかえれば、手続きスロットを
+作成できるということです。スロットアロケーションが virtual と指定されて
+いる場合、少なくとも <code>:slot-ref</code> オプションが同時に
+指定されていなければなりません。さもなければ、<code>define-class</code> は
+エラーを発生させます。
+</p></dd>
+<dt> <code>:builtin</code></dt>
+<dd><p>このアロケーションタイプは組み込みクラスの中だけに現れます。
+Scheme 定義のクラスでこのタイプを指定することはできません。
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>:init-keyword</code></dt>
+<dd><p>このスロットオプションに与えられたキーワード値は、インスタンスが生成
+される際に <code>make</code> メソッドに初期値をわたすために使えます。
+</p>
+</dd>
+<dt> <code>:init-value</code></dt>
+<dd><p>生成時にキーワード引数で初期化されてないスロットの場合、これによって
+スロットの初期値を与えます。その値は <code>define-class</code> が評価される
+ときに、評価されます。
+</p>
+</dd>
+<dt> <code>:init-form</code></dt>
+<dd><p><code>init-value</code> と似ていますが、与えられた値は thunk で包まれていて、
+その値が必要とされた時に毎回評価されます。<code>init-value</code> と
+<code>init-form</code> との両方が与えられた時には <code>init-form</code> が無視されます。
+実際には、<code>:init-form <var>expr</var></code> は <code>define-class</code> マクロの
+<code>:init-thunk (lambda () <var>expr</var>)</code> に変換されます。
+</p>
+</dd>
+<dt> <code>:initform</code></dt>
+<dd><p><code>init-form</code> と同義です。STk との互換性のためにあります。新しくコードを
+書く場合には使うべきではありません。
+</p>
+</dd>
+<dt> <code>:init-thunk</code></dt>
+<dd><p>thunk を与えます。もし、当該スロットが生成時にキーワード引数によって
+初期化されていなければ、その thunk を評価して当該スロットの初期値とします。
+<code>:init-form</code> に <code>value</code> を与えることと、<code>:init-thunk</code>
+に <code>(lambda () value)</code> を与えることは同じことです。
+</p>
+</dd>
+<dt> <code>:getter</code></dt>
+<dd><p>シンボルをとり、getter メソッドを生成し、同じ名前のジェネリック関数に
+束縛します。getter メソッドは当該クラスのインスタンスを引数とし、当該
+スロットの値を返します。
+</p>
+</dd>
+<dt> <code>:setter</code></dt>
+<dd><p>シンボルをとり、setter メソッドを生成し、同じ名前のジェネリック関数に
+束縛します。setter メソッドは当該クラスのインスタンスと値をひとつ引数
+として、そのインスタンスの当該スロットの値をその値にセットします。
+</p>
+</dd>
+<dt> <code>:accessor</code></dt>
+<dd><p>シンボルをとり、2 つのメソッド(getter メソッドと setter メソッド)を
+生成します。getter メソッドは与えられた名前のジェネリック関数に
+束縛され、setter メソッドは、与えられた名前のジェネリック
+関数のsetterとして追加されます(setter については <a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5">代入</a>
+を参照して下さい)。
+</p>
+</dd>
+<dt> <code>:slot-ref</code></dt>
+<dd><p>評価すると引数(インスタンス)を一つとる手続きとなる値を指定します。
+このスロットオプションは当該スロットのアロケーションが <code>virtual</code>
+である場合、必ず指定されていなければなりません。プログラムが
+<code>slot-ref</code>やgetter メソッドを使って
+当該スロットの値を得ようとすると、
+このオプションに指定された手続きが呼ばれ、その結果が
+当該スロットの値として返されます。手続きは undef 値を返し
+(<code>undefined</code>の戻り値)、スロットが値をもっていないことを示す
+ことができます。もしスロットのアロケーションが <code>virtual</code> で
+なければ、このスロットオプションは無視されます。
+</p>
+</dd>
+<dt> <code>:slot-set!</code></dt>
+<dd><p>評価すると二つの引数(インスタンスと値)をとる手続きとなる値を指定します。
+プログラムが<code>slot-set!</code> あるいは setter メソッドを使って
+当該スロットに値をセットしようとするときに、
+指定した手続きがインスタンスとセットすべき値を引数として
+呼ばれます。スロットアロケーションが
+<code>virtual</code>でなければ、このスロットオプションは無視されます。
+このスロットオプションの無いvirtualスロットはリードオンリースロットとなります。
+</p>
+</dd>
+<dt> <code>:slot-bound?</code></dt>
+<dd><p>評価すると引数(インスタンス)を一つとる手続きとなる値を指定します。
+このスロットオプションは当該スロットのアロケーションが <code>virtual</code>
+である場合しか意味を持ちません。
+プログラムが当該スロットが値を持っているかどうかを決定しようとしたときに、
+この手続きを呼ばれます。手続きは、スロットが値をもつなら、真の値を、
+そうでなければ<code>#f</code> を返します。仮想スロットに対して、このスロット
+オプションが省略されると、システムは代りに <code>slot-ref</code> に与えられ
+た手続きを呼び、それが、<code>#&lt;undef&gt;</code> を返すかどうか見ます。
+</p></dd>
+</dl>
+
+<hr size="6">
+<a name="g_t_00e7_00b6_0099_00e6_0089_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00b6_0099_00e6_0089_00bf-1"></a>
+<h3 class="subsection">7.2.2 継承</h3>
+
+<p>継承にはふたつの役割があります。第一に、スロットを追加することで
+既存のクラスを<em>拡張</em>できます。第二には、既存のクラス
+関連するメソッドを<em>特定化</em>して、元々のメソッドよりもすこし
+特定化した仕事をやらせるようにできます。
+</p>
+<p>いくつかの用語を定義しておきましょう。クラス <code>&lt;T&gt;</code> がクラス
+<code>&lt;S&gt;</code>を継承しているとき、<code>&lt;T&gt;</code> を <code>&lt;S&gt;</code> の
+<em>サブクラス</em>といい、<code>&lt;S&gt;</code> を <code>&lt;T&gt;</code> の
+<em>スーパークラス</em>といいます。この関係は推移的です。すなわち、
+<code>&lt;T&gt;</code> のサブクラスは、やはり <code>&lt;S&gt;</code> のサブクラスであり、
+<code>&lt;S&gt;</code> のスーパークラスは、やはり <code>&lt;T&gt;</code> のスーパークラスです。
+特に、<code>&lt;T&gt;</code> が <code>&lt;S&gt;</code> を直接継承している場合、すなわち、
+<code>&lt;S&gt;</code> が <code>&lt;T&gt;</code> を定義する際のスーパークラスリストに
+現われている場合には <code>&lt;S&gt;</code> を <code>&lt;T&gt;</code> の
+<em>直接スーパークラス</em>といい、<code>&lt;T&gt;</code> を <code>&lt;S&gt;</code> の
+<em>直接サブクラス</em>といいます。
+</p>
+<p>クラスを定義したとき、そのクラスとそのスーパークラスは、サブクラスから
+スーパークラスという順序になり、クラスのリストがその順で生成されます。
+このリストのことを<em>クラス順位リスト</em>、あるいは CPL といいます。
+すべてのクラスはそれぞれ自身の CPL を持っています。
+クラスの CPL は常に自分自身からはじまり、<code>&lt;top&gt;</code> で終ります。
+</p>
+<p>手続き <code>class-precedence-list</code> を用いてクラスの CPL を問い合わせ
+ることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (class-precedence-list &lt;boolean&gt;)
+(#&lt;class &lt;boolean&gt;&gt; #&lt;class &lt;top&gt;&gt;)
+gosh&gt; (class-precedence-list &lt;string&gt;)
+(#&lt;class &lt;string&gt;&gt; #&lt;class &lt;sequence&gt;&gt; #&lt;class &lt;collection&gt;&gt; #&lt;class &lt;top&gt;&gt;)
+</pre></td></tr></tbody></table>
+
+<p>見るとわかるように、すべてのクラスは <code>&lt;top&gt;</code> という名前のクラスを
+継承しています。組み込みクラスには、いくつかの抽象クラスを CPL 中で
+自分自身と <code>&lt;top&gt;</code> の間に連ねているものもあります。上の例では
+<code>&lt;string&gt;</code> クラスは <code>&lt;sequence&gt;</code> と <code>&lt;collection&gt;</code> を
+継承しています。これは、文字列がシーケンスとしても、コレクションとして
+も振舞うことができるということです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (is-a? "abc" &lt;string&gt;)
+#t
+gosh&gt; (is-a? "abc" &lt;sequence&gt;)
+#t
+gosh&gt; (is-a? "abc" &lt;collection&gt;)
+#t
+</pre></td></tr></tbody></table>
+
+<p>Schemeで定義したクラスの継承についてはどうでしょう。
+単一継承なら、CPL は直截的です。そのクラスのスーパークラス、
+スーパークラスのスーパークラス、
+スーパークラスのスーパークラスのスーパークラス、… と
+<code>&lt;top&gt;</code> に到達するまで、たどっていけます。例を見てください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define-class &lt;a&gt; () ())
+&lt;a&gt;
+gosh&gt; (define-class &lt;b&gt; (&lt;a&gt;) ())
+&lt;b&gt;
+gosh&gt; (class-precedence-list &lt;b&gt;)
+(#&lt;class &lt;b&gt;&gt; #&lt;class &lt;a&gt;&gt; #&lt;class &lt;object&gt;&gt; #&lt;class &lt;top&gt;&gt;)
+</pre></td></tr></tbody></table>
+
+<p>Scheme定義のクラスは常に <code>&lt;object&gt;</code> を継承します。
+システムが自動的に挿入します。
+</p>
+<p>多重継承が使われる場合には話はすこし複雑になります。複数のスーパークラスの
+複数の CPL をひとつの CPL にマージしなければなりません。このことを
+<em>線形化</em>といい、いくつかの線形化戦略が知られています。Gauche では
+デフォルトで <em>C3 線形化</em>と呼ばれているアルゴリズムを使います。
+このアルゴリズムは局所的な順位、単調性、拡張順位グラフと整合性のとれた
+ものです。ここでは詳細に立ち入りませんが、一般的なルールとして、
+CPL 中のスーパークラスの順序は、つねにそのクラスの直接スーパークラスの
+順序、それぞれのスーパークラスの CPL の順序、および、各スーパークラス
+の直接スーパークラスの順序、などと整合性をもちます。正確な説明について
+は<a indepth="true" href="gauche-refj_189.html#dylan">Dylan</a>を参照してください。
+</p>
+<p>もしクラスが、整合性を満した CPL を構築できないようなやり方で
+複数のスーパークラスを継承すると、エラーになります。以下は多重継承の
+単純な例です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;grid-layout&gt; () ())
+
+(define-class &lt;horizontal-grid&gt; (&lt;grid-layout&gt;) ())
+
+(define-class &lt;vertical-grid&gt; (&lt;grid-layout&gt;) ())
+
+(define-class &lt;hv-grid&gt; (&lt;horizontal-grid&gt; &lt;vertical-grid&gt;) ())
+
+(map class-name (class-precedence-list &lt;hv-grid&gt;))
+ ⇒ (&lt;hv-grid&gt; &lt;horizontal-grid&gt; &lt;vertical-grid&gt;
+     &lt;grid-layout&gt; &lt;object&gt; &lt;top&gt;)
+</pre></td></tr></tbody></table>
+
+<p><code>&lt;hv-grid&gt;</code> の直接スーパークラス(<code>&lt;horizontal-grid&gt;</code>と
+<code>&lt;vertical-grid&gt;</code>)の順序が保存されていることに注意してください。
+</p>
+<p>以下は、すこしひねくれた例です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;pane&gt; () ())
+
+(define-class &lt;scrolling-mixin&gt; () ())
+
+(define-class &lt;scrollable-pane&gt; (&lt;pane&gt; &lt;scrolling-mixin&gt;) ())
+
+(define-class &lt;editing-mixin&gt; () ())
+
+(define-class &lt;editable-pane&gt; (&lt;pane&gt; &lt;editing-mixin&gt;) ())
+
+(define-class &lt;editable-scrollable-pane&gt;
+   (&lt;scrollable-pane&gt; &lt;editable-pane&gt;) ())
+
+(map class-name (class-precedence-list &lt;editable-scrollable-pane&gt;))
+ ⇒ (&lt;editable-scrollable-pane&gt; &lt;scrollable-pane&gt;
+     &lt;editable-pane&gt; &lt;pane&gt; &lt;scrolling-mixin&gt; &lt;editing-mixin&gt;
+     &lt;object&gt; &lt;top&gt;)
+</pre></td></tr></tbody></table>
+
+<p>いったんクラス順位が決まると、定義されたクラスのスロットが以下の手順で
+計算されます。スロットの定義が CPL 中のスーパークラスからサブクラスへの
+順で集められます。サブクラスにスーパークラスと同じ名前のスロット定義が
+あった場合には、サブクラスのそのスロット定義が採用され、スーパークラス
+の方の定義は捨てられます。あるクラス <code>&lt;S&gt;</code> がスロット <code>a</code>、
+<code>b</code>、および <code>c</code> を定義しており、あるクラス <code>&lt;T&gt;</code> が
+スロット <code>c</code>、<code>d</code>、および <code>e</code> を定義し、さらに、
+あるクラス <code>&lt;U&gt;</code> がスロット <code>b</code> および <code>e</code> を定義していると
+しよう。<code>&lt;U&gt;</code> の CPL が <code>(&lt;U&gt; &lt;T&gt; &lt;S&gt; &lt;object&gt; &lt;top&gt;)</code> と
+なっている場合、<code>&lt;U&gt;</code> のスロットが下の図のように計算されます。
+すなわち、<code>&lt;U&gt;</code> は 5 つのスロットをもち、
+<code>b</code> および <code>e</code> の定義は <code>&lt;U&gt;</code> のものを、<code>c</code>
+および <code>d</code> の定義は <code>&lt;T&gt;</code> 由来のものを、そして、<code>a</code>
+の定義は <code>&lt;S&gt;</code> 由来のものとなります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">   CPL         | スロットの定義
+               |  () はシャドウされたスロットを表す
+ --------------+-------------------
+   &lt;top&gt;       |
+   &lt;object&gt;    |
+   &lt;S&gt;         | a  (b) (c)
+   &lt;T&gt;         |         c   d  (e)
+   &lt;U&gt;         |     b           e
+ --------------+--------------------
+ &lt;U&gt;のスロット | a   b   c   d   e
+</pre></td></tr></tbody></table>
+
+<p><code>class-slots</code> 関数を使ってクラスオブジェクトのスロット定義の
+リストを得ることができます。
+</p>
+<p>上述の振舞いはデフォルトの振舞いにすぎないことに注意してください。
+CPL の計算方法あるいはスロット定義の継承方法は、メタクラスを
+定義することでカスタマイズ可能です。たとえば、同じスロット名の
+スロットオプションはどれかが他のものをシャドウしますが、これを
+マージすることができるようにメタクラスを書くことができます。
+あるいは、サブクラスがスーパークラスのスロットをシャドウするのを
+禁止するようにメタクラスを書くことができます。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_00b6_0099_00e6_0089_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088-1"></a>
+<h3 class="subsection">7.2.3 クラスオブジェクト</h3>
+
+<p>クラスとは何か。Gauche ではクラスはオブジェクトをインスタンス化して
+ある特定の機能を実装するようなオブジェクトにすぎません。
+そうなので、スロットの値を見るだけで、クラス内部を覗けます。
+このように内部を覗くのに便利な手続きがいくつか用意されています。
+これらの手続きがリストを返す場合、それはクラスに所属するもので、
+変更してはいけないということに注意してください。
+</p>
+<dl>
+<dt><a name="index-class_002dname"></a><u>Function:</u> <b>class-name</b><i> class</i></dt>
+<dd><p><var>class</var> の名前を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(class-name &lt;string&gt;) ⇒ &lt;string&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-class_002dprecedence_002dlist"></a><u>Function:</u> <b>class-precedence-list</b><i> class</i></dt>
+<dd><p><var>class</var> のクラス順位リストを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(class-precedence-list &lt;string&gt;)
+  ⇒ (#&lt;class &lt;string&gt;&gt;
+      #&lt;class &lt;sequence&gt;&gt;
+      #&lt;class &lt;collection&gt;&gt;
+      #&lt;class &lt;top&gt;&gt;)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-class_002ddirect_002dsupers"></a><u>Function:</u> <b>class-direct-supers</b><i> class</i></dt>
+<dd><p><var>class</var> の直接スーパークラスのリストを返します。
+直接スーパークラスは <var>class</var> が直接継承しているクラスです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(class-direct-supers &lt;string&gt;)
+  ⇒ (#&lt;class &lt;sequence&gt;&gt;)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-class_002ddirect_002dsubclasses"></a><u>Function:</u> <b>class-direct-subclasses</b><i> class</i></dt>
+<dd><p><var>class</var> の直接サブクラスのリストを返します。
+直接サブクラスは <var>class</var> を直接継承しているクラスです。
+<code>&lt;T&gt;</code> が <code>&lt;S&gt;</code> の直接サブクラスであれば、
+<code>&lt;S&gt;</code> は <code>&lt;T&gt;</code> の直接スーパークラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class_002dslots"></a><u>Function:</u> <b>class-slots</b><i> class</i></dt>
+<dd><p><var>class</var> の <em>スロット定義</em> のリストを返します。スロット定義は
+リストで、その car 部はスロット名、cdr 部はスロットオプションを指定する
+キーワード値のリストです。スロット定義内部を覗いてスロットのもつ性格を
+知ることができます。詳しくは <a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">スロット定義オブジェクト</a> を
+参照してください。
+</p>
+<p>与えられたクラスのスロット名のリストを得るための標準的な方法は、
+<code>(map slot-definition-name (class-slots class))</code> です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class_002dslot_002ddefinition"></a><u>Function:</u> <b>class-slot-definition</b><i> class slot-name</i></dt>
+<dd><p>クラス <var>class</var> 中の <var>slot-name</var> で指定されたスロットの
+スロット定義を返します。<var>class</var> が指定した名前のスロットを
+持たなければ <code>#f</code> が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class_002ddirect_002dslots"></a><u>Function:</u> <b>class-direct-slots</b><i> class</i></dt>
+<dd><p>当該クラスで直接定義されている(つまりスーパークラスから継承された
+ものではない)スロット定義のリストを返します。この情報は、クラスの
+初期化の際にスロットの継承を処理するために利用されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class_002ddirect_002dmethods"></a><u>Function:</u> <b>class-direct-methods</b><i> class</i></dt>
+<dd><p><var>class</var>を特定化子中にもつメソッドのリストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class_002dslot_002daccessor"></a><u>Function:</u> <b>class-slot-accessor</b><i> class slot-name</i></dt>
+<dd><p><var>class</var> で <var>slot-name</var> で指定したスロットの
+スロットアクセサオブジェクトを返します。
+スロットアクセサオブジェクトは内部オブジェクトで与えられたスロットへの
+アクセス方法、変更方法、初期化の方法という情報をカプセル化しています。
+</p>
+<p>メタオブジェクトプロトコルを使って特別なスロットを定義するのでなければ、
+通常スロットアクセサオブジェクトを扱う必要はありません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088-1"></a>
+<h3 class="subsection">7.2.4 スロット定義オブジェクト</h3>
+
+<p><code>class-slots</code> が返すスロットの定義オブジェクト
+<code>class-direct-slots</code> および <code>class-slot-definition</code>
+はスロットに関する情報を保持しています。
+現時点では Gauche はスロット定義を表現するのにリストを使っています。これは
+STklos や TinyCLOS と同じです。しかし、Gauche が将来にわたって、この構造を
+保持するかどうかは保証のかぎりではありません。スロット定義オブジェクトの
+情報を得るには以下のそれ専用のアクセサメソッドを使うべきです。
+</p>
+<dl>
+<dt><a name="index-slot_002ddefinition_002dname"></a><u>Function:</u> <b>slot-definition-name</b><i> slot-def</i></dt>
+<dd><p>スロット定義オブジェクト <var>slot-def</var> で与えられたスロットの名前を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-slot_002ddefinition_002doptions"></a><u>Function:</u> <b>slot-definition-options</b><i> slot-def</i></dt>
+<dd><p><var>slot-def</var> のスロットオプションのキーワード値リストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-slot_002ddefinition_002dallocation"></a><u>Function:</u> <b>slot-definition-allocation</b><i> slot-def</i></dt>
+<dd><p><var>slot-def</var> の <code>:allocation</code> オプションの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-slot_002ddefinition_002dgetter"></a><u>Function:</u> <b>slot-definition-getter</b><i> slot-def</i></dt>
+<dt><a name="index-slot_002ddefinition_002dsetter"></a><u>Function:</u> <b>slot-definition-setter</b><i> slot-def</i></dt>
+<dt><a name="index-slot_002ddefinition_002daccessor"></a><u>Function:</u> <b>slot-definition-accessor</b><i> slot-def</i></dt>
+<dd><p>それぞれ、<var>slot-def</var> の <code>:getter</code>、<code>:setter</code> および
+<code>:accessor</code> スロットオプションの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-slot_002ddefinition_002doption"></a><u>Function:</u> <b>slot-definition-option</b><i> slot-def option :optional default</i></dt>
+<dd><p><var>slot-def</var> のスロットオプション <var>option</var> の値を返します。
+そのようなオプションがない場合には、<var>default</var> が与えられていれば
+それを返し、さもなければ、エラーシグナルがあがります。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e5_00ae_009a_00e7_00be_00a9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e4_00be_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9-1"></a>
+<h3 class="subsection">7.2.5 クラスの再定義</h3>
+
+<p><code>define-class</code> を使うとき、指定したクラス名がすでにあるクラスに束縛
+されている場合、これは元々のクラスの<em>再定義</em>と看倣されます。
+</p>
+<p>クラスの再定義は以下の操作を意味します。
+</p><ul>
+<li>
+新しいクラスオブジェクトは新しい定義にもとづいて生成され、
+<code>define-class</code> に与えられた変数に束縛されます。
+
+</li><li>
+元々のクラスに対して定義されたメソッド(すなわち、特定化子の中に
+元々のクラスを持つメソッド)は新しいクラス上で定義されたように
+変更されます。
+
+</li><li>
+元々のクラスの直接スーパークラスの直接サブクラスリンクは、
+新しいクラスを指すように変更されます。
+
+</li><li>
+元々のクラスのすべてのサブクラスはそのクラスの変更を反映するように
+再帰的に再定義されます。各クラスはその初期化引数を覚えており、
+再定義されたサブクラスは元々のサブクラスと同じ初期化引数を受けとります。
+
+</li><li>
+元々のクラスには<em>再定義</em>マークが付きます。
+</li></ul>
+
+<p>元々のクラスと新しいクラスは別のオブジェクトであることに注意してください。
+元々のクラスオブジェクトは元々どのモジュールでどの変数に束縛されていたかを
+覚えており、この束縛を新しいクラスに置き換えます。どこかで、元々のクラスへ
+の直接参照を持っていれば、その参照は元々クラスへの参照のままです。この点
+については特に注意してください。<code>class-redefinition</code> メソッドを
+定義することによりクラス再定義の振舞いをカスタマイズできます。
+詳しくは <a indepth="true" href="gauche-refj_70.html#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab">メタオブジェクトプロトコル</a>を参照してください。
+</p>
+<p>元々のクラスのインスタンスが存在している場合、それらのインスタンスは
+以下のようなメソッドでアクセスあるいは変更しようとしたときに自動的に
+更新されます。<code>class-of</code>、<code>is-a?</code>、<code>slot-ref</code>、
+<code>slot-set!</code>、<code>ref</code>、getterメソッド、setterメソッド。
+</p>
+<p>インスタンスの更新とは、インスタンスのクラスを(旧いクラスから新しいクラスへ)
+変更するということです。デフォルトでは、元々のクラスと新しいクラスで
+共通のスロットの値はそのまま引き継がれます。新しいクラスで追加された
+スロットは新しいクラスでのそのスロットの仕様にしたがって初期化されます。
+元々のクラスから削除されたスロットの値は破棄されます。この振舞いは、
+<code>change-class</code> メソッドを書くことでカスタマイズできます。詳しくは
+<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00a4_0089_00e6_009b_00b4">クラスの変更</a> を参照してください。
+</p>
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e5_00ae_0089_00e5_0085_00a8_00e6_0080_00a7_00e3_0081_00ab_00e3_0081_00a4_00e3_0081_0084_00e3_0081_00a6"></a>
+<h4 class="subsubheading">スレッド安全性について</h4>
+
+<p>クラス再定義処理はローカルな処理ではなく、多くの副作用を行います。
+複数のスレッドが同時にクラス再定義プロトコルを走らせた場合の
+安全性を保証するのは困難です。そこでGauche では、一度にひとつのスレッドしか
+クラス再定義プロトコルに入らないように、プロセスレベルのロックを使用します。
+</p>
+<p>スレッドが、別のスレッドが再定義プロトコルにいる最中にクラスを
+再定義しようとした場合、たとえ、別々のクラスを再定義しようとしている
+場合でも、そのスレッドはブロックされます。このようにするのは、
+再定義がそのすべてのサブクラス、そのクラスとそのサブクラスに
+関わるすべてのメソッドおよびジェネリック関数に影響するからで、
+ふたつのクラスが完全に独立であるかどうかを決定するのは、自明では
+ないからです。
+</p>
+<p>スレッドが他のスレッドが再定義しようとしているクラスのインスタンスに
+アクセスしようとした場合にも、このスレッドは再定義が完了するまで、
+ブロックされます。
+</p>
+<p>インスタンス更新プロトコルは直列化されません。ふたつのスレッドが
+再定義されたクラスのインスタンスにアクセスしようとすると、両方の
+スレッドが更新プロトコルを起動します。これは好ましくない競合状態を
+生じる可能性があります。このような場合がおきないようにするのは
+アプリケーションの責任です。インスタンスへのアクセスはどのみち
+システムが直列化するわけではないので、これは自然なことです。
+インスタンス内に mutex を持たせる場合は特に注意が必要です。
+インスタンス中のmutexにアクセスするだけでインスタンス更新プロトコルを
+起動することになる可能性があるからです。
+</p>
+<a name="g_t_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0097_00e3_0081_00a6"></a>
+<h4 class="subsubheading">互換性に関して</h4>
+
+<p>クラス再定義プロトコルは CLOS風の Scheme システムとは微妙に違います。
+Gauche のものは STklos のものによく似ていますが、STklos 0.56 は再定義
+サブクラスの束縛を置き換えず、初期化引数を覚えたりはしないので、
+再定義されたサブクラスは、元々のサブクラスが持っていた情報のなにがしかを
+失ってしまう可能性があるという点にちがいがあります。Guile のオブジェクト
+システムはクラス再定義プロトコルの最後で、元々のクラスのアイデンティティと
+再定義されたクラスをアイデンティティを入れ替えてしまします。それゆえ、
+元々のクラスへの参照は、再定義されたクラスへの参照となります。筆者が
+知るかぎり、クラス再定義は、STklos 0.56 においても、Guile 1.6.4 においても
+スレッド安全ではありません。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e4_00be_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e4_00be_008b-1"></a>
+<h3 class="subsection">7.2.6 クラスの定義例</h3>
+
+<p>いくつかの例をみましょう。グラフィカルツールキットを定義しているところ
+だということにしましょう。<code>&lt;window&gt;</code> はスクリーン上の矩形領域で、
+幅と高さを持ちます。これを階層構造に構成することが可能です。すなわち、
+ある window は別の window 中に置くことができ、親 window へのポインタを
+もっているものとします。window の位置は、親ウィンドウの位置からの
+相対座標、x と y で指定します。スクリーン全体を覆う「ルート」window
+を作り、これがデフォルトの親 window にもなります。ここまでで、次のように
+なります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; The first version
+(define-class &lt;window&gt; ()
+  (;; Pointer to the parent window.
+   (parent      :init-keyword :parent :init-form *root-window*)
+   ;; Sizes of the window
+   (width       :init-keyword :width  :init-value 1)
+   (height      :init-keyword :height :init-value 1)
+   ;; Position of the window relative to the parent.
+   (x           :init-keyword :x :init-value 0)
+   (y           :init-keyword :y :init-value 0)
+   ))
+
+(define *screen-width* 1280)
+(define *screen-height* 1024)
+
+(define *root-window*
+  (make &lt;window&gt; :parent #f :width *screen-width* :height *screen-height*))
+</pre></td></tr></tbody></table>
+
+<p><code>:init-value</code> および <code>:init-form</code> の使い方に注意してください。
+<code>&lt;window&gt;</code> クラスが定義されたとき、<code>*root-window*</code> はまだ束縛
+されていませんので、ここでは <code>:init-value</code> は使えません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; *root-window*
+#&lt;&lt;window&gt; 0x80db1d0&gt;
+gosh&gt; (define window-a (make &lt;window&gt; :width 100 :height 100))
+window-a
+gosh&gt; (d window-a)
+#&lt;&lt;window&gt; 0x80db1b0&gt; is an instance of class &lt;window&gt;
+slots:
+  parent    : #&lt;&lt;window&gt; 0x80db1d0&gt;
+  width     : 100
+  height    : 100
+  x         : 0
+  y         : 0
+gosh&gt; (define window-b
+        (make &lt;window&gt; :parent window-a :width 50 :height 20 :x 10 :y 5))
+window-b
+gosh&gt; (d window-b)
+#&lt;&lt;window&gt; 0x80db140&gt; is an instance of class &lt;window&gt;
+slots:
+  parent    : #&lt;&lt;window&gt; 0x80db1b0&gt;
+  width     : 50
+  height    : 20
+  x         : 10
+  y         : 5
+</pre></td></tr></tbody></table>
+
+<p>筆者と同じ感覚の持ち主なら、<code>*root-window*</code> のようなグローバル
+変数をツールキットのユーザに見せたいとは思わないでしょう。これを
+カプセル化するひとつの方法は、ルート window へのポインタをクラス変数に
+保持させることです。<code>&lt;window&gt;</code> の定義に以下のようなスロットオプションを
+追加すると <code>&lt;window&gt;</code> クラスの <code>root-window</code> スロットは同じ
+格納領域を参照するようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;window&gt; ()
+  (...
+   ...
+   (root-window :allocation :class)
+   ...))
+</pre></td></tr></tbody></table>
+
+<p><code>&lt;window&gt;</code> のインスタンスに対して、<code>slot-ref</code> および
+<code>slot-set!</code> を、また、<code>&lt;window&gt;</code> クラスそのものに対しては、
+<code>class-slot-ref</code> や <code>class-slot-set!</code> を使って
+<code>root-window</code> スロットの値を取得したり、セットしたりできます。
+</p>
+<p>ツールキットのユーザは window の相対座標のかわりに絶対座標(ルートウィンドウ
+中の座標)が欲しいと思うことがあるでしょう。以下のようにして、絶対座標を
+返す仮想スロットを提供することができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;window&gt; ()
+  (...
+   ...
+   (root-x :allocation :virtual
+           :slot-ref  (lambda (o)
+                        (if (ref o 'parent)
+                            (+ (ref (ref o 'parent) 'root-x)
+                               (ref o 'x))
+                            (ref o 'x)))
+           :slot-set! (lambda (o v)
+                        (set! (ref o 'x)
+                              (if (ref o 'parent)
+                                  (- v (ref (ref o 'parent) 'root-x))
+                                  v)))
+            )
+    ...))
+</pre></td></tr></tbody></table>
+
+<p>メソッドあるいは仮想スロット経由のこのようなインタフェースを供給することは
+いくぶんか趣味の問題です。仮想スロットは実装の変更を隠すことができるという
+利点があります。つまり、<code>root-x</code> を実スロットに保持するように変更し、
+<code>x</code> をあとで仮想スロットに変更するということを <code>&lt;window&gt;</code>を
+使うコードをだめにすることなくおこなえます。オブジェクト指向の主流の言語
+では、通常このような「実装変更の隠蔽」はインスタンス変数を隠し、メソッドを
+公開するということでおこなわれています。Gauche やその他の CLOS 風システムでは
+スロットは常にユーザから見えており状況はすこし違うのです。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

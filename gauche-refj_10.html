@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.6 モジュールシステム</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.6 モジュールシステム">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.6 モジュールシステム">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_9.html#g_t_00e7_00b5_00b1_00e5_0090_0088_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_11.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0091_00e3_0082_00a4_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0-1"></a>
+<h2 class="section">2.6 モジュールシステム</h2>
+
+<p>Gaucheは大きなソフトウェアをモジュール化して開発するための、
+単純なモジュールシステムを備えています。
+</p>
+<p>高レベルのインタフェースを使うのはユーザにとっては非常に簡単です。
+モジュール<code>foo</code>が提供する機能を使いたければ、
+プログラム中で<code>(use foo)</code>と表記するだけです。
+このフォームはマクロで、コンパイル時に解釈されます。
+通常は、<code>foo</code>の機能を実装したファイルをロードし、
+その外部APIを呼び出したモジュール中にインポートします。
+</p>
+<p><code>use</code>メカニズムは、名前空間の分離とファイルローディングという
+二つの独立な低レベルのメカニズムの上に実装されています。
+これらの低レベルメカニズムはそれぞれ別々に使うこともできます。
+</p>
+<p><code>use</code>メカニズムは非遷移的です。すなわち、
+モジュールBがモジュールAを’use’し、さらにモジュールCがモジュールBを
+’use’している場合、モジュールCからはモジュールA内の束縛は見えません。
+BとAは<var>is-a</var>関係ではないためです。
+例えばモジュールAが低レベルの操作を実装し、
+モジュールBがその上に高レベルの抽象的なインタフェースを実装しているとしましょう。
+モジュールCがモジュールBを’use’しているということは、
+CはBの提供する抽象レイヤに興味があるということです。
+もしCがさらに低レベルの層にもアクセスしたいならば、CはAを明示的に’use’しなければ
+なりません。
+</p>
+<p>しかし、別の形の関係が必要な場合もあります。例えば既存のモジュールAに
+ちょっと新しいインタフェースを付け加えたモジュールBをAの拡張として
+提供したいという場合です。この時、BとAは<var>is-a</var>関係であり、Bを’use’
+しているモジュールからA内の束縛も見えるのが自然です。
+Gaucheでは、これをモジュールの継承と呼び、
+<code>extend</code>フォームにより実現しています。
+</p>
+<p>以下のセクションでモジュールの機能について詳しく説明しています。
+</p><ul>
+<li>
+<a indepth="true" href="gauche-refj_19.html#Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">Gaucheのモジュールを書く</a> ではモジュールの書き方について
+説明します。
+</li><li>
+<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab">モジュール</a> ではモジュールを定義したり使うための特殊形式とマクロ、
+およびモジュールの内部を調べるための組込み手続きについて説明します。
+</li></ul>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_9.html#g_t_00e7_00b5_00b1_00e5_0090_0088_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_11.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0091_00e3_0082_00a4_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

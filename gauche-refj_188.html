@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.62 www.cgi.test - CGIのテスト</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.62 www.cgi.test - CGIのテスト">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.62 www.cgi.test - CGIのテスト">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="CGI_00e3_0081_00ae_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_187.html#CGI_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="www_002ecgi_002etest-_002d-CGI_00e3_0081_00ae_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088"></a>
+<h2 class="section">11.62 <code>www.cgi.test</code> - CGIのテスト</h2>
+
+<dl>
+<dt><a name="index-www_002ecgi_002etest"></a><u>Module:</u> <b>www.cgi.test</b></dt>
+<dd><a name="index-www_002ecgi_002etest-1"></a>
+<p>CGIスクリプトをテストするための便利な手続きを定義しています。
+このテストは、指定された環境変数をセットし、実際にスクリプトを
+実行し、出力を取得します。ユーザのテスト手続きは、その出力が
+期待したものであるかどうかを検査します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgi_002dtest_002denviornment_002dref"></a><u>Function:</u> <b>cgi-test-enviornment-ref</b><i> envvar-name</i></dt>
+<dt><a name="index-_0028setter-cgi_002dtest_002denviornment_002dref_0029"></a><u>Function:</u> <b>(setter cgi-test-enviornment-ref)</b><i> envvar-name value</i></dt>
+<dd><p>モジュールにより、CGIスクリプトが実行される際の環境変数の
+デフォルト値のテーブルが保持されます。プログラマは、これらの
+手続きを使ってそのデフォルト値を取得したり設定したりできます。
+</p>
+<p>CGIスクリプトの呼び出し毎に、これらのデフォルト値を上書きしたり、
+追加の環境変数を渡したりできます。
+</p>
+<p>デフォルトでは、下記の環境変数が設定されています。
+</p><table>
+<tbody><tr><td width="50%">Name</td><td width="50%">Value</td></tr>
+<tr><td width="50%"><code>SERVER_SOFTWARE</code></td><td width="50%"><code>cgitest/1.0</code></td></tr>
+<tr><td width="50%"><code>SERVER_NAME</code></td><td width="50%"><code>localhost</code></td></tr>
+<tr><td width="50%"><code>GATEWAY_INTERFACE</code></td><td width="50%"><code>CGI/1.1</code></td></tr>
+<tr><td width="50%"><code>SERVER_PROTOCOL</code></td><td width="50%"><code>HTTP/1.1</code></td></tr>
+<tr><td width="50%"><code>SERVER_PORT</code></td><td width="50%"><code>80</code></td></tr>
+<tr><td width="50%"><code>REQUEST_METHOD</code></td><td width="50%"><code>GET</code></td></tr>
+<tr><td width="50%"><code>REMOTE_HOST</code></td><td width="50%"><code>remote</code></td></tr>
+<tr><td width="50%"><code>REMOTE_ADDR</code></td><td width="50%"><code>127.0.0.1</code></td></tr>
+</tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dcgi_002dscript"></a><u>Function:</u> <b>call-with-cgi-script</b><i> script proc :key (environment ()) (parameters #f)</i></dt>
+<dd><p>与えられた環境でスクリプトを実行し、そのスクリプトの標準出力のパイプに
+接続された入力ポートを1つ引数に取る <var>proc</var> を呼び出します。
+</p>
+<p>引数 <var>script</var> は、プログラムの名前とその引数のリストでなければ
+なりません。リストの要素はそれぞれ、文字列化されるためにまず
+<code>x-&gt;string</code>に渡されます。
+</p>
+<p>スクリプトは、変数 <var>environment</var> で与えられる環境と、上述した
+デフォルトのテスト環境の下で実行されます。
+<var>environment</var>は、キー(<code>car</code>)がその環境変数の名前、
+<code>cdr</code>が対応する値であるような連想リストでなければなりません。
+両方ともまず <code>x-&gt;string</code> に渡されます。
+<var>environment</var> とデフォルトのテスト環境に同じ環境変数がある場合は、
+<var>environment</var> にあるものが使われます。
+</p>
+<p>さらに、引数 <var>parameters</var> に連想リストが渡された場合、そこから
+クエリストリングが作られスクリプトに渡されます。
+クエリストリングを渡す実際のメソッドは、環境変数 <code>REQUEST_METHOD</code>の
+値に依存します。<code>REQUEST_METHOD</code> が <code>GET</code> か <code>HEAD</code> で
+ある場合は、クエリストリングは環境変数 <code>QUERY_STRING</code> に置かれます。
+<code>REQUEST_METHOD</code> が <code>POST</code> の場合は、クエリストリングは
+スクリプトの標準入力から取得されます。後者の場合、<code>CONTENT_TYPE</code> には
+<code>application/x-www-form-urlencoded</code>が、
+<code>CONTENT_LENGTH</code> には <code>QUERY_STRING</code>の長さが、それぞれ自動的に
+セットされます。<code>REQUEST_METHOD</code> がその他の値の場合は、
+<var>parameters</var> は無視されます。
+必要であれば、このメカニズムをバイパスして、環境変数 <code>QUERY_STRING</code> を
+直接セットアップすることも可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-run_002dcgi_002dscript_002d_003eheader_0026body"></a><u>Function:</u> <b>run-cgi-script-&gt;header&amp;body</b><i> script reader :key environment parameters</i></dt>
+<dd><p><code>call-with-cgi-script</code> の便利なラッパー手続きです。
+<var>script</var>、<var>environment</var>、<var>parameters</var>は、
+そのまま <code>call-with-cgi-script</code>に渡されます。
+スクリプトの出力は、<code>run-cgi-script-&gt;header&amp;body</code>により
+パーズされます。
+最初に、RFC2822ヘッダフィールドが <code>rfc822-read-headers</code>
+(<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f"><code>rfc.822</code> - RFC822メッセージ形式</a>参照)によりパーズされます。
+次に、<var>reader</var>が、スクリプトの出力にパイプされた入力ポートと
+ともに呼ばれます。
+</p>
+<p><code>run-cgi-script-&gt;header&amp;body</code>は、ヘッダのリスト
+(<code>rfc822-read-headers</code>によりパーズされたもの)と
+<var>reader</var>の戻り値の2つの値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-run_002dcgi_002dscript_002d_003esxml"></a><u>Function:</u> <b>run-cgi-script-&gt;sxml</b><i> script :key environment parameters</i></dt>
+<dd><p>この手続きでは、<code>run-cgi-script-&gt;header&amp;body</code>の
+<var>reader</var>として、<code>ssax:xml-&gt;sxml</code>
+(<a indepth="true" href="gauche-refj_160.html#g_t_00e9_0096_00a2_00e6_0095_00b0_00e7_009a_0084_00e3_0081_00aaXML_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6"><code>sxml.ssax</code> - 関数的なXMLパーザ</a>参照)を使います。
+整形式(Well-formed)のHTMLやXMLドキュメントを生成する
+CGIスクリプトをテストする場合に便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-run_002dcgi_002dscript_002d_003estring"></a><u>Function:</u> <b>run-cgi-script-&gt;string</b><i> script :key environment parameters</i></dt>
+<dt><a name="index-run_002dcgi_002dscript_002d_003estring_002dlist"></a><u>Function:</u> <b>run-cgi-script-&gt;string-list</b><i> script :key environment parameters</i></dt>
+<dd><p>これらの手続きは、<code>run-cgi-script-&gt;header&amp;body</code>の
+<var>reader</var>として、それぞれ <code>port-&gt;string</code>、
+<code>port-&gt;string-list</code>を使います。
+</p></dd></dl>
+
+<p>例:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-cgi-script-&gt;string-list "bbs.cgi"
+                             :environment '((REMOTE_ADDR . "12.34.56.78"))
+                             :parameters '((command . "view")
+                                           (page . 1234)))
+</pre></td></tr></tbody></table>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_187.html#CGI_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

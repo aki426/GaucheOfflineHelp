@@ -1,0 +1,518 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.2 srfi-1 - List library</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.2 srfi-1 - List library">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.2 srfi-1 - List library">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_110.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="List-library"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d1-_002d-List-library"></a>
+<h2 class="section">10.2 <code>srfi-1</code> - List library</h2>
+
+<dl>
+<dt><a name="index-srfi_002d1"></a><u>Module:</u> <b>srfi-1</b></dt>
+<dd><a name="index-srfi_002d1-1"></a>
+<p>SRFI-1 は、リスト操作ライブラリの豊富なコレクションです
+(<a indepth="true" href="gauche-refj_189.html#srfi_002d1">SRFI-1</a>)。
+このライブラリを使うには、<code>(use srfi-1)</code> として下さい。
+Olin Shivers氏のリファレンス実装に基づいて実装されています。
+</p>
+<p>GaucheはSRFI-1の手続きの多くを組み込みで提供しています。
+以下に挙げるSRFI-1手続きは<code>srfi-1</code>モジュールをロードしなくても使えます。
+これらの手続きの説明は、<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_009a_00e3_0082_00a2_00e3_0081_00a8_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088">ペアとリスト</a>を参照してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">null-list? cons* last member
+take drop take-right drop-right take! drop-right!
+delete delete! delete-duplicates delete-duplicates!
+assoc alist-copy alist-delete alist-delete!
+any every filter filter! fold fold-right find find-tail
+split-at split-at! iota
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0">10.2.1 SRFI-1 リスト操作関数</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e9_009b_0086_00e5_0090_0088_00e3_0081_00a8_00e3_0081_0097_00e3_0081_00a6_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088">10.2.2 集合としてのリスト</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#List-library" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_009b_0086_00e5_0090_0088_00e3_0081_00a8_00e3_0081_0097_00e3_0081_00a6_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#List-library" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0-1"></a>
+<h3 class="subsection">10.2.1 SRFI-1 リスト操作関数</h3>
+
+<a name="List-constructors"></a>
+<h4 class="subsubheading">List constructors</h4>
+
+<dl>
+<dt><a name="index-xcons"></a><u>Function:</u> <b>xcons</b><i> cd ca</i></dt>
+<dd><p>[SRFI-1] <code>(cons ca cd)</code> と同等です。高階手続きへ渡すのに便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-list_002dtabulate"></a><u>Function:</u> <b>list-tabulate</b><i> n init-proc</i></dt>
+<dd><p>[SRFI-1] <var>n</var>個の要素をもつリストを構築し、それぞれの要素を
+<code>(<var>init-proc</var> <i>i</i>)</code> で生成します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-tabulate 4 values) ⇒ (0 1 2 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-circular_002dlist"></a><u>Function:</u> <b>circular-list</b><i> elt1 elt2 …</i></dt>
+<dd><p>[SRFI-1] 指定した要素をもつ循環リストを構築します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(circular-list 'z 'q) ⇒ (z q z q z q …)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="List-predicates"></a>
+<h4 class="subsubheading">List predicates</h4>
+
+<dl>
+<dt><a name="index-not_002dpair_003f"></a><u>Function:</u> <b>not-pair?</b><i> x</i></dt>
+<dd><p>[SRFI-1] <code>(lambda (x) (not (pair? x)))</code>と同じです。
+</p>
+<p>SRFI-1 では、「真性リストおよびドットリストの両方で、すべての有限リストを
+扱う手続き用の終端条件として便利なように用意した」とあります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-list_003d"></a><u>Function:</u> <b>list=</b><i> elt= list …</i></dt>
+<dd><p>[SRFI-1] <var>elt=</var> を用いて、n番目の要素をそれぞれ比較することで、
+与えられたリストの同値性を決定します。
+</p>
+<p><code>list=</code> を真性リスト以外に適用するとエラーになります。
+</p>
+<p>同値性判定の手続きは <code>eq?</code> と整合性がなければなりません。すなわち
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(eq? x y) ⇒ (elt= x y).
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="List-selectors"></a>
+<h4 class="subsubheading">List selectors</h4>
+
+<dl>
+<dt><a name="index-first"></a><u>Function:</u> <b>first</b><i> pair</i></dt>
+<dt><a name="index-second-1"></a><u>Function:</u> <b>second</b><i> pair</i></dt>
+<dt><a name="index-third"></a><u>Function:</u> <b>third</b><i> pair</i></dt>
+<dt><a name="index-fourth"></a><u>Function:</u> <b>fourth</b><i> pair</i></dt>
+<dt><a name="index-fifth"></a><u>Function:</u> <b>fifth</b><i> pair</i></dt>
+<dt><a name="index-sixth"></a><u>Function:</u> <b>sixth</b><i> pair</i></dt>
+<dt><a name="index-seventh"></a><u>Function:</u> <b>seventh</b><i> pair</i></dt>
+<dt><a name="index-eighth"></a><u>Function:</u> <b>eighth</b><i> pair</i></dt>
+<dt><a name="index-ninth"></a><u>Function:</u> <b>ninth</b><i> pair</i></dt>
+<dt><a name="index-tenth"></a><u>Function:</u> <b>tenth</b><i> pair</i></dt>
+<dd><p>[SRFI-1] リスト(非真性でも可)のn番目の要素を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-car_002bcdr"></a><u>Function:</u> <b>car+cdr</b><i> pair</i></dt>
+<dd><p>[SRFI-1] <code>(car pair)</code> および <code>(cdr pair)</code> の二つの値を返します。
+</p></dd></dl>
+
+<a name="List-miscellaneous-routines"></a>
+<h4 class="subsubheading">List miscellaneous routines</h4>
+
+<dl>
+<dt><a name="index-concatenate"></a><u>Function:</u> <b>concatenate</b><i> list-of-lists</i></dt>
+<dt><a name="index-concatenate_0021"></a><u>Function:</u> <b>concatenate!</b><i> list-of-lists!</i></dt>
+<dd><p>[SRFI-1] それぞれ、<code>(apply append <var>list-of-lists</var>)</code> および
+<code>(apply append! <var>list-of-lists</var>)</code> と同等です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-append_002dreverse"></a><u>Function:</u> <b>append-reverse</b><i> rev-head tail</i></dt>
+<dt><a name="index-append_002dreverse_0021"></a><u>Function:</u> <b>append-reverse!</b><i> rev-head tail</i></dt>
+<dd><p>[SRFI-1]
+[SRFI-1] <code>append-reverse</code> は <code>(append (reverse rev-head) tail)</code> を
+返します。<code>append-reverse!</code> はその場で更新されるバージョンです。
+これらの手続きは2引数の<code>reverse</code>および<code>reverse!</code>と同等です
+(<a indepth="true" href="gauche-refj_44.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">他のリスト手続き</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-zip"></a><u>Function:</u> <b>zip</b><i> clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1]
+<code>(map list clist1 clist2 …)</code> と同等です。
+<var>n</var> 本のリストが <code>zip</code> に渡された場合には、そのなかで一番短いものと
+同じ長さのリストを返します。返されたリストは、要素が <var>n</var> 要素のリストで、
+そのそれぞれが、引数として渡ってリストの対応する要素になっています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(zip '(one two three)
+     '(1 2 3)
+     '(odd even odd even odd even odd even))
+     ⇒ ((one 1 odd) (two 2 even) (three 3 odd))
+
+(zip '(1 2 3)) ⇒ ((1) (2) (3))
+</pre></td></tr></tbody></table>
+
+<p>引数のリストのうち、少くともひとつは有限のリストでなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(zip '(3 1 4 1) (circular-list #f #t))
+     ⇒ ((3 #f) (1 #t) (4 #f) (1 #t))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-unzip1"></a><u>Function:</u> <b>unzip1</b><i> list</i></dt>
+<dt><a name="index-unzip2"></a><u>Function:</u> <b>unzip2</b><i> list</i></dt>
+<dt><a name="index-unzip3"></a><u>Function:</u> <b>unzip3</b><i> list</i></dt>
+<dt><a name="index-unzip4"></a><u>Function:</u> <b>unzip4</b><i> list</i></dt>
+<dt><a name="index-unzip5"></a><u>Function:</u> <b>unzip5</b><i> list</i></dt>
+<dd><p>[SRFI-1]
+<code>unzip1</code> はリストのリストを引数としてとります。それぞれの
+リストは少くとも一つの要素を含むものでなくてはなりません。結果として
+それぞれのリストの最初の要素のリストを返します。
+<code>unzip2</code> はリストのリストを引数としてとります。それぞれのリストは
+少くとも二つの要素を含むものでなくてはなりません。結果として二つの値を
+返します。最初の要素のリストと二番目の要素のリストです。<code>unzip3</code> は
+3番目までの要素について同様です。以下も同様です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(unzip2 '((1 one) (2 two) (3 three))) ⇒
+   (1 2 3) <span class="roman">and</span>
+   (one two three)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-count-1"></a><u>Function:</u> <b>count</b><i> pred clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1]
+<var>n</var> をゼロから与えられたリストのうち最も短いリストの
+長さまでとして、<var>pred</var> 手続きを与えられたリストの <var>n</var> 番目の要素に
+それぞれ適用します。
+<var>pred</var> が真を返した数が返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(count even? '(3 1 4 1 5 9 2 5 6)) ⇒ 3
+(count &lt; '(1 2 4 8) '(2 4 6 8 10 12 14 16)) ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p>引数で与えられるリストの少くともひとつは有限でなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(count &lt; '(3 1 4 1) (circular-list 1 10)) ⇒ 2
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="List-fold_002c-unfold-_0026-map"></a>
+<h4 class="subsubheading">List fold, unfold &amp; map</h4>
+
+<dl>
+<dt><a name="index-pair_002dfold"></a><u>Function:</u> <b>pair-fold</b><i> kons knil clist1 clist2 …</i></dt>
+<dt><a name="index-pair_002dfold_002dright"></a><u>Function:</u> <b>pair-fold-right</b><i> kons knil clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1]
+<code>fold</code> および <code>fold-right</code> と同様ですが、<var>kons</var> 手続き
+は与えられた <var>clist</var> の <code>car</code> ではなく、<code>cdr</code> をとります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reduce"></a><u>Function:</u> <b>reduce</b><i> f ridentity list</i></dt>
+<dt><a name="index-reduce_002dright"></a><u>Function:</u> <b>reduce-right</b><i> f ridentity list</i></dt>
+<dd><p>[SRFI-1]
+<code>fold</code> および <code>fold-right</code> の変形バージョンです。
+<var>f</var> は二項演算子でなければなりません。
+また、<var>ridentity</var> は <var>f</var> の入力として許される
+あらゆる値 <var>x</var> について以下を満していなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> (f x ridentity) ≡ x
+</pre></td></tr></tbody></table>
+
+<p>これらの関数は実質的に <code>fold</code> や <code>fold-right</code> と同じことを
+行いますが、<var>ridentity</var>には上記の性質があるため、
+<var>f</var>は<var>ridentity</var>には適用されません。
+<var>ridentity</var>が使われるのは<var>list</var>が空の場合だけです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-unfold"></a><u>Function:</u> <b>unfold</b><i> p f g seed :optional tail-gen</i></dt>
+<dd><p>[SRFI-1]
+基本リスト再帰構築子です。
+以下のように再帰的に定義されています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(unfold p f g seed tail-gen) ≡
+   (if (p seed)
+       (tail-gen seed)
+       (cons (f seed)
+             (unfold p f g (g seed))))
+</pre></td></tr></tbody></table>
+<p>ここでは、<var>p</var> は終了位置の判定、<var>g</var> は現在の「種」から次の「種」
+を生成するのに用い、<var>f</var> はそれぞれの「種」をリストの要素に変換する
+のに用いられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-unfold_002dright"></a><u>Function:</u> <b>unfold-right</b><i> p f g seed :optional tail</i></dt>
+<dd><p>[SRFI-1]
+基本リスト反復構築子です。
+以下のように再帰的に定義されています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(unfold-right p f g seed tail) ≡
+  (let lp ((seed seed) (lis tail))
+    (if (p seed)
+        lis
+        (lp (g seed) (cons (f seed) lis))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-append_002dmap"></a><u>Function:</u> <b>append-map</b><i> f clist1 clist2 …</i></dt>
+<dt><a name="index-append_002dmap_0021"></a><u>Function:</u> <b>append-map!</b><i> f clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1]
+以下と同等です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  (apply append (map <var>f</var> <var>clist1</var> <var>clist2</var> …))
+  (apply append! (map <var>f</var> <var>clist1</var> <var>clist2</var> …))
+</pre></td></tr></tbody></table>
+<p>引数のリストのうち少くともひとつは有限でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-map_0021"></a><u>Function:</u> <b>map!</b><i> f clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1]
+手続き <var>f</var> は <var>clist1</var> の各要素と <var>clist2</var> の対応する要素
+に適用され、結果はひとつのリストになります。<var>clist1</var> のセルは
+結果のリストを構築するのに再利用されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-map_002din_002dorder"></a><u>Function:</u> <b>map-in-order</b><i> f clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1] <code>map</code> の変形バージョンですが、<var>f</var> の適用順序が、引数として
+与えられたリストの要素の左から右への順であることを保証します。
+Gauche では <code>map</code> の実装はこの順になっているので、<code>map</code> と
+同意です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-pair_002dfor_002deach"></a><u>Function:</u> <b>pair-for-each</b><i> f clist1 clist2 …</i></dt>
+<dd><p><code>for-each</code> と似ていますが、手続き <var>f</var> は各リスト <var>clist</var> の
+<code>cdr</code> に適用されます。
+</p></dd></dl>
+
+<a name="List-partitioning"></a>
+<h4 class="subsubheading">List partitioning</h4>
+
+<dl>
+<dt><a name="index-partition-1"></a><u>Function:</u> <b>partition</b><i> pred list</i></dt>
+<dt><a name="index-partition_0021"></a><u>Function:</u> <b>partition!</b><i> pred list</i></dt>
+<dd><p>[SRFI-1] <code>filter</code> と <code>remove</code> を同時に行い、
+2つのリストを返します。一つ目は <var>pred</var> により <var>list</var> の要素をフィルタリング
+した結果で、二つ目は <var>pred</var> により <var>list</var> の要素を削除した結果です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(partition odd? '(3 1 4 5 9 2 6))
+  ⇒ (3 1 5 9) (4 2 6)
+</pre></td></tr></tbody></table>
+<p><code>partition!</code> はその場で更新されるバージョンです。結果を生成するために
+<var>list</var> を破壊的に更新するかもしれません。
+</p></dd></dl>
+
+<a name="List-searching"></a>
+<h4 class="subsubheading">List searching</h4>
+
+<dl>
+<dt><a name="index-take_002dwhile"></a><u>Function:</u> <b>take-while</b><i> pred clist</i></dt>
+<dt><a name="index-take_002dwhile_0021"></a><u>Function:</u> <b>take-while!</b><i> pred list</i></dt>
+<dd><p>[SRFI-1]
+<var>clist</var> の最初から、<var>pred</var> を満足する限りの最長部分要素を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-drop_002dwhile"></a><u>Function:</u> <b>drop-while</b><i> pred clist</i></dt>
+<dd><p>[SRFI-1]
+<var>clist</var> の最初から、<var>pred</var> を満足する限りの最長部分要素を削除し、
+残りを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-span-1"></a><u>Function:</u> <b>span</b><i> pred clist</i></dt>
+<dt><a name="index-span_0021"></a><u>Function:</u> <b>span!</b><i> pred list</i></dt>
+<dt><a name="index-break"></a><u>Function:</u> <b>break</b><i> pred clist</i></dt>
+<dt><a name="index-break_0021"></a><u>Function:</u> <b>break!</b><i> pred list</i></dt>
+<dd><p>[SRFI-1]
+<code>span</code> は <code>(values (take-while pred clist) (drop-while pred clist))</code>
+と等価です。<code>break</code> は <var>pred</var> の意味を反転します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-list_002dindex"></a><u>Function:</u> <b>list-index</b><i> pred clist1 clist2 …</i></dt>
+<dd><p>[SRFI-1]
+<var>pred</var> を満足する最も左の要素のインデックスを返します。
+<var>pred</var>を満たす要素が無い場合は<code>#f</code>を返します。
+</p></dd></dl>
+
+<a name="Association-lists"></a>
+<h4 class="subsubheading">Association lists</h4>
+
+<dl>
+<dt><a name="index-alist_002dcons"></a><u>Function:</u> <b>alist-cons</b><i> key datum alist</i></dt>
+<dd><p>[SRFI-1] <code>(cons (cons <var>key</var> <var>datum</var>) <var>alist</var>)</code> を返します。
+これは、Gauche の組み込み手続き <code>acons</code> の別名です。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e9_009b_0086_00e5_0090_0088_00e3_0081_00a8_00e3_0081_0097_00e3_0081_00a6_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#List-library" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_009b_0086_00e5_0090_0088_00e3_0081_00a8_00e3_0081_0097_00e3_0081_00a6_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088-1"></a>
+<h3 class="subsection">10.2.2 集合としてのリスト</h3>
+
+<p>これらの手続きはリストを集合としてあつかいます。すなわち、どのような
+要素があるかは重要ですが、その順序は重要ではありません。
+</p>
+<p>この範疇にあるすべての手続きは、比較手続き <var>elt=</var> を最初の引数として
+とります。この比較手続きは与えられた二つの集合の要素が等しいかどうかを
+判定します。
+</p>
+<p>集合の要素の組み合せについては <a indepth="true" href="gauche-refj_174.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"><code>util.combinations</code> - 組み合わせ</a>
+も参照してください。
+</p>
+<dl>
+<dt><a name="index-lset_003c_003d"></a><u>Function:</u> <b>lset&lt;=</b><i> elt= list1 …</i></dt>
+<dd><p>[SRFI-1]
+<var>list1</var> のすべての要素が <var>list2</var> (以降の集合)に含まれている
+ときに限り <code>#t</code> を返します。リストが与えられなかった場合
+および一つだけしか与えられなかった場合には、<code>#t</code> を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lset_003d"></a><u>Function:</u> <b>lset=</b><i> elt= list1 list2 …</i></dt>
+<dd><p>[SRFI-1]
+<var>list1</var> のすべての要素が <var>list2</var> に含まれており、かつ、
+<var>list2</var> のすべての要素が <var>list1</var> に含まれていれば、<code>#t</code>
+を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lset= eq? '(b e a) '(a e b) '(e e b a)) ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-lset_002dadjoin"></a><u>Function:</u> <b>lset-adjoin</b><i> elt= list elt …</i></dt>
+<dd><p>[SRFI-1]
+<var>elt</var> … を集合 <var>list</var> にまだなければ、追加します。
+(順序はとくに決っていません。)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lset-adjoin eq? '(a b c) 'a 'e) ⇒ '(e a b c)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-lset_002dunion"></a><u>Function:</u> <b>lset-union</b><i> elt= list1 …</i></dt>
+<dd><p>[SRFI-1]
+<var>list1</var> … の和集合を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lset_002dintersection"></a><u>Function:</u> <b>lset-intersection</b><i> elt= list1 list2 …</i></dt>
+<dd><p>[SRFI-1]
+すべての <var>list</var> に含まれる要素の集合を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lset_002ddifference"></a><u>Function:</u> <b>lset-difference</b><i> elt= list1 list2 …</i></dt>
+<dd><p>[SRFI-1]
+<var>list1</var> には含まれていて、<var>list2</var> には含まれていない要素の集合を
+返します。引数が n 個与えられた場合には、差分をとる二項演算が
+畳み込まれます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lset_002dxor"></a><u>Function:</u> <b>lset-xor</b><i> elt= list1 …</i></dt>
+<dd><p>[SRFI-1]
+与えられた集合の排他的論理和を返します。すなわち、<var>list1</var> および
+<var>list2</var> のどちらか一方にのみ属する要素からなる集合を返します。
+引数が n 個の場合には、xor の二項演算が畳み込まれます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lset_002ddiff_002bintersection"></a><u>Function:</u> <b>lset-diff+intersection</b><i> elt= list1 list2 …</i></dt>
+<dd><p>[SRFI-1]
+与えられた集合の差集合と積集合のふたつの集合を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lset_002dunion_0021"></a><u>Function:</u> <b>lset-union!</b><i> elt= list …</i></dt>
+<dt><a name="index-lset_002dintersection_0021"></a><u>Function:</u> <b>lset-intersection!</b><i> elt= list1 list2 …</i></dt>
+<dt><a name="index-lset_002ddifference_0021"></a><u>Function:</u> <b>lset-difference!</b><i> elt= list1 list2 …</i></dt>
+<dt><a name="index-lset_002dxor_0021"></a><u>Function:</u> <b>lset-xor!</b><i> elt= list1 …</i></dt>
+<dt><a name="index-lset_002ddiff_002bintersection_0021"></a><u>Function:</u> <b>lset-diff+intersection!</b><i> elt= list1 list2 …</i></dt>
+<dd><p>[SRFI-1]
+それぞれ対応する手続きのその場で更新するバージョンです。
+最初の引数のリストのセルが結果を構築するのに再利用されるかもしれません。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#List-library" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

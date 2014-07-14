@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.4 control.job - A common job descriptor for control modules</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.4 control.job - A common job descriptor for control modules">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.4 control.job - A common job descriptor for control modules">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="A-common-job-descriptor-for-control-modules"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_129.html#compat_002enorational-_002d-_00e6_009c_0089_00e7_0090_0086_00e6_0095_00b0_00e3_0081_00ae_00e3_0081_00aa_00e3_0081_0084_00e7_00ae_0097_00e8_00a1_0093_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_131.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="control_002ejob-_002d-A-common-job-descriptor-for-control-modules"></a>
+<h2 class="section">11.4 <code>control.job</code> - A common job descriptor for control modules</h2>
+
+<dl>
+<dt><a name="index-control_002ejob"></a><u>Module:</u> <b>control.job</b></dt>
+<dd><a name="index-control_002ejob-1"></a>
+<p>This module provides a <code>job</code> record type, a lightweight
+structure to be used in the control flow subsystems
+(<code>control.*</code> modules).
+Currently the only user is <code>control.thread-pool</code>, but
+some other modules are planned to use <code>job</code> records.
+</p>
+<p>A <code>job</code> record may be returned to an application
+by other <code>control.*</code> modules so that the application
+can keep track of the job.  It’s not meant for
+general use, however.   An application isn’t supposed to
+create a new job, or to modify its content; it can just query
+the job’s properties.
+</p>
+<p>In this section we only describe procedures an application
+needs to know.  The interface for control subsystems is still
+fluid and may be changed as more subsystems are developed.
+</p>
+<p>Different control flow subsystems may use job structure differently.
+This section only describes the common properties.  Check the
+individual control flow module to know how to handle returned job
+objects.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-job"></a><u>Record type:</u> <b>job</b></dt>
+<dd><p>A record type denotes the job.  Applications should treat it
+as an opaque structure.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-job_003f"></a><u>Function:</u> <b>job?</b><i> obj</i></dt>
+<dd><p>Returns <code>#t</code> iff <var>obj</var> is a job record, <code>#f</code> otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-job_002dstatus"></a><u>Function:</u> <b>job-status</b><i> job</i></dt>
+<dd><p>Returns the status of the job.  It may be either one of the followings.
+</p><dl compact="compact">
+<dt> <code>#f</code></dt>
+<dd><p>Newborn or orphaned job.  Usually an application won’t see a job
+in this status.
+</p></dd>
+<dt> <code>acknowledged</code></dt>
+<dd><p>A job is recognized by a control flow library, but haven’t yet
+been run.
+</p></dd>
+<dt> <code>running</code></dt>
+<dd><p>A job is being processed.
+</p></dd>
+<dt> <code>done</code></dt>
+<dd><p>A job is finished.  An application can retrieve its result
+by <code>job-result</code>.
+</p></dd>
+<dt> <code>error</code></dt>
+<dd><p>A job is terminated by an error.  An application can retrieve the
+error causing condition by <code>job-result</code>.
+</p></dd>
+<dt> <code>killed</code></dt>
+<dd><p>A job is killed by external force.  An application can retrieve the
+reason of kill (which is specific to a particular control flow
+subsystem) by <code>job-result</code>.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-job_002dresult"></a><u>Function:</u> <b>job-result</b><i> job</i></dt>
+<dd><p>If the job is in <code>done</code> status, it returns the result of the job.
+If the job is in <code>error</code> status, it returns the condition object
+that describes the error.
+If the job is in <code>killed</code> status, it returns an object describing
+the reason of kill.  The details of the object depends on a particular
+control flow library.
+Calling <code>job-result</code> on a job in any other status may return
+anything; you can’t rely on the result.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-job_002dwait"></a><u>Function:</u> <b>job-wait</b><i> job :optional timeout timeout-val</i></dt>
+<dd><p>Suspends the calling thread until the job becomes either
+<code>done</code>, <code>error</code> or <code>killed</code> status.  If the job
+is already in one of those status, it returns immediately.
+Returns job’s status.
+</p>
+<p>If <var>timeout</var> is given and not <code>#f</code>, it must be
+a valid timeout spec (a <code>&lt;time&gt;</code> object that represents
+an absolute time point, or a real number that represents a
+relative time in seconds.)  The meaning of <var>timeout</var> is
+the same as in <code>mutex-unlock!</code> (See section <a indepth="true" href="gauche-refj_103.html#g_t_00e5_0090_008c_00e6_009c_009f_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096">同期プリミティブ</a>).
+Once the timeout reaches, <code>job-wait</code> returns no matter
+how the job’s status is, and returns the value specified
+to <var>timeout-val</var>, which defaults to <code>#f</code>.
+</p>
+<p>Depending on the control flow subsystem, jobs created by it
+may not be waitable; check out each subsystem’s documentation for the details.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-job_002dacknowledge_002dtime"></a><u>Function:</u> <b>job-acknowledge-time</b><i> job</i></dt>
+<dt><a name="index-job_002dstart_002dtime"></a><u>Function:</u> <b>job-start-time</b><i> job</i></dt>
+<dt><a name="index-job_002dfinish_002dtime"></a><u>Function:</u> <b>job-finish-time</b><i> job</i></dt>
+<dd><p>If the control flow subsystem keeps track of timestamps,
+these procedure returns the time (in <code>&lt;time&gt;</code> objects)
+when the job is acknowledged, started and finished (either normally,
+or abnormally by an error or by being killed).  If the job hasn’t
+reached to certain status, <code>#f</code> is returned instead.
+</p>
+<p>If the subsystem does not trak timestamps, these procedures
+always returns <code>#f</code>.
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_129.html#compat_002enorational-_002d-_00e6_009c_0089_00e7_0090_0086_00e6_0095_00b0_00e3_0081_00ae_00e3_0081_00aa_00e3_0081_0084_00e7_00ae_0097_00e8_00a1_0093_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_131.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.1 gauche.array - 配列</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.1 gauche.array - 配列">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.1 gauche.array - 配列">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_0085_008d_00e5_0088_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002earray-_002d-_00e9_0085_008d_00e5_0088_0097"></a>
+<h2 class="section">9.1 <code>gauche.array</code> - 配列</h2>
+
+<dl>
+<dt><a name="index-gauche_002earray"></a><u>Module:</u> <b>gauche.array</b></dt>
+<dd><a name="index-gauche_002earray-1"></a>
+<p>このモジュールは多次元配列のデータタイプとそれに関する操作を提供します。
+プリミティブなAPIはSRFI-25で定義されているものに従います。
+任意のSchemeオブジェクトを保持できるSRFI-25の汎用配列の他に、
+均一な数値ベクタ(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照)を使って
+数値要素を効率良く保持する配列型も提供されます。
+また、SRFI-10を使った配列の外部表現も実装されます。
+</p>
+<p><var>N</var>次元の配列の各エレメントは<code>N</code>個の整数のインデックス
+<code>[ <var>i_0</var> <var>i_1</var> … <var>i_N-1</var> ]</code>でアクセスされます。
+配列は、各次元のインデックスの下限<var>s_k</var>および上限<var>e_k</var>を決める
+<var>shape</var>を持っています。ここで、<var>s_k</var> &lt;= <var>e_k</var>であり、
+<var>k</var>次元目のインデックス<var>i_k</var>は
+<var>s_k</var> &lt;= <var>i_k</var> &lt; <var>e_k</var> を満たすものとします。
+(<var>s_k</var> == <var>e_k</var> であるような配列も作れますが、
+その配列にはデータをストアすることはできません。
+また、0次元の配列は作れます。それは一つだけデータを保持できます)。
+Shapeはそれ自体が [ <var>D</var> x 2 ] の配列です。
+ここで<var>D</var>はそのshapeが表現する配列の次元数です。
+</p>
+<p>配列のプリミティブに対しインデックスを渡すにはいくつか方法があります。
+各インデックスをばらばらの引数として渡すこともできますし、
+ベクタや1次元の配列にパックして渡すこともできます。
+後者においてインデックスがパックされたベクタや配列を「インデックスオブジェクト」
+と呼ぶことがあります。Gaucheでは、配列の要素に次々とアクセスするような処理では
+ベクタをインデックスオブジェクトとして使うと若干効率が良いでしょう。
+</p>
+<p>配列は<code>equal?</code>手続きで比較することが出来ます。
+二つの配列のshapeが等しく、また対応する各要素が<code>equal?</code>の意味で
+等しい場合に二つの配列は<code>equal?</code>であると見なされます。
+</p>
+<p>内部的には、配列は1次元のインデックスでアクセスされるバッキングストレージと、
+多次元のインデックスをバッキングストレージへのインデックスにマップする手続きとから
+構成されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003carray_002dbase_003e"></a><u>Class:</u> <b>&lt;array-base&gt;</b></dt>
+<dd><a name="index-array_002dbase"></a>
+<p>配列に関する汎用操作を実装している、抽象ベースクラスです。
+実際に配列のインスタンスを作るには、以下のいずれかの具体クラスを使って下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003carray_003e"></a><u>Class:</u> <b>&lt;array&gt;</b></dt>
+<dt><a name="index-_003cu8array_003e"></a><u>Class:</u> <b>&lt;u8array&gt;</b></dt>
+<dt><a name="index-_003cs8array_003e"></a><u>Class:</u> <b>&lt;s8array&gt;</b></dt>
+<dt><a name="index-_003cu16array_003e"></a><u>Class:</u> <b>&lt;u16array&gt;</b></dt>
+<dt><a name="index-_003cs16array_003e"></a><u>Class:</u> <b>&lt;s16array&gt;</b></dt>
+<dt><a name="index-_003cu32array_003e"></a><u>Class:</u> <b>&lt;u32array&gt;</b></dt>
+<dt><a name="index-_003cs32array_003e"></a><u>Class:</u> <b>&lt;s32array&gt;</b></dt>
+<dt><a name="index-_003cu64array_003e"></a><u>Class:</u> <b>&lt;u64array&gt;</b></dt>
+<dt><a name="index-_003cs64array_003e"></a><u>Class:</u> <b>&lt;s64array&gt;</b></dt>
+<dt><a name="index-_003cf16array_003e"></a><u>Class:</u> <b>&lt;f16array&gt;</b></dt>
+<dt><a name="index-_003cf32array_003e"></a><u>Class:</u> <b>&lt;f32array&gt;</b></dt>
+<dt><a name="index-_003cf64array_003e"></a><u>Class:</u> <b>&lt;f64array&gt;</b></dt>
+<dd><a name="index-array"></a>
+<a name="index-u8array"></a>
+<a name="index-s8array"></a>
+<a name="index-u16array"></a>
+<a name="index-s16array"></a>
+<a name="index-u32array"></a>
+<a name="index-s32array"></a>
+<a name="index-u64array"></a>
+<a name="index-s64array"></a>
+<a name="index-f16array"></a>
+<a name="index-f32array"></a>
+<a name="index-f64array"></a>
+<p>具体配列クラスです。<code>&lt;array&gt;</code>クラスはsrfi-25互換の配列、
+すなわち、任意のSchemeオブジェクトを格納できる配列を実装します。
+<code>&lt;u8array&gt;</code>から<code>&lt;f64array&gt;</code>までは、
+それぞれ<code>&lt;u8vector&gt;</code>から<code>&lt;f64vector&gt;</code>をバッキングストレージとして
+用いる配列を実装し、制限された範囲の整数もしくは不正確な実数のみを
+効率良く格納することができます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-_0023_002c_0028_003carray_003e-shape-obj-_2026_0029"></a><u>Reader syntax:</u> <b><code>#,(&lt;array&gt; <var>shape</var> <var>obj</var> …)</code></b></dt>
+<dd><p>配列はこの形式で書き出されます。
+(配列が例えば<code>&lt;u8array&gt;</code>であるなら、<code>&lt;array&gt;</code>の部分は<code>&lt;u8array&gt;</code>
+となります。)
+<var>shape</var>は偶数個の整数のリストで、
+2<var>n</var>番目の整数が<var>n</var>次元目のインデックスの下限を、2<var>n</var>+1番目の
+整数が<var>n</var>次元目のインデックスの上限(+1)を表します。
+その後に、配列の要素がrow-majorの順で書き出されます。
+</p>
+<p>この構文が読み込まれると、もとの配列と<code>equal?</code>である配列が作成されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">; 次のような配列：
+;   8 3 4
+;   1 5 9
+;   6 7 2
+#,(&lt;array&gt; (0 3 0 3) 8 3 4 1 5 9 6 7 2)
+
+; 4x4の単位行列
+#,(&lt;array&gt; (0 4 0 4) 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_003f"></a><u>Function:</u> <b>array?</b><i> obj</i></dt>
+<dd><p>[SRFI-25]
+<var>obj</var>が配列であれば<var>#t</var>が、そうでなければ<var>#f</var>が返されます。
+<code>(is-a? obj &lt;array-base&gt;)</code>と等価です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002darray"></a><u>Function:</u> <b>make-array</b><i> shape :optional init</i></dt>
+<dd><p>[SRFI-25]
+Shapeが<var>shape</var>である配列を作成します。
+<var>Shape</var>は [ <var>D</var> x 2 ] の配列で、
+0 &lt;= <var>k</var> &lt; <var>D</var> なる各<var>k</var>に対して要素 [ <var>k</var> 0 ] は
+要素[ <var>k</var> 1 ]以下でなければなりません。
+<var>init</var>が与えられた場合は、配列の各要素が<var>init</var>で初期化されます。
+<var>init</var>が与えられなかった場合の配列の要素の初期値は不定です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-array (shape 0 2 0 2 0 2) 5)
+ ⇒ #,(&lt;array&gt; (0 2 0 2 0 2) 5 5 5 5 5 5 5 5)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002du8array"></a><u>Function:</u> <b>make-u8array</b><i> shape :optional init</i></dt>
+<dt><a name="index-make_002ds8array"></a><u>Function:</u> <b>make-s8array</b><i> shape :optional init</i></dt>
+<dd><a name="index-make_002du16array"></a>
+<a name="index-make_002ds16array"></a>
+<a name="index-make_002du32array"></a>
+<a name="index-make_002ds32array"></a>
+<a name="index-make_002du64array"></a>
+<a name="index-make_002ds64array"></a>
+<p>…
+</p></dd></dl>
+<dl>
+<dt><a name="index-make_002df32array"></a><u>Function:</u> <b>make-f32array</b><i> shape :optional init</i></dt>
+<dt><a name="index-make_002df64array"></a><u>Function:</u> <b>make-f64array</b><i> shape :optional init</i></dt>
+<dd><p><code>make-array</code>と似ていますが、均一な数値配列を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shape"></a><u>Function:</u> <b>shape</b><i> bound …</i></dt>
+<dd><p>[SRFI-25]
+偶数個の正確な整数を引数に取り、配列のshapeとして使える2次元の配列を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(shape 0 2 1 3 3 5)
+ ⇒ #,(&lt;array&gt; (0 3 0 2) 0 2 1 3 3 5)
+
+(shape)
+ ⇒ #,(&lt;array&gt; (0 0 0 2))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array-1"></a><u>Function:</u> <b>array</b><i> shape init …</i></dt>
+<dd><p>[SRFI-25]
+Shapeが<var>shape</var>であるような配列を作成し、
+その要素を<var>init</var> …で初期化します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(array (shape 0 2 1 3) 'a 'b 'c 'd)
+ ⇒ #,(&lt;array&gt; (0 2 1 3) a b c d)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002drank"></a><u>Function:</u> <b>array-rank</b><i> array</i></dt>
+<dd><p>[SRFI-25]
+配列<var>array</var>の次元数を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(array-rank (make-array (shape 0 2 0 2 0 2))) ⇒ 3
+(array-rank (make-array (shape))) ⇒ 0
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dshape"></a><u>Function:</u> <b>array-shape</b><i> array</i></dt>
+<dd><p>配列<var>array</var>のshapeを表す配列を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002dstart"></a><u>Function:</u> <b>array-start</b><i> array dim</i></dt>
+<dt><a name="index-array_002dend"></a><u>Function:</u> <b>array-end</b><i> array dim</i></dt>
+<dt><a name="index-array_002dlength"></a><u>Function:</u> <b>array-length</b><i> array dim</i></dt>
+<dd><p>[SRFI-25+]
+<code>array-start</code>は配列<var>array</var>の<var>dim</var>番目の次元の
+インデックスの下限を返します。
+<code>array-end</code>は上限+1を、そして<code>array-length</code>は両者の差を返します。
+<code>array-start</code>と<code>array-end</code>はSRFI-25で定義されています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a (make-array (shape 1 5 0 2)))
+
+(array-start a 0)  ⇒ 1
+(array-end a 0)    ⇒ 5
+(array-length a 0) ⇒ 4
+(array-start a 1)  ⇒ 0
+(array-end a 1)    ⇒ 2
+(array-length a 1) ⇒ 2
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dsize"></a><u>Function:</u> <b>array-size</b><i> array</i></dt>
+<dd><p>配列<var>array</var>の全要素数を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(array-size (make-array (shape 5 9 1 3))) ⇒ 8
+(array-size (make-array (shape))) ⇒ 1
+(array-size (make-array (shape 0 0 0 2))) ⇒ 0
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dref"></a><u>Function:</u> <b>array-ref</b><i> array k …</i></dt>
+<dt><a name="index-array_002dref-1"></a><u>Function:</u> <b>array-ref</b><i> array index</i></dt>
+<dd><p>[SRFI-25]
+配列<var>array</var>の要素を取り出します。最初の形式では、
+要素は整数のインデックス<var>k</var> …で指定されます。
+2番目の形式では、要素はベクタまたは1次元配列のインデックスオブジェクト<var>index</var>
+で指定されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002dset_0021"></a><u>Function:</u> <b>array-set!</b><i> array k … value</i></dt>
+<dt><a name="index-array_002dset_0021-1"></a><u>Function:</u> <b>array-set!</b><i> array index value</i></dt>
+<dd><p>[SRFI-25]
+配列<var>array</var>の要素に<var>value</var>をセットします。
+最初の形式では、
+要素は整数のインデックス<var>k</var> …で指定されます。
+2番目の形式では、要素はベクタまたは1次元配列のインデックスオブジェクト<var>index</var>
+で指定されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-share_002darray"></a><u>Function:</u> <b>share-array</b><i> array shape proc</i></dt>
+<dd><p>[SRFI-25]
+Shapeが<var>shape</var>であり、与えられた配列<var>array</var>とバッキングストレージを
+共有する新しい配列を作成して返します。
+<var>proc</var>は、新しい配列へのインデックスを古い配列へのインデックスへ
+マップする手続きです。新しい配列の次元数を<var>n</var>、古い配列の次元数を<var>m</var>と
+した時、<var>proc</var>は<var>n</var>個の引数を取り<var>m</var>個の値を返す手続きでなければ
+なりません。さらに、各マッピングはaffineマッピング、すなわち、
+出力は入力の線形合成(プラス定数)でなければなりません。
+(<code>share-array</code>は<var>proc</var>がaffineマッピングであるという事実に基づいた
+最適化を行います。新しい配列にアクセスする度に<var>proc</var>が呼ばれるというわけでは
+ありません)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002dfor_002deach_002dindex"></a><u>Function:</u> <b>array-for-each-index</b><i> array proc :optional index</i></dt>
+<dd><p><var>array</var>の各インデックスに対して<var>proc</var>を呼びます。
+<var>index</var>引数が省略された場合は、
+<var>proc</var>はインデックス (<var>i</var>, <var>j</var>,<var>k</var>,…) に対して
+<code>(<var>proc</var> <var>i</var> <var>j</var> <var>k</var> …)</code> のように呼ばれます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define a (array (shape 0 2 0 2) 1 2 3 4))
+a
+gosh&gt; a
+#,(&lt;array&gt; (0 2 0 2) 1 2 3 4)
+gosh&gt; (array-for-each-index a (^(i j) (print i","j)))
+0,0
+0,1
+1,0
+1,1
+</pre></td></tr></tbody></table>
+
+<p>この形式の呼び出しは簡単なのですが、あまり効率が良くありません。
+インデックスオブジェクトを省略可能引数<var>index</var>に渡すことで、
+より良い性能を引き出すことができます。
+インデックスオブジェクトはループの度に、各インデックスを表す値に書き換えられます。
+インデックスオブジェクトに使えるのは、変更可能な、ベクタ・1次元の配列・
+s8vector・s16vectorあるいはs32vectorで、その長さは配列<var>array</var>の
+ランクと一致していなければなりません。インデックスオブジェクトを使うと、
+ループ中に一切アロケーションが行われないため速度的に有利です。
+ただし、ループの度にインデックスオブジェクトの内容が書き換えられることに
+注意する必要があります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (array-for-each-index a (cut format #t "~s\n" &lt;&gt;) (vector 0 0))
+#(0 0)
+#(0 1)
+#(1 0)
+#(1 1)
+
+gosh&gt; (array-for-each-index a (cut format #t "~s\n" &lt;&gt;) (s8vector 0 0))
+#s8(0 0)
+#s8(0 1)
+#s8(1 0)
+#s8(1 1)
+</pre></td></tr></tbody></table>
+
+<p>戻り値は未定義です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shape_002dfor_002deach"></a><u>Function:</u> <b>shape-for-each</b><i> shape proc :optional index</i></dt>
+<dd><p>シェイプ<var>shape</var>が表現する全ての可能なインデックスに対して<var>proc</var>を呼びます。
+省略可能な<var>index</var>引数の動作は<code>array-for-each-index</code>と同様です。
+戻り値は未定義です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (shape-for-each (shape 0 2 0 2) (^(i j) (print i","j)))
+0,0
+0,1
+1,0
+1,1
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-tabulate_002darray"></a><u>Function:</u> <b>tabulate-array</b><i> shape proc :optional index</i></dt>
+<dd><p><var>shape</var>が表現する各インデックスについて<var>proc</var>を呼び出し、
+その戻り値から配列を構築して返します。省略可能なインデックスオブジェクトの用途は
+<code>array-for-each-index</code>と同じです。
+次の例は与えられたシェイプに対する単位行列を生成します:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(tabulate-array (shape 0 3 0 3) (^(i j) (if (= i j) 1 0)))
+  ⇒ #,(&lt;array&gt; (0 3 0 3) 1 0 0 0 1 0 0 0 1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dretabulate_0021"></a><u>Function:</u> <b>array-retabulate!</b><i> array proc :optional index</i></dt>
+<dt><a name="index-array_002dretabulate_0021-1"></a><u>Function:</u> <b>array-retabulate!</b><i> array shape proc :optional index</i></dt>
+<dd><p>配列<var>array</var>の各インデックスに対して<var>proc</var>を呼び、その戻り値で
+<var>array</var>の要素を置き換えます。
+省略可能なインデックスオブジェクトの用途は
+<code>array-for-each-index</code>と同じです。
+二番目の呼び出し形式は第二引数にシェイプを取ります。
+それは<var>array</var>のシェイプと一致しなければなりません。
+意味的には冗長ですが、<var>shape</var>がリテラルである場合、
+何らかの最適化がなされる可能性があります。
+戻り値は未定義です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002dmap"></a><u>Function:</u> <b>array-map</b><i> proc array0 array1 …</i></dt>
+<dt><a name="index-array_002dmap-1"></a><u>Function:</u> <b>array-map</b><i> shape proc array0 array1 …</i></dt>
+<dd><p>引数<var>array0</var>, <var>array1</var>, …は同じシェイプを持つ
+配列でなければなりません。各入力配列の対応する要素について、
+それらを引数として<var>proc</var>が呼ばれ、その戻り値から
+新たな配列が作られて返されます。
+二番目の呼び出し形式は第二引数にシェイプを取ります。
+それは入力配列のシェイプと一致しなければなりません。
+意味的には冗長ですが、<var>shape</var>がリテラルである場合、
+何らかの最適化がなされる可能性があります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(array-map - (array (shape 0 2 0 2) 1 2 3 4))
+  ⇒ #,(&lt;array&gt; (0 2 0 2) -1 -2 -3 -4)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dmap_0021"></a><u>Function:</u> <b>array-map!</b><i> array proc array0 array1 …</i></dt>
+<dt><a name="index-array_002dmap_0021-1"></a><u>Function:</u> <b>array-map!</b><i> array shape proc array0 array1 …</i></dt>
+<dd><p><code>array-map</code>と似ていますが、<var>proc</var>の結果は
+与えられた<var>array</var>に格納されます。<var>array</var>のシェイプは
+入力配列のシェイプと同じでなければなりません。
+戻り値は未定義です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002d_003evector"></a><u>Function:</u> <b>array-&gt;vector</b><i> array</i></dt>
+<dt><a name="index-array_002d_003elist"></a><u>Function:</u> <b>array-&gt;list</b><i> array</i></dt>
+<dd><p><var>array</var>の全要素を並べたベクタもしくはリストを作って返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(array-&gt;vector
+ (tabulate-array (shape 1 3 1 4)
+                 (^(i j) (+ (* 10 i) j))))
+ ⇒ #(11 12 13 21 22 23)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dconcatenate"></a><u>Function:</u> <b>array-concatenate</b><i> a b :optional dimension</i></dt>
+<dd><p>指定の次元で配列を結合します。指定の次元の大きさは一致していなければなりません。
+それ以外のシェイプは異なっていても構いません。配列のランクはいくつであっても
+構いませんが、両配列のランクは同じでなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;;  [a b]              [a b]
+;;  [c d] (+)       =&gt; [c d]
+;;            [e f]    [e f]
+(array-concatenate
+ (array (shape 0 2 0 2) 'a 'b 'c 'd)
+ (array (shape 0 1 0 2) 'e 'f))
+ ⇒ #,(&lt;array&gt; (0 3 0 2) a b c d e f)
+
+;;  [a b]     [e]    [a b e]
+;;  [c d] (+) [f] =&gt; [c d f]
+(array-concatenate
+ (array (shape 0 2 0 2) 'a 'b 'c 'd)
+ (array (shape 0 2 0 1) 'e 'f)
+ 1)
+ ⇒ #,(&lt;array&gt; (0 2 0 3) a b e c d f)
+
+;; 結合次元の大きさが同じであればインデックスの範囲は異なっていてもよい
+(array-concatenate
+ (array (shape 0 2 0 2) 'a 'b 'c 'd)
+ (array (shape 1 3 0 1) 'e 'f) 1)
+ ⇒ #,(&lt;array&gt; (0 2 0 3) a b e c d f)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dtranspose"></a><u>Function:</u> <b>array-transpose</b><i> array :optional dim1 dim2</i></dt>
+<dd><p><var>array</var>はランク2以上の配列でなければなりません。
+配列の<var>dim1</var>番目の次元と<var>dim2</var>番目の次元を転置します。
+デフォルトは0番目と1番目です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002drotate_002d90"></a><u>Function:</u> <b>array-rotate-90</b><i> array :optional dim1 dim2</i></dt>
+<dd><p><var>array</var>はランク2以上の配列でなければなりません。
+配列の<var>dim1</var>番目の次元と<var>dim2</var>番目の次元をそれぞれ行と列とみなした行列を
+考え、その行列を時計まわりに90度回転した新たな配列を作って返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; [1 2 3]      [4 1]
+;; [4 5 6]  =&gt;  [5 2]
+;;              [6 3]
+(array-rotate-90 (array (shape 0 2 0 3) 1 2 3 4 5 6))
+ ⇒ #,(&lt;array&gt; (0 3 0 2) 4 1 5 2 6 3)
+</pre></td></tr></tbody></table>
+
+<p><var>array</var>のランクが2より大きい場合は、<var>array</var>は「部分配列の行列」
+と考えられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002dflip"></a><u>Function:</u> <b>array-flip</b><i> array :optional dimension</i></dt>
+<dt><a name="index-array_002dflip_0021"></a><u>Function:</u> <b>array-flip!</b><i> array :optional dimension</i></dt>
+<dd><p>配列の内容を、指定番目の次元 (デフォルトは0) で裏返しにします。
+<code>array-flip!</code>は<var>array</var>を直接変更してそれを返します。
+<code>array-flip</code>は<var>array</var>には触らず、裏返した内容で新たな配列を作って返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; [1 2 3]  =&gt;  [4 5 6]
+;; [4 5 6]      [1 2 3]
+(array-flip (array (shape 0 2 0 3) 1 2 3 4 5 6))
+ ⇒ #,(&lt;array&gt; (0 2 0 3) 4 5 6 1 2 3)
+
+;; [1 2 3]  =&gt;  [3 2 1]
+;; [4 5 6]      [6 5 4]
+(array-flip (array (shape 0 2 0 3) 1 2 3 4 5 6) 1)
+ ⇒ #,(&lt;array&gt; (0 2 0 3) 3 2 1 6 5 4)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-identity_002darray"></a><u>Function:</u> <b>identity-array</b><i> dimension :optional class</i></dt>
+<dd><p>ランク2で行列ともに<var>dimension</var>である単位行列を作って返します。
+配列のクラスを<var>class</var>に渡せば、結果はそのインスタンスになります。
+デフォルトは<code>&lt;array&gt;</code>クラスです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(identity-array 3)
+ ⇒ #,(&lt;array&gt; (0 3 0 3) 1 0 0 0 1 0 0 0 1)
+
+(identity-array 3 &lt;f32array&gt;)
+ ⇒ #,(&lt;f32array&gt; (0 3 0 3) 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dinverse"></a><u>Function:</u> <b>array-inverse</b><i> array</i></dt>
+<dd><p><var>array</var>を行列とみなし、その逆行列を返します。
+<var>array</var>は2次元で、正方行列となるシェイプを持っていなければなりません。
+そうでない場合はエラーが投げられます。
+</p>
+<p><var>array</var>が正則行列でない場合は<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-determinant"></a><u>Function:</u> <b>determinant</b><i> array</i></dt>
+<dt><a name="index-determinant_0021"></a><u>Function:</u> <b>determinant!</b><i> array</i></dt>
+<dd><p><var>array</var>を行列とみなし、その行列式を計算します。
+<var>array</var>は2次元で、正方行列となるシェイプを持っていなければなりません。
+そうでない場合はエラーが投げられます。
+</p>
+<p>また、<code>determinant!</code>は計算過程で<var>array</var>の内容を破壊します。
+<code>determinant</code>は計算の前に<var>array</var>をコピーするオーバヘッドが
+ありますが、<var>array</var>は変更されません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002dmul"></a><u>Function:</u> <b>array-mul</b><i> a b</i></dt>
+<dd><p>配列<var>a</var>と<var>b</var>はともに2次元でなければなりません。
+それらを行列とみなして乗算を行います。<var>a</var>の行数と<var>b</var>の列数は
+一致していなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;;           [6 5]
+;; [1 2 3] x [4 3] =&gt; [20 14]
+;; [4 5 6]   [2 1]    [56 41]
+
+(array-mul (array (shape 0 2 0 3) 1 2 3 4 5 6)
+           (array (shape 0 3 0 2) 6 5 4 3 2 1))
+ ⇒ #,(&lt;array&gt; (0 2 0 2) 20 14 56 41)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-array_002dexpt"></a><u>Function:</u> <b>array-expt</b><i> array pow</i></dt>
+<dd><p><var>array</var>の<var>pow</var>乗を返します。<var>array</var>は正方行列、
+<var>pow</var>は非負の正確な整数でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-array_002ddiv_002dleft"></a><u>Function:</u> <b>array-div-left</b><i> a b</i></dt>
+<dt><a name="index-array_002ddiv_002dright"></a><u>Function:</u> <b>array-div-right</b><i> a b</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-array_002dadd_002delements"></a><u>Function:</u> <b>array-add-elements</b><i> array array-or-scalar …</i></dt>
+<dt><a name="index-array_002dadd_002delements_0021"></a><u>Function:</u> <b>array-add-elements!</b><i> array array-or-scalar …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-array_002dsub_002delements"></a><u>Function:</u> <b>array-sub-elements</b><i> array array-or-scalar …</i></dt>
+<dt><a name="index-array_002dsub_002delements_0021"></a><u>Function:</u> <b>array-sub-elements!</b><i> array array-or-scalar …</i></dt>
+<dt><a name="index-array_002dmul_002delements"></a><u>Function:</u> <b>array-mul-elements</b><i> array array-or-scalar …</i></dt>
+<dt><a name="index-array_002dmul_002delements_0021"></a><u>Function:</u> <b>array-mul-elements!</b><i> array array-or-scalar …</i></dt>
+<dt><a name="index-array_002ddiv_002delements"></a><u>Function:</u> <b>array-div-elements</b><i> array array-or-scalar …</i></dt>
+<dt><a name="index-array_002ddiv_002delements_0021"></a><u>Function:</u> <b>array-div-elements!</b><i> array array-or-scalar …</i></dt>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

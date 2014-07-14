@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.21 rfc.ftp - FTPクライアント</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.21 rfc.ftp - FTPクライアント">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.21 rfc.ftp - FTPクライアント">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="FTP_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00a2_00e3_0083_00b3_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_146.html#HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_148.html#HMAC_00e9_008d_00b5_00e4_00bb_0098_00e3_0081_008d_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002eftp-_002d-FTP_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00a2_00e3_0083_00b3_00e3_0083_0088"></a>
+<h2 class="section">11.21 <code>rfc.ftp</code> - FTPクライアント</h2>
+
+<dl>
+<dt><a name="index-rfc_002eftp"></a><u>Module:</u> <b>rfc.ftp</b></dt>
+<dd><a name="index-rfc_002eftp-1"></a>
+<p>このモジュールはFTPサーバーにアクセスするための便利関数群を提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cftp_002dconnection_003e"></a><u>Class:</u> <b>&lt;ftp-connection&gt;</b></dt>
+<dd><a name="index-ftp_002dconnection"></a>
+<p>ひとつのサーバーへのFTPコネクションを保持するオブジェクト。以下の公開
+スロットがあります。
+</p>
+<dl>
+<dt><a name="index-transfer_002dtype"></a><u>Instance Variable of &lt;ftp-connection&gt;:</u> <b>transfer-type</b></dt>
+<dd><p>FTPの転送タイプ。以下のシンボルのどれかひとつでなければなりません。
+<code>ascii</code>、<code>binary</code> (デフォルト)、および<code>image</code>。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-passive"></a><u>Instance Variable of &lt;ftp-connection&gt;:</u> <b>passive</b></dt>
+<dd><p>パッシブコネクションを使うとき真。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-log_002ddrain-1"></a><u>Instance Variable of &lt;ftp-connection&gt;:</u> <b>log-drain</b></dt>
+<dd><p>このスロットは<code>&lt;log-drain&gt;</code>のインスタンス(<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0"><code>gauche.logger</code> - ユーザレベルのロギング</a>参照)
+を保持しているかあるいは<code>#f</code>でなければなりません。<code>&lt;log-drain&gt;</code>
+のインスタンスを保持している場合、FTP通信のログがそこに記録されます。
+</p>
+</dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cftp_002derror_003e"></a><u>Condition Type:</u> <b>&lt;ftp-error&gt;</b></dt>
+<dd><a name="index-ftp_002derror"></a>
+<p>このタイプの例外はFTPサーバーがエラーコードを返したときに投げられます。
+<code>&lt;error&gt;</code>を継承しています。メッセージフィールドにはステータスコー
+ドを含むサーバーからの返答が含まれます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dftp_002dconnection"></a><u>Function:</u> <b>call-with-ftp-connection</b><i> host proc :key passive port username password account log-drain</i></dt>
+<dd><p>高水準の便利関数で、ひとつのFTPサーバーへのFTPコネクションをオープンし、
+与えられた手続きを呼びます。
+</p>
+<p>接続するサーバーは<var>host</var>で指定します。オプションでユーザー名、ポー
+ト番号を<code><var>user</var>@<var>servername</var>:<var>port</var></code>という形式で指定
+できます。もしあれば、<var>host</var>の部分をキーワード引数にすることもでき
+ます。
+</p>
+<p><var>host</var>へのFTPコネクション確立が成功したら、<var>proc</var>が引数を1つとっ
+て呼ばれます。この引数は<code>&lt;ftp-connection&gt;</code>のインスタンスです。
+<var>proc</var>から返ったときにこのコネクションはクローズされ、<var>proc</var>の
+返り値が<code>call-with-ftp-connection</code>から返されます。例外がなげられ
+たら、その例外が<code>call-with-ftp-connection</code>から外へでる前にFTPコネ
+クションはクローズされます。
+</p>
+<p>キーワード引数<var>passive</var>に真値を与えると、FTPコネクションはパッシブ
+モードになります。デフォルトではアクティブモードです。
+</p>
+<p>キーワード引数<var>port</var>、<var>username</var>および<var>password</var>は
+それぞれ、ポート番号、ユーザー名、パスワードを指定するのに使います。
+省略された場合のデフォルトは、ポート番号が21,<var>username</var>が
+<code>"anonymous"</code>、<var>password</var>が<code>"anonymous@"</code>にセットされま
+す。ポート番号とユーザー名は<var>host</var>引数で指定されたものが優先されま
+す。
+</p>
+<p>キーワード引数<var>account</var>が与えられた場合には、その値が、ログイン時
+にサーバーからの要求でFTPの<code>ACCT</code>コマンドに渡されます。デフォルト
+では空文字列<code>""</code>です。
+</p>
+<p>キーワード引数<var>log-drain</var>が生成したFTPコネクションの
+<code>log-drain</code>スロットに設定されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dtransfer_002dtype"></a><u>Function:</u> <b>ftp-transfer-type</b><i> conn</i></dt>
+<dd><p>指定したFTPコネクション<code>conn</code>の転送タイプを返します。セッターを適
+用することもできます。たとえば、<code>(set! (ftp-transfer-type conn) 'ascii)</code>
+とします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dpassive_003f"></a><u>Function:</u> <b>ftp-passive?</b><i> conn</i></dt>
+<dd><p>指定したFTPコネクションがパッシブモードである場合でその場合に限り真を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dlogin"></a><u>Function:</u> <b>ftp-login</b><i> host :key passive port username password account log-drain</i></dt>
+<dd><p><var>host</var>で指定されたFTPサーバーに接続し、ユーザー認証をすませ、新し
+く生成した<code>&lt;ftp-connection&gt;</code>のインスタンスを返します。この手続き
+は<code>call-with-ftp-connection</code>を使ったときに暗黙の内に呼ばれます。
+<var>host</var>引数およびキーワード引数のセマンティクスは
+<code>call-with-ftp-connection</code>と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dquit"></a><u>Function:</u> <b>ftp-quit</b><i> conn</i></dt>
+<dd><p>FTPの<code>QUIT</code>コマンドをコネクション<var>conn</var>に送り、コネクションを
+シャットダウンします。この手続きは<code>call-with-ftp-connection</code>を使っ
+たときに暗黙の内に呼ばれます。
+</p>
+<p>いったんシャットダウンしたコネクションをつかっての通信はできません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dchdir"></a><u>Function:</u> <b>ftp-chdir</b><i> conn dirname</i></dt>
+<dd><p>リモートディレクトリを<var>dirname</var>に変更します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dremove"></a><u>Function:</u> <b>ftp-remove</b><i> conn path</i></dt>
+<dd><p><var>path</var>で指定したリモートファイルを削除します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dhelp"></a><u>Function:</u> <b>ftp-help</b><i> conn :optional option …</i></dt>
+<dd><p>FTPコマンド<code>HELP</code>を送ります。<var>Option</var>は文字列でなければなりま
+せん。これは<code>HELP</code>コマンドの引数にわたされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dmkdir"></a><u>Function:</u> <b>ftp-mkdir</b><i> conn dirname</i></dt>
+<dd><p>ディレクトリ<var>dirname</var>を作成します。作成されたディレクトリ名が返り
+ます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dcurrent_002ddirectory"></a><u>Function:</u> <b>ftp-current-directory</b><i> conn</i></dt>
+<dd><p>現在のリモートディレクトリを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dsite"></a><u>Function:</u> <b>ftp-site</b><i> conn arg</i></dt>
+<dd><p>FTPコマンド<code>SITE</code>を引数<var>arg</var>とともに送ります。<code>SITE</code>コマ
+ンドのセマンティクスはサーバーに依存します。返り値はサーバーのリプライ
+です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002drmdir"></a><u>Function:</u> <b>ftp-rmdir</b><i> conn dirname</i></dt>
+<dd><p><var>dirname</var>で指定したリモートディレクトリを削除します。返り値はサー
+バーのリプライです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dstat"></a><u>Function:</u> <b>ftp-stat</b><i> conn :optional pathname</i></dt>
+<dd><p>FTPコマンド<code>STAT</code>をサーバーに送信します。
+RFC959ではこのコマンドのセマンティクスをいくつか定義しています。詳細は
+RFC959を見てください。返り値はサーバーのリプライです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dsystem"></a><u>Function:</u> <b>ftp-system</b><i> conn</i></dt>
+<dd><p>FTPコマンド<code>SYST</code>をつかってサーバーのオペレーティングシステムを問
+合せます。返り値はステータスコードを含まないサーバーのリプライです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-ftp-connection "localhost" ftp-system)
+  ⇒ "UNIX Type: L8"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dsize"></a><u>Function:</u> <b>ftp-size</b><i> conn path</i></dt>
+<dd><p><var>path</var>で指定したリモートファイルのサイズを問合せます。
+整数値が返ります。
+</p>
+<p>註：コネクションがasciiモードかbinaryモードかによって、返されるサイズは
+異なるかもしれません。ftpサーバによっては、binaryモードでしか
+sizeリクエストに答えないものもあります。この関数を呼ぶ際には、
+コネクションに望みのtransfer typeがセットされているようにしてください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dmdtm"></a><u>Function:</u> <b>ftp-mdtm</b><i> conn path</i></dt>
+<dd><p><var>path</var>で指定したリモートファイルの更新時刻を問合せます。この関数は
+サーバーからのリプライをステータスコードも含めそのまま返します。解析済
+みの結果が欲しいときは後述の<code>ftp-mtime</code>を使ってください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dmtime"></a><u>Function:</u> <b>ftp-mtime</b><i> conn path :optional local-time?</i></dt>
+<dd><p><var>path</var>で指定したリモートファイルの更新日時を問合せます。結果は
+<code>&lt;date&gt;</code>オブジェクト(<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"><code>srfi-19</code> - 時間のデータ型と手続き</a>参照)で
+返ります。<code>local-time?</code>が真値に設定されている場合、日付はローカル
+時刻で返ります。そうでない場合は日付はUTCです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dnoop"></a><u>Function:</u> <b>ftp-noop</b><i> conn</i></dt>
+<dd><p>FTPコマンド<code>NOOP</code>を送り、サーバーからのリプライを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dlist"></a><u>Function:</u> <b>ftp-list</b><i> conn :optional path</i></dt>
+<dd><p><var>path</var>で指定されたリモートディレクトリあるいはリモートファイル内の
+ファイルに関する情報を返します。<var>path</var>指定がない場合は現在のリモー
+トディレクトリで、結果のフォーマットは<code>ls(1)</code>のフォーマットと非常
+によく似ています。文字列のリストが返り、それぞれの文字列はサーバーのリ
+プライの行に対応します。正確なフォーマットについてはサーバーに依存しま
+す。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dname_002dlist"></a><u>Function:</u> <b>ftp-name-list</b><i> conn :optional path</i></dt>
+<dt><a name="index-ftp_002dls"></a><u>Function:</u> <b>ftp-ls</b><i> conn :optional path</i></dt>
+<dd><p><var>path</var>で指定したパスもしくは現在のリモートディレクトリにあるファイ
+ル名リストを返します。ただし、他の情報は含みません。<code>ftp-ls</code>は
+<code>ftp-name-list</code>の別名です。便利なので定義してあります。
+</p>
+<p>リモートディレクトリにファイルが含まれていないときにはサーバーはエラー
+を返すことがあることに注意してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dget"></a><u>Function:</u> <b>ftp-get</b><i> conn path :key sink flusher</i></dt>
+<dd><p>リモートファイル<var>path</var>を検索します。検索データは<var>sink</var>で与えら
+れた出力ポートに送られます。すべてのデータが検索されたあと、
+<var>flusher</var>で与えられた手続きをポート<var>sink</var>を引数として呼びます。
+返り値は<code>ftp-get</code>から返されたものです。
+</p>
+<p><var>sink</var>および<var>flusher</var>のデフォルト値はそれぞれ、新しく作成され
+た文字列ポートと<code>get-output-string</code>です。すなわち、<code>ftp-get</code>
+はデフォルトでは検索データを文字列として返します。巨大なファイルの場合
+このデフォルトの挙動ではありがたくありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dput"></a><u>Function:</u> <b>ftp-put</b><i> conn from-file :optional to-file</i></dt>
+<dd><p><var>from-file</var>で指定したローカルファイルを<var>to-file</var>で指定した名前
+でリモートサーバーに送信します。<var>to-file</var>が省略された場合にはベー
+ス名として<var>from-file</var>が使われます。返り値はサーバーのレスポンスで
+す。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002dput_002dunique"></a><u>Function:</u> <b>ftp-put-unique</b><i> conn from-file</i></dt>
+<dd><p><var>from-file</var>で指定したローカルファイルをリモートサーバーへ送信しま
+す。リモート側のファイル名重複しないことを保証します。返り値は2つで、
+最終的なリモートサーバーからのレスポンスとリモートファイル名です。2つ
+めの値は、リモートサーバーがRFC1123をサポートしていない(ほとんどない)
+場合に<code>#f</code>になります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ftp_002drename"></a><u>Function:</u> <b>ftp-rename</b><i> conn from-name to-name</i></dt>
+<dd><p><var>from-name</var>で指定したリモートファイル名を<var>to-name</var>に変更する。
+返り値は最終的なサーバーのレスポンスです。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_146.html#HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_148.html#HMAC_00e9_008d_00b5_00e4_00bb_0098_00e3_0081_008d_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

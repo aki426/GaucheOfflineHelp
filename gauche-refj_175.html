@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.49 util.digest - メッセージダイジェストフレームワーク</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.49 util.digest - メッセージダイジェストフレームワーク">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.49 util.digest - メッセージダイジェストフレームワーク">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_174.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_176.html#g_t_00e5_0090_008c_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002edigest-_002d-_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<h2 class="section">11.49 <code>util.digest</code> - メッセージダイジェストフレームワーク</h2>
+
+<dl>
+<dt><a name="index-util_002edigest"></a><u>Module:</u> <b>util.digest</b></dt>
+<dd><a name="index-util_002edigest-1"></a>
+<p>このモジュールは、MD5 (<a indepth="true" href="gauche-refj_153.html#MD5_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088"><code>rfc.md5</code> - MD5メッセージダイジェスト</a>参照)や
+SHA (<a indepth="true" href="gauche-refj_156.html#SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088"><code>rfc.sha</code> - SHAメッセージダイジェスト</a>参照)などの、メッセージ
+ダイジェストアルゴリズムのためのベースクラスと一般的なインターフェースを
+提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cmessage_002ddigest_002dalgorithm_002dmeta_003e"></a><u>Class:</u> <b>&lt;message-digest-algorithm-meta&gt;</b></dt>
+<dd><a name="index-message_002ddigest_002dalgorithm_002dmeta"></a>
+<p>メッセージダイジェストアルゴリズムの実装のメタクラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cmessage_002ddigest_002dalgorithm_003e"></a><u>Class:</u> <b>&lt;message-digest-algorithm&gt;</b></dt>
+<dd><a name="index-message_002ddigest_002dalgorithm"></a>
+<p>メッセージダイジェストアルゴリズムの実装のベースクラスです。
+</p></dd></dl>
+
+<p>メッセージダイジェストアルゴリズムの具体サブクラスは、以下のメソッドを
+実装しなければなりません。
+</p>
+<dl>
+<dt><a name="index-digest_002dupdate_0021"></a><u>Generic function:</u> <b>digest-update!</b><i> algorithm data</i></dt>
+<dd><p>メッセージダイジェストアルゴリズムのインスタンスを取り、
+それを(不完全な可能性のある)文字列で表されるデータ<var>data</var>で
+更新します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-digest_002dfinal_0021"></a><u>Generic function:</u> <b>digest-final!</b><i> algorithm</i></dt>
+<dd><p>メッセージダイジェストアルゴリズムのインスタンスを終了させ、
+そのダイジェストの結果を不完全文字列で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-digest"></a><u>Generic function:</u> <b>digest</b><i> class</i></dt>
+<dd><p>ダイジェストルーチンのラッパです。メッセージダイジェストアルゴリズム
+<var>class</var>を与え、現在の入力ポートから入力データをEOFまで読み込み、
+そのダイジェストの結果を不完全文字列で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-digest_002dstring"></a><u>Generic function:</u> <b>digest-string</b><i> class string</i></dt>
+<dd><p>ダイジェストルーチンのラッパです。メッセージダイジェストアルゴリズム
+<var>class</var>を与え、入力データを<var>string</var>から読み込み、
+そのダイジェストの結果を不完全文字列で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-digest_002dhexify"></a><u>Function:</u> <b>digest-hexify</b><i> digest-result</i></dt>
+<dd><p>ユーティリティ手続きです。ダイジェストの結果、<var>digest-result</var>を
+与えると、それを16進文字列に変換します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_174.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_176.html#g_t_00e5_0090_008c_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

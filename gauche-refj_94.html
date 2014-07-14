@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.20 gauche.partcont - 部分継続</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.20 gauche.partcont - 部分継続">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.20 gauche.partcont - 部分継続">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_0083_00a8_00e5_0088_0086_00e7_00b6_0099_00e7_00b6_009a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_93.html#g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_95.html#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002epartcont-_002d-_00e9_0083_00a8_00e5_0088_0086_00e7_00b6_0099_00e7_00b6_009a"></a>
+<h2 class="section">9.20 <code>gauche.partcont</code> - 部分継続</h2>
+
+<dl>
+<dt><a name="index-gauche_002epartcont"></a><u>Module:</u> <b>gauche.partcont</b></dt>
+<dd><a name="index-gauche_002epartcont-1"></a>
+<p>Gaucheは内部的に、部分継続(限定継続と呼ばれることもあります)を
+ネイティブでサポートしています。このモジュールはその機能を
+一般的に使えるように公開するものです。
+</p></dd></dl>
+
+<p>註: 部分継続はふたつのオペレータ、<code>reset</code>と<code>shift</code>を使います。
+これらは元の論文で導入された名前ですが、既に用語として定着した感があります。
+ライブラリ関数名としては一般的に過ぎる名前なので、よりわかりやすい名前を
+つけようかとも考えたのですが、部分継続を話題にする際にはこれらの用語が
+使われるのが普通なので、最終的にこの名前をキープすることにしました。
+プログラム中で他の識別子とぶつかったり紛らわしい場合は、モジュールのimport
+時に<code>:prefix</code>インポート指示子(<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8">モジュールの使用</a>参照)を
+次のように使うと良いでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; Add prefix pc: to the 'reset' and 'shift' operators.
+(use gauche.partcont :prefix pc:)
+
+(pc:reset ... (pc:shift k ....) )
+</pre></td></tr></tbody></table>
+
+<dl>
+<dt><a name="index-reset"></a><u>Macro:</u> <b>reset</b><i> expr …</i></dt>
+<dd><p>現在の継続を保存し、<var>expr</var> … を<em>空の継続</em>を伴って実行します。
+空の継続は<code>shift</code>オペレータが捕捉する継続の終端になります。
+</p>
+<p><em>暗黙の限定継続</em>について:
+Gaucheは内部的に、<code>reset</code>相当の操作を行う場合があります。
+CルーチンがSchemeを継続渡し形式でない方法で呼び出す場合です。
+(C APIをご存知の方へ: <code>Scm_EvalRec()</code>, <code>Scm_Apply*Rec()</code>,
+<code>Scm_Eval()</code>、および<code>Scm_Apply()</code>が相当する関数です。)
+これらの関数はCの呼び出し側へ、値をたかだか1度だけ返すことが期待されています。
+Schemeの継続は無限エクステントを持ち、一度返ったルーチンから再び返ることが
+あり得るため、こういったC関数とは相性が良くありません。
+これらの関数を呼び出す時に、Gaucheは限定継続を自動的に作成します。
+</p>
+<p>例えば、<code>gosh</code>の<code>main</code>関数はSchemeのREPLを
+<code>Scm_Eval()</code>を通じて呼び出します。ということは、
+REPL全体が<code>reset</code>で囲まれているということです。
+従って<code>reset</code>の外側で<code>shift</code>を呼び出すと、その<code>shift</code>の
+継続はREPL全体の継続と同じになります。すなわち、<code>gosh</code>が終了するということです。
+暗黙の限定継続に気づかないと、この振る舞いにはびっくりするかもしれません。
+</p>
+<p>他に暗黙の限定継続が作られる例をいくつかあげます。
+仮想ポートのハンドラ (<a indepth="true" href="gauche-refj_107.html#g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"><code>gauche.vport</code> - 仮想ポート</a>参照)、
+<code>write</code>や<code>display</code>から呼ばれる<code>object-apply</code>メソッド、
+<code>glut-display-func</code>により登録されたGUIコールバック
+(詳しくはGauche-glのマニュアル参照)などです。
+</p>
+<p>そのような暗黙の限定継続を心配する必要は滅多にありません。Cで実装された
+組み込み関数や拡張関数のほとんどは継続渡し形式でSchemeを呼んでいるため、
+通常継続も限定継続も制限なく使うことができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shift"></a><u>Macro:</u> <b>shift</b><i> var expr …</i></dt>
+<dd><p>この式からもっとも最近の<code>reset</code>により切り取られた空の継続までの継続を
+手続きに包み、それを<var>var</var>に束縛します。
+そしてもっとも近い<var>reset</var>式の継続を伴って<var>expr</var> …を実行します。
+</p>
+<p>すなわち、<var>expr</var> …を実行後、その結果の値はもっとも最近の<code>reset</code>
+の戻り値を待っている式に直ちに渡されます。
+<var>var</var>に束縛されている部分継続が実行されると、それに渡された値は
+<code>shift</code>の戻り値を待っている継続に直ちに渡されます。
+その部分継続の実行が終了すると、その結果の値は<var>var</var>を呼び出した式の
+戻り値となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002fpc"></a><u>Function:</u> <b>call/pc</b><i> proc</i></dt>
+<dd><p>これは<code>shift</code>のラッパーです。
+<code>(shift k expr …)</code>は<code>(call/pc (lambda (k) expr …))</code>
+等価です。<code>call/cc</code>と似た形の呼び出し形式の方が便利な場合があるので
+用意しました。
+</p></dd></dl>
+
+<p>さてと… もしあなたが、継続の国の血を引く珍しい種族の一員でなければ、
+たぶんここまで読んできて、脳みそがこんがらがっていることでしょう。
+何が起きているか、厳密ではないが直感的な説明を試みてみます。
+</p>
+<p>手続きAが式Bを呼び出すとします。AがBの戻り値を受け取ってさらに計算を続ける場合、
+Bが戻ってからの残りの計算部分をA’として分離することにすれば、全体の制御の流れは
+次のように一本の鎖で表現できるでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">A -&gt; B -&gt; A'
+</pre></td></tr></tbody></table>
+
+<p><code>A -&gt; B</code>は手続き呼び出しで、<code>B -&gt; A'</code>は手続きからのリターンですが、
+手続き呼び出しとリターンは本質的には同じものでしたね。
+</p>
+<p>Bはその中から別の手続きCをさらに呼び出しているかもしれません。
+コードのある部分に着目した場合、そこにある制御の鎖を
+次のようにイメージすることができるでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">... -&gt; A -&gt; B -&gt; C -&gt; .... -&gt; C' -&gt; B' -&gt; A' -&gt; ...
+</pre></td></tr></tbody></table>
+
+<p>魔法の手続き<code>call/cc</code>は、そのフォームの直後に来る鎖の先頭
+(下の図で<code>*</code>で示されている部分)を取り上げて、それを
+与えられた手続きに引数として渡すものです (下の図の<code>k</code>)。
+従って、<code>k</code>が呼び出されると、制御は直ちに<code>*</code>へとジャンプします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">... -&gt; A -&gt; B -&gt; (call/cc -&gt; (lambda (k) ... ) ) -&gt; B' -&gt; A' -&gt; ...
+                                      |             ^
+                                      \-----------&gt; *
+</pre></td></tr></tbody></table>
+
+<p><code>call/cc</code>で難しいのは、制御の鎖の片方しか取り出せないことです。
+もう一方、鎖の右側がどこにつながっているのか、コードは知ることができません。
+そもそも、鎖の右側に何が来るかは、プログラム全体を知らないとわからないのです。
+この、グローバルな性質が、<code>call/cc</code>を扱い辛いものにしています。
+</p>
+<p><code>reset</code>プリミティブはこの継続の鎖を<em>切断</em>します。
+元の鎖 (下の図の<code>x</code>で示される端) は保存され、
+<code>reset</code>式の継続自体は宙ぶらりんになります (下の図の<code>o</code>で示される端)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">... -&gt; A -&gt; B -&gt; (reset ... ) -&gt; o
+
+                                 x -&gt; B ' -&gt; A' -&gt; ...
+</pre></td></tr></tbody></table>
+
+<p>ここでひとつ規則を導入します。制御が<code>o</code>の端に達した場合、
+直近に保存された<code>x</code>の端から制御を再開するとします。
+従って、単に<code>reset</code>を挿入するだけでは、目に見える違いは生じません。
+</p>
+<p><code>reset</code>の中に<code>shift</code>を挿入したらどうなるでしょう。
+resetの内部の鎖に<code>shift</code>を形式的に挿入してみるとこうなります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">... -&gt; (reset -&gt; X -&gt; Y -&gt; (shift k ... ) -&gt; Y' -&gt; X' ) -&gt; o
+</pre></td></tr></tbody></table>
+
+<p>実際には次のような動作となります。
+</p>
+<ol>
+<li>
+<code>shift</code>は、<code>reset</code>の終端までの<em>仕事の残りの部分</em>を取り出し、
+それを変数<var>k</var>に束縛します。
+</li><li>
+<code>shift</code>自身の継続は、空の継続となります。したがって<code>shift</code>から抜けると、
+<code>shift</code>以降対応する<code>reset</code>までの操作はスキップされます。
+</li></ol>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">... -&gt; (reset -&gt; X -&gt; Y -&gt; (shift k ... ) ---------&gt; ) -&gt; o
+                                  |
+                                  \-------&gt; Y' -&gt; X' ) -&gt; o
+</pre></td></tr></tbody></table>
+
+<p>別の言い方をすれば、<code>reset</code>フォームをひとつの仕事の単位とすれば、
+その中の<code>shift</code>は、その仕事の残りの部分を<em>一時保存</em>して
+仕事を中断して戻ってくるのです。
+</p>
+<p>例を見てみます。次に示す<var>walker</var>引数は、
+「手続きと何らかのコレクションを取り、手続きをコレクションの各要素に
+適用してゆく」という手続きとします。
+<var>walker</var>の戻り値は無視します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (inv walker)
+  (lambda (coll)
+    (define (continue)
+      (reset (walker (lambda (e) (shift k (set! continue k) e)) coll)
+             (eof-object)))
+    (lambda () (continue))))
+</pre></td></tr></tbody></table>
+
+<p><var>walker</var>の典型的な例は<code>for-each</code>です。手続きとリストを取り、
+リストの各要素に手続きを適用するからです。
+<code>for-each</code>を上の<code>inv</code>に渡すと、<code>for-each</code>を
+<em>裏返した</em>手続きが得られます。どういうことでしょう?
+下のやりとりを見てみましょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define inv-for-each (inv for-each))
+inv-for-each
+gosh&gt; (define iter (inv-for-each '(1 2 3)))
+iter
+gosh&gt; (iter)
+1
+gosh&gt; (iter)
+2
+gosh&gt; (iter)
+3
+gosh&gt; (iter)
+#&lt;eof&gt;
+</pre></td></tr></tbody></table>
+
+<p>リストを<code>inv-for-each</code>に渡すと、呼ばれる度にリストの各要素を順に返す
+イテレータ手続きが得られます。というのも、<code>iter</code>が呼ばれる度に、
+<code>inv</code>の中で作られた<code>shift</code>は<em>リストの残りの部分をたどって行く</em>
+という仕事の残りを<code>continue</code>に束縛して、現在の要素<var>e</var>を返すからです。
+</p>
+<p><var>walker</var>はリストを取る必要はありません。次に示す<code>for-each-leaf</code>は
+木を取って、<var>f</var>をペアでない要素に適用してゆく手続きです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (for-each-leaf f tree)
+  (match tree
+   [(x . y) (for-each-leaf f x) (for-each-leaf f y)]
+   [x (f x)]))
+</pre></td></tr></tbody></table>
+
+<p>これも<code>for-each</code>と同じように裏返すことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define iter2 ((inv for-each-leaf) '((1 . 2) . (3 . 4))))
+iter2
+gosh&gt; (iter2)
+1
+gosh&gt; (iter2)
+2
+gosh&gt; (iter2)
+3
+gosh&gt; (iter2)
+4
+gosh&gt; (iter2)
+#&lt;eof&gt;
+</pre></td></tr></tbody></table>
+
+<p><code>util.combinations</code>モジュール (<a indepth="true" href="gauche-refj_174.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"><code>util.combinations</code> - 組み合わせ</a>参照) には、
+コレクションの全ての並べ替えに対して与えられた手続きを<em>呼び出す</em>手続きがあります。
+それを<code>inv</code>に渡せば、呼ばれる度に並べ替えを<em>返す</em>手続きが得られます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define next ((inv permutations-for-each) '(a b c)))
+next
+gosh&gt; (next)
+(a b c)
+gosh&gt; (next)
+(a c b)
+gosh&gt; (next)
+(b a c)
+gosh&gt; (next)
+(b c a)
+gosh&gt; (next)
+(c a b)
+gosh&gt; (next)
+(c b a)
+gosh&gt; (next)
+#&lt;eof&gt;
+</pre></td></tr></tbody></table>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_93.html#g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_95.html#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

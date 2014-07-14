@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.24 比較とソート</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.24 比較とソート">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.24 比較とソート">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_00af_0094_00e8_00bc_0083_00e3_0081_00a8_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_61.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00af_0094_00e8_00bc_0083_00e3_0081_00a8_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088-1"></a>
+<h2 class="section">6.24 比較とソート</h2>
+
+<dl>
+<dt><a name="index-compare"></a><u>Function:</u> <b>compare</b><i> obj1 obj2</i></dt>
+<dd><p>一般的な比較手続きです。<var>obj1</var>が<var>obj2</var>より小さければ-1を、
+等しければ0を、大きければ1を返します。<var>obj1</var>と<var>obj2</var>が
+比較できない場合はエラーとなります。
+</p>
+<p>いくつかの組み込み型は「自然な」比較順を用いて比較されます。
+他の組み込み型は通常比較不可能です。Schemeで定義されたクラスについては、
+この手続きはジェネリックファンクション<code>object-compare</code>を
+呼び出します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-object_002dcompare"></a><u>Generic Function:</u> <b>object-compare</b><i> obj1 obj2</i></dt>
+<dd><p>このジェネリックファンクションを特殊化することで
+<code>compare</code>手続きをユーザ定義クラスに対して動作するように拡張できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sort"></a><u>Function:</u> <b>sort</b><i> seq :optional cmpfn</i></dt>
+<dt><a name="index-sort_0021"></a><u>Function:</u> <b>sort!</b><i> seq :optional cmpfn</i></dt>
+<dd><p>シーケンス<var>seq</var>(リストかベクタ)の要素を昇順にソートし、
+ソートされたシーケンスを返します。
+<code>sort!</code>は、オリジナルのシーケンスを破壊的に再利用します。
+ソート順は<code>cmpfn</code>で指定されます。<code>cmpfn</code>は<var>seq</var>のふたつの要素を
+引数に取り、最初の要素が厳密に2番目の要素より先行するものの場合は
+<code>#t</code>を返す手続きです。
+</p>
+<p><code>sort!</code>の後で<var>seq</var>が必ずしもソート済みのシーケンスを
+指すとは限らないことに注意してください。
+<var>seq</var>がリストの場合、オリジナルのリストの最初のペアが
+ソート済みリストでも最初に来るとは限りません。
+常に<code>sort!</code>の戻り値を使うようにしてください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sort '(("Chopin" "Frederic")
+        ("Liszt" "Franz")
+        ("Alkan" "Charles-Valentin"))
+      (lambda (x y) (string&lt;? (car x) (car y))))
+  ⇒ (("Alkan" "Charles-Valentin")
+      ("Chopin" "Frederic")
+      ("Liszt" "Franz"))
+</pre></td></tr></tbody></table>
+
+<p><var>cmpfn</var>が省略された場合は<code>compare</code>手続きが
+どちらの要素がより「小さい」かを判定するのに使われます。
+</p>
+<p>現在の実装では、<var>cmpfn</var>が省略された場合は
+クィックソートとヒープソートを使い、
+<var>cmpfn</var>が与えられた場合はマージソートを使っています。
+これは将来変更されるかもしれません。
+</p>
+<p>なお、オブジェクトをひとつづつ集合に追加しつつ、常にソートされた
+状態に保ちたい場合は、treemapの使用を考えても良いでしょう (<a indepth="true" href="gauche-refj_54.html#g_t_00e3_0083_0084_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097">ツリーマップ</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stable_002dsort"></a><u>Function:</u> <b>stable-sort</b><i> seq :optional cmpfn</i></dt>
+<dt><a name="index-stable_002dsort_0021"></a><u>Function:</u> <b>stable-sort!</b><i> seq :optional cmpfn</i></dt>
+<dd><p>安定ソートアルゴリズム(現時点ではマージソート)を使って、並び <var>seq</var>
+(リストまたはベクタ)をソートします。ソート順は <code>cmpfn</code> で指定します。
+<code>cmpfn</code> は <var>list</var> のふたつの要素を引数として取る関数で、
+厳密に、最初の引数が第二の引数の前にくるものである場合に <code>#t</code>
+を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sort_002dby"></a><u>Function:</u> <b>sort-by</b><i> seq key :optional cmpfn</i></dt>
+<dt><a name="index-sort_002dby_0021"></a><u>Function:</u> <b>sort-by!</b><i> seq key :optional cmpfn</i></dt>
+<dt><a name="index-stable_002dsort_002dby"></a><u>Function:</u> <b>stable-sort-by</b><i> seq key :optional cmpfn</i></dt>
+<dt><a name="index-stable_002dsort_002dby_0021"></a><u>Function:</u> <b>stable-sort-by!</b><i> seq key :optional cmpfn</i></dt>
+<dd><p><var>key</var>をシーケンス<var>seq</var>の各要素に適用して得られる値の比較をもとに
+<var>seq</var>をソートします。<code>(stable-sort-by seq key cmp)</code>は次のコードと
+同じ結果を返します:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(stable-sort seq (lambda (a b) (cmp (key a) (key b))))
+</pre></td></tr></tbody></table>
+
+<p>よりコンパクトに書けるという以外に、
+<code>sort-by</code>族の手続きは<var>key</var>手続きをたかだか<var>seq</var>の要素数
+しか呼び出さないという性質があります。上記の<code>stable-sort</code>を
+使った例では、<var>key</var>は<var>seq</var>の要素数を<var>n</var>とする時
+<var>n</var>log<var>n</var> 回以上呼び出される可能性があります。
+したがって、<code>sort-by</code>族は<var>key</var>手続きが比較的高価な場合に
+威力を発揮します。
+</p>
+<p>トレードオフは空間です。<code>sort-by</code>族はあらかじめ比較対象となる
+値を計算しておくために、<var>seq</var>の要素数に比例した余分なメモリを
+必要とします。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_61.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.13 srfi-42 - 先行評価的内包表記</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.13 srfi-42 - 先行評価的内包表記">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.13 srfi-42 - 先行評価的内包表記">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Eager-comprehensions"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_120.html#args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_122.html#Vector-library" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d42-_002d-_00e5_0085_0088_00e8_00a1_008c_00e8_00a9_0095_00e4_00be_00a1_00e7_009a_0084_00e5_0086_0085_00e5_008c_0085_00e8_00a1_00a8_00e8_00a8_0098"></a>
+<h2 class="section">10.13 <code>srfi-42</code> - 先行評価的内包表記</h2>
+
+<dl>
+<dt><a name="index-srfi_002d42"></a><u>Module:</u> <b>srfi-42</b></dt>
+<dd><a name="index-srfi_002d42-1"></a>
+<p>このモジュールはジェネリックな内包表記(comprehension)機構を提供します。
+この機構は他の言語(Haskell、Pythonなど)では組み込みの機構になっていま
+す。この機構は豊富な操作手続を提供しているので、リストジェネレータとい
+うだけではなく、ジェネリックなループ構文(Common Lisp の <em>loop</em> マ
+クロ並みに強力/邪悪だという人もいます)を提供しています。
+</p>
+<p>この機構は名前の通り、先行評価的に走ります。すなわち、リストを生成する場合、評価時
+にすべてのリストを生成します。要素を<em>要求駆動的</em>に生成するわけで
+はありません。それゆえ、無限列を表現することはできません。それが自然に
+できる Haskell とは違います。Gaucheは、遅延生成される有限/無限列を
+扱う方法を他にいくつか提供しています。
+<a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9">遅延シーケンス</a>、<a indepth="true" href="gauche-refj_82.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.generator</code> - ジェネレータ</a>、<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>util.stream</code> - ストリームライブラリ</a>を
+参照してください。
+</p></dd></dl>
+
+<a name="g_t_00e5_0085_0088_00e8_00a1_008c_00e8_00a9_0095_00e4_00be_00a1_00e7_009a_0084_00e5_0086_0085_00e5_008c_0085_00e8_00a1_00a8_00e8_00a8_0098_00e3_0081_00ae_00e4_00be_008b"></a>
+<h3 class="subheading">先行評価的内包表記の例</h3>
+
+<p>いくつかの例からはじめましょう。
+</p>
+<p>5番目までの整数の自乗のリストを生成しましょう。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (: i 5) (* i i)) ⇒ (0 1 4 9 16)
+</pre></td></tr></tbody></table>
+
+<p><code>list-ec</code>はリストを生成する内包表記マクロです。
+最初のフォーム<code>(: i 5)</code>は<var>qualifier</var>と呼ばれ、
+繰り返しを行う値の集合を指定します (この例では0以上5未満の整数)。
+最後のフォーム<code>(* i i)</code>は<var>body</var>と呼ばれ、
+<var>qualifier</var>が指定する値それぞれにつき評価される通常のScheme式です。
+</p>
+<p>内包表記は複数のqualifierを持つことができます。
+次の例は数の対<code>(x y)</code>の集合を生成します。ここで<code>x</code>は
+2以上 5未満、<code>y</code>は1以上 x 未満です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (: x 2 5) (: y 1 x) (list x y))
+  ⇒ ((2 1) (3 1) (3 2) (4 1) (4 2) (4 3))
+</pre></td></tr></tbody></table>
+
+<p>複数のqualifierはネストするように動作します。つまり、<code>(: x 2 5)</code>は
+残りの節?<code>(: y 1 x)</code> および <code>(list x y)</code> を繰り返すように
+指定しているということです。
+</p>
+<p>上の2つの例はHaskellで書くと以下のようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">[ i*i   | i &lt;- [0..4] ]
+[ (x,y) | x &lt;- [2..4], y &lt;- [1..x-1] ]
+</pre></td></tr></tbody></table>
+
+<p>違いに注意：(1) Haskellでは要素になる本体部が先にきて、そのあとに修飾
+部(セレクタ)がきます。SRFI-42では本体部は最後になります。(2) SRFI-42で
+は範囲指定の下限はそれを含み、上限はそれを含みません。
+</p>
+<p><code>a^3+b^3 = c^3+d^3</code>を満すような数字の集合<code>(a b c d)</code>を列挙し
+ましょう。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (taxi-number n)
+  (list-ec (: a 1 n)
+           (: b (+ a 1) n)
+           (: c (+ a 1) b)
+           (: d (+ c 1) b)
+           (if (= (+ (expt a 3) (expt b 3))
+                  (+ (expt c 3) (expt d 3))))
+           (list a b c d)))
+</pre></td></tr></tbody></table>
+
+<p>複数の変数を(ネストするのではなく)同時に変化させたい場合は、
+複数のqualifierを次のようにまとめることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (:parallel (: x '(a b c d)) (: y '(1 2 3 4)))
+         (list x y))
+  ⇒ ((a 1) (b 2) (c 3) (d 4))
+</pre></td></tr></tbody></table>
+
+<p>リストだけではなく、他のシーケンスも生成できます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(vector-ec (: i 5) i) ⇒ #(0 1 2 3 4)
+(string-ec (: i 5) (integer-&gt;char (+ i 65))) ⇒ "ABCDE"
+</pre></td></tr></tbody></table>
+
+<p>畳み込み演算も適用できます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sum-ec (: i 1 100) i)
+  ⇒ 4950    ;; 1以上100未満の整数の和
+(product-ec (: i 1 10) i)
+  ⇒ 362880 ;;  1以上10未満の整数の積
+</pre></td></tr></tbody></table>
+
+<a name="g_t_00e5_0086_0085_00e5_008c_0085_00e8_00a1_00a8_00e8_00a8_0098_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad"></a>
+<h3 class="subheading">内包表記マクロ</h3>
+
+<p>それぞれの内包表記は以下のような形式になります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>comprehension-macro</var> <var>qualifier</var> … <var>body</var>)
+</pre></td></tr></tbody></table>
+
+<p><var>qualifier</var> …の指定に従って<var>body</var>をくりかえし評価します。内包表記の種類
+によって、<var>body</var>の結果は(リスト、ベクタ、文字列などに)集約されるか、
+(sum、product、min、maxなどによって)畳み込まれるか、あるいは、単に捨て
+られます。
+</p>
+<p>それぞれの<var>qualifier</var>は、それ以降の<var>qualifier</var>と<var>body</var>
+をどのように繰り返すかを指定します。<var>qualifier</var>には、繰り返しに
+使う値を生成する生成的<var>qualifier</var>と、条件によって値を繰り返しから
+省く制御的<var>qualifier</var>があります。以下のQualifiersの節を参照してください。
+</p>
+<p>いくつかの内包表記では、追加の値が<var>qualifiers</var>の前か、<var>body</var>
+の後に置かれます。
+</p>
+<dl>
+<dt><a name="index-do_002dec"></a><u>Macro:</u> <b>do-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+<var>body</var>を繰り返します。<var>body</var>の返り値は捨てられます。
+この形式は副作用目的で使います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-list_002dec"></a><u>Macro:</u> <b>list-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+<var>body</var>を繰り返し、結果をリストに集めて返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-append_002dec"></a><u>Macro:</u> <b>append-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+<var>body</var>を繰り返し、その結果のリストを結合して返します。
+<var>body</var>は必ずリストを返さなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dec"></a><u>Macro:</u> <b>string-ec</b><i> qualifier … body</i></dt>
+<dt><a name="index-string_002dappend_002dec"></a><u>Macro:</u> <b>string-append-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+<var>body</var>を繰り返します。<var>body</var>は<code>string-ec</code>では文字へ、
+<code>string-append-ec</code>では文字列へと評価されなければなりません。
+結果を集め、または結合した文字列が買えされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dec"></a><u>Macro:</u> <b>vector-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+Repeats <var>body</var> and collects the results into a vector.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dof_002dlength_002dec"></a><u>Macro:</u> <b>vector-of-length-ec</b><i> k qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+This is like <code>vector-ec</code>, except that the length of the
+result vector is known to be <var>k</var>.  It can be more efficient
+than <code>vector-ec</code>.  Unless the comprehension repeats exactly
+<code>k</code> times, an error is signaled.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sum_002dec"></a><u>Macro:</u> <b>sum-ec</b><i> qualifier … body</i></dt>
+<dt><a name="index-product_002dec"></a><u>Macro:</u> <b>product-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+<var>body</var> must yield a numeric value.  Returns sum of and product of
+the results, respectively.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-min_002dec"></a><u>Macro:</u> <b>min-ec</b><i> qualifier … body</i></dt>
+<dt><a name="index-max_002dec"></a><u>Macro:</u> <b>max-ec</b><i> qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+<var>body</var> must yield a numeric value.  Returns maximum and minimum value
+of the results, respectively.  <var>body</var> must be evaluated at least once,
+or an error is signalled.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-any_003f_002dec"></a><u>Macro:</u> <b>any?-ec</b><i> qualifier … test</i></dt>
+<dt><a name="index-every_003f_002dec"></a><u>Macro:</u> <b>every?-ec</b><i> qualifier … test</i></dt>
+<dd><p>[SRFI-42]
+Evaluates <var>test</var> for each iteration, and returns
+<code>#t</code> as soon as it yields non-<code>#f</code> (for <code>any-ec?</code>),
+or returns <code>#f</code> as soon as it yields <code>#f</code> (for <code>every?-ec</code>).
+Unlink the comprehensions introduced above, these stop evaluating
+<var>test</var> as soon as the condition meets.
+If the qualifiers makes no iteration, <code>#f</code> and <code>#t</code> are
+returned, respectively.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-first_002dec"></a><u>Macro:</u> <b>first-ec</b><i> default qualifier … body</i></dt>
+<dt><a name="index-last_002dec"></a><u>Macro:</u> <b>last-ec</b><i> default qualifier … body</i></dt>
+<dd><p>[SRFI-42]
+First initializes the result by the value of the expression <var>default</var>,
+then start iteration, and returns the value of the first and last
+evaluation of <var>body</var>, respectively.  In fact, <code>first-ec</code>
+only evaluates <var>body</var> at most once.
+</p>
+<p>These procedures are most useful when used with control qualifiers.
+For example, the following <code>first-ec</code> returns the <em>first</em>
+set of distinct integers (<var>x</var>, <var>y</var>, <var>z</var>),
+where <var>x</var>*<var>x</var>+<var>y</var>*<var>y</var>+<var>z</var>*<var>z</var> becomes a square
+of another integer <var>w</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(first-ec #f (:integers w) (: z 1 w) (: y 1 z) (: x 1 y)
+          (if (= (* w w) (+ (* x x) (* y y) (* z z))))
+          (list x y z w))
+</pre></td></tr></tbody></table>
+
+<p>Note that the first qualifier, <code>(:integers w)</code>, generates
+infinite number of integers; if you use <code>list-ec</code> instead of
+<code>first-ec</code> it won’t stop.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-fold_002dec"></a><u>Macro:</u> <b>fold-ec</b><i> seed qualifier … expr proc</i></dt>
+<dt><a name="index-fold3_002dec"></a><u>Macro:</u> <b>fold3-ec</b><i> seed qualifier … expr init proc</i></dt>
+<dd><p>[SRFI-42]
+Reduces the values produced by <var>expr</var>.
+</p>
+<p>Suppose <var>expr</var> produces a sequence of values
+<var>x0</var>, <var>x1</var>, …, <var>xN</var>.  <code>Fold-ec</code>
+calculates the following value:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>proc</var> <var>xN</var> (…(<var>proc</var> <var>x1</var> (<var>proc</var> <var>x0</var> <var>seed</var>))…))
+</pre></td></tr></tbody></table>
+
+<p>It’s similar to <code>fold</code>, except that <var>proc</var> is evaluated
+within the scope of <var>qualifier</var> … so you can refer to the
+variables introduced by them.  On the other hand,
+<var>seed</var> is outside of the scope of <var>qualifier</var>s.
+</p>
+<p><code>Fold-ec3</code> is almost the same but the initial value calculation.
+In <code>fold-ec3</code>, <var>seed</var> is only used when <var>qualifier</var>s
+makes no iteration.  Otherwise it calculates the following value:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>proc</var> <var>xN</var> (…(<var>proc</var> <var>x1</var> (<var>init</var> <var>x0</var>))…))
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<a name="Qualifiers"></a>
+<h3 class="subheading">Qualifiers</h3>
+
+<a name="g_t_00e7_0094_009f_00e6_0088_0090_00e7_009a_0084qualifier"></a>
+<h4 class="subsubheading">生成的qualifier</h4>
+
+<p>このタイプのqualifierは、いくつかの値(無限個のこともあります)を次々に
+生成し、各値について残りの節を繰り返します。
+</p>
+<p>以下の説明において、<var>vars</var>というのはひとつの識別子か、
+識別子とフォーム<code>(index <var>identifier2</var>)</code>の並びです。
+最初の形式での識別子、あるいは二番目の形式での最初の識別子は、
+生成された値が束縛される変数です。二番目の形式の<var>identifier2</var>は、
+0から始まり値が生成されるたびにインクリメントされる整数値が束縛されます。
+次の例を見てください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (: x '(a b c)) x)
+  ⇒ (a b c)
+(list-ec (: x (index y) '(a b c)) (cons x y))
+  ⇒ ((a . 0) (b . 1) (c . 2))
+</pre></td></tr></tbody></table>
+
+<dl>
+<dt><a name="index-_003a"></a><u>EC Qualifier:</u> <b>:</b><i> vars arg1 args …</i></dt>
+<dd><p><var>arg1</var> <var>args</var> … の型に基づいて、以下の生成的qualifierの
+いずれかにディスパッチされる、汎用的なqualifierです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003alist"></a><u>EC Qualifier:</u> <b>:list</b><i> vars arg1 args …</i></dt>
+<dt><a name="index-_003avector"></a><u>EC Qualifier:</u> <b>:vector</b><i> vars arg1 args …</i></dt>
+<dt><a name="index-_003astring"></a><u>EC Qualifier:</u> <b>:string</b><i> vars arg1 args …</i></dt>
+<dd><p>それぞれのフォームにおいて、
+<var>arg1</var> <var>args</var> …は全てリスト、ベクタ、文字列でなければなりません。
+各要素を<var>vars</var>に束縛して続く節を繰り返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (:string c "ab" "cd") c) ⇒ (#\a #\b #\c #\d)
+</pre></td></tr></tbody></table>
+
+<p>汎用qualifier<code>:</code>に渡された引数が全てリスト、ベクタ、あるいは文字列
+であった場合は、これらのqualifierが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003aintegers"></a><u>EC Qualifier:</u> <b>:integers</b><i> vars</i></dt>
+<dd><p>0から始まり1づつ増加しつづける無限正確整数列を生成します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003arange"></a><u>EC Qualifier:</u> <b>:range</b><i> vars stop</i></dt>
+<dt><a name="index-_003arange-1"></a><u>EC Qualifier:</u> <b>:range</b><i> vars start stop</i></dt>
+<dt><a name="index-_003arange-2"></a><u>EC Qualifier:</u> <b>:range</b><i> vars start stop step</i></dt>
+<dd><p><var>start</var>から始まり、<var>step</var>づつ増加し、<var>stop</var>を越えないような
+正確な整数列を生成します。<var>start</var>が省略された場合は0、
+<var>step</var>が省略された場合は1が使われます。
+<var>step</var>に負数を与えれば減少列も作れます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (:range v 5) v)      ⇒ (0 1 2 3 4)
+(list-ec (:range v 3 8) v)    ⇒ (3 4 5 6 7)
+(list-ec (:range v 1 8 2) v)  ⇒ (1 3 5 7)
+(list-ec (:range v 8 1 -2) v) ⇒ (8 6 4 2)
+</pre></td></tr></tbody></table>
+
+<p>汎用qualifier<code>:</code>に1個から3個の正確な整数が与えられた場合は、
+このqualifierが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003areal_002drange"></a><u>EC Qualifier:</u> <b>:real-range</b><i> vars stop</i></dt>
+<dt><a name="index-_003areal_002drange-1"></a><u>EC Qualifier:</u> <b>:real-range</b><i> vars start stop</i></dt>
+<dt><a name="index-_003areal_002drange-2"></a><u>EC Qualifier:</u> <b>:real-range</b><i> vars start stop step</i></dt>
+<dd><p><var>start</var>から始まり、<var>step</var>づつ増加し、<var>stop</var>を越えないような
+実数列を生成します。<var>start</var>が省略された場合は0、
+<var>step</var>が省略された場合は1が使われます。
+全ての引数が正確数であれば正確な数列が、ひとつでも非正確数が混じって入れば
+非正確な数列が生成されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (:real-range v 5.0) v)
+  ⇒ (0.0 1.0 2.0 3.0 4.0)
+(list-ec (:real-range v 1 4 1/3) v)
+  ⇒ (1 4/3 5/3 2 7/3 8/3 3 10/3 11/3)
+(list-ec (:real-range v 1 5.0 1/2) v)
+  ⇒ (1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5)
+</pre></td></tr></tbody></table>
+
+<p>汎用qualifier<code>:</code>に1個から3個の実数が与えられ、そのうちどれかひとつでも
+正確な整数でないものがあれば、このqualifierが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003achar_002drange"></a><u>EC Qualifier:</u> <b>:char-range</b><i> vars min max</i></dt>
+<dd><p>文字<var>min</var>から<var>max</var>まで(両端含む)の文字を順に生成します。
+文字順は<code>char&lt;=?</code>で比べられるのと同じ順になります (<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a>参照)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (:char-range v #\a #\e) v)
+  ⇒ (#\a #\b #\c #\d #\e)
+</pre></td></tr></tbody></table>
+
+<p>汎用qualifier<code>:</code>に2つの文字が与えられた場合は、
+このqualifierが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003aport"></a><u>EC Qualifier:</u> <b>:port</b><i> vars port</i></dt>
+<dt><a name="index-_003aport-1"></a><u>EC Qualifier:</u> <b>:port</b><i> vars port read-proc</i></dt>
+<dd><p>入力ポート<var>port</var>から、<var>read-proc</var>を使って読まれる値を、
+EOFに出会うまで次々に生成します。<var>read-proc</var>が省略された場合は<code>read</code>
+が使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-input-string "a \"b\" :c"
+  (^p (list-ec (:port v p) v)))
+  ⇒ (a "b" :c)
+</pre></td></tr></tbody></table>
+
+<p>汎用qualifier<code>:</code>に2つの引数が与えられ、最初の引数が入力ポートであれば、
+このqualifierが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003agenerator"></a><u>EC Qualifier:</u> <b>:generator</b><i> vars gen</i></dt>
+<dd><p>これはSRFI-42には定義さていない、Gauche独自の拡張です。
+<var>gen</var>は引数と取らない手続きです。このqualifierは
+<var>gen</var>がEOFを返すまで繰り返します。
+</p>
+<p>Gaucheは、そのような手続きを作ったり操作したりする便利な関数群を
+提供しています。<a indepth="true" href="gauche-refj_82.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.generator</code> - ジェネレータ</a>を参照してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.generator)
+(list-ec (:generator v (grange 1 8)) v)
+  ⇒ (1 2 3 4 5 6 7)
+</pre></td></tr></tbody></table>
+
+<p>汎用qualifier<code>:</code>に1つの引数が与えられ、それが引数無しで呼び出し可能なものであれば、
+このqualifierが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003aparallel"></a><u>EC Qualifier:</u> <b>:parallel</b><i> generator …</i></dt>
+<dd><p>複数のジェネレータ節を並列に走査するのに使います。
+<var>generator</var>のどれかが値を使い切った時点で止まります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list-ec (:parallel (: x '(a b c))
+                    (: y "defg"))
+  (cons x y))
+ ⇒ ((a . #\d) (b . #\e) (c . #\f))
+
+;; Compare with this:
+(list-ec (: x '(a b c))
+         (: y "defg")
+  (cons x y))
+ ⇒ ((a . #\d) (a . #\e) (a . #\f) (a . #\g)
+     (b . #\d) (b . #\e) (b . #\f) (b . #\g)
+     (c . #\d) (c . #\e) (c . #\f) (c . #\g))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003alet"></a><u>EC Qualifier:</u> <b>:let</b><i> vars expr</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-_003awhile"></a><u>EC Qualifier:</u> <b>:while</b><i> generator expr</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-_003auntil"></a><u>EC Qualifier:</u> <b>:until</b><i> generator expr</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-_003adispatched"></a><u>EC Qualifier:</u> <b>:dispatched</b><i> vars dispatch arg1 args …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-_003ado"></a><u>EC Qualifier:</u> <b>:do</b><i> (lb …) ne1? (ls …)</i></dt>
+<dt><a name="index-_003ado-1"></a><u>EC Qualifier:</u> <b>:do</b><i> (let (ob …) oc …) (lb …) ne1? (let (ib …) ic …) ne2? (ls …)</i></dt>
+</dl>
+
+<a name="Control-qualifiers"></a>
+<h4 class="subsubheading">Control qualifiers</h4>
+
+<dl>
+<dt><a name="index-if-2"></a><u>EC Qualifier:</u> <b>if</b><i> test</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-not-1"></a><u>EC Qualifier:</u> <b>not</b><i> test</i></dt>
+<dt><a name="index-and-1"></a><u>EC Qualifier:</u> <b>and</b><i> test …</i></dt>
+<dt><a name="index-or-1"></a><u>EC Qualifier:</u> <b>or</b><i> test …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-begin-1"></a><u>EC Qualifier:</u> <b>begin</b><i> command … expr</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-nested"></a><u>EC Qualifier:</u> <b>nested</b><i> qualifier …</i></dt>
+</dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_120.html#args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_122.html#Vector-library" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

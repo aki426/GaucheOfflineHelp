@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.15 srfi-55 - require の拡張</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.15 srfi-55 - require の拡張">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.15 srfi-55 - require の拡張">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Requiring-extensions"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_122.html#Vector-library" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_124.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d55-_002d-require-_00e3_0081_00ae_00e6_008b_00a1_00e5_00bc_00b5"></a>
+<h2 class="section">10.15 <code>srfi-55</code> - require の拡張</h2>
+
+<dl>
+<dt><a name="index-srfi_002d55"></a><u>Module:</u> <b>srfi-55</b></dt>
+<dd><a name="index-srfi_002d55-1"></a>
+<p>このモジュールでは <code>require-extension</code> マクロが定義されています。
+これは、ポータブルなスクリプトを書くためのもうひとつ別の方法です。
+指定した特性を確認する他の方法については、<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>
+および<a indepth="true" href="gauche-refj_113.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e"><code>srfi-7</code> - 機能ベースプログラム設定言語</a>を見てください。
+</p>
+<p>このモジュールは、<code>require-extension</code>を使った際に自動的にロードさ
+れます。それゆえ明示的に<code>(use srfi-55)</code>する必要はありませんし、ポー
+タビリティのためにはするべきではありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-require_002dextension"></a><u>Macro:</u> <b>require-extension</b><i> clause …</i></dt>
+<dd><p><var>clause</var>で指定した拡張を以降のプログラムで利用可能にします。
+</p>
+<p><var>clause</var>は以下の形式になります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>extension-id</var> <var>extension-arg</var> …)
+</pre></td></tr></tbody></table>
+
+<p>現時点では、<code>srfi</code>のみ<var>extension-id</var>として使えます。その引数
+はSRFIの番号です。
+</p>
+<p>たとえば、以下の
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(require-extension (srfi 1 13 14))
+</pre></td></tr></tbody></table>
+
+<p>は以下の Gauche の <code>use</code> 形式にほぼ対応します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use srfi-1)
+(use srfi-13)
+(use srfi-14)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_122.html#Vector-library" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_124.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

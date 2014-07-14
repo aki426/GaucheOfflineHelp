@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.2 gauche.charconv - 文字コード変換</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.2 gauche.charconv - 文字コード変換">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.2 gauche.charconv - 文字コード変換">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_76.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_75.html#g_t_00e9_0085_008d_00e5_0088_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002echarconv-_002d-_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"></a>
+<h2 class="section">9.2 <code>gauche.charconv</code> - 文字コード変換</h2>
+
+<dl>
+<dt><a name="index-gauche_002echarconv"></a><u>Module:</u> <b>gauche.charconv</b></dt>
+<dd><a name="index-gauche_002echarconv-1"></a>
+<p>与えられたデータストリームの文字エンコーディングを変換するための手続き群を提供する
+モジュールです。
+</p>
+<p>このモジュールはまた、<code>open-input-file</code>や
+<code>call-with-output-file</code>等のファイルストリームを作成する手続きに
+<code>:encoding</code>キーワード引数が与えられた場合に暗黙にロードされます。
+</p>
+<p>リリース0.5.6より、Gaucheは日本語の主要エンコーディング
+(ISO2022JP, ISO2022JP-3, EUC-JP (EUC-JISX0213), Shift_JIS (Shift_JISX0213),
+UTF-8 (Unicode 3.2))間の変換を自前で持つようになりました。
+上記以外のコードとの変換は<code>iconv(3)</code>を利用します。
+サポートされるコーディングシステムに関する詳細は
+<a href="#g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0">サポートされる文字エンコーディング</a>を参照して下さい。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0">9.2.1 サポートされる文字エンコーディング</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a">9.2.2 文字エンコーディングの自動判定</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_00a4_0089_00e6_008f_009b_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">9.2.3 変換ポート</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0-1"></a>
+<h3 class="subsection">9.2.1 サポートされる文字エンコーディング</h3>
+
+<p>CESの名前は文字列またはシンボルで指定します。大文字小文字の違いは無視されます。
+同じCESにいくつかの別名がついていることがあります。
+</p>
+<p>CES名 "none" は特殊です。Gaucheのネイティブエンコーディングが<code>none</code>の
+場合、Gaucheは文字列を単なるバイト列として扱い、そのエンコーディングの解釈は
+アプリケーションに任されます。したがって、CES "none" への変換、および "none"
+からの変換は「何もしない」変換として扱われます。
+</p>
+<p>特定の変換がシステムでサポートされているかどうかは次の手続きで調べることができます。
+</p>
+<dl>
+<dt><a name="index-ces_002dconversion_002dsupported_003f"></a><u>Function:</u> <b>ces-conversion-supported?</b><i> from-ces to-ces</i></dt>
+<dd><p>CES <var>from-ces</var>から<var>to-ces</var>への変換がサポートされていれば<code>#t</code>を、
+そうでなければ<code>#f</code>を返します。
+</p>
+<p>システムが<var>from-ces</var>から<var>to-ces</var>への変換を部分的にしか
+サポートしていない場合でもこの手続きは<code>#t</code>を返すことに注意して下さい。
+そのような場合、実際の変換作業は<var>from-ces</var>にあって<var>to-ces</var>にない
+コードを置換文字に置き換える等で情報を失うかもしれません
+(例えば、UnicodeからEUC-JPへの変換はサポートされていますが、
+UnicodeにはEUC-JPにない文字も含まれています)。
+</p>
+<p><var>from-ces</var>か<var>to-ces</var>が "none" ならばこの手続きは常に<code>#t</code>を
+返します。なぜならそのような変換は常に成功するからです(何も変換しないわけですが)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; 内部エンコーディングからEUC-JPに変換できるか?
+(ces-conversion-supported? (gauche-character-encoding) "euc-jp")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>また、CESを扱う二つの便利な手続きが用意されています。
+</p>
+<dl>
+<dt><a name="index-ces_002dequivalent_003f"></a><u>Function:</u> <b>ces-equivalent?</b><i> ces-a ces-b :optional unknown-value</i></dt>
+<dd><p>CES <var>ces-a</var>と<var>ces-b</var>がシステムの知る限りで等価だった場合に
+<code>#t</code>を、等価でない場合に<code>#f</code>を返します。
+システムがその等価性を判断出来ない場合は<var>unknown-value</var>に与えられた
+値を返します。そのデフォルトは<code>#f</code>です。
+</p>
+<p>CES名 "none" はワイルドカードのように動作します。それはどんなCESとも
+等価と見倣されます。(従って、<code>ces-equivalent?</code> は遷移的ではありません。
+この手続きは、二つのCESを知った時に相互の変換が
+必要かどうかを判断するためのものです)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(ces-equivalent? 'eucjp "EUC-JP")            ⇒ #t
+(ces-equivalent? 'shift_jis "EUC-JP")        ⇒ #f
+(ces-equivalent? "NoSuchEncoding" 'utf-8 '?) ⇒ ?
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ces_002dupper_002dcompatible_003f"></a><u>Function:</u> <b>ces-upper-compatible?</b><i> ces-a ces-b :optional unknown-value</i></dt>
+<dd><p>CES <var>ces-b</var>でエンコードされた文字列が、システムの知る限りで
+変換無しに<var>ces-a</var>でエンコードされたものと見倣せる場合に<code>#t</code>を
+返します。見倣せない場合は<var>#f</var>を返します。
+システムが判断できない場合は<var>unknown-value</var>に与えられた
+値を返します。そのデフォルトは<code>#f</code>です。
+</p>
+<p><code>ces-equivalent?</code>と同様に、CES名 "none" はワイルドカードとして
+働きます。<var>ces-a</var> か <var>ces-b</var> が "none" であれば、
+常に<code>#t</code>が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(ces-upper-compatible? "eucjp" "ASCII")             ⇒ #t
+(ces-upper-compatible? "eucjp" "utf-8")             ⇒ #f
+(ces-upper-compatible? "utf-8" "NoSuchEncoding" '?) ⇒ ?
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>日本語の文字セットJIS X 0201及びJIS X 0213のエンコーディング
+(EUC_JP、Shift JIS、UTF-8及びISO2022-JP) 間の変換に関しては、
+Gaucheが内部に変換アルゴリズムを持っています (詳細は下の注記を参照)。
+それ以外のCESに関しては、リンクされていればGaucheは<code>iconv(3)</code>を用いて
+変換を行います。
+</p>
+<p>出力CESへマップ不可能な入力文字に出会った場合、Gaucheの変換ルーチンは
+その文字が入力CESでマルチバイトである場合はgeta mark ’〓’ (U+3013) に、
+入力CESでシングルバイトである場合は ’?’ に置換します。
+iconvによる変換でマップ不可能な文字に出会った場合の処理はiconvの実装に
+依存します(例えばglibcではエラーとなります)。
+</p>
+<p>変換ルーチンが、入力CESとして不正な入力文字列に出会った場合は
+エラーが報告されます。
+</p>
+<p><strong>Gaucheの内部変換アルゴリズムの詳細:</strong>
+EUC_JP、Shift JIS、及びISO2022JP間の変換は可能な限り計算で行います。
+文字が未定義のコードポイントも計算式に従って変換されます。
+Unicode(UTF-8)とEUC_JP間の変換はテーブルルックアップによって行われます。
+UnicodeとShift JISまたはISO2022JP間の変換は、入力CESを一度EUC_JPに
+変換し、それを出力CESに変換することによって行います。
+入力と出力のCESがGaucheの内部アルゴリズムがサポートする範囲で等しかった場合、
+Gaucheの変換ルーチンはエンコーディングの正当性はチェックせず、
+単に入力を出力にコピーします。
+</p>
+<dl compact="compact">
+<dt> <code>EUC_JP, EUCJP, EUCJ, EUC_JISX0213</code></dt>
+<dd><p>ASCII, JIS X 0201カナ、JIS X 0212、及びJIS X 0213文字セットをカバーします。
+JIS X 0212は、単にJIS X 0213と重ならないコードを使っているためにサポート
+されていますが、他のCESへの変換は行われないので注意して下さい。
+なるべくJIS X 0213の使用をおすすめします。
+</p>
+</dd>
+<dt> <code>SHIFT_JIS, SHIFTJIS, SJIS</code></dt>
+<dd><p>Shift_JISX0213をカバーします。但し、0x5cと0x7eに関しては
+JIS X 0201 Roman (YEN SIGNとOVERLINE) ではなく
+ASCII (REVERSE SOLIDUSとTILDE) にマップされます。
+</p>
+</dd>
+<dt> <code>UTF-8, UTF8</code></dt>
+<dd><p>Unicode 3.2です。JIS X 0213中の文字のいくつかはExtension B (U+20000?)
+にマップされます。JIS X 0213中の他の文字のいくつかは2つのUnicode文字
+(base character + combining character)にマップされます。
+</p>
+</dd>
+<dt> <code>ISO2022JP, CSISO2022JP, ISO2022JP-1, ISO2022JP-2, ISO2022JP-3</code></dt>
+<dd><p>これらのエンコーディングは、CSISO2022JPがISO2022JPのエイリアスであることを除き
+異なるエスケープシーケンスを使いますが、Gaucheの中では同じルーチンで処理されます。
+これらのエンコーディングのいずれかが入力CESに指定された場合、
+Gaucheは全てのバリエーションのエスケープシーケンスを認識します。
+但し、ISO2022JP-2に定義された日本語以外の言語のエスケープシーケンスに関しては、
+Gaucheはエスケープシーケンスの認識だけを行い、
+文字は’?’あるいは’〓’ に置換します。
+</p>
+<p>出力に関してはGaucheは出来る限りISO2022JPでエンコードし、
+JIS X 0212文字に出会ったらISO2022JP-1のエスケープシーケンスを、
+JIS X 0213の第2面の文字に出会ったらISO2022JP-3のエスケープシーケンスを
+用います。したがって、文字列がJIS X 0208の範囲だけで構成されていた場合は
+出力はISO2022JP互換となります。
+厳密には、JIS X 0213では包摂基準の変更により、
+「JIS X 0208と同じコードポイントを用いるがJIS X 0208のエスケープシーケンスを
+使ってはいけない文字」というのが定義されています。
+Gaucheでは互換性のため、これらの文字もJIS X 0208のエスケープシーケンスを
+用いてエンコードします (これは、Emacs-Muleにおけるiso2022jp-3-compatible
+モードと同じ方針です)。
+</p></dd>
+</dl>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00a4_0089_00e6_008f_009b_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a-1"></a>
+<h3 class="subsection">9.2.2 文字エンコーディングの自動判定</h3>
+
+<p>しばしば、入力のCESが未知であり、可能性のあるいくつかの候補から入力のCESを
+推測しなければならない場合があります。推測するアルゴリズムはいくつも考えられるので、
+それぞれに名前がついています(ワイルドカードCES)。
+今のところ、一つのアルゴリズムしか実装されていません。
+</p><dl compact="compact">
+<dt> <code>"*JP"</code></dt>
+<dd><p>日本語のテキストのCESを、ISO2022-JP(-1,2,3), EUCJP, SHIFT_JIS または UTF-8の
+いずれかであるとして推測する。
+</p></dd>
+</dl>
+
+<p>ワイルドカードCESは、いくつかの変換関数においてCES名の代わりに使うことができます。
+</p>
+
+<dl>
+<dt><a name="index-ces_002dguess_002dfrom_002dstring"></a><u>Function:</u> <b>ces-guess-from-string</b><i> string scheme</i></dt>
+<dd><p>文字列<var>string</var>のCESを、CES推測アルゴリズム<var>scheme</var> ("*JP"など)
+を使って推測し、結果のCES名を返します。もしどのCESにも該当しないデータが
+含まれていれば<code>#f</code>が返されます。複数のCESが可能である場合、
+ネイティブエンコーディングが含まれていればそれを、
+そうでなければ可能なCESからどれかひとつが選んで返されます。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e5_00a4_0089_00e6_008f_009b_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_77.html#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00a4_0089_00e6_008f_009b_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088-1"></a>
+<h3 class="subsection">9.2.3 変換ポート</h3>
+
+<dl>
+<dt><a name="index-open_002dinput_002dconversion_002dport"></a><u>Function:</u> <b>open-input-conversion-port</b><i> source from-code :key to-code buffer-size owner?</i></dt>
+<dd><p>文字が符号化方法<var>from-code</var>で符号化されているデータを読み出せる
+入力ポート<var>source</var>を取り、符号化方法<var>to-code</var>で符号化されたデータを
+読み出せるポートを作成して返します。
+</p>
+<p><var>to-code</var>が省略された場合はネイティブのCESと見なされます。
+</p>
+<p><var>buffer-size</var>は変換のための内部バッファのサイズを指定します。
+省略時のサイズは1Kバイト程で、通常の使用には問題ないサイズです。
+</p>
+<p>入力のCESが不明な場合、<code>"*JP"</code>などのCES推測アルゴリズム名を<var>from-code</var>
+として指定することができます。変換ポートは最高でバッファサイズまでのデータを先読みし、
+CESを推測しようとします。そのアルゴリズムで推測されるどのCESにも該当しないデータが
+検出された場合はエラーが報告されます。もし複数のCESが可能であるようなデータであった
+場合は、Gaucheのネイティブエンコーディングが可能なCESに含まれていればそれが選ばれ、
+そうでなければいずれかのCESが適当に選ばれます。従って、バッファサイズが小さすぎると
+誤った判定をする可能性が高くなります。大抵のテキストドキュメントに対して、
+既定のバッファサイズは十分ですが、大きなテキストのほとんどがASCII文字で最後だけ
+マルチバイト文字が現われるようなテキストでは誤判定の可能性があります。
+最悪の場合でも結果を保証するには、テキスト全体が格納できるバッファサイズを指定すると
+良いでしょう。
+</p>
+<p>通常、<code>open-input-conversion-port</code>は変換が全て終了した後でも<var>source</var>
+はオープンしたままにします。キーワード引数<var>owner?</var>に真の値を指定すると、
+EOFが読まれた後で<var>source</var>はクローズされます。
+</p>
+<p>例を示しましょう。以下のコードは未知のCES(但しEUC-JP, SJIS, ISO2022-JP, UTF8の
+いずれかであることは分かっている)で書かれたテキストファイル‘<tt>unknown.txt</tt>’を
+読みだし、文字エンコーディングをEUC-JPに変換して‘<tt>eucjp.txt</tt>’に書き出します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-output-file "eucjp.txt"
+  (lambda (out)
+    (copy-port (open-input-conversion-port
+                 (open-input-file "unknown.txt")
+                 "*jp"             ;<span class="roman">guess code</span>
+                 :to-code "eucjp"
+                 :owner? #t)       ;<span class="roman">close unknown.txt afterwards</span>
+               out)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-open_002doutput_002dconversion_002dport"></a><u>Function:</u> <b>open-output-conversion-port</b><i> sink to-code :key from-code buffer-size owner?</i></dt>
+<dd><p>文字のエンコーディングを<var>from-code</var>から<var>to-code</var>に変換して
+出力ポート<var>sink</var>に書き出すような出力変換ポートを作成して返します。
+<var>from-code</var>が省略された場合はネイティブのCESと見なされます。
+<var>from-code</var>にも<var>to-code</var>にも、CES推測アルゴリズム名を
+使用することはできません。
+</p>
+<p><var>buffer-size</var>は内部で変換に使われるバッファサイズを指定します。
+出力変換ポートに書き出された文字は、<code>flush</code>を使って明示的に
+フラッシュするか出力変換ポートが閉じられるまで、バッファ内に残っている可能性があります。
+</p>
+<p>通常、出力変換ポートがクローズされても<var>sink</var>はクローズされません。
+<var>owner?</var>に真の値を与えれば、出力変換ポートのクローズ時に<var>sink</var>を
+クローズするようにできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ces_002dconvert"></a><u>Function:</u> <b>ces-convert</b><i> string from-code :optional to-code</i></dt>
+<dd><p><var>from-code</var>でエンコーディングされた文字列<var>string</var>を
+<var>to-code</var>でエンコーディングされた文字列に変換します。
+<var>to-code</var>がネイティブエンコーディングで無い場合、返される文字列は
+バイト文字列(不完全な文字列)であるかもしれません。
+</p>
+<p><var>from-code</var>にはCES推測アルゴリズム名("*JP"など)を与えることができます。
+<var>to-code</var>が省略された場合はネイティブエンコーディングと見なされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dinput_002dconversion"></a><u>Function:</u> <b>call-with-input-conversion</b><i> iport proc :key encoding conversion-buffer-size</i></dt>
+<dt><a name="index-call_002dwith_002doutput_002dconversion"></a><u>Function:</u> <b>call-with-output-conversion</b><i> oport proc :key encoding conversion-buffer-size</i></dt>
+<dd><p>この2つの手続きを使うと、元のポートのエンコーディングとは異る一時的な
+エンコーディングをもつ文字I/Oを行うことが可能です。
+</p>
+<p><code>call-with-input-conversion</code> は、文字エンコード<var>encoding</var> を
+もつ入力ポート <var>iport</var> をとり、<var>proc</var>を一つの引数、すなわち、
+変換入力ポートとともに呼びだします。このポートから、<var>proc</var> は文字を
+Gauche の内部エンコーディングで読み込むことができます。いったん、
+<var>proc</var>が呼ばれたら、EOFまでのすべての文字を読み込まなくてはなりません。
+後述の注意を参照してください。
+</p>
+<p><code>call-with-output-conversion</code> は、文字エンコーディング <var>encoding</var>
+を期待する出力ポート <var>oport</var> をとり、<var>proc</var>を一つの引数、すなわち、
+一時的な変換出力ポートとともに呼びだします。このポートへ、<var>proc</var>は
+Gauche の内部エンコーディングをもつ文字を書き込むことができます。
+<var>proc</var> が戻るか、エラーで抜けると、この一時的な変換出力ポートは
+フラッシュされて、クローズされます。<code>call-with-output-conversion</code>
+の呼出し側は、その後、元のエンコーディングのポート<var>oport</var>を使い
+続けること可能です。
+</p>
+<p>どちらの手続きも <var>proc</var> が返す値を返します。<var>encoding</var>
+のデフォルト値は Gauche の内部エンコーディングです。この2つの手続きは
+必要がなければ、変換ポートを作成しません。もし
+<var>conversion-buffer-size</var> が与えられていれば、変換ポートがオープン
+されるときに、<var>buffer-size</var> 引数として使われます。
+</p>
+<p><var>proc</var> がアクティブであるあいだは、<var>iport</var>/<var>oport</var> を直接
+使うべきではありません。文字のエンコーディングはステートフルなプロセスで
+変換ポート(から/へ)の入出力を混在させると元にあるポートの状態がおかしく
+なってしまいます。
+</p>
+<p><em>注意:</em> <code>call-with-input-conversion</code> については、
+<var>proc</var> が EOF を読むまでは、<var>iport</var> を再度利用することはできません。
+これは、変換ポートがバッファを必要とし、<var>proc</var> がもどったときに
+<var>iport</var>へのバッファ付き入力をアンドゥする方法がないからです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dinput_002dconversion"></a><u>Function:</u> <b>with-input-conversion</b><i> iport thunk :key encoding conversion-buffer-size</i></dt>
+<dt><a name="index-with_002doutput_002dconversion"></a><u>Function:</u> <b>with-output-conversion</b><i> oport thunk :key encoding conversion-buffer-size</i></dt>
+<dd><p><code>call-with-*-conversion</code> と似ていますが、この2つの手続きは、
+<var>thunk</var> を引数なしで呼びます、また、変換ポートはそれぞれ標準入力、標準
+出力のポートにセットされます。
+キーワード引数の意味は <code>call-with-*-conversion</code> と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-wrap_002dwith_002dinput_002dconversion"></a><u>Function:</u> <b>wrap-with-input-conversion</b><i> port from-code :key to-code owner? buffer-size</i></dt>
+<dt><a name="index-wrap_002dwith_002doutput_002dconversion"></a><u>Function:</u> <b>wrap-with-output-conversion</b><i> port to-code :key from-code owner? buffer-size</i></dt>
+<dd><p>不要な変換ポートを作らないようにする便利な手続きです。
+各手続きはそれぞれ<code>open-input-conversion-port</code>と
+<code>open-output-conversion-port</code>のように動作します。
+但し、指定されたCES間の変換が必要でないとシステムが知っている場合は、
+変換ポートは作られず、<var>port</var>がそのまま返されます。
+</p>
+<p>変換ポートが作られた場合、<var>port</var>は常に変換ポートに所有されます
+(<code>:owner #t</code>となる)。ポートを閉じる場合は<var>port</var>ではなく
+常に<code>wrap-with-*-conversion</code>が返したポートを閉じるようにして下さい。
+元の<var>port</var>が先に閉じられた場合、変換中の結果が書き出されない可能性があります。
+(変換によっては、ポートが閉じられる時点で終了シーケンスを書き出すものがあるので、
+単にポートを<code>flush</code>するだけでは不十分です)。
+</p>
+<p><code>:buffer-size</code> 引数はそのまま
+変換ポート作成手続きに渡されます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_77.html#C_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

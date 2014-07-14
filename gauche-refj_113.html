@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.5 srfi-7 - 機能ベースプログラム設定言語</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.5 srfi-7 - 機能ベースプログラム設定言語">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.5 srfi-7 - 機能ベースプログラム設定言語">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_112.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008d_00e3_0083_0081_00e3_0083_00a3_00e3_0081_00a8rest_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ab_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ae_00e3_0081_0082_00e3_0082_008blet_00e5_00bd_00a2_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_114.html#Let_002dvalues" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d7-_002d-_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e"></a>
+<h2 class="section">10.5 <code>srfi-7</code> - 機能ベースプログラム設定言語</h2>
+
+<dl>
+<dt><a name="index-srfi_002d7"></a><u>Module:</u> <b>srfi-7</b></dt>
+<dd><a name="index-srfi_002d7-1"></a>
+<p>このモジュールは、SRFI-7 で定義されている
+プログラム設定メタ言語(<code>program</code> フォーム)を提供します。
+</p>
+<p>Gauche は srfi-7 モジュールを autoload しますので、<code>(use srfi-7)</code> と
+明示的に書く必要はありません。
+</p>
+<p><code>program</code> フォームは Scheme の式である必要がないことに注意してください。
+SRFI-7 では、この <code>program</code>フォームを処理して Scheme プログラムを
+生成してから、それを別の方法で実行するような実装を許しています。
+</p>
+<p>Gauche <code>program</code> フォームをマクロとして実装しています。それゆえ、
+そのフォームを直接、評価することができます。とはいえ、<code>program</code>
+フォームと他のフォームを一つのファイル中で混在させたり、<code>program</code>
+フォームの返り値を期待するのは、よいことではありません。
+</p>
+<p><code>program</code>フォームの典型的な使い方は、<code>program</code> フォームのみを
+含む単一のファイルを用意することです。(<code>program</code>フォーム中で
+<code>files</code> 節(後述)を用いて他のファイルをロードするとが可能です。)
+このようなプログラムファイルを Gauche で実行するには、単にそれを
+ロードするだけです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-program"></a><u>Configuration Language:</u> <b>program</b><i> program-clause program-clause2 …</i></dt>
+<dd><p>[SRFI-7]
+これは Scheme プログラムを構成する設定言語で、機能の利用可能性に基づいて
+います。
+</p>
+<p>Scheme のプログラムは、この <code>program</code>フォームから構築されます。
+Gauche は構築された Scheme のプログラムをそのまま実行します。
+</p>
+<p>各 <var>program-clause</var> は以下の "Program Clause" のどれか一つである
+必要があります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-requires"></a><u>Program Clause:</u> <b>requires</b><i> feature-id feature-id2 …</i></dt>
+<dd><p>[SRFI-7]
+<var>feature-id</var> は <code>srfi-0</code> のものと同じです
+(See section <a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>)。
+あとに続くコードが <var>feature-id</var> を必要とすることを教えます。
+</p>
+<p>Gauche ではサポートされていない feature-id が与えられた場合には、
+エラーシグナルが発生します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-files"></a><u>Program Clause:</u> <b>files</b><i> filename …</i></dt>
+<dd><p>[SRFI-7]
+プログラムに <var>filename</var>の内容を挿入します。Gauche では
+単に、現在のモジュール中への <var>filename</var> のロードをひきおこします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-code"></a><u>Program Clause:</u> <b>code</b><i> scheme-expression …</i></dt>
+<dd><p>[SRFI-7]
+<var>scheme-expression</var> がプログラムに挿入されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-feature_002dcond"></a><u>Program Clause:</u> <b>feature-cond</b><i> clause clause2 …</i></dt>
+<dd><p>[SRFI-7]
+<var>clause</var> は以下のようなフォームです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>requirement</var> <var>program-clause</var> <var>program-clause2</var> …)
+</pre></td></tr></tbody></table>
+
+<p>ここでは、<var>requirement</var> は以下のもののどれかひとつでなければなりません。
+</p><ul>
+<li>
+<var>feature-id</var>
+</li><li>
+<code>(and <var>requirement</var> …)</code>
+</li><li>
+<code>(or <var>requirement</var> …)</code>
+</li><li>
+<code>(not <var>requirement</var>)</code>
+</li></ul>
+
+<p>最後の <var>clause</var> の <var>requirement</var> は <code>else</code> になるでしょう。
+</p>
+<p>Gauche はそれぞれの <var>requirement</var> をひとつずつチェックし、
+満された <var>requirement</var> が見つかると、その<var>clause</var>中の
+<var>program-clause</var> をプログラムに挿入します。
+</p></dd></dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_112.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008d_00e3_0083_0081_00e3_0083_00a3_00e3_0081_00a8rest_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ab_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ae_00e3_0081_0082_00e3_0082_008blet_00e5_00bd_00a2_00e5_00bc_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_114.html#Let_002dvalues" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

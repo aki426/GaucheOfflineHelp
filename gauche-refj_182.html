@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.56 util.relation - リレーションフレームワーク</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.56 util.relation - リレーションフレームワーク">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.56 util.relation - リレーションフレームワーク">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_181.html#SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_183.html#util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af-1"></a>
+<h2 class="section">11.56 <code>util.relation</code> - リレーションフレームワーク</h2>
+
+<dl>
+<dt><a name="index-util_002erelation"></a><u>Module:</u> <b>util.relation</b></dt>
+<dd><a name="index-util_002erelation-1"></a>
+<p>リレーションに対する共通の操作を提供します。
+</p>
+<p>値の集合を S1, S2, ..., Sn とするとリレーション R はタプルの集合で、
+タプルの最初の要素は S1 からの値で、2番目は S2 から、で n 番目は
+Sn からとなっている。いいかえれば、R は S1, ..., Sn の直積です。
+(この定義と<em>リレーション</em>という用語は 1970年のCoddのペーパー
+"A Relational Model of Data for Large Shared Data Banks", in
+CACM 13(6) pp.377?387.によるものです。)
+</p>
+<p>この定義はいろいろなデータベースセットにあてはまります。各インスタンス
+をタプルとみなし、各スロット値を実際の値と見ると、Gaucheのオブジェクト
+システムの集合はリレーションです。リストのリストもリレーションです。
+CSVテーブルからの読み出しストリームはリレーションを生成します。このよ
+うことから、表現に依存しないリレーション上のジェネリックな操作を実装す
+るモジュールを用意することは有意義です。
+</p>
+<p>操作という観点からいえば、以下の4つのメソッドがあれば、どのようなデー
+タ構造もあつかえます。タプルのコレクション(行)を取り出す
+<code>relation-rows</code>、それから、<code>relation-column-names</code>、
+<code>relation-accessor</code>、<code>relation-modifier</code>、これらはメタ情報に
+アクセスする方法を提供しています。これ以外のすべてのリレーション操作は
+上のプリミティブメソッドを使って組まれています。
+</p>
+<p>リレーションの具体的な実装にはダックタイピングが適用できます。
+すなわち、リレーションメソッドを使うのに特定のベースクラスを継承する必
+要はありません。しかし、利便のためにこのモジュールには、ベースクラス
+<code>&lt;relation&gt;</code>が用意されています。これは、ミックスインクラスのよう
+な働きをします。具象クラスは典型的には<code>&lt;relation&gt;</code>および
+<code>&lt;collection&gt;</code>または<code>&lt;sequence&gt;</code>を継承することになるでしょう。
+興味があれば、ソースツリーにある‘<tt>lib/util/relation.scm</tt>’に含まれる
+サンプル実装をチェックするとよいでしょう。
+</p>
+<p>このモジュールは現時点では開発途上にあります。計画では共通メソッド上に
+有用なリレーション操作関数群を構築することになっています。
+</p></dd></dl>
+
+<a name="g_t_00e5_009f_00ba_00e6_009c_00ac_00e3_0081_00a8_00e3_0081_00aa_00e3_0082_008b_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00a8_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089"></a>
+<h3 class="subheading">基本となるクラスとメソッド</h3>
+
+<dl>
+<dt><a name="index-_003crelation_003e"></a><u>Class:</u> <b>&lt;relation&gt;</b></dt>
+<dd><p>リレーションの抽象ベースクラス
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dcolumn_002dnames"></a><u>Method:</u> <b>relation-column-names</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>サブクラスではこのメソッドを必ず実装しなければなりません。
+カラムの名前のシーケンスを返す必要があります。カラム名の型はリレーショ
+ンによります。<code>equal?</code>の意味で相互に異っているかぎり、カラム名に
+ついて特に制限はありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002daccessor"></a><u>Method:</u> <b>relation-accessor</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>サブクラスではこのメソッドは必ず実装しなければなりまん。2つの引数をと
+り、リレーション<var>r</var>の行とカラム名をとり、指定したカラムの値を返す
+手続を返さなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dmodifier"></a><u>Method:</u> <b>relation-modifier</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>サブクラスではこのメソッドは必ず実装しなければなりまん。
+3つの引数、リレーション<var>r</var>の行、カラム名、値をとり、その値をセット
+する手続を返さなければなりません。
+</p>
+<p>リレーションが読み込み専用の場合はこのメソッドは<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002drows"></a><u>Method:</u> <b>relation-rows</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>サブクラスではこのメソッドは必ず実装しなければなりまん。
+基盤となっている<code>&lt;collection&gt;</code>クラスまたはそのサブクラス(たとえば
+<code>&lt;sequence&gt;</code>)のインスタンスを返さなければなりません。
+</p></dd></dl>
+
+<p>のこりのメソッドは上の4つのメソッドを使って組まれています。とはいえ、
+<code>&lt;relation&gt;</code> のサブクラスでは以下のメソッドを性能を得るためにオー
+バーロードすることもできます。
+</p>
+<dl>
+<dt><a name="index-relation_002dcolumn_002dname_003f"></a><u>Method:</u> <b>relation-column-name?</b><i> (r &lt;relation&gt;) column</i></dt>
+<dd><p><var>column</var>がリレーション<var>r</var>において有効なカラム名である場合にの
+み真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dcolumn_002dgetter"></a><u>Method:</u> <b>relation-column-getter</b><i> (r &lt;relation&gt;) column</i></dt>
+<dt><a name="index-relation_002dcolumn_002dsetter"></a><u>Method:</u> <b>relation-column-setter</b><i> (r &lt;relation&gt;) column</i></dt>
+<dd><p>リレーション<var>r</var>の行の指定したカラムにアクセスする手続を返します。
+<code>Relation-column-getter</code>は、1つの引数、行をとる手続きを返さなけれ
+ばなりません。<code>Relation-column-setter</code>は2つの引数、行と新しくセッ
+トする値を取る手続きを返さなければなりません。
+</p>
+<p>リレーションが読み込み専用の場合は<code>relation-column-setter</code>
+は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dref"></a><u>Method:</u> <b>relation-ref</b><i> (r &lt;relation&gt;) row column :optional default</i></dt>
+<dd><p><var>row</var>はリレーション<var>r</var>の行です。<var>row</var>の<var>column</var>の値を
+返します。<var>column</var>が不正なカラム名である場合、<var>default</var>が与え
+られていればそれを返し、そうでなければ、エラーを示すシグナルがあがりま
+す。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dset_0021"></a><u>Method:</u> <b>relation-set!</b><i> (r &lt;relation&gt;) row column value</i></dt>
+<dd><p><var>row</var>はリレーション<var>r</var>の行です。<var>value</var>を<var>row</var>の
+<var>column</var>に設定します。リレーションが読み込み専用の場合には
+エラーを示すシグナルがあがります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dcolumn_002dgetters"></a><u>Method:</u> <b>relation-column-getters</b><i> (r &lt;relation&gt;)</i></dt>
+<dt><a name="index-relation_002dcolumn_002dsetters"></a><u>Method:</u> <b>relation-column-setters</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>ゲッタとセッタの完全なリストを返します。通常はデフォルトのメソッドで十
+分ですが、たとえばゲッタのリストをキャッシュしたいときもあるでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dcoercer"></a><u>Method:</u> <b>relation-coercer</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>行をシーケンスに変換する手続きを返します。行がすでにシーケンスで表現さ
+れているリレーションであれば、行をそのまま返す手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dinsertable_003f"></a><u>Method:</u> <b>relation-insertable?</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>リレーション<var>r</var>に新しい行を挿入可能な場合にのみ真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dinsert_0021"></a><u>Method:</u> <b>relation-insert!</b><i> (r &lt;relation&gt;) row</i></dt>
+<dd><p>リレーション<var>r</var>に行<var>row</var>を挿入します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002ddeletable_003f"></a><u>Method:</u> <b>relation-deletable?</b><i> (r &lt;relation&gt;)</i></dt>
+<dd><p>リレーション<var>r</var>から行を削除可能である場合にのみ真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002ddelete_0021"></a><u>Method:</u> <b>relation-delete!</b><i> (r &lt;relation&gt;) row</i></dt>
+<dd><p>リレーション<var>r</var>から行<var>row</var>を削除します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-relation_002dfold"></a><u>Method:</u> <b>relation-fold</b><i> (r &lt;relation&gt;) proc seed column …</i></dt>
+<dd><p><var>proc</var>を各行のカラム<var>column</var> … の値に適用します。
+<var>seed</var>は状態の値として渡されます。すなわち、リレーション<var>r</var>の
+各行ごとに以下のように<var>proc</var>を呼びます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>proc</var> <var>v_0</var> <var>v_1</var> … <var>v_i</var> <var>seed</var>)
+
+ where <var>v_k</var> = (relation-ref <var>r</var> <var>row</var> <var>column_k</var>)
+
+</pre></td></tr></tbody></table>
+
+<p>呼び出しの結果があたらしいシードの値となり、最終の結果が
+<var>relation-fold</var>から返ります。
+</p>
+<p>たとえば、リレーションが <code>amount</code> という名前のカラムをもつものと
+し、リレーション <var>r</var> 内にあるそのカラムをすべて足しあわせたいとす
+ると以下のように書けます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(relation-fold r + 0 'amount)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e5_0085_00b7_00e8_00b1_00a1_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9"></a>
+<h3 class="subheading">具象クラス</h3>
+
+<dl>
+<dt><a name="index-_003csimple_002drelation_003e"></a><u>Class:</u> <b>&lt;simple-relation&gt;</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-_003cobject_002dset_002drelation_003e"></a><u>Class:</u> <b>&lt;object-set-relation&gt;</b></dt>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_181.html#SLIB_002d_00e4_00ba_0092_00e6_008f_009b_00e3_0081_00ae_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_183.html#util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.7 gauche.fcntl - 低レベルファイル操作</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.7 gauche.fcntl - 低レベルファイル操作">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.7 gauche.fcntl - 低レベルファイル操作">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_80.html#g_t_00e6_00b1_008e_00e7_0094_00a8_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_82.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002efcntl-_002d-_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"></a>
+<h2 class="section">9.7 <code>gauche.fcntl</code> - 低レベルファイル操作</h2>
+
+<dl>
+<dt><a name="index-gauche_002efcntl"></a><u>Module:</u> <b>gauche.fcntl</b></dt>
+<dd><a name="index-gauche_002efcntl-1"></a>
+<p>アドバイザリ・ファイルロックを含む、
+<code>fcntl(2)</code>へのインタフェースを提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfcntl"></a><u>Function:</u> <b>sys-fcntl</b><i> port-or-fd operation :optional arg</i></dt>
+<dd><p><var>port-or-fd</var> で指定されたファイルに対して特定の操作をおこないます。
+ファイル指定は、ポートオブジェクトもしくはシステムのファイルディスクリプタ
+である整数でなくてはなりません。それがポートである場合には、すでにオープン
+されたファイルを結びついていなければなりません。
+(<code>port-type</code> が <code>file</code> を返すようなポートということです。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照。)
+</p>
+<p>操作は整数 <var>operation</var> で指定します。
+いくつかの変数が定義されいて、<var>operation</var> に使用できます。
+</p>
+<dl compact="compact">
+<dt> <code>F_GETFD</code></dt>
+<dd><a name="index-F_005fGETFD"></a>
+<a name="index-FD_005fCLOEXEC"></a>
+<p><var>port-or-fd</var> のファイルディスクリプタに結びついているフラグを返します。
+オプション引数の<var>arg</var>は使われません。返り値は整数で、その定義はシステム
+によります。ただし、<code>FD_CLOEXEC</code>だけは例外で、これは<code>exec</code>で
+クローズされたことを示しています。
+詳しくはあなたのシステムの<code>fcntl(2)</code>のマニュアルエントリを
+参照してください。
+</p>
+</dd>
+<dt> <code>F_SETFD</code></dt>
+<dd><a name="index-F_005fSETFD"></a>
+<p><var>port-or-fd</var>のファイルディスクリプタのフラグを与えられた<var>arg</var>に
+します。たとえば、<code>FL_CLOEXEC</code>フラグを設定する、互換性のある方法では
+次のようにします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-fcntl port F_SETFD
+          (logior FD_CLOEXEC
+                  (sys-fcntl port F_GETFD)))
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <code>F_GETFL</code></dt>
+<dd><a name="index-F_005fGETFL"></a>
+<p><var>port-or-fd</var>によって指定されたオープンしたファイルに結びついている
+フラグを返します。このフラグには以下のような情報が含まれています。
+</p>
+<ul>
+<li>
+<a name="index-O_005fACCMODE"></a>
+<a name="index-O_005fRDONLY"></a>
+<a name="index-O_005fWRONLY"></a>
+<a name="index-O_005fRDWR"></a>
+ファイルのアクセスモード。<code>O_ACCMODE</code> でマスクしたとき、
+これは、<code>O_RDONLY</code>、<code>O_WRONLY</code>、<code>O_RDWR</code>のうちどれかひとつです。
+</li><li>
+<a name="index-O_005fCREAT"></a>
+<a name="index-O_005fEXCL"></a>
+<a name="index-O_005fTRUNC"></a>
+ファイルの作成オプション。<code>O_CREAT</code>、<code>O_EXCL</code>のどちらか、または両方。
+<code>O_TRUNC</code>.
+</li><li>
+<a name="index-O_005fAPPEND"></a>
+<code>O_APPEND</code>でマスクしたとき、追記が許されているかどうか。
+</li><li>
+<a name="index-O_005fNONBLOCK"></a>
+<code>O_NONBLOCK</code>でマスクしたとき、I/O が非ブロックモードかブロックモードか。
+</li><li>
+<a name="index-O_005fNOCTTY"></a>
+<code>O_NOCTTY</code>でマスクしたとき、端末制御を切離しているかどうか。
+</li></ul>
+
+<p>システムが、そのシステム特有のフラグを定義していることがあります。
+</p>
+</dd>
+<dt> <code>F_SETFL</code></dt>
+<dd><a name="index-F_005fSETFL"></a>
+<p><var>port-or-fd</var>で指定したオープンされたファイルのフラグを設定します。
+上に列挙されたフラグのうち、<code>O_NONBLOCK</code> と <code>O_APPEND</code> だけが
+変更可能です。
+</p>
+<p><code>F_GETFD</code>/<code>F_SETFD</code> はファイルディスクリプタそのものに結びついた
+フラグについてであり、一方、<code>F_GETFL</code>/<code>F_SETFL</code> はオープンされた
+ファイルそのものに結びついているフラグについての操作であることに注意して
+ください。この違いは、2つ以上のファイルディスクリプタが同じオープンされた
+ファイルを指しているような場合にあらわれます。
+</p>
+</dd>
+<dt> <code>F_DUPFD</code></dt>
+<dd><a name="index-F_005fDUPFD"></a>
+<p><var>port-or-fd</var>で参照しているのと同じファイルを指す新しいファイル
+ディスクリプタを生成します。
+<var>arg</var>で整数を与えなければなりません。この数は割り当てられる
+ファイルディスクリプタの最小値を指定します。
+</p>
+</dd>
+<dt> <code>F_GETLK</code></dt>
+<dd><a name="index-F_005fGETLK"></a>
+<p>3つめの引数を与えなければなりません。これは、以下に述べる<code>&lt;sys-flock&gt;</code>
+オブジェクトのインスタンスでなければなりません。<var>arg</var>で指定された
+ロック情報を検索し、それにしかるべく変更します。
+</p>
+</dd>
+<dt> <code>F_SETLK</code></dt>
+<dt> <code>F_SETLKW</code></dt>
+<dd><a name="index-F_005fSETLK"></a>
+<a name="index-F_005fSETLKW"></a>
+<p>3つめの引数を与えなければなりません。これは、以下に述べる<code>&lt;sys-flock&gt;</code>
+オブジェクトのインスタンスでなければなりません。<var>arg</var>にしたがって、
+アドバイザリロックを設定します。ロックの取得に成功すれば、<code>#t</code>が
+返ります。もし、別のプロセスがロックをもっていて要求したものと衝突した
+場合には <code>F_SETLK</code> のときは <code>#f</code> を返します。一方、<code>F_SETLKW</code>
+のときはロックが利用可能になるまで待ちます。
+</p>
+</dd>
+<dt> <code>F_GETOWN</code></dt>
+<dd><a name="index-F_005fGETOWN"></a>
+<p>当該ファイルディスクリプタ上のイベント用シグナル、SIGIO および SIGURG を
+受けとることになるプロセスのプロセスIDあるいはプロセスグループを返します。
+プロセスグループは負の値で表示されます。このフラグはシステムにこのような
+機能がある場合にのみ利用可能です(BSD や Linux にはこの機能があります)。
+</p>
+</dd>
+<dt> <code>F_SETOWN</code></dt>
+<dd><a name="index-F_005fSETOWN"></a>
+<p>当該ファイルディスクリプタ上のイベント用シグナル、SIGIO および SIGURG を
+受けとることになるプロセスのプロセスIDあるいはプロセスグループを設定します。
+プロセスグループは負の値で表示されます。このフラグはシステムにこのような
+機能がある場合にのみ利用可能です(BSD や Linux にはこの機能があります)。
+詳細については、お使いのシステムの fcntl(2) のマニュアルページをチェック
+してください。
+</p>
+</dd>
+</dl>
+
+<p>これ以外の値を <var>operation</var> で指定しようとするとエラーになります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csys_002dflock_003e"></a><u>Builtin Class:</u> <b>&lt;sys-flock&gt;</b></dt>
+<dd><a name="index-sys_002dflock"></a>
+<p>POSIX のアドバイザリレコードロックを表わす構造体です。アドバイザリレコードロック
+というのは、適切なロックをもたないプロセスが対象ファイルを操作しても
+システムは関知しない、ということです。すべてのプロセスが、共有される可能性
+のあるファイルを操作する前にロックを<code>fcntl</code>を使って検査することが
+期待されています。
+</p>
+<p><code>fcntl</code>によるロックは、プロセスごと、ファイルごとであることに注意してください。
+同一プロセス内で同じファイルを複数回ロックすることはできますが、再帰ロックではないので
+いずれかのロックがアンロックされるか、どこかでそのファイルがクローズされるかすると
+プロセスはそのファイルに対するロックを失います。これは、<code>fcntl</code>ロックを
+ライブラリで使うことを難しくします。プロセス間排他制御を実現する別の方法として
+<code>with-lock-file</code> (<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab">ロックファイル</a>参照) があります。
+</p>
+<dl>
+<dt><a name="index-type-2"></a><u>Instance Variable of &lt;sys-flock&gt;:</u> <b>type</b></dt>
+<dd><p>ロックのタイプを表す整数です。利用可能な値として以下の変数があらかじめ
+定義されています。
+</p>
+<dl compact="compact">
+<dt> <code>F_RDLCK</code></dt>
+<dd><a name="index-F_005fRDLCK"></a>
+<p>読み込みのロック
+</p></dd>
+<dt> <code>F_WRLCK</code></dt>
+<dd><a name="index-F_005fWRLCK"></a>
+<p>書き込みのロック
+</p></dd>
+<dt> <code>F_UNLCK</code></dt>
+<dd><a name="index-F_005fUNLCK"></a>
+
+<p><code>F_SETLK</code>によるロックを除去するか、あるいはレコードが<code>F_GETLK</code>
+でロックされていないことを示す。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-whence"></a><u>Instance Variable of &lt;sys-flock&gt;:</u> <b>whence</b></dt>
+<dd><p><code>start</code>の計測が開始される位置を示す。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-start"></a><u>Instance Variable of &lt;sys-flock&gt;:</u> <b>start</b></dt>
+<dd><p>ロックされる領域の開始位置オフセット
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-len"></a><u>Instance Variable of &lt;sys-flock&gt;:</u> <b>len</b></dt>
+<dd><p>ロックされるバイト数。ゼロは「EOFまで」という意味。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-pid"></a><u>Instance Variable of &lt;sys-flock&gt;:</u> <b>pid</b></dt>
+<dd><p>当該のロックをもっている整数のプロセスID。<code>F_GETLK</code>でのみ使用。
+</p></dd></dl>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_80.html#g_t_00e6_00b1_008e_00e7_0094_00a8_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_82.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

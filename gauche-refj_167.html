@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.41 text.html-lite - シンプルなHTMLドキュメントの構築</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.41 text.html-lite - シンプルなHTMLドキュメントの構築">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.41 text.html-lite - シンプルなHTMLドキュメントの構築">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_166.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_168.html#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002ehtml_002dlite-_002d-_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089"></a>
+<h2 class="section">11.41 <code>text.html-lite</code> - シンプルなHTMLドキュメントの構築</h2>
+
+<dl>
+<dt><a name="index-text_002ehtml_002dlite"></a><u>Module:</u> <b>text.html-lite</b></dt>
+<dd><a name="index-text_002ehtml_002dlite-1"></a>
+<p>HTML ドキュメントを簡単に構築するための手続きを提供します。
+例えば、以下のコードは HTML のテーブルを構築します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(html:table
+  (html:tr (html:th "Item No") (html:th "Quantity"))
+  (html:tr (html:td 1) (html:td 120))
+  (html:tr (html:td 2) (html:td 30))
+  (html:tr (html:td 3) (html:td 215)))
+</pre></td></tr></tbody></table>
+<p>詳細については、以下の <code>html:<var>element</var></code> の説明を見てください。
+</p>
+<p>このモジュールでは生成されたHTMLドキュメントに関して、
+例えばアトリビュートに有効な値が入っているか、要素の内容はDTDを満たしているか、
+等のチェックをほとんど行いません。また、HTMLをパーズする関数も提供されません。
+それが「lite」の名の由来です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-html_002descape"></a><u>Function:</u> <b>html-escape</b></dt>
+<dt><a name="index-html_002descape_002dstring"></a><u>Function:</u> <b>html-escape-string</b><i> string</i></dt>
+<dd><p>HTML に含まれる"安全でない"文字をエスケープします。
+<code>html-escape</code> は、現在の入力ポートから文字列を読み込み、
+結果を現在の出力ポートへ書き出します。<code>html-escape-string</code> は
+<var>string</var> を入力とし、文字列を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-html_002ddoctype"></a><u>Function:</u> <b>html-doctype</b><i> :key type</i></dt>
+<dd><p>HTML ドキュメントの文書型宣言を返します。
+<var>type</var> は、以下のいずれかを指定します (デフォルトは<code>:html-4.01-strict</code>
+です)。
+</p><dl compact="compact">
+<dt> <code>:html-4.01-strict, :html-4.01, :strict</code></dt>
+<dd><p>HTML 4.01 Strict DTD
+</p></dd>
+<dt> <code>:html-4.01-transitional, :transitional</code></dt>
+<dd><p>HTML 4.01 Transitional DTD
+</p></dd>
+<dt> <code>:html-4.01-frameset, :frameset</code></dt>
+<dd><p>HTML 4.01 Frameset DTD
+</p></dd>
+<dt> <code>:xhtml-1.0-strict, :xhtml-1.0</code></dt>
+<dd><p>XHTML 1.0 Strict DTD
+</p></dd>
+<dt> <code>:xhtml-1.0-transitional</code></dt>
+<dd><p>XHTML 1.0 Transitional DTD
+</p></dd>
+<dt> <code>:xhtml-1.0-frameset</code></dt>
+<dd><p>XHTML 1.0 Frameset DTD
+</p></dd>
+<dt> <code>:xhtml-1.1</code></dt>
+<dd><p>XHTML 1.1 DTD
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-html_003a"></a><u>Function:</u> <b>html:</b><i><var>element</var> <var>args</var> …</i></dt>
+<dd><a name="index-html_003aa"></a>
+<a name="index-html_003aabbr"></a>
+<a name="index-html_003aacronym"></a>
+<a name="index-html_003aaddress"></a>
+<a name="index-html_003aarea"></a>
+<a name="index-html_003ab"></a>
+<a name="index-html_003abase"></a>
+<a name="index-html_003abdo"></a>
+<a name="index-html_003abig"></a>
+<a name="index-html_003ablockquote"></a>
+<a name="index-html_003abody"></a>
+<a name="index-html_003abr"></a>
+<a name="index-html_003abutton"></a>
+<a name="index-html_003acaption"></a>
+<a name="index-html_003acite"></a>
+<a name="index-html_003acode"></a>
+<a name="index-html_003acol"></a>
+<a name="index-html_003acolgroup"></a>
+<a name="index-html_003add"></a>
+<a name="index-html_003adel"></a>
+<a name="index-html_003adfn"></a>
+<a name="index-html_003adiv"></a>
+<a name="index-html_003adl"></a>
+<a name="index-html_003adt"></a>
+<a name="index-html_003aem"></a>
+<a name="index-html_003afieldset"></a>
+<a name="index-html_003aform"></a>
+<a name="index-html_003aframe"></a>
+<a name="index-html_003aframeset"></a>
+<a name="index-html_003ah1"></a>
+<a name="index-html_003ah2"></a>
+<a name="index-html_003ah3"></a>
+<a name="index-html_003ah4"></a>
+<a name="index-html_003ah5"></a>
+<a name="index-html_003ah6"></a>
+<a name="index-html_003ahead"></a>
+<a name="index-html_003ahr"></a>
+<a name="index-html_003ahtml"></a>
+<a name="index-html_003ai"></a>
+<a name="index-html_003aiframe"></a>
+<a name="index-html_003aimg"></a>
+<a name="index-html_003ainput"></a>
+<a name="index-html_003ains"></a>
+<a name="index-html_003akbd"></a>
+<a name="index-html_003alabel"></a>
+<a name="index-html_003alegend"></a>
+<a name="index-html_003ali"></a>
+<a name="index-html_003alink"></a>
+<a name="index-html_003amap"></a>
+<a name="index-html_003ameta"></a>
+<a name="index-html_003anoframes"></a>
+<a name="index-html_003anoscript"></a>
+<a name="index-html_003aobject"></a>
+<a name="index-html_003aol"></a>
+<a name="index-html_003aoptgroup"></a>
+<a name="index-html_003aoption"></a>
+<a name="index-html_003ap"></a>
+<a name="index-html_003aparam"></a>
+<a name="index-html_003apre"></a>
+<a name="index-html_003aq"></a>
+<a name="index-html_003asamp"></a>
+<a name="index-html_003ascript"></a>
+<a name="index-html_003aselect"></a>
+<a name="index-html_003asmall"></a>
+<a name="index-html_003aspan"></a>
+<a name="index-html_003astrong"></a>
+<a name="index-html_003astyle"></a>
+<a name="index-html_003asub"></a>
+<a name="index-html_003asup"></a>
+<a name="index-html_003atable"></a>
+<a name="index-html_003atbody"></a>
+<a name="index-html_003atd"></a>
+<a name="index-html_003atextarea"></a>
+<a name="index-html_003atfoot"></a>
+<a name="index-html_003ath"></a>
+<a name="index-html_003athead"></a>
+<a name="index-html_003atitle"></a>
+<a name="index-html_003atr"></a>
+<a name="index-html_003att"></a>
+<a name="index-html_003aul"></a>
+<a name="index-html_003avar"></a>
+<p><var>element</var> の HTML 要素を構築します。現時点では以下の要素が
+サポートされています。
+(HTML 4.01 DTD <a href="http://www.w3.org/TR/html4/sgml/dtd.html">http://www.w3.org/TR/html4/sgml/dtd.html</a>
+に定義されている要素です)。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">a        abbr       acronym    address     area      b
+base     bdo        big        blockquote  body      br
+button   caption    cite       code        col       colgroup
+dd       del        dfn        div         dl        dt
+em       fieldset   form       frame       frameset
+h1       h2         h3         h4          h5        h6
+head     hr         html       i           iframe    img
+input    ins        kbd        label       legend    li
+link     map        meta       nofrmaes    noscript  object
+ol       optgroup   option     p           param     pre
+q        samp       script     select      small     span
+strong   style      sub        sup         table     tbody
+td       textarea   tfoot      th          thead     title
+tr       tt         ul         var
+</pre></td></tr></tbody></table>
+
+<p>これらの手続きは、テキスト・セグメントのツリーを返すので、
+<code>write-tree</code> でポートに書き出したり、<code>tree-&gt;string</code> で
+文字列に変換したりできます
+(<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089"><code>text.tree</code> - 怠惰なテキスト構築</a>参照)。
+</p>
+<p>要素のアトリビュートは要素の内容に先立つキーワード-値の表記で指定することができます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(tree-&gt;string (html:a :href "http://foo/bar" "foobar"))
+  ⇒
+  "&lt;a href=\"http://foo/bar\"&gt;foobar&lt;/a\n&gt;"
+
+(tree-&gt;string
+  (html:table :width "100%" :cellpading 0 "content here"))
+  ⇒
+  "&lt;table width=\"100%\" cellpadding=\"0\"&gt;content here&lt;/table\n&gt;"
+</pre></td></tr></tbody></table>
+
+<p>属性に与える真偽値は特別な意味を持ちます。
+<code>#t</code> が与えられると、属性は値なしでレンダリングされます。
+<code>#f</code> が与えられると、属性それ自体がレンダリングされません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(tree-&gt;string (html:table :border #t))
+  ⇒ "&lt;table border&gt;&lt;/table\n&gt;"
+
+(tree-&gt;string (html:table :border #f))
+  ⇒ "&lt;table&gt;&lt;/table\n&gt;"
+</pre></td></tr></tbody></table>
+
+<p>属性の値における特別な文字は、手続きによってエスケープされますが、
+要素の内容にある特別な文字はエスケープされません。それをエスケープ
+するのは呼び出し側の責任です。
+</p>
+<p>内容を持たない HTML 要素に内容を与えると手続きはエラーを通知します。
+手続きは、与えられた属性が妥当であるか、与えられた内容がその要素に
+とって妥当であるかのチェックはしません。
+</p>
+<p><em>注意:</em>
+これらの手続は改行を終了タグの<code>&gt;</code>の前に挿入することに注意してくだ
+さい。つまり、HTMLをレンダリングすると以下のようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;table&gt;&lt;tr&gt;&lt;td&gt;foo&lt;/td
+&gt;&lt;td&gt;bar&lt;/td
+&gt;&lt;/tr
+&gt;&lt;/table
+&gt;
+</pre></td></tr></tbody></table>
+
+<p>終了ダグの後に改行をいれないのは意図的なものです。<em>改行が意味をも
+つかどうかは外側の文脈に依存するからです</em>。たとえば、<code>&lt;head&gt;</code>要素
+の直下にある要素の後に改行をいれることはできますが、<code>&lt;p&gt;</code>要素のな
+かにあればできません。
+</p>
+<p>3つ可能性があって、(1) 改行は全く入れない、(2) タグの中だけで改行を入
+れる。(3) 安全な場所にのみ改行をいれる。最初の場合はHTMLは一行になり、
+正当なHTMLではあるものの、行指向のツールで処理するには不便です。3番目
+の場合はレンダリングするのにDTDをちゃんと見るツールが必要になります。
+というわけで、ここでは2番目のアプローチを取っています。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_166.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_168.html#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

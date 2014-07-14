@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.18 gauche.parameter - パラメータ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.18 gauche.parameter - パラメータ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.18 gauche.parameter - パラメータ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_91.html#Netdb_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_93.html#g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002eparameter-_002d-_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"></a>
+<h2 class="section">9.18 <code>gauche.parameter</code> - パラメータ</h2>
+
+<dl>
+<dt><a name="index-gauche_002eparameter"></a><u>Module:</u> <b>gauche.parameter</b></dt>
+<dd><a name="index-gauche_002eparameter-1"></a>
+<p>「パラメータ」は基本的にゼロもしくは一個の引数を取る状態を持つ手続きとみなせます。
+引数が与えられなかった場合、それは内部に保持した値を返します。
+一つの引数が与えられた場合、その値が新たなパラメータ内部の値となり、
+変更前の値が返されます。
+パラメータは状態を保持する手段として、
+単なるグローバル変数に比べていくつかの利点を持っています。
+</p>
+<p>パラメータの値はスレッド毎に保持されるので、
+パラメータをスレッドローカルな格納領域として利用することができます。
+新たに作られたスレッドは、その作成元のスレッドのパラメータのコピーを
+受け取ります。
+</p>
+<p>パラメータに値がセットされるときに、指定の「フィルタ手続き」を呼んで
+値を検査することができます。これにより、パラメータの値が常に正当なもので
+あることを保証できます。
+</p>
+<p>マクロ<code>parameterize</code>により、特定のダイナミックスコープの中だけ
+パラメータの値を変えることができます。これは、実質的にダイナミックスコープを
+持つ変数を置き換えることができます。
+</p>
+<p>また、パラメータの値が変更されたときに呼ばれるコールバック手続きを
+登録しておくこともできます。これによって実質的に、いわゆる
+「traceされた変数」を置き換えることができます。
+</p>
+<p>パラメータオブジェクトの基本的な機能はSRFI-39で定義されています。
+この機能はまた、ChezScheme、Chicken、MzSchemeなどいくつかのScheme処理系に
+見られます。GaucheのパラメータはSRFI-39の上位互換になっています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cparameter_003e"></a><u>Class:</u> <b>&lt;parameter&gt;</b></dt>
+<dd><a name="index-parameter"></a>
+<p>パラメータのクラスです。<code>object-apply</code>メソッドが定義されているので、
+パラメータオブジェクトは普通の手続きと同様に使うことが出来ます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; p is a parameter with initial value 2
+(define p (make-parameter 2))
+
+;; calling p with no arguments returns the current value
+(p) ⇒ 2
+
+;; modify p's value to 3
+(p 3)
+
+(p) ⇒ 3
+
+;; you can also use generalized set (srfi-17)
+(set! (p) 5)
+
+(p) ⇒ 5
+
+;; using parameterize dynamically changes p's value.
+
+(define (get-p) (p))
+
+(parameterize ([p 7])
+  (get-p)) ⇒ 7
+
+(get-p)    ⇒ 5
+</pre></td></tr></tbody></table>
+
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dparameter"></a><u>Function:</u> <b>make-parameter</b><i> value :optional filter</i></dt>
+<dd><p>[SRFI-39]
+初期値が<var>value</var>であるパラメータを作成します。
+もし省略可能な引数<var>filter</var>が与えられた場合、
+それは一つの引数を取る手続きでなければなりません。
+パラメータの値が変更されようとした時、<var>filter</var>は与えられた値を
+引数として呼ばれ、<var>filter</var>が返した値がパラメータの新しい値と
+なります。<var>filter</var>はエラーを報告したりパラメータの値を変えずに置くことも
+可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-parameterize"></a><u>Macro:</u> <b>parameterize</b><i> ((param value) …) body …</i></dt>
+<dd><p>[SRFI-39]
+<var>body</var> …を評価します。
+但し、<var>body</var> … の実行中のみ、パラメータ<var>param</var>の値を
+<var>value</var>に変更します。最後<var>body</var>の返した値を返します。
+</p></dd></dl>
+
+<p>例：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a (make-parameter 1))
+(a) ⇒ 1
+(a 2) ⇒ 1
+(a) ⇒ 2
+(parameterize ((a 3))
+  (a)) ⇒ 3
+(a) ⇒ 2
+</pre></td></tr></tbody></table>
+
+<dl>
+<dt><a name="index-parameter_002dobserver_002dadd_0021"></a><u>Method:</u> <b>parameter-observer-add!</b><i> (p &lt;parameter&gt;) proc :optional when where</i></dt>
+<dd><p><var>proc</var>をパラメータ<var>p</var>の“オブザーバ”手続きに追加します。
+オブザーバ手続きは、(1)パラメータに新しい値がセットされる直前、
+あるいは(2)パラメータに新しい値がセットされた直後、に呼ばれます。
+(1)の場合、コールバックが呼ばれる前にフィルタ手続きがすでに適用
+されています。どちらの場合も、オブザーバ手続きは、古い値と新しい
+値の2引数を伴って呼ばれます。オブザーバ手続きの戻り値は無視されます。
+</p>
+<p>オプショナル引数<var>when</var>は、シンボル<code>before</code>か<code>after</code>の
+いずれかでなければならず、値が変更された前と後のどちらで<var>proc</var>が
+呼ばれるかを指定します。省略されると、<code>after</code>を指定したものと
+されます。
+</p>
+<p>オプショナル引数<var>where</var>は、シンボル<code>append</code>か<code>prepend</code>の
+いずれかでなければならず、<var>proc</var>が既存のオブザーバ手続きのリストの
+前に追加されるか後に追加されるかを指定します。省略されると、<code>append</code>
+を指定したものとされます。
+</p>
+<p><em>注意</em>: パラメータの値自身がスレッドローカルであっても、
+オブザーバのリストは全てのスレッドで共有されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-parameter_002dobserver_002ddelete_0021"></a><u>Method:</u> <b>parameter-observer-delete!</b><i> (p &lt;parameter&gt;) proc :optional when</i></dt>
+<dd><p>パラメータ<var>p</var>のオブザーバ手続きのリストから<var>proc</var>を削除します。
+<var>proc</var>がリストになければ、何も起こりません。
+<var>when</var>引数にシンボル<code>before</code>か<code>after</code>を与えて、
+<var>proc</var>をどちらのリストから削除するかを指定することができます。
+<var>when</var>引数が省略されると、<var>proc</var>は両方のリストから削除されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-parameter_002dpre_002dobservers"></a><u>Method:</u> <b>parameter-pre-observers</b><i> (p &lt;parameter&gt;)</i></dt>
+<dt><a name="index-parameter_002dpost_002dobservers"></a><u>Method:</u> <b>parameter-post-observers</b><i> (p &lt;parameter&gt;)</i></dt>
+<dd><p>“before”か“after”オブザーバをそれぞれキープするフックオブジェクト
+(<a indepth="true" href="gauche-refj_83.html#g_t_00e3_0083_0095_00e3_0083_0083_00e3_0082_00af"><code>gauche.hook</code> - フック</a>参照)を返します。
+</p>
+<p><em>注意</em>: パラメータの値自身がスレッドローカルであっても、
+オブザーバのリストは全てのスレッドで共有されます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_91.html#Netdb_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_93.html#g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

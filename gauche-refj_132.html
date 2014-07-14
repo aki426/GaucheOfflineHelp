@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.6 crypt.bcrypt - パスワードハッシュ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.6 crypt.bcrypt - パスワードハッシュ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.6 crypt.bcrypt - パスワードハッシュ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_132.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_131.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_133.html#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="crypt_002ebcrypt-_002d-_00e3_0083_0091_00e3_0082_00b9_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5"></a>
+<h2 class="section">11.6 <code>crypt.bcrypt</code> - パスワードハッシュ</h2>
+
+<dl>
+<dt><a name="index-crypt_002ebcrypt"></a><u>Module:</u> <b>crypt.bcrypt</b></dt>
+<dd><a name="index-crypt_002ebcrypt-1"></a>
+<p>このモジュールは、blowfishを使ったパスワードハッシュアルゴリズムを実装します。
+OpenBSDのbcryptアルゴリズム(version 2a)と互換です。
+</p>
+<p>典型的な使い方は非常にシンプルです。新しいパスワードハッシュ値を
+得たい場合 (例えば新しいユーザのために、など) は、パスワード文字列を
+唯一の引数として<code>bcrypt-hashpw</code>を呼び出してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(bcrypt-hashpw <var>password</var>)
+  ⇒ <span class="roman">hashed-string</span>
+</pre></td></tr></tbody></table>
+
+<p>このルーチンは自動的にソルト値を付加します。戻り値の文字列はそのままユーザ
+データベースに格納できます。与えられたパスワードがハッシュ値に一致するか
+どうかを調べるには、ハッシュ値そのものを第二引数として<code>bcrypt-hashpw</code>に
+渡します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(bcrypt-hashpw <var>password</var> <var>hashed-string</var>)
+  ⇒ <span class="roman">hashed-string</span>
+</pre></td></tr></tbody></table>
+
+<p>パスワードが正しければ、戻り値は<var>hashed-string</var>と完全に一致するはずです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bcrypt_002dhashpw"></a><u>Function:</u> <b>bcrypt-hashpw</b><i> password :optional setting</i></dt>
+<dd><p><var>password</var>のハッシュ値を計算します。<var>setting</var>は
+ソルト値とパラメータを指定する文字列です。<var>setting</var>が
+省略された場合は、適切なデフォルトのパラメータとランダムなソルト値が
+自動的に選択されます。
+</p>
+<p>戻り値のハッシュ値文字列にはソルト値とパラメータが含まれているので、
+それを再び<var>setting</var>に渡すことができます。したがって、パスワードを
+既存のハッシュ値に一致するかチェックしたい場合は、ハッシュ値を<var>setting</var>に渡し、
+戻ってきた文字列が渡したハッシュ値と一致するかを見れば良いことになります。
+</p>
+<p>bcryptアルゴリズムは最大72オクテットまでのパスワードを使えます。
+</p>
+<p>新しいハッシュ値を計算する際にパラメータを指定したい場合は、次に説明する
+<code>bcrypt-gensalt</code>を使うと<var>setting</var>に使える文字列を得ることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bcrypt_002dgensalt"></a><u>Function:</u> <b>bcrypt-gensalt</b><i> &amp;key prefix count entropy-source</i></dt>
+<dd><p>与えられたパラメータを折り込んだ、
+<code>bcrypt-hashpw</code>の<var>setting</var>引数に使える文字列を返します。
+</p>
+<p><var>prefix</var>引数はハッシュ関数およびそのバージョンを指定する文字列です。
+現在のところ、<code>bcrypt</code>互換である<code>$2a$</code>のみがサポートされています。
+</p>
+<p><var>count</var>引数はハッシュの繰り返し回数に関係します。大きな値を指定すれば、
+ハッシュ値の計算により長い時間がかかります。パスワードハッシュにおいては、
+時間をかけた方が良いことに注意してください。一回のハッシュの時間が長くなれば
+辞書攻撃への防御になります。一方で、通常のパスワードチェックでは
+ログインの度にたかだか一回しはハッシュ関数を呼ばないので、それがたとえコンマ数秒
+かかったとしてもたいした負荷ではありません。
+bcryptアルゴリズムでは、<code>(expt 2 <var>count</var>)</code>回ハッシュが繰り返されます。
+</p>
+<p><var>entropy-source</var>引数はランダムなバイト列を格納した<code>u8vector</code>です。
+bcryptアルゴリズムでは少なくとも16バイトの長さが必要です。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_131.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e3_0083_0097_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_133.html#dbi-_002d-_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e9_009d_009e_00e4_00be_009d_00e5_00ad_0098_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e5_00b1_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

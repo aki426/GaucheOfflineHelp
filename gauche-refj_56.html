@@ -1,0 +1,1064 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.18 手続きと継続</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.18 手続きと継続">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.18 手続きと継続">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_56.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_55.html#Weak-_00e3_0083_009d_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Procedure-class-and-applicability" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a-1"></a>
+<h2 class="section">6.18 手続きと継続</h2>
+
+<p>In Scheme, <em>procedures</em> are fundamental blocks to build
+a program (See section <a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>).
+A procedure represents a certain computation,
+possibly parameterized, and can be <em>applied</em> to the actual
+arguments to execute the computation.  Scheme also provides
+the means to extract the continuation of the current computation
+and wraps it in a procedure (See section <a href="#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a>).
+</p>
+<p>Gauche extends the concept of procedure application, allowing
+you to apply any object; for example, you can set up Gauche to
+accept <code>("abc" 2)</code> can be a valid application syntax.
+See section <a href="#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">適用可能なオブジェクト</a>, for the details.
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Procedure-class-and-applicability">6.18.1 Procedure class and applicability</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e4_00b8_0087_00e8_0083_00bd_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5">6.18.2 万能アクセサ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0093_00e3_0083_008d_00e3_0083_00bc_00e3_0082_00bf">6.18.3 コンビネータ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0">6.18.4 省略可能引数のパージング</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00ae_00e3_0082_00a2_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">6.18.5 手続きのアリティ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">6.18.6 適用可能なオブジェクト</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_00b6_0099_00e7_00b6_009a">6.18.7 継続</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_00a4_009a_00e5_0080_00a4">6.18.8 多値</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">6.18.9 生成された値の畳み込み</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Procedure-class-and-applicability"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00b8_0087_00e8_0083_00bd_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Procedure-class-and-applicability-1"></a>
+<h3 class="subsection">6.18.1 Procedure class and applicability</h3>
+
+<dl>
+<dt><a name="index-_003cprocedure_003e"></a><u>Builtin Class:</u> <b>&lt;procedure&gt;</b></dt>
+<dd><a name="index-procedure"></a>
+<p>手続きのクラスです。<code>lambda</code>で作られた手続きや
+組み込みのプリミティブ手続きはこのクラスのインスタンスです。
+Gaucheではどんな型のオブジェクトも適用可能にできるので、あるオブジェクトが
+<code>&lt;procedure&gt;</code>クラスのインスタンスであるかとうかということは
+あまり気にする必要はありません。Gaucheの中身をいじってみる時以外は。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-procedure_003f"></a><u>Function:</u> <b>procedure?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>が<em>生得的</em>に適用可能なオブジェクトであれば<code>#t</code>を、
+そうでなければ<code>#f</code>を返します。<em>生得的</em>にというのは、
+Gaucheが最初から手続きとして呼び出せるオブジェクトとして備えているもの、程度の意味です。
+<code>&lt;procedure&gt;</code>クラスのインスタンスや、
+ジェネリックファンクションやメソッドがそうです。
+(ジェネリックファンクションとメソッドに関しては
+<a indepth="true" href="gauche-refj_69.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0083_00b3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00a8_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089">ジェネリックファンクションとメソッド</a>を参照してください)。
+</p>
+<p>Gaucheでは、どんなオブジェクトも適用可能にすることができます
+(<a href="#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">適用可能なオブジェクト</a>参照)。従って、<code>procedure?</code>が<code>#f</code>を
+返したからといってそのオブジェクトを手続きのように呼び出せないとは限りません。
+オブジェクトが適用可能かどうかをより正確に調べるには、
+下に説明する<code>applicable?</code>を使ってください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-apply"></a><u>Function:</u> <b>apply</b><i> proc arg1 … args</i></dt>
+<dd><p>[R5RS]
+<code>(<var>arg1</var> … . <var>args</var>)</code>を引数として手続き<var>proc</var>を呼びます。
+最後の引数<var>args</var>は正規のリストでなければなりません。 <var>proc</var>が返す
+値をそのまま返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(apply list 'a 'b '(c d e)) ⇒ (a b c d e)
+
+(apply + 1 2 '(3 4 5))      ⇒ 15
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-applicable_003f"></a><u>Function:</u> <b>applicable?</b><i> obj class …</i></dt>
+<dd><p>それぞれの型が<var>class</var> …であるような引数リストを伴って
+<var>obj</var>を呼び出すことができるかどうかを調べます。
+例えば<code>(applicable? foo &lt;string&gt; &lt;integer&gt;)</code>が<code>#t</code>を
+返したなら、<code>foo</code>を<code>(foo "x" -2)</code>のように呼び出せるということです。
+(これは、エラーが出ないことを保証するものではありません。<code>foo</code>は
+もしかする非負整数しか受け取れないかもしれませんが、そのことは
+<code>applicable?</code>の結果からはわかりません。でも、<code>applicable?</code>が<code>#t</code>を
+返したなら、<code>foo</code>を呼び出した時に“foo is not applicable”と
+Gaucheに文句を言われることはありません。)
+</p>
+<p>この手続きは適用可能オブジェクトも考慮に入れます。
+従って、例えば<code>(applicable? #/a/ &lt;string&gt;)</code>は<code>#t</code>を返します。
+正規表現は文字列に適用可能だからです (<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>参照)。
+</p>
+<p>ジェネリックファンクションに対しては、
+渡された<var>class</var>引数それぞれが、対応する特定化子と一致するかサブクラスになっている
+ようなメソッドが最低ひとつあれば、<code>applicable?</code>は<code>#t</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method foo ((x &lt;sequence&gt;) (y &lt;integer&gt;)) #f)
+
+(applicable? foo &lt;sequence&gt; &lt;integer&gt;) ⇒ #t
+(applicable? foo &lt;string&gt; &lt;integer&gt;) ⇒ #t
+(applicable? foo &lt;hash-table&gt; &lt;integer&gt;) ⇒ #f
+(applicable? foo &lt;string&gt; &lt;real&gt;) ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>2番目の例では、<code>&lt;string&gt;</code>は<code>&lt;sequence&gt;</code>のサブクラスなので
+<code>#t</code>が返ります。一方、3番目の例では<code>&lt;hash-table&gt;</code>は
+<code>&lt;sequence&gt;</code>のサブクラスではないので<code>#f</code>となります。
+4番めの例が<code>#f</code>なのは、<code>&lt;real&gt;</code>が<code>&lt;integer&gt;</code>のサブクラスではないからです。
+</p>
+<p>伝統的なSchemeの手続き (<code>lambda</code>で作られるようなもの) は
+引数の数のみで呼び出し可能かどうかが判断されます。オブジェクトが
+引数の型にかかわらず、特定の個数の引数を取るかどうかを判定するには、
+<var>class</var>引数に<code>&lt;top&gt;</code>を渡します。(<code>&lt;top&gt;</code>は
+全てのクラスのスーパークラスです。)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(applicable? cons &lt;top&gt; &lt;top&gt;) ⇒ #t
+</pre></td></tr></tbody></table>
+
+<p>逆に、<em>何らかの</em>特定の型の引数を取るかどうかを調べたい場合は、
+<code>&lt;bottom&gt;</code>を渡してください。(<code>&lt;bottom&gt;</code>は全てのクラスのサブクラスです。)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method foo ((x &lt;sequence&gt;) (y &lt;integer&gt;)) #f)
+
+(applicable? foo &lt;top&gt; &lt;top&gt;) ⇒ #f
+(applicable? foo &lt;bottom&gt; &lt;bottom&gt;) ⇒ #t
+</pre></td></tr></tbody></table>
+
+<p><code>&lt;top&gt;</code>, <code>&lt;bottom&gt;</code>クラスおよびGaucheでの型の扱いについては
+<a indepth="true" href="gauche-refj_39.html#g_t_00e5_009e_008b_00e3_0081_00a8_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9">型とクラス</a>を参照してください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e4_00b8_0087_00e8_0083_00bd_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Procedure-class-and-applicability" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0093_00e3_0083_008d_00e3_0083_00bc_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00b8_0087_00e8_0083_00bd_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5-1"></a>
+<h3 class="subsection">6.18.2 万能アクセサ</h3>
+
+<dl>
+<dt><a name="index-_007e"></a><u>Function:</u> <b>~</b><i> obj key keys …</i></dt>
+<dt><a name="index-_0028setter-_007e_0029"></a><u>Function:</u> <b>(setter ~)</b><i> obj key keys …</i></dt>
+<dd><p>手続き<code>~</code>は、様々な集合型のオブジェクトの部分にアクセスするのに使えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; Access to an element of a sequence by index
+(~ '(a b c) 0)       ⇒ a
+(~ '#(a b c) 2)      ⇒ c
+(~ "abc" 1)          ⇒ #\b
+(~ '#u8(10 20 30) 1) ⇒ 20
+
+;; Access to an element of a collection by key
+(~ (hash-table 'eq? '(a . 1) '(b . 2)) 'a)
+  ⇒ 1
+
+;; Access to a slot of an object by slot name
+(~ (sys-localtime (sys-time)) 'hour)
+  ⇒ 20
+</pre></td></tr></tbody></table>
+
+<p>アクセスはチェインすることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(~ '#((a b c) (d e f) (g h i)) 1 2) ⇒ f
+
+(~ (hash-table 'eq? '(a . "abc") '(d . "def")) 'a 2)
+  ⇒ #\c
+</pre></td></tr></tbody></table>
+
+<p><code>~</code>は左結合します。つまり、
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(~ x k j) ≡ (~ (~ x k) j)
+</pre></td></tr></tbody></table>
+<p>等。
+</p>
+<p>一般化された<code>set!</code>を<code>~</code>に使えば、アクセスされる要素を置き換えることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define z (vector 'a 'b 'c))
+(set! (~ z 1) 'Z)
+
+z ⇒ #(a Z c)
+
+(define z (vector (list (vector 'a 'b 'c)
+                        (vector 'd 'e 'f)
+                        (vector 'g 'h 'i))
+                  (list (vector 'a 'b 'c)
+                        (vector 'd 'e 'f)
+                        (vector 'g 'h 'i))))
+
+z ⇒ #((#(a b c) #(d e f) #(g h i))
+     (#(a b c) #(d e f) #(g h i)))
+
+(set! (~ z 1 2 0) 'Z)
+z ⇒  #((#(a b c) #(d e f) #(g h i))
+     (#(a b c) #(d e f) #(Z h i)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p><code>~</code>は内部的にジェネリックファンクション<code>ref</code>を使って実現されています。
+ジェネリックファンクションについて詳しくは<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">オブジェクトシステム</a>を参照してください。
+</p>
+<dl>
+<dt><a name="index-ref-1"></a><u>Generic function:</u> <b>ref</b><i> object key :optional args …</i></dt>
+<dt><a name="index-_0028setter-ref_0029-1"></a><u>Generic function:</u> <b>(setter ref)</b><i> object key value</i></dt>
+<dd><p>多くの集合型はこのジェネリックファンクションを特殊化し、
+統一されたアクセス方法と変更方法を提供しています。
+<code>ref</code>のオプショナル引数<var>args</var>の意味はメソッド毎に異なりますが、
+最初のオプショナル引数は、<var>object</var>の<var>key</var>に対する値が無い場合の
+フォールバック値として使われるのが普通です。
+</p>
+<p>正確な動作の定義は、<code>ref</code>メソッドを提供しているクラスごとに説明されています。
+</p></dd></dl>
+
+<p><code>~</code>の動作は次のコードで理解できるでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define ~
+  (getter-with-setter
+   (case-lambda
+     [(obj selector) (ref obj selector)]
+     [(obj selector . more) (apply ~ (ref obj selector) more)])
+   (case-lambda
+     [(obj selector val) ((setter ref) obj selector val)]
+     [(obj selector selector2 . rest)
+      (apply (setter ~) (ref obj selector) selector2 rest)])))
+</pre></td></tr></tbody></table>
+
+<p>(Gaucheは最適化のためにいくつかの型で短絡経路を使うこともあるので、
+実際の実装とは異なります)
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0093_00e3_0083_008d_00e3_0083_00bc_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00b8_0087_00e8_0083_00bd_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0093_00e3_0083_008d_00e3_0083_00bc_00e3_0082_00bf-1"></a>
+<h3 class="subsection">6.18.3 コンビネータ</h3>
+
+<p>Gaucheには、combinatory programmingに使えるいくつかの基本手続きがあります。
+</p>
+<dl>
+<dt><a name="index-pa_0024"></a><u>Function:</u> <b>pa$</b><i> proc arg …</i></dt>
+<dd><p>部分適用。手続きを返します。その手続きが引数<var>m</var> …を伴って
+呼ばれた場合、それは<code>(proc arg … m …)</code>と等価になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define add3 (pa$ + 3))
+(add3 4) ⇒ 7
+
+(map (pa$ * 2) '(1 2 3)) ⇒ (2 4 6)
+</pre></td></tr></tbody></table>
+
+<p>SRFI-26で定義されているマクロ<code>cut</code>と<code>cute</code>も似たような抽象化の
+方法を提供しますが、<code>pa$</code>より多少柔軟性が高く、その分やや冗長です。
+<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-apply_0024"></a><u>Function:</u> <b>apply$</b><i> proc</i></dt>
+<dt><a name="index-map_0024"></a><u>Function:</u> <b>map$</b><i> proc</i></dt>
+<dt><a name="index-for_002deach_0024"></a><u>Function:</u> <b>for-each$</b><i> proc</i></dt>
+<dd><p><code>apply</code>, <code>map</code>と<code>for-each</code>の部分適用版です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define map2* (map$ (pa$ * 2)))
+(map2* '(1 2 3)) ⇒ (2 4 6)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-count_0024"></a><u>Function:</u> <b>count$</b><i> pred</i></dt>
+<dt><a name="index-fold_0024"></a><u>Function:</u> <b>fold$</b><i> kons :optional knil</i></dt>
+<dt><a name="index-fold_002dright_0024"></a><u>Function:</u> <b>fold-right$</b><i> kons :optional knil</i></dt>
+<dt><a name="index-reduce_0024"></a><u>Function:</u> <b>reduce$</b><i> f :optional ridentity</i></dt>
+<dt><a name="index-reduce_002dright_0024"></a><u>Function:</u> <b>reduce-right$</b><i> f :optional ridentity</i></dt>
+<dt><a name="index-filter_0024"></a><u>Function:</u> <b>filter$</b><i> pred</i></dt>
+<dt><a name="index-remove_0024"></a><u>Function:</u> <b>remove$</b><i> pred</i></dt>
+<dt><a name="index-partition_0024"></a><u>Function:</u> <b>partition$</b><i> pred</i></dt>
+<dt><a name="index-member_0024"></a><u>Function:</u> <b>member$</b><i> item</i></dt>
+<dt><a name="index-find_0024"></a><u>Function:</u> <b>find$</b><i> pred</i></dt>
+<dt><a name="index-find_002dtail_0024"></a><u>Function:</u> <b>find-tail$</b><i> pred</i></dt>
+<dt><a name="index-any_0024"></a><u>Function:</u> <b>any$</b><i> pred</i></dt>
+<dt><a name="index-every_0024"></a><u>Function:</u> <b>every$</b><i> pred</i></dt>
+<dt><a name="index-delete_0024"></a><u>Function:</u> <b>delete$</b><i> pred</i></dt>
+<dt><a name="index-assoc_0024"></a><u>Function:</u> <b>assoc$</b><i> item</i></dt>
+<dd><p>SRFI-1(<a indepth="true" href="gauche-refj_110.html#List-library"><code>srfi-1</code> - List library</a>参照)の手続に対応する部分適用版手続。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002e_0024"></a><u>Function:</u> <b>.$</b><i> f …</i></dt>
+<dt><a name="index-compose"></a><u>Function:</u> <b>compose</b><i> f …</i></dt>
+<dd><p>複数の手続きを結合します。引数は全て手続きでなければなりません。
+2つの引数が渡された時、<code>(.$ f g)</code>は次の式と等価です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda args (call-with-values (lambda () (apply g args)) f))
+</pre></td></tr></tbody></table>
+
+<p>2つ以上の引数が渡された場合は、次のように結合されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(.$ f g h ...) ≡ (.$ (.$ f g) h ...)
+</pre></td></tr></tbody></table>
+
+<p>いくつか例を示します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define not-zero? (.$ not zero?))
+(not-zero? 3) ⇒ #t
+(not-zero? 0) ⇒ #f
+
+(define dot-product (.$ (apply$ +) (map$ *)))
+(dot-product '(1 2 3) '(4 5 6)) ⇒ 32
+</pre></td></tr></tbody></table>
+
+<p>境界のケース：ひとつだけ引数が渡された場合は、その引数がそのまま返されます。
+引数が全く渡されなかった場合は手続き<var>values</var>が返されます。
+</p>
+<p>註: <code>.$</code>という名前は、文献やいくつかの他のプログラミング言語で
+<code>.</code>が関数合成によく使われること、そしてGaucheではコンビネータの末尾に
+<code>$</code>をつける習慣があることから来ています。ただ、これはR5RS/R6RSの
+範囲内では有効な識別子でないので、ポータビリティを考えるプログラムは
+別名の<code>compose</code>を使った方が良いでしょう。そうすれば<code>srfi-0</code>などを
+使って容易に移植が可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-complement"></a><u>Function:</u> <b>complement</b><i> pred</i></dt>
+<dd><p>述語<var>pred</var>の意味を逆にした手続きを返します。すなわち、<var>pred</var>が真を
+返すような引数にたいして偽を返す、またその逆も同様であるような手続きです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map (complement even?) '(1 2 3)) ⇒ '(#t #f #t)
+(map (complement =) '(1 2 3) '(1 1 3)) ⇒ '(#f #t #f)
+((complement (lambda () #f))) ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-any_002dpred"></a><u>Function:</u> <b>any-pred</b><i> pred …</i></dt>
+<dd><p>与えられた引数をそれぞれ述語<var>pred</var>に適用する手続きを返します。
+いずれかの<var>pred</var>が<code>#f</code>でない値を返す場合、その値を返します。
+全ての<var>pred</var>が<code>#f</code>を返す場合、<code>#f</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define string-or-symbol? (any-pred string? symbol?))
+(string-or-symbol? "abc") ⇒ #t
+(string-or-symbol? 'abc)  ⇒ #t
+(string-or-symbol? 3)     ⇒ #f
+
+(define &lt;&gt; (any-pred &lt; &gt;))
+(&lt;&gt; 3 4) ⇒ #t
+(&lt;&gt; 3 3) ⇒ #f
+
+((any-pred (cut memq &lt;&gt; '(a b c))
+           (cut memq &lt;&gt; '(1 2 3)))
+ 'b)  ⇒ '(b c)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-every_002dpred"></a><u>Function:</u> <b>every-pred</b><i> pred …</i></dt>
+<dd><p>与えられた引数をそれぞれ述語<var>pred</var>に適用する手続きを返します。
+全ての<var>pred</var>が<code>#f</code>でない値を返す場合、戻り値は最後の
+<var>pred</var>の戻り値になります。いずれかの<var>pred</var>が<code>#f</code>を
+返す場合、<code>every-pred</code>はそれ以降の<var>pred</var>を呼び出さずに
+<code>#f</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">((every-pred odd? positive?) 3)  ⇒ #t
+((every-pred odd? positive?) 4)  ⇒ #f
+((every-pred odd? positive?) -3) ⇒ #f
+
+(define safe-length (every-pred list? length))
+(safe-length '(a b c))  ⇒ 3
+(safe-length "aaa")     ⇒ #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0093_00e3_0083_008d_00e3_0083_00bc_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00ae_00e3_0082_00a2_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0-1"></a>
+<h3 class="subsection">6.18.4 省略可能引数のパージング</h3>
+
+<p>Gaucheは省略可能引数やキーワード引数を拡張lambda構文で
+サポートしています (<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>参照)。
+けれども、Gauche拡張に頼らずに、以下のマクロを使って独自にこれらの引数を
+パーズすることもできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (foo a b :optional (c #f) (d 'none))
+  body ...)
+
+;; は次の式とだいたい同じ:
+
+(define (foo a b . args)
+  (let-optionals* args ((c #f) (d 'none))
+    body ...))
+</pre></td></tr></tbody></table>
+
+<p>明示的に拡張引数をパーズする方法は、ポータブルなコードを書く時に
+役に立つでしょう。以下のマクロを実装するのは、lambdaの構文を
+拡張するより簡単だからです。
+</p>
+<p>また、共通する拡張引数の処理ルーチンを括り出す場合にもこれらのマクロは有用です。
+</p>
+<dl>
+<dt><a name="index-let_002doptionals_002a"></a><u>Macro:</u> <b>let-optionals*</b><i> restargs (var-spec …) body …</i></dt>
+<dt><a name="index-let_002doptionals_002a-1"></a><u>Macro:</u> <b>let-optionals*</b><i> restargs (var-spec … . restvar) body …</i></dt>
+<dd><p>与えられた値のリスト<var>restargs</var>を、<var>var-spec</var>にしたがって
+変数に束縛し、<var>body</var>を評価します。
+</p>
+<p><var>var-spec</var>はシンボルか、そのcarがシンボルである2要素のリストの
+いずれかです。シンボルは束縛された変数名です。
+<var>restargs</var>にある値は、順番にシンボルに束縛されます。
+<var>restargs</var>に<var>var-spec</var>に示される数の値がない場合は、
+残りの<var>symbol</var>は以下に従ってデフォルト値が束縛されます。
+<var>var-spec</var>が単なるシンボルなら、デフォルト値は未定義です。
+<var>var-spec</var>がリストなら、デフォルト値はリストの2番目の要素を
+評価した結果です。後者の場合、2番目の要素は十分な引数がない場合にのみ
+評価されます。
+束縛は<var>var-spec</var>の順番にしたがって行われるので、2番目の要素は
+以前の<var>var-spec</var>のバインディングを参照するかも知れません。
+</p>
+<p>2番目のフォームでは、<var>restvar</var>はシンボルでなければならず、
+<var>var-spec</var>に束縛された後、<var>restargs</var>に残っている値のリストに
+束縛されます。
+</p>
+<p><var>restarg</var>が<var>var-spec</var>よりも多い値を持っていてもエラーでは
+ありません。最初のフォームでは、余分な値は単に無視されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (proc x . args)
+  (let-optionals* args ((a 'a)
+                        (b 'b)
+                        (c 'c))
+    (list x a b c)))
+
+(proc 0)         ⇒ (0 a b c)
+(proc 0 1)       ⇒ (0 1 b c)
+(proc 0 1 2)     ⇒ (0 1 2 c)
+(proc 0 1 2 3)   ⇒ (0 1 2 3)
+
+(define (proc2 . args)
+  (let-optionals* args ((a 'a) . b)
+    (list a b)))
+
+(proc2)          ⇒ (a ())
+(proc2 0)        ⇒ (0 ())
+(proc2 0 1)      ⇒ (0 (1))
+(proc2 0 1 2)    ⇒ (0 (1 2))
+
+(define (proc3 . args)
+  (let-optionals* args ((a 0)
+                        (b (+ a 1))
+                        (c (+ b 1)))
+    (list a b c)))
+
+(proc3)          ⇒ (0 1 2)
+(proc3 8)        ⇒ (8 9 10)
+(proc3 8 2)      ⇒ (8 2 3)
+(proc3 8 2 -1)   ⇒ (8 2 -1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-get_002doptional"></a><u>Macro:</u> <b>get-optional</b><i> restargs default</i></dt>
+<dd><p>これは<var>let-optionals*</var>の短いバージョンで、オプショナル引数が
+1つしかないときに使います。オプショナル引数のリストとして<var>restargs</var>が
+与えらると、このマクロはオプショナル引数が与えられていればその値を返し、
+そうでなければ<var>default</var>の結果を返します。<var>default</var>は<var>restargs</var>が
+空リストでなければ評価されません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (proc x . maybe-opt)
+  (let ((option (get-optional maybe-opt #f)))
+    (list x option)))
+
+(proc 0)         ⇒ (0 #f)
+(proc 0 1)       ⇒ (0 1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-let_002dkeywords"></a><u>Macro:</u> <b>let-keywords</b><i> restarg (var-spec …) body …</i></dt>
+<dt><a name="index-let_002dkeywords-1"></a><u>Macro:</u> <b>let-keywords</b><i> restarg (var-spec … . restvar) body …</i></dt>
+<dd><p>このマクロはキーワード引数のためのものです。<var>var-spec</var>は
+以下のフォームのうちのいずれかです。
+</p>
+<dl compact="compact">
+<dt> <code>(<var>symbol</var> <var>expr</var>)</code></dt>
+<dd><p><var>restarg</var>が<var>symbol</var>と同じ名前を持つキーワードを含んでいる場合、
+<var>symbol</var>を対応する値に束縛します。そのようなキーワードが<var>restarg</var>に
+ない場合は、<var>symbol</var>を<var>expr</var>の結果に束縛します。
+</p></dd>
+<dt> <code>(<var>symbol</var> <var>keyword</var> <var>expr</var>)</code></dt>
+<dd><p><var>restarg</var>がキーワード<var>keyword</var>を含む場合、
+<var>symbol</var>を対応する値に束縛します。そのようなキーワードが<var>restarg</var>に
+ない場合、<var>symbol</var>を<var>expr</var>の結果に束縛します。
+</p></dd>
+</dl>
+
+<p>デフォルト値<var>expr</var>は、<var>restarg</var>にキーワードが与えられてなかった
+場合にのみ評価されます。
+</p>
+<p>1番目のフォームでは、<var>var-spec</var>にないキーワード引数が<var>restarg</var>に
+現れるとエラーとなります。
+他のキーワード引数を許したい場合は次の2番目のフォームを使ってください。
+</p>
+<p>2番目のフォームでは、<var>restvar</var>はシンボルか<code>#f</code>でなければなりません。
+シンボルのときは、<var>var-spec</var>に束縛されなかった<var>restargs</var>のキーワード
+リストが<var>restvar</var>に束縛されます。<code>#f</code>のときは、それらの<var>restargs</var>
+のキーワードは単に無視されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (proc x . options)
+  (let-keywords options ((a 'a)
+                         (b :beta 'b)
+                         (c 'c)
+                         . rest)
+    (list x a b c rest)))
+
+(proc 0)         ⇒ (0 a b c ())
+(proc 0 :a 1)    ⇒ (0 1 b c ())
+(proc 0 :beta 1) ⇒ (0 a 1 c ())
+(proc 0 :beta 1 :c 3 :unknown 4) ⇒ (0 a 1 3 (:unknown 4))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-let_002dkeywords_002a"></a><u>Macro:</u> <b>let-keywords*</b><i> restarg (var-spec …) body …</i></dt>
+<dt><a name="index-let_002dkeywords_002a-1"></a><u>Macro:</u> <b>let-keywords*</b><i> restarg (var-spec … . restvar) body …</i></dt>
+<dd><p>このマクロは<code>let-keywords</code>とほぼ同じですが、束縛が<var>var-spec</var>での
+順番に行われるところが異なります。<var>expr</var>は以前の<var>var-spec</var>により
+束縛された変数を参照できます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00ae_00e3_0082_00a2_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00ae_00e3_0082_00a2_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3-1"></a>
+<h3 class="subsection">6.18.5 手続きのアリティ</h3>
+
+<p>手続きのアリティを問い合わせるインターフェースです。
+APIは、MzScheme (PLT Scheme)を参考にしました。
+</p>
+<dl>
+<dt><a name="index-arity"></a><u>Function:</u> <b>arity</b><i> <var>proc</var></i></dt>
+<dd><p>手続き<var>proc</var>を与え、整数、<em>arity-at-least</em>オブジェクト、
+整数と<em>arity-at-least</em>オブジェクトからなるリストのいずれかを
+返します。
+</p>
+<p>整数の戻り値は、<var>proc</var>が正確にその数の引数を取ることを表します。
+<em>arity-at-least</em>は、<var>proc</var>が最低でも
+引数<code>(arity-at-least-value <em>arity-at-least</em>)</code>を取ることを
+表します。リストは、異なるアリティを持つ複数の手続きがあることを
+表します。
+</p>
+<p>Gaucheではいつでも、既存の手続きやジェネリック関数にメソッドを追加
+できるので、<code>arity</code>が返す値はその手続きの現在の状態を示すに
+過ぎません。その手続きやジェネリック関数に新しいメソッドが追加
+されると、それも変更されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(arity cons) ⇒ 2
+(arity list) ⇒ #&lt;arity-at-least 0&gt;
+(arity make) ⇒ (#&lt;arity-at-least 1&gt;)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-arity_002dat_002dleast_003f"></a><u>Function:</u> <b>arity-at-least?</b><i> <var>obj</var></i></dt>
+<dd><p><var>obj</var>がarity-at-leastオブジェクトなら、真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-arity_002dat_002dleast_002dvalue"></a><u>Function:</u> <b>arity-at-least-value</b><i> <var>arity-at-least</var></i></dt>
+<dd><p>arity-at-leastオブジェクトが表す必須引数の数を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-procedure_002darity_002dincludes_003f"></a><u>Function:</u> <b>procedure-arity-includes?</b><i> <var>proc</var> <var>k</var></i></dt>
+<dd><p>手続き<var>proc</var>が引数<var>k</var>を取れる場合、<code>#t</code>を返します。
+そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00ae_00e3_0082_00a2_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00b6_0099_00e7_00b6_009a" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088-1"></a>
+<h3 class="subsection">6.18.6 適用可能なオブジェクト</h3>
+
+<p>Gaucheでは、特別な組み込みの機構によって任意のオブジェクトを
+「適用可能」にすることができます。
+</p>
+<dl>
+<dt><a name="index-object_002dapply"></a><u>Generic Function:</u> <b>object-apply</b><i> <var>object</var> <var>arg</var> …</i></dt>
+<dd><p>手続きでもジェネリックファンクションでもないオブジェクトが何らかの引数に
+適用されたとき、そのオブジェクトと引数がジェネリックファンクション<code>object-apply</code>
+に渡されます。
+</p>
+<p>この機能は、具体的な例を挙げた方が説明し易いでしょう。
+</p></dd></dl>
+
+<p>例えば、次のような式を評価しようとしたとします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">("abcde" 2)
+</pre></td></tr></tbody></table>
+
+<p>オペレータは文字列に評価されますから、手続きでもジェネリックファンクションでも
+ありません。そこで、Gaucheはこの式を、あたかも次のような式が与えられた
+かのように解釈します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(object-apply "abcde" 2)
+</pre></td></tr></tbody></table>
+
+<p>デフォルトでは、<code>&lt;string&gt;</code>と<code>&lt;integer&gt;</code>を引数とする
+<code>object-apply</code>のメソッドは定義されていないので、
+この式はエラーになります。しかし、次のようなメソッドを定義すると：
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-method object-apply ((s &lt;string&gt;) (i &lt;integer&gt;))
+  (string-ref s i))
+</pre></td></tr></tbody></table>
+
+<p>最初の式はまるで文字列が整数に適用されたかのように動作します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">("abcde" 2) ⇒ #\c
+</pre></td></tr></tbody></table>
+
+<p>このメカニズムは手続きが許されるほとんどの箇所で使うことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(apply "abcde" '(1))   ⇒ (#\b)
+(map "abcde" '(3 2 1)) ⇒ (#\d #\c #\b)
+</pre></td></tr></tbody></table>
+
+<p>Gauche組み込みオブジェクトのうち、<code>&lt;regexp&gt;</code>オブジェクトと
+<code>&lt;regmatch&gt;</code>オブジェクトに対しては<code>object-apply</code>メソッドが定義されて
+います。<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>を参照して下さい。
+</p>
+<dl>
+<dt><a name="index-_0028setter-object_002dapply_0029"></a><u>Generic Function:</u> <b>(setter object-apply)</b><i> <var>object</var> <var>arg</var> … <var>value</var></i></dt>
+<dd><p>適用可能オブジェクトを適用するフォームが<code>set!</code>フォームの第一ポジションに
+現れた場合、そのフォームは下に示すように展開され、このメソッドが呼ばれます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(set! (<var>object</var> <var>arg</var> …) <var>value</var>)
+ ⇒ ((setter object-apply) <var>object</var> <var>arg</var> … <var>value</var>)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+
+
+<hr size="6">
+<a name="g_t_00e7_00b6_0099_00e7_00b6_009a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_00a4_009a_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00b6_0099_00e7_00b6_009a-1"></a>
+<h3 class="subsection">6.18.7 継続</h3>
+
+
+<dl>
+<dt><a name="index-call_002dwith_002dcurrent_002dcontinuation"></a><u>Function:</u> <b>call-with-current-continuation</b><i> proc</i></dt>
+<dt><a name="index-call_002fcc"></a><u>Function:</u> <b>call/cc</b><i> proc</i></dt>
+<dd><p>[R5RS]
+現在の継続を手続き (継続手続き) にパッケージ化して、それを引数として
+<var>proc</var>を呼び出します。<var>proc</var>が戻ったら、その返り値が<code>call/cc</code>の
+値となります。作成された継続手続きがどこかで0個または複数個の引数を伴って呼ばれたら、
+あたかも<code>call/cc</code>から戻ったかのように実行が継続されます。その場合、
+<code>call/cc</code>は、継続手続きに与えられた引数を複数の値として返します。
+</p>
+<p>ファーストクラスの継続はSchemeの最も特徴的な機能のひとつですが、それを
+十分に説明するにはこの本の余白は狭すぎます。適切なドキュメントを参照してください。
+</p>
+<p>Schemeの継続とC言語の実行環境との間に、ちょっとわかりずらい干渉が生じることがあります。
+次のシナリオを考えます。
+</p>
+<ol>
+<li>
+アプリケーションのCランタイムがSchemeで書かれた手続きをコールバックします。
+例えば、GUIフレームワークがSchemeで書かれた描画ルーチンを呼ぶ、というようなケースを考えてください。
+</li><li>
+そのSchemeルーチンで継続が捕捉される。
+</li><li>
+Schemeルーチンが終了してCランタイムに制御を戻す。
+</li><li>
+2で捕捉した継続が起動される。
+</li></ol>
+
+<p>継続を起動すること自体には問題は無いのですが、
+制御がSchemeからCへと再び戻ろうとすると (つまり、step 3が再び実行されようとすると)
+次のようなエラーが投げられます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">*** ERROR: attempt to return from a ghost continuation.
+</pre></td></tr></tbody></table>
+
+<p>これは、Cの世界では関数が1回より多く戻ってくることを想定していないからです。
+最初にSchemeのコールバックが呼ばれた時のCのスタックフレームは、
+継続が再び呼ばれた時には状態が変わっているか、捨てられてしまっているでしょう。
+</p>
+<p>継続を、根から上へ向かって成長する制御フレームの連鎖のようにイメージした場合、
+Cの世界へ戻った時点でその連鎖が断ち切られる、と考えることができます。
+そのような根無しの継続も実行することはできますが、既に失った根に戻る前に
+別の箇所へと制御を移さねばなりません。他の箇所で捕まえた継続を呼んだり、
+例外を投げるといったことが考えられます。
+</p>
+<p>部分継続(限定継続)を使うのも手です。
+<a indepth="true" href="gauche-refj_94.html#g_t_00e9_0083_00a8_00e5_0088_0086_00e7_00b6_0099_00e7_00b6_009a"><code>gauche.partcont</code> - 部分継続</a>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-let_002fcc"></a><u>Macro:</u> <b>let/cc</b><i> var body …</i></dt>
+<dd><p>このマクロは次のように展開されます :
+<code>(call/cc (lambda (<var>var</var>) <var>body</var> …))</code>.
+APIはPLT Schemeから取りました。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-dynamic_002dwind"></a><u>Function:</u> <b>dynamic-wind</b><i> before thunk after</i></dt>
+<dd><p>[R5RS]
+<var>before</var>、<var>thunk</var>および<var>after</var> は引数を取らない手続きです。
+<code>dynamic-wind</code>はまず<var>before</var>を呼び出し、続いて<var>thunk</var>を呼び出し、
+続いて<var>after</var>を呼び出します。そして<var>thunk</var>が返した値を返します。
+</p>
+<p>もし<code>dynamic-wind</code>のダイナミックスコープの外で捕捉された継続が
+<var>thunk</var>の中で呼ばれることにより制御が<var>thunk</var>から飛び出した場合、
+(<var>thunk</var>の中でエラーが起こった場合などが考えられます)、
+<var>after</var>が呼ばれます。
+</p>
+<p>もし、<var>thunk</var>の中で捕捉された継続が<var>dynamic-wind</var>のダイナミックスコープの
+外で呼ばれることにより制御が<var>thunk</var>の中へ飛び込んだ場合、
+<var>before</var>が呼ばれます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(letrec ((paths '())
+         (c #f)
+         (add (lambda (s) (push! paths s))))
+  (dynamic-wind
+   (lambda () (add 'connect))
+   (lambda ()
+     (add (call/cc (lambda (c0) (set! c c0) 'talk1))))
+   (lambda () (add 'disconnect)))
+  (if (&lt; (length paths) 4)
+      (c 'talk2)
+      (reverse paths)))
+ ⇒ (connect talk1 disconnect connect talk2 disconnect)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e5_00a4_009a_00e5_0080_00a4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_00b6_0099_00e7_00b6_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00a4_009a_00e5_0080_00a4-1"></a>
+<h3 class="subsection">6.18.8 多値</h3>
+
+<dl>
+<dt><a name="index-values"></a><u>Function:</u> <b>values</b><i> obj …</i></dt>
+<dd><p>[R5RS]
+<var>obj</var> … を多値として返します。
+呼び出し側は、組み込み構文の <code>receive</code> (<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b">変数束縛</a>参照)か、
+下に説明するR5RSの手続き<code>call-with-values</code>を使って多値を受け取ることが
+できます。
+<a indepth="true" href="gauche-refj_114.html#Let_002dvalues"><code>srfi-11</code> - Let-values</a>も参照してください。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(values 1 2) ⇒ 1 <span class="roman">and</span> 2
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dvalues"></a><u>Function:</u> <b>call-with-values</b><i> producer consumer</i></dt>
+<dd><p>[R5RS]
+手続き<var>producer</var>を引数無しで呼びます。そして、それが返した値
+を引数として<var>consumer</var>を呼びます。<var>consumer</var>が返す値を
+返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-values (lambda () (values 1 2)) cons)
+  ⇒ (1 . 2)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-values_002dref"></a><u>Macro:</u> <b>values-ref</b><i> mv-expr k</i></dt>
+<dd><p><var>mv-expr</var>が返す多値の<var>k</var>-番目の値を返します。概念としては、
+以下のコードと同じです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-values (lambda () mv-expr) (lambda r (list-ref r k)))
+</pre></td></tr></tbody></table>
+<p>このマクロは k がゼロであるような典型的な場合にはより単純な形へと
+展開されます。
+</p>
+<p>Common Lisp の <code>nth-value</code> に似ていますが、引数の順が逆になっています。
+Scheme の他の<code>*-ref</code> 手続きと合わせるためです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-values_002d_003elist"></a><u>Macro:</u> <b>values-&gt;list</b><i> mv-expr</i></dt>
+<dd><p><var>mv-expr</var>を評価し、結果の値をリストにして返します。Common Lispで
+<code>multiple-value-list</code>と呼ばれているものです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(values-&gt;list (div-and-mod 10 3)) ⇒ (3 1)
+
+(values-&gt;list 1) ⇒ (1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_00a4_009a_00e5_0080_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf-1"></a>
+<h3 class="subsection">6.18.9 生成された値の畳み込み</h3>
+
+<p>Sometimes a procedure is used as a <em>generator</em> of a series
+of values, by yielding one value at a time.  Customary an EOF
+object is used to mark the end of the series.  For example,
+<code>read-char</code> is such a procedure that yields a series
+of characters, terminated by EOF.
+</p>
+<p>Since it is such a handy abstraction, Gauche provides a
+set of utilties (see <a indepth="true" href="gauche-refj_82.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.generator</code> - ジェネレータ</a>) to construct and generators
+out of various sources, including other generators.
+</p>
+<p>The generated values needs to be consumed eventually.  Here we
+provide several procedures to do that.  These are useful
+when combined with input procedures like <code>read</code>, so we
+have them built-in instead of putting them in a separate module.
+</p>
+<dl>
+<dt><a name="index-generator_002dfold"></a><u>Function:</u> <b>generator-fold</b><i> proc seed gen gen2 …</i></dt>
+<dd><p>Works like <code>fold</code> on the generated values by generator
+procedures <var>gen</var> <var>gen2</var> … (See section <a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0082_0092_00e3_0081_009f_00e3_0081_00a9_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">リストをたどる手続き</a>,
+for the details of <code>fold</code>).
+</p>
+<p>When one generator is given, for each value <var>v</var> generated by <var>gen</var>,
+<var>proc</var> is called as <code>(<var>proc</var> <var>v</var> <var>r</var>)</code>, where
+<var>r</var> is the current accumulated result; the initial value of the
+accumulated result is <var>seed</var>,
+and the return value from <var>proc</var> becomes the next accumulated result.
+When <var>gen</var> returns EOF, the accumulated result at that time is returned
+from <code>generator-fold</code>.
+</p>
+<p>When more than one generator is given, <var>proc</var> is
+called as <code>(<var>proc</var> <var>v1</var> <var>v2</var> … <var>r</var>)</code>,
+where <var>v1</var>, <var>v2</var> … are the values yielded from
+<var>gen</var>, <var>gen2</var>, …, respectively, and <var>r</var> is
+the current accumulated result.  The iteration terminates when
+any one of the generators returns EOF.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-input-from-string "a b c d e"
+  (cut generator-fold cons 'z read))
+  ⇒ (e d c b a . z)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-generator_002dfold_002dright"></a><u>Function:</u> <b>generator-fold-right</b><i> proc seed gen gen2 …</i></dt>
+<dd><p>Works like <code>fold-right</code> on the generated values by generator
+procedures <var>gen</var> <var>gen2</var> … (See section <a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0082_0092_00e3_0081_009f_00e3_0081_00a9_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">リストをたどる手続き</a>,
+for the details of <code>fold-right</code>).
+</p>
+<p>This is provided for completeness, but it isn’t a good way to
+handle generators; in order to combine values right-associatively,
+we should read all the values from the generators (until any one
+of the generator returns EOF), then start
+calling <var>proc</var> as
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(proc v0_0 v1_0 ... (proc v0_1 v1_1 ... (proc v0_n v1_n ... seed) ...))
+</pre></td></tr></tbody></table>
+<p>where <var>vn_m</var> is the <var>m</var>-th value yielded by <var>n</var>-th generator.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-input-from-string "a b c d e"
+  (cut generator-fold-right cons 'z read))
+  ⇒ (a b c d e . z)
+</pre></td></tr></tbody></table>
+
+<p>As you see, keeping all intermediate values kind of defeats the
+benefit of generators.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-generator_002dfor_002deach"></a><u>Function:</u> <b>generator-for-each</b><i> proc gen gen2 …</i></dt>
+<dd><p>A generator version of <code>for-each</code>.  Repeatedly applies <var>proc</var> on
+the values yielded by <var>gen</var>, <var>gen2</var> … until any one of
+the generators yields EOF.  The values returned from <var>proc</var> are discarded.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-generator_002dmap"></a><u>Function:</u> <b>generator-map</b><i> proc gen gen2 …</i></dt>
+<dd><p>A generator version of <code>map</code>.  Repeatedly applies <var>proc</var> on
+the values yielded by <var>gen</var>, <var>gen2</var> … until any one of
+the generators yields EOF.   The values returned from <var>proc</var>
+are collected into a list and returned.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-input-from-string "a b c d e"
+  (cut generator-map symbol-&gt;string read))
+  ⇒ ("a" "b" "c" "d" "e")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_00a4_009a_00e5_0080_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e7_00b6_0099_00e7_00b6_009a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

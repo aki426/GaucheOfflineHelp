@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.39 text.diff - テキストストリームの相違点を計算する</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.39 text.diff - テキストストリームの相違点を計算する">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.39 text.diff - テキストストリームの相違点を計算する">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_164.html#CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_166.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002ediff-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b"></a>
+<h2 class="section">11.39 <code>text.diff</code> - テキストストリームの相違点を計算する</h2>
+
+<dl>
+<dt><a name="index-text_002ediff"></a><u>Module:</u> <b>text.diff</b></dt>
+<dd><a name="index-text_002ediff-1"></a>
+<p>このモジュールでは、<code>util.lcs</code> (<a indepth="true" href="gauche-refj_177.html#g_t_00e6_009c_0080_00e9_0095_00b7_00e5_0085_00b1_00e9_0080_009a_00e3_0082_00b5_00e3_0083_0096_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9"><code>util.lcs</code> - 最長共通サブシーケンス</a>参照)を
+使って、2つのテキストストリーム、あるいは2つの文字列の相違点を計算します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-diff"></a><u>Function:</u> <b>diff</b><i> src-a src-b :key reader eq-fn</i></dt>
+<dd><p>テキストソース<var>src-a</var>と<var>src-b</var>から“編集リスト”を生成します。
+</p>
+<p>それぞれのテキストソース、<var>src-a</var>と<var>src-b</var>は入力ポートか文字列です。
+もし文字列であれば、それは内部的に文字列ポートに変換されます。
+そして、2つのソースからのテキストストリームは、それらに対して<var>reader</var>を繰り返し
+呼ぶことによってシーケンスに変換されます。デフォルトの<var>reader</var>は<var>read-line</var>で、
+2つのシーケンスは編集リストを計算するために<code>lcs-edit-list</code>に渡されます。
+<code>lcs-edit-list</code>には、等値を検査する関数<var>eq-fn</var>も渡されます。
+</p>
+<p>編集リストとは、<code>src-a</code>から<code>src-b</code>へテキストシーケンスを
+変更するためのコマンドのセットです。編集リストの詳細な説明は、
+<code>lcs-edit-list</code>を参照してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(diff "a\nb\nc\nd\n" "b\ne\nd\nf\n")
+⇒
+  (((- 0 "a"))
+   ((- 2 "c") (+ 1 "e"))
+   ((+ 3 "f")))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-diff_002dreport"></a><u>Function:</u> <b>diff-report</b><i> src-a src-b :key reader eq-fn writer</i></dt>
+<dd><p>2つのテキストソースのdiffをとって、その結果をきれいに表示するための
+簡易手続きです。この手続きは、2つのテキストソースの相違点を計算する
+ために<code>lcs-fold</code>を呼び出します。<var>src-a</var>、<var>src-b</var>、
+<var>reader</var>、<var>eq-fn</var>の意味は、<code>diff</code>の場合と同じです。
+</p>
+<p><var>writer</var>は2つの引数、テキスト要素とタイプ(シンボル<code>+</code>、
+シンボル<code>-</code>、あるいは<code>#f</code>のいずれか)を取る手続きです。
+テキスト要素が<var>src-a</var>にしかない場合は、<var>writer</var>がそのテキスト要素と
+<code>-</code>とともに呼ばれます。テキスト要素が<var>src-b</var>にしかない場合は、
+<var>writer</var>はそのテキスト要素と<code>+</code>とともに呼ばれます。
+テキスト要素が両方のソースにある場合は、<var>writer</var>はそのテキスト要素と
+<code>#f</code>とともに呼ばれます。<var>writer</var>のデフォルトの手続きは、
+渡されたテキスト要素を現在の出力ポートにユニファイドdiffのようなフォーマットで
+出力します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(diff-report "a\nb\nc\nd\n" "b\ne\nd\nf\n")
+</pre></td></tr></tbody></table>
+<p>displays:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">- a
+  b
+- c
++ e
+  d
++ f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_164.html#CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_166.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

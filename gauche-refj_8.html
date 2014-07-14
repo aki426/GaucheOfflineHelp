@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.4 大文字小文字の区別</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.4 大文字小文字の区別">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.4 大文字小文字の区別">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_8.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_9.html#g_t_00e7_00b5_00b1_00e5_0090_0088_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5-1"></a>
+<h2 class="section">2.4 大文字小文字の区別</h2>
+
+<p>Lisp系の言語は歴史的にシンボルの大文字小文字を区別していませんでした。
+Schemeもその流れを汲んでおり、R5RSでもシンボルは読み込まれる時に大文字小文字の
+区別をしないと定義されています。(但し、R5RSの範囲内でも処理系内部では
+大文字小文字を区別することになってます。
+ここで問題としているのは読み込み時の動作です。)
+</p>
+<p>しかし現在では、プログラミングが一つの言語で完結することは滅多にありません。
+他の言語とインタフェースを取る場合、Scheme側でも大文字小文字を区別するように
+しておいた方が便利です。
+</p>
+<p>そこでGaucheでは、シンボルの読み込みと書き出しに2つのモードを用意しました。
+<em>デフォルトのモードでは、Gaucheのリーダとライタはシンボルの大文字小文字を区別します</em>。
+このふるまいは厳密にはR5RSに準拠しません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">; <span class="roman">In case-sensitive mode (default)</span>
+(eq? 'a 'A) ⇒ #f  ; #t <span class="roman">in R5RS</span>
+(symbol-&gt;string 'ABC) ⇒ "ABC"
+(symbol-&gt;string 'abc) ⇒ "abc"
+(display (string-&gt;symbol "ABC")) ⇒ <span class="roman">writes</span> ABC
+(display (string-&gt;symbol "abc")) ⇒ <span class="roman">writes</span> abc
+</pre></td></tr></tbody></table>
+
+<p><code>gosh</code>インタプリタの起動時に<code>-fcase-fold</code>コマンドライン引数を
+与えると、Gaucheは大文字小文字を区別しないモードで動作します (<a indepth="true" href="gauche-refj_13.html#Gauche_00e3_0082_0092_00e8_00b5_00b7_00e5_008b_0095_00e3_0081_0099_00e3_0082_008b">Gaucheを起動する</a>参照)。
+このモードでは、リーダはシンボルの読み込みの際に大文字を小文字に変換します。
+大文字を含んでいるシンボルに関しては、‘|’ 文字でエスケープされて書き出されます
+(<a indepth="true" href="gauche-refj_45.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab">シンボル</a>参照)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">; <span class="roman">In case-insensitive mode (with -fcase-fold option)</span>
+(eq? 'a 'A) ⇒ #t
+(symbol-&gt;string 'ABC) ⇒ "abc"
+(symbol-&gt;string 'abc) ⇒ "abc"
+(display (string-&gt;symbol "ABC")) ⇒ <span class="roman">writes</span> |ABC|
+(display (string-&gt;symbol "abc")) ⇒ <span class="roman">writes</span> abc
+</pre></td></tr></tbody></table>
+
+<p>また、リーダはトークン<code>#!fold-case</code>を読むと大文字小文字を
+区別しないモードに切り替わります。トークン<code>#!no-fold-case</code>は
+その逆の効果、すなわち大文字小文字を区別するモードへと切り替えます。
+これらのトークンは、それが読まれたポートからの以降の読み込みに影響を
+与えます。切り替えるトークンが再び読まれるか、EOFに出会うまで影響は継続します。
+<code>#!</code>構文についてより詳しくは<a indepth="true" href="gauche-refj_22.html#g_t_00e5_00ad_0097_00e5_008f_00a5_00e6_00a7_008b_00e9_0080_00a0">字句構造</a>を参照してください。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_9.html#g_t_00e7_00b5_00b1_00e5_0090_0088_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

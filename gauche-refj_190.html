@@ -1,0 +1,982 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>B. CとSchemeの関数の対応</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: B. CとSchemeの関数の対応">
+<meta name="keywords" content="Gauche ユーザリファレンス: B. CとSchemeの関数の対応">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="C_00e3_0081_00a8Scheme_00e3_0081_00ae_00e9_0096_00a2_00e6_0095_00b0_00e3_0081_00ae_00e5_00af_00be_00e5_00bf_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="C_00e3_0081_00a8Scheme_00e3_0081_00ae_00e9_0096_00a2_00e6_0095_00b0_00e3_0081_00ae_00e5_00af_00be_00e5_00bf_009c-1"></a>
+<h1 class="appendix">B. CとSchemeの関数の対応</h1>
+
+<p>Cに馴染んだプログラマのために、Cのオペレータとライブラリ関数から
+Schemeの関数への対応表を示しておきます。
+</p>
+<dl compact="compact">
+<dt> <code>+</code></dt>
+<dd><p>R5RS の算術演算手続き <code>+</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>+=</code></dt>
+<dd><p>Gauche の <code>inc!</code> マクロ。<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5">代入</a>参照。
+</p></dd>
+<dt> <code>-</code></dt>
+<dd><p>R5RS の算術演算手続き <code>-</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>-=</code></dt>
+<dd><p>Gauche の <code>dec!</code> マクロ。<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5">代入</a>参照。
+</p></dd>
+<dt> <code>-&gt;</code></dt>
+<dd><p>Gauche の <code>slot-ref</code> が近いものです。<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9">インスタンスへのアクセス</a>参照。
+</p></dd>
+<dt> <code>* (二項演算子)</code></dt>
+<dd><p>R5RS の算術演算手続き <code>*</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>* (単項演算子)</code></dt>
+<dd><p>同等の手続きはありません。Scheme には明示的ポインタ表記はありません。
+</p></dd>
+<dt> <code>*=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>/</code></dt>
+<dd><p>R5RS の算術演算手続き <code>/</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>/=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>&amp; (二項演算子)</code></dt>
+<dd><p>Gauche の <code>logand</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+</p></dd>
+<dt> <code>&amp; (単項演算子)</code></dt>
+<dd><p>同等の手続きはありません。Scheme には明示的ポインタ表記はありません。
+</p></dd>
+<dt> <code>&amp;&amp;</code></dt>
+<dd><p>R5RS の構文 <code>and</code>。<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f">条件式</a>参照。
+</p></dd>
+<dt> <code>&amp;=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>|</code></dt>
+<dd><p>Gauche の <code>logior</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+</p></dd>
+<dt> <code>||</code></dt>
+<dd><p>R5RS の構文 <code>or</code>。<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f">条件式</a>参照。
+</p></dd>
+<dt> <code>|=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>^</code></dt>
+<dd><p>Gauche の <code>logxor</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+</p></dd>
+<dt> <code>=</code></dt>
+<dd><p>R5RS の構文 <code>set!</code>。<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5">代入</a>参照。
+</p></dd>
+<dt> <code>==</code></dt>
+<dd><p>R5RS の同等性手続き <code>eq?</code>、<code>eqv?</code> および <code>equal?</code>。
+<a indepth="true" href="gauche-refj_40.html#g_t_00e7_00ad_0089_00e4_00be_00a1">等価</a>参照。
+</p></dd>
+<dt> <code>&lt;</code></dt>
+<dt> <code>&lt;=</code></dt>
+<dd><p>R5RS の算術演算手続き <code>&lt;</code> および <code>&lt;=</code>。
+<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083">数値の比較</a>参照。C の演算子とちがい、Scheme のものは
+推移的なものです。
+</p></dd>
+<dt> <code>&lt;&lt;</code></dt>
+<dd><p>Gauche の <code>ash</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+</p></dd>
+<dt> <code>&lt;&lt;=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>&gt;</code></dt>
+<dt> <code>&gt;=</code></dt>
+<dd><p>R5RS の算術演算手続き <code>&lt;</code> および <code>&lt;=</code>。
+<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083">数値の比較</a>参照。C の演算子とちがい、Scheme のものは
+推移的なものです。
+</p></dd>
+<dt> <code>&gt;&gt;</code></dt>
+<dd><p>Gauche の <code>ash</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+</p></dd>
+<dt> <code>&gt;&gt;=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>%</code></dt>
+<dd><p>R5RS の演算子 <code>modulo</code> および <code>remainder</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>%=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>[]</code></dt>
+<dd><p>R5RS の <code>vector-ref</code> (<a indepth="true" href="gauche-refj_52.html#g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf">ベクタ</a>参照) が近いものです。あるいは、
+Gauche のジェネリック関数 <code>ref</code> (<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>参照)が、
+任意の並び用になっています。
+</p></dd>
+<dt> <code>.</code></dt>
+<dd><p>Gauche の <code>slot-ref</code> がこれに近いものです。<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9">インスタンスへのアクセス</a>参照。
+</p></dd>
+<dt> <code>~</code></dt>
+<dd><p>Gauche の <code>lognot</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">ビット演算</a>参照。
+</p></dd>
+<dt> <code>~=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>!</code></dt>
+<dd><p>R5RS の手続き <code>not</code>。<a indepth="true" href="gauche-refj_42.html#g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4">論理値</a>参照。
+</p></dd>
+<dt> <code>!=</code></dt>
+<dd><p>同等の手続きはありません。
+</p></dd>
+<dt> <code>abort</code></dt>
+<dd><p>Gauche の <code>sys-abort</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086">プログラムの終了</a>参照。
+</p></dd>
+<dt> <code>abs</code></dt>
+<dd><p>R5RS の <code>abs</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>access</code></dt>
+<dd><p>Gauche の <code>sys-access</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照。
+</p></dd>
+<dt> <code>acos</code></dt>
+<dd><p>R5RS の <code>acos</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>alarm</code></dt>
+<dd><p>Gauche の <code>sys-alarm</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab">その他のシステムコール</a>参照。
+</p></dd>
+<dt> <code>asctime</code></dt>
+<dd><p>Gauche の <code>sys-asctime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照。
+</p></dd>
+<dt> <code>asin</code></dt>
+<dd><p>R5RS の <code>asin</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>assert</code></dt>
+<dd><p>Gauche には同等の関数はありません。
+</p></dd>
+<dt> <code>atan</code></dt>
+<dt> <code>atan2</code></dt>
+<dd><p>R5RS の <code>atan</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>atexit</code></dt>
+<dd><p>Gauche には同等の関数はありませんが、<code>exit</code> が呼ばれたとき
+アクティブな動的ハンドラの「事後」サンクが呼ばれます。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086">プログラムの終了</a> および <a indepth="true" href="gauche-refj_56.html#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a> 参照。
+</p></dd>
+<dt> <code>atof</code></dt>
+<dt> <code>atoi</code></dt>
+<dt> <code>atol</code></dt>
+<dd><p><code>string-&gt;number</code> が使えます。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">数値の変換</a>参照。
+</p></dd>
+<dt> <code>bsearch</code></dt>
+<dd><p>SRFI-43の<code>vector-binary-search</code>が使えます。
+<a indepth="true" href="gauche-refj_122.html#Vector-library"><code>srfi-43</code> - ベクタライブラリ</a>参照。
+</p></dd>
+<dt> <code>calloc</code></dt>
+<dd><p>Scheme ではメモリ割当は自動的に処理されます。
+</p></dd>
+<dt> <code>ceil</code></dt>
+<dd><p>R5RS の <code>ceiling</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>cfgetispeed</code></dt>
+<dt> <code>cfgetospeed</code></dt>
+<dt> <code>cfsetispeed</code></dt>
+<dt> <code>cfsetospeed</code></dt>
+<dd><p>Gauche の <code>sys-cfgetispeed</code>、<code>sys-cfgetospeed</code>、
+<code>sys-cfsetispeed</code>、<code>sys-cfsetospeed</code>。<a indepth="true" href="gauche-refj_101.html#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1"><code>gauche.termios</code> - 端末の制御</a>参照。
+</p></dd>
+<dt> <code>chdir</code></dt>
+<dd><p>Gauche の <code>sys-chdir</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a>参照。
+</p></dd>
+<dt> <code>chmod</code></dt>
+<dd><p>Gauche の <code>sys-chmod</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照。
+</p></dd>
+<dt> <code>chown</code></dt>
+<dd><p>Gauche の <code>sys-chown</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照。
+</p></dd>
+<dt> <code>clearerr</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>clock</code></dt>
+<dd><p>Gauche には同等の関数はありません。<code>sys-times</code> を使って、
+CPUタイムに情報を得ることができます。
+</p></dd>
+<dt> <code>close</code></dt>
+<dd><p>ファイルディスクリプタを直接クローズすることはできませんが、
+<code>close-input-port</code> あるいは <code>close-output-port</code> を使うと、
+元になるファイルはクローズされます。
+いくつかのポートに関連する関数、たとえば、<code>call-with-output-file</code>
+などは、操作終了時に自動的にファイルをクローズします。
+また、それを支配しているポートがGCされたときにクローズされます。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照。
+</p></dd>
+<dt> <code>closedir</code></dt>
+<dd><p>Gauche には同等の関数はありません。<code>sys-readdir</code> を使うと
+ディレクトリの内容を一度に読むことができます。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa">ディレクトリ</a> 参照。
+</p></dd>
+<dt> <code>cos</code></dt>
+<dt> <code>cosh</code></dt>
+<dd><p><code>cos</code> および <code>cosh</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>creat</code></dt>
+<dd><p>デフォルトでは、書き込みのためにファイルをオープンしたときに、暗黙のうちに
+ファイルが作成されます。ファイル作成のより詳しい制御については
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a> を参照してください。
+</p></dd>
+<dt> <code>ctermid</code></dt>
+<dd><p>Gauche の <code>sys-ctermid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>ctime</code></dt>
+<dd><p>Gauche の <code>sys-ctime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a> 参照。
+</p></dd>
+<dt> <code>cuserid</code></dt>
+<dd><p>同等の関数はありません。これは新しい POSIX からは削除されています。
+別法として、<code>sys-getuid</code> といっしょに、<code>sys-getlogin</code>
+あるいは <code>sys-getpwuid</code> などの関数が使えます。
+</p></dd>
+<dt> <code>difftime</code></dt>
+<dd><p>Gauche の <code>sys-difftime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a> 参照。
+</p></dd>
+<dt> <code>div</code></dt>
+<dd><p>R5RS の <code>quotient</code> および <code>remainder</code> を使えます。
+<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>dup</code></dt>
+<dt> <code>dup2</code></dt>
+<dd><p>直接はサポートされていませんが、<code>port-fd-dup!</code> が使えます。
+</p></dd>
+<dt> <code>execl</code></dt>
+<dt> <code>execle</code></dt>
+<dt> <code>execlp</code></dt>
+<dt> <code>execv</code></dt>
+<dt> <code>execve</code></dt>
+<dt> <code>execvp</code></dt>
+<dd><p>Gauche の <code>sys-exec</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a> 参照。
+より高水準のインタフェースについては <a indepth="true" href="gauche-refj_95.html#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>gauche.process</code> - 高レベルプロセスインタフェース</a> 参照。
+</p></dd>
+<dt> <code>exit</code></dt>
+<dt> <code>_exit</code></dt>
+<dd><p>必要なことに応じて、<code>exit</code> あるいは <code>sys-exit</code> を使いましょう。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086">プログラムの終了</a> 参照。
+</p></dd>
+<dt> <code>exp</code></dt>
+<dd><p>R5RS の <code>exp</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>fabs</code></dt>
+<dd><p>R5RS の <code>abs</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>fclose</code></dt>
+<dd><p>ファイルストリームを直接クローズすることはできませんが、
+<code>close-input-port</code> あるいは <code>close-output-port</code> を使うと、
+元になるファイルはクローズされます。
+いくつかのポートに関連する関数、たとえば、<code>call-with-output-file</code>
+などは、操作終了時に自動的にファイルをクローズします。
+また、それを支配しているポートがGCされたときにクローズされます。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照。
+</p></dd>
+<dt> <code>fcntl</code></dt>
+<dd><p><code>gauche.fcntl</code> モジュールで、<code>sys-fcntl</code> として実装されています。
+<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"><code>gauche.fcntl</code> - 低レベルファイル操作</a> 参照。
+</p></dd>
+<dt> <code>fdopen</code></dt>
+<dd><p>Gauche の <code>open-input-fd-port</code> あるいは <code>open-output-fd-port</code>。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a> 参照。
+</p></dd>
+<dt> <code>feof</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>ferror</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>fflush</code></dt>
+<dd><p>Gauche の <code>flush</code>。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。
+</p></dd>
+<dt> <code>fgetc</code></dt>
+<dd><p><code>read-char</code> あるいは <code>read-byte</code> を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_008a_009b">入力</a> 参照。
+</p></dd>
+<dt> <code>fgetpos</code></dt>
+<dd><p>Gauche の <code>port-tell</code> を使いましょう。(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照。)
+</p></dd>
+<dt> <code>fgets</code></dt>
+<dd><p><code>read-line</code> あるいは <code>read-block</code> を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_008a_009b">入力</a> 参照。
+</p></dd>
+<dt> <code>fileno</code></dt>
+<dd><p><code>port-file-numer</code>。<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a> 参照。
+</p></dd>
+<dt> <code>floor</code></dt>
+<dd><p>R5RS の <code>floor</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>fmod</code></dt>
+<dd><p>Gauche の <code>fmod</code>。
+</p></dd>
+<dt> <code>fopen</code></dt>
+<dd><p>この操作に対応するのは、R5RS の <code>open-input-file</code> あるいは
+<code>open-output-file</code> です。<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a> 参照。
+</p></dd>
+<dt> <code>fork</code></dt>
+<dd><p>Gauche の <code>sys-fork</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a> 参照。
+</p></dd>
+<dt> <code>forkpty</code></dt>
+<dd><p><code>sys-forkpty</code> を使いましょう。<a indepth="true" href="gauche-refj_101.html#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1"><code>gauche.termios</code> - 端末の制御</a> 参照。
+</p></dd>
+<dt> <code>fpathconf</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>fprintf</code></dt>
+<dd><p>直接はサポートされていませんが、Gauche の <code>format</code> は
+似たような機能を提供しています。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照。
+SLIB は <code>printf</code> の実装を持っています。
+</p></dd>
+<dt> <code>fputc</code></dt>
+<dd><p><code>write-char</code> あるいは <code>write-byte</code>を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照。
+</p></dd>
+<dt> <code>fputs</code></dt>
+<dd><p><code>display</code>を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。
+</p></dd>
+<dt> <code>fread</code></dt>
+<dd><p>直接はサポートされていません。
+バイナリの数値を読む場合は<a indepth="true" href="gauche-refj_127.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO"><code>binary.io</code> - バイナリI/O</a>を参照のこと。
+バイトのチャンクで読みたければ、
+<code>read-block!</code> が使えるでしょう (<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)。
+</p></dd>
+<dt> <code>free</code></dt>
+<dd><p>Scheme では必要がありません。
+</p></dd>
+<dt> <code>freopen</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>frexp</code></dt>
+<dd><p>Gauche の <code>frexp</code>。
+</p></dd>
+<dt> <code>fscanf</code></dt>
+<dd><p>サポートしていません。一般的にはパーザを書かねばなりません。
+データを S式で保持しているなら、<code>read</code> が使えます。
+構文がごく単純なら、<code>srfi-14</code> (<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>) の
+<code>string-tokenize</code> や、正規表現 (<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>) が使えるでしょう。
+</p></dd>
+<dt> <code>fseek</code></dt>
+<dd><p>Gauche の <code>port-seek</code>(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照)を使いましょう。
+</p></dd>
+<dt> <code>fsetpos</code></dt>
+<dd><p>Gauche の <code>port-seek</code>(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照)を使いましょう。
+</p></dd>
+<dt> <code>fstat</code></dt>
+<dd><p>Gauche の <code>sys-stat</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a> 参照。
+</p></dd>
+<dt> <code>ftell</code></dt>
+<dd><p>Gauche の <code>port-tell</code>(See section <a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照)を使いましょう。
+</p></dd>
+<dt> <code>fwrite</code></dt>
+<dd><p>直接はサポートされていません。
+バイナリの数値を書き出すのなら、<a indepth="true" href="gauche-refj_127.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO"><code>binary.io</code> - バイナリI/O</a>参照のこと。
+バイト列のチャンクを書き出しすなら、
+単に <code>display</code> を使うか、<code>write-block</code> が使えます
+(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)。
+</p></dd>
+<dt> <code>getc</code></dt>
+<dt> <code>getchar</code></dt>
+<dd><p><code>read-char</code> あるいは <code>read-byte</code>を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_008a_009b">入力</a>参照。
+</p></dd>
+<dt> <code>getcwd</code></dt>
+<dd><p>Gauche の <code>sys-getcwd</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getdomainname</code></dt>
+<dd><p>Gauche の <code>sys-getdomainname</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getegid</code></dt>
+<dd><p>Gauche の <code>sys-getegid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getenv</code></dt>
+<dd><p>Gauche の <code>sys-getenv</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">環境の問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>geteuid</code></dt>
+<dd><p>Gauche の <code>sys-geteuid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>gethostname</code></dt>
+<dd><p>Gauche の <code>sys-gethostname</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getgid</code></dt>
+<dd><p>Gauche の <code>sys-getgid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getgrgid</code></dt>
+<dt> <code>getgrnam</code></dt>
+<dd><p>Gauche の <code>sys-getgrgid</code> および <code>sys-getgrnam</code>。
+<a indepth="true" href="gauche-refj_63.html#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6">Unixのグループとユーザ</a> 参照。
+</p></dd>
+<dt> <code>getgroups</code></dt>
+<dd><p>Gauche の <code>sys-getgroups</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>getlogin</code></dt>
+<dd><p>Gauche の <code>sys-getlogin</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>getpgrp</code></dt>
+<dd><p>Gauche の <code>sys-getpgrp</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getpid</code></dt>
+<dt> <code>getppid</code></dt>
+<dd><p>Gauche の <code>sys-getpid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>getpwnam</code></dt>
+<dt> <code>getpwuid</code></dt>
+<dd><p>Gauche の <code>sys-getpwnam</code> および <code>sys-getpwuid</code>。
+<a indepth="true" href="gauche-refj_63.html#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6">Unixのグループとユーザ</a> 参照。
+</p></dd>
+<dt> <code>gets</code></dt>
+<dd><p><code>read-line</code> または <code>read-block</code>を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_008a_009b">入力</a>参照。
+</p></dd>
+<dt> <code>gettimeofday</code></dt>
+<dd><p>Gauche の <code>sys-gettimeofday</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a> 参照。
+</p></dd>
+<dt> <code>getuid</code></dt>
+<dd><p>Gauche の <code>sys-getuid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a> 参照。
+</p></dd>
+<dt> <code>gmtime</code></dt>
+<dd><p>Gauche の <code>sys-gmtime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a> 参照。
+</p></dd>
+<dt> <code>isalnum</code></dt>
+<dd><p>直接はサポートされていませんが、R5RS の <code>char-alphabetic?</code> および
+<code>char-numeric?</code> が使えます。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a> 参照。また、文字集合も
+使えます。<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>、<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isalpha</code></dt>
+<dd><p>R5RS の <code>char-alphabetic?</code>。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a> 参照。また、
+<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a> および <a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> も参照してください。
+</p></dd>
+<dt> <code>isatty</code></dt>
+<dd><p>Gauche の <code>sys-isatty</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a> 参照。
+</p></dd>
+<dt> <code>iscntrl</code></dt>
+<dd><p>直接はサポートされていませんが、<code>srfi-14</code> で
+<code>(char-set-contains? char-set:iso-control c)</code> が使えます。
+<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isdigit</code></dt>
+<dd><p>R5RS の <code>char-numeric?</code>。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a> 参照。
+<code>srfi-14</code> で、<code>(char-set-contains? char-set:digit c)</code> も
+使えます。<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isgraph</code></dt>
+<dd><p>直接はサポートされていませんが、<code>srfi-14</code> で
+<code>(char-set-contains? char-set:graphic c)</code> が使えます。
+<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>islower</code></dt>
+<dd><p>R5RS の <code>char-lower-case?</code>。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a> 参照。
+<code>srfi-14</code> で <code>(char-set-contains? char-set:lower-case c)</code>
+も使えます。<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isprint</code></dt>
+<dd><p>直接はサポートされていませんが、<code>srfi-14</code> で
+<code>(char-set-contains? char-set:printing c)</code> が使えます。
+<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>ispunct</code></dt>
+<dd><p>直接はサポートされていませんが、<code>srfi-14</code> で
+<code>(char-set-contains? char-set:punctuation c)</code> が使えます。
+<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isspace</code></dt>
+<dd><p>R5RS の <code>char-whitespace?</code>。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a> 参照。
+<code>srfi-14</code> で <code>(char-set-contains? char-set:whitespace c)</code>
+も使えます。<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isupper</code></dt>
+<dd><p>R5RS の <code>char-upper-case?</code>。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a> 参照。
+<code>srfi-14</code> で <code>(char-set-contains? char-set:upper-case c)</code>
+も使えます。<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>isxdigit</code></dt>
+<dd><p>直接はサポートされていませんが、<code>srfi-14</code> で
+<code>(char-set-contains? char-set:hex-digit c)</code> が使えます。
+<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a> 参照。
+</p></dd>
+<dt> <code>kill</code></dt>
+<dd><p>Gauche の <code>sys-kill</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab">シグナル</a> 参照。
+</p></dd>
+<dt> <code>labs</code></dt>
+<dd><p>R5RS の <code>abs</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>ldexp</code></dt>
+<dd><p>Gauche の <code>ldexp</code>。
+</p></dd>
+<dt> <code>ldiv</code></dt>
+<dd><p>R5RS の <code>quotient</code> および <code>remainder</code> を使いましょう。
+<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>link</code></dt>
+<dd><p>Gauche の <code>sys-link</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>localeconv</code></dt>
+<dd><p>Gauche の <code>sys-localeconv</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab">ロケール</a> 参照。
+</p></dd>
+<dt> <code>localtime</code></dt>
+<dd><p>Gauche の <code>sys-localtime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a> 参照。
+</p></dd>
+<dt> <code>log</code></dt>
+<dd><p>R5RS の <code>log</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>log10</code></dt>
+<dd><p>直接はサポートされていません。
+<code>log10(z)</code> ≡ <code>(/ (log z) (log 10))</code> です。
+</p></dd>
+<dt> <code>longjmp</code></dt>
+<dd><p>R5RS の <code>call/cc</code> が類似(上位)のメカニズムを提供しています。
+<a indepth="true" href="gauche-refj_56.html#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a> 参照。
+</p></dd>
+<dt> <code>lseek</code></dt>
+<dd><p>Gauche の <code>port-seek</code> (<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照) を使いましょう。
+</p></dd>
+<dt> <code>malloc</code></dt>
+<dd><p>Scheme では必要ありません。
+</p></dd>
+<dt> <code>mblen</code></dt>
+<dt> <code>mbstowcs</code></dt>
+<dt> <code>mbtowc</code></dt>
+<dd><p>Gauche ではマルチバイト文字列を内部的に処理しますので、一般的には
+文字列がマルチバイトであるかどうかを気にする必要はありません。
+<code>string-length</code> は常に、サポートされているエンコーディングの
+文字列に対して、文字数を返します。文字のエンコーディング変換を
+したいのであれば、<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a> を参照してください。
+</p></dd>
+<dt> <code>memcmp</code></dt>
+<dt> <code>memcpy</code></dt>
+<dt> <code>memmove</code></dt>
+<dt> <code>memset</code></dt>
+<dd><p>同等の関数はありません。
+</p></dd>
+<dt> <code>mkdir</code></dt>
+<dd><p>Gauche の <code>sys-mkdir</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a> 参照。
+</p></dd>
+<dt> <code>mkfifo</code></dt>
+<dd><p>Gauche の <code>sys-mkfifo</code>。
+</p></dd>
+<dt> <code>mkstemp</code></dt>
+<dd><p>Gauche の <code>sys-mkstemp</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a> 参照。
+tmpnam の代りにこちらを使いましょう。
+</p></dd>
+<dt> <code>mktime</code></dt>
+<dd><p>Gauche の <code>sys-mktime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a> 参照。
+</p></dd>
+<dt> <code>modf</code></dt>
+<dd><p>Gauche の <code>modf</code>。
+</p></dd>
+<dt> <code>open</code></dt>
+<dd><p>直接はサポートされていません。この操作に対応するのな
+R5RS の <code>open-input-file</code> または <code>open-output-file</code> です。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a> 参照。
+</p></dd>
+<dt> <code>opendir</code></dt>
+<dd><p>直接はサポートされていません。
+ディレクトリのエントリをいちどに読むには <code>sys-readdir</code>
+が使えます。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa">ディレクトリ</a> 参照。
+</p></dd>
+<dt> <code>openpty</code></dt>
+<dd><p><code>sys-openpty</code> を使いましょう。<a indepth="true" href="gauche-refj_101.html#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1"><code>gauche.termios</code> - 端末の制御</a> 参照。
+</p></dd>
+<dt> <code>pathconf</code></dt>
+<dd><p>サポートしません。
+</p></dd>
+<dt> <code>pause</code></dt>
+<dd><p>Gauche の <code>sys-pause</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab">その他のシステムコール</a> 参照。
+</p></dd>
+<dt> <code>perror</code></dt>
+<dd><p>Gauche には同等の関数はありません。システムコールは一般的には error
+(<code>&lt;system-error&gt;</code>) を投げます。これには、失敗した理由の説明が含まれて
+います。
+</p></dd>
+<dt> <code>pipe</code></dt>
+<dd><p>Gauche の <code>sys-pipe</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a> 参照。
+</p></dd>
+<dt> <code>pow</code></dt>
+<dd><p>R5RS の <code>expt</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a> 参照。
+</p></dd>
+<dt> <code>printf</code></dt>
+<dd><p>直接はサポートされていませんが、Gauche の <code>format</code> は類似の機能を
+提供しています。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。SLIB には <code>printf</code> の実装があります。
+</p></dd>
+<dt> <code>putc</code></dt>
+<dt> <code>putchar</code></dt>
+<dd><p><code>write-char</code> または <code>write-byte</code> を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。
+</p></dd>
+<dt> <code>puts</code></dt>
+<dd><p><code>display</code> を使いましょう。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。
+</p></dd>
+<dt> <code>qsort</code></dt>
+<dd><p>Gauche の <code>sort</code> および <code>sort!</code> はリストをソートする便利な方法を
+提供しています。<a indepth="true" href="gauche-refj_62.html#g_t_00e6_00af_0094_00e8_00bc_0083_00e3_0081_00a8_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088">比較とソート</a> 参照。
+</p></dd>
+<dt> <code>raise</code></dt>
+<dd><p>Gauche には同等の関数はありません。Scheme の関数 <code>raise</code> (SRFI-18)
+は例外を発生させます。シグナル <code>SIG</code> を現在のプロセスに送るには
+<code>(sys-kill (sys-getpid) SIG)</code> が使えます。
+</p></dd>
+<dt> <code>rand</code></dt>
+<dd><p>直接はサポートされていませんが、多くのプラットフォーム上で、<code>sys-random</code>
+のような、よりよい RNG が利用可能です。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab">その他のシステムコール</a> 参照。
+</p></dd>
+<dt> <code>read</code></dt>
+<dd><p>直接はサポートされていませんが、
+<code>read-block</code> (<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_008a_009b">入力</a>参照) あるいは
+<code>read-block!</code> (<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)が使えます。
+</p></dd>
+<dt> <code>readdir</code></dt>
+<dd><p>直接はサポートされていません。Gauche の <code>sys-readdir</code> は
+指定のディレクトリを一度に読みます。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa">ディレクトリ</a> 参照。
+</p></dd>
+<dt> <code>readlink</code></dt>
+<dd><p>Gauche の <code>sys-readlink</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a> 参照。
+この関数はシンボリックリンクをサポートしているシステム上で利用可能です。
+</p></dd>
+<dt> <code>realloc</code></dt>
+<dd><p>Scheme では必要ありません。
+</p></dd>
+<dt> <code>realpath</code></dt>
+<dd><p>Gauche の <code>sys-normalize-pathname</code> あるいは <code>sys-realpath</code>。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d">パス名</a>参照。
+</p></dd>
+<dt> <code>remove</code></dt>
+<dd><p>Gauche の <code>sys-remove</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>rename</code></dt>
+<dd><p>Gauche の <code>sys-rename</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>rewind</code></dt>
+<dd><p>直接はサポートされませんが、<code>port-seek</code>が代わりに使えます。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照。
+</p></dd>
+<dt> <code>rewinddir</code></dt>
+<dd><p>直接はサポートされていません。
+ディレクトリエントリを一度に読むには <code>sys-readdir</code> が使えます。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa">ディレクトリ</a>参照。
+</p></dd>
+<dt> <code>rmdir</code></dt>
+<dd><p>Gauche の <code>sys-rmdir</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>scanf</code></dt>
+<dd><p>サポートしていません。一般的にはパーザを書かねばなりません。
+データを S式で保持できるなら、<code>read</code> が使えます。
+構文がごく単純なら、<code>srfi-14</code> (<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>) の
+<code>string-tokenize</code> や、正規表現 (<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>)
+が使えるでしょう。
+</p></dd>
+<dt> <code>select</code></dt>
+<dd><p>Gauche の <code>sys-select</code>。<a indepth="true" href="gauche-refj_63.html#I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096">I/Oの多重化</a>参照。
+</p></dd>
+<dt> <code>setbuf</code></dt>
+<dd><p>必要ありません。
+</p></dd>
+<dt> <code>setgid</code></dt>
+<dd><p>Gauche の <code>sys-getgid</code>。
+</p></dd>
+<dt> <code>setjmp</code></dt>
+<dd><p>R5RS の <code>call/cc</code> が類似(上位)のメカニズムを提供しています。
+<a indepth="true" href="gauche-refj_56.html#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a> 参照。
+</p></dd>
+<dt> <code>setlocale</code></dt>
+<dd><p>Gauche の <code>sys-setlocale</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab">ロケール</a>参照。
+</p></dd>
+<dt> <code>setpgid</code></dt>
+<dd><p>Gauche の <code>sys-setpgid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>setsid</code></dt>
+<dd><p>Gauche の <code>sys-setsid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>setuid</code></dt>
+<dd><p>Gauche の <code>sys-setuid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>setvbuf</code></dt>
+<dd><p>必要ありません。
+</p></dd>
+<dt> <code>sigaction</code></dt>
+<dd><p>シグナルハンドラを設定するには、<code>set-signal-handler!</code> が使えます。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">シグナルの処理</a>参照。
+</p></dd>
+<dt> <code>sigaddset</code></dt>
+<dt> <code>sigdelset</code></dt>
+<dt> <code>sigemptyset</code></dt>
+<dt> <code>sigfillset</code></dt>
+<dd><p>Gauche の <code>sys-sigset-add!</code> および <code>sys-sigset-delete!</code>。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088">シグナルとシグナルセット</a>参照。
+</p></dd>
+<dt> <code>sigismember</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>siglongjmp</code></dt>
+<dd><p>R5RS の <code>call/cc</code> が類似(上位)のメカニズムを提供しています。
+<a indepth="true" href="gauche-refj_56.html#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a> 参照。
+</p></dd>
+<dt> <code>signal</code></dt>
+<dd><p>シグナルハンドラを設定するのには、<code>with-signal-handlers</code> が使えます。
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">シグナルの処理</a> 参照。
+</p></dd>
+<dt> <code>sigpending</code></dt>
+<dd><p>未サポート
+</p></dd>
+<dt> <code>sigprocmask</code></dt>
+<dd><p>シグナルマスクは内部的に処理されます。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">シグナルの処理</a>参照。
+</p></dd>
+<dt> <code>sigsetjmp</code></dt>
+<dd><p>R5RS の <code>call/cc</code> が類似(上位)のメカニズムを提供しています。
+<a indepth="true" href="gauche-refj_56.html#g_t_00e7_00b6_0099_00e7_00b6_009a">継続</a> 参照。
+</p></dd>
+<dt> <code>sigsuspend</code></dt>
+<dd><p>Gauche の <code>sys-sigsuspend</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f">シグナルのマスクと待機</a>参照。
+</p></dd>
+<dt> <code>sigwait</code></dt>
+<dd><p>Gauche の <code>sys-sigwait</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f">シグナルのマスクと待機</a>参照。
+</p></dd>
+<dt> <code>sin</code></dt>
+<dt> <code>sinh</code></dt>
+<dd><p><code>sin</code> および <code>sinh</code> を使いましょう。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>sleep</code></dt>
+<dd><p>Gauche の <code>sys-sleep</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab">その他のシステムコール</a>参照。
+</p></dd>
+<dt> <code>sprintf</code></dt>
+<dd><p>直接はサポートされていませんが、Gauche の <code>format</code> は類似の機能を
+提供しています。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。SLIB には <code>printf</code> の実装があります。
+</p></dd>
+<dt> <code>sqrt</code></dt>
+<dd><p>R5RS の <code>sqrt</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>srand</code></dt>
+<dd><p>直接はサポートされていませんが、多くのプラットフォーム上で、<code>sys-random</code>
+のような、よりよい RNG が利用可能です。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab">その他のシステムコール</a> 参照。
+また、<code>math.mt-random</code>はさらに優れたRNGを提供します
+(<a indepth="true" href="gauche-refj_142.html#Mersenne-Twister_00e4_00b9_00b1_00e6_0095_00b0_00e7_0099_00ba_00e7_0094_009f_00e5_0099_00a8"><code>math.mt-random</code> - Mersenne Twister乱数発生器</a>参照)。
+</p></dd>
+<dt> <code>sscanf</code></dt>
+<dd><p>サポートしていません。一般的にはパーザを書かねばなりません。
+データを S式で保持できるなら、<code>read</code> が使えます。
+構文がごく単純なら、<code>srfi-14</code> (<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a>) の
+<code>string-tokenize</code> や、正規表現 (<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>)
+が使えるでしょう。
+</p></dd>
+<dt> <code>stat</code></dt>
+<dd><p>Gauche の <code>sys-stat</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照。
+</p></dd>
+<dt> <code>strcasecmp</code></dt>
+<dd><p>R5RS の <code>string-ci=?</code> および、その他の比較関数。
+<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083">文字列の比較</a>参照。
+</p></dd>
+<dt> <code>strcat</code></dt>
+<dd><p>R5RS の <code>string-append</code>。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">文字列を扱うその他の手続き</a>参照。
+</p></dd>
+<dt> <code>strchr</code></dt>
+<dd><p>SRFI-13 の <code>string-index</code>。  <a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_008e_00a2_00e7_00b4_00a2">文字列の探索</a>参照。
+</p></dd>
+<dt> <code>strcmp</code></dt>
+<dd><p>R5RS の <code>string=?</code> および、その他の比較関数。
+<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083">文字列の比較</a>参照。
+</p></dd>
+<dt> <code>strcoll</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>strcpy</code></dt>
+<dd><p>R5RS の <code>string-copy</code>。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">文字列を扱うその他の手続き</a>参照。
+</p></dd>
+<dt> <code>strcspn</code></dt>
+<dd><p>直接はサポートされていませんが、文字集合とともに、SRFI-13 の
+<code>string-skip</code> が使えます。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_008e_00a2_00e7_00b4_00a2">文字列の探索</a>参照。
+</p></dd>
+<dt> <code>strerror</code></dt>
+<dd><p>Gaucheの<code>sys-strerror</code>。  <a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>strftime</code></dt>
+<dd><p>Gauche の <code>sys-strftime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照。
+</p></dd>
+<dt> <code>strlen</code></dt>
+<dd><p>R5RS の <code>string-length</code>。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4">文字列のアクセスと変更</a>参照。
+</p></dd>
+<dt> <code>strncat</code></dt>
+<dd><p>直接はサポートされていませんが、<code>string-append</code> および
+<code>substring</code> が使えます。
+</p></dd>
+<dt> <code>strncasecmp</code></dt>
+<dd><p>SRFI-13 の <code>string-compare-ci</code> は非常に柔軟な(しかし、使うのは
+多少難しい)機能を提供しています。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_0089_00b2_00e3_0080_0085_00e3_0081_00aa_00e6_00af_0094_00e8_00bc_0083">文字列の色々な比較</a>参照。
+ふたつの文字列の固定長の接頭辞が一致しているかどうかをチェックしたい
+だけなら、SRFI-13 の <code>string-prefix-ci?</code> が使えます。
+</p></dd>
+<dt> <code>strncmp</code></dt>
+<dd><p>SRFI-13 の <code>string-compare-ci</code> は非常に柔軟な(しかし、使うのは
+多少難しい)機能を提供しています。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_0089_00b2_00e3_0080_0085_00e3_0081_00aa_00e6_00af_0094_00e8_00bc_0083">文字列の色々な比較</a>参照。
+ふたつの文字列の固定長の接頭辞が一致しているかどうかをチェックしたい
+だけなら、SRFI-13 の <code>string-prefix-ci?</code> が使えます。
+<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00aa_00e3_0083_0095_00e3_0082_00a3_00e3_0083_0083_00e3_0082_00af_00e3_0082_00b9_00e3_0081_00a8_00e3_0082_00b5_00e3_0083_0095_00e3_0082_00a3_00e3_0083_0083_00e3_0082_00af_00e3_0082_00b9">文字列のプリフィックスとサフィックス</a>参照。
+</p></dd>
+<dt> <code>strncpy</code></dt>
+<dd><p>SRFI-13 の <code>substring</code>。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">文字列を扱うその他の手続き</a>参照。
+</p></dd>
+<dt> <code>strpbrk</code></dt>
+<dd><p>直接はサポートされていませんが、文字集合と SRFI-13 の <code>string-skip</code>
+が使えます。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_008e_00a2_00e7_00b4_00a2">文字列の探索</a>参照。
+</p></dd>
+<dt> <code>strrchr</code></dt>
+<dd><p>SRFI-13 の <code>string-index-right</code>。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_008e_00a2_00e7_00b4_00a2">文字列の探索</a>参照。
+</p></dd>
+<dt> <code>strspn</code></dt>
+<dd><p>直接はサポートされていませんが、文字集合と SRFI-13 の <code>string-index</code>
+が使えます。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_008e_00a2_00e7_00b4_00a2">文字列の探索</a>参照。
+</p></dd>
+<dt> <code>strstr</code></dt>
+<dd><p>SRFI-13 の <code>string-contains</code>。<a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e6_008e_00a2_00e7_00b4_00a2">文字列の探索</a>参照。
+</p></dd>
+<dt> <code>strtod</code></dt>
+<dd><p>R5RS の <code>string-&gt;number</code>が使えます。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">数値の変換</a>参照。
+</p></dd>
+<dt> <code>strtok</code></dt>
+<dd><p>SRFI-13 の <code>string-tokenize</code>。<a indepth="true" href="gauche-refj_115.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e6_0093_008d_00e4_00bd_009c">他の文字列操作</a>参照。
+</p></dd>
+<dt> <code>strtol</code></dt>
+<dt> <code>strtoul</code></dt>
+<dd><p>R5RS の <code>string-&gt;number</code>が使えます。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">数値の変換</a>参照。
+</p></dd>
+<dt> <code>strxfrm</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>symlink</code></dt>
+<dd><p>Gauche の <code>sys-symlink</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+この関数は、シンボリックリンクをサポートしているシステム上で利用可能です。
+</p></dd>
+<dt> <code>sysconf</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>system</code></dt>
+<dd><p>Gauche の <code>sys-system</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照。
+一般的にはプロセスライブラリ(<a indepth="true" href="gauche-refj_95.html#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>gauche.process</code> - 高レベルプロセスインタフェース</a>)
+を使うことを推奨します。
+</p></dd>
+<dt> <code>tan</code></dt>
+<dt> <code>tanh</code></dt>
+<dd><p>R5RS の <code>tan</code> および Gauche の <code>tanh</code>。<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">数値の演算</a>参照。
+</p></dd>
+<dt> <code>tcdrain</code></dt>
+<dt> <code>tcflow</code></dt>
+<dt> <code>tcflush</code></dt>
+<dt> <code>tcgetattr</code></dt>
+<dt> <code>tcgetpgrp</code></dt>
+<dt> <code>tcsendbreak</code></dt>
+<dt> <code>tcsetattr</code></dt>
+<dt> <code>tcsetpgrp</code></dt>
+<dd><p>対応する関数はそれぞれ、<code>sys-tcdrain</code>、<code>sys-tcflow</code>、
+<code>sys-tcflush</code>、<code>sys-tcgetattr</code>、<code>sys-tcgetpgrp</code>、
+<code>sys-tcsendbreak</code>、<code>sys-tcsetattr</code>、<code>sys-tcsetpgrp</code> です。
+<a indepth="true" href="gauche-refj_101.html#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1"><code>gauche.termios</code> - 端末の制御</a>参照。
+</p></dd>
+<dt> <code>time</code></dt>
+<dd><p>Gauche の <code>sys-time</code>。  <a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照。
+</p></dd>
+<dt> <code>times</code></dt>
+<dd><p>Gauche の <code>sys-times</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>tmpfile</code></dt>
+<dd><p>厳密には、サポートしません。
+</p></dd>
+<dt> <code>tmpnam</code></dt>
+<dd><p>Gauche の <code>sys-tmpnam</code>。この関数は POSIX にあるので提供されていますが、
+潜在的なセキュリティリスクがあるため、利用はおすすめできません。
+代りに <code>sys-mkstemp</code> を使いましょう。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>tolower</code></dt>
+<dt> <code>toupper</code></dt>
+<dd><p>R5RS の <code>char-upcase</code> および <code>char-downcase</code>。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a>参照。
+</p></dd>
+<dt> <code>ttyname</code></dt>
+<dd><p>Gauche の <code>sys-ttyname</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a>参照。
+</p></dd>
+<dt> <code>tzset</code></dt>
+<dd><p>未サポート。
+</p></dd>
+<dt> <code>umask</code></dt>
+<dd><p>Gauche の <code>sys-umask</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>uname</code></dt>
+<dd><p>Gauche の <code>sys-uname</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照。
+</p></dd>
+<dt> <code>ungetc</code></dt>
+<dd><p>直接はサポートされません。プッシュしなおす代りに、<code>peek-char</code> をつかって
+先読みしましょう。
+</p></dd>
+<dt> <code>unlink</code></dt>
+<dd><p>Gauche の <code>sys-unlink</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照。
+</p></dd>
+<dt> <code>utime</code></dt>
+<dd><p>Gauche の <code>sys-utime</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照。
+</p></dd>
+<dt> <code>va_arg</code></dt>
+<dt> <code>va_end</code></dt>
+<dt> <code>va_start</code></dt>
+<dd><p>Scheme は可変長引数を自然に処理できますので、必要ありません。
+</p></dd>
+<dt> <code>vfprintf</code></dt>
+<dt> <code>vprintf</code></dt>
+<dt> <code>vsprintf</code></dt>
+<dd><p>直接はサポートされていませんが、Gauche の <code>format</code> は類似の機能を
+提供しています。<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a> 参照。SLIB には <code>printf</code> の実装があります。
+</p></dd>
+<dt> <code>wait</code></dt>
+<dd><p>Gauche の <code>sys-wait</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照。
+</p></dd>
+<dt> <code>waitpid</code></dt>
+<dd><p>Gauche の <code>sys-waitpid</code>。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照。
+</p></dd>
+<dt> <code>wcstombs</code></dt>
+<dt> <code>wctomb</code></dt>
+<dd><p>Gauche はマルチバイト文字列を内部的に処理します。それゆえ、一般的には
+文字列がマルチバイトであるかどうかを気にする必要はありません。
+<code>string-length</code> は常にサポートされているエンコーディングでの文字列の
+文字数を返します。文字エンコーディングを変換したければ、
+<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>を参照してください。
+</p></dd>
+<dt> <code>write</code></dt>
+<dd><p>R5RS の <code>display</code> (See section <a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>)。
+あるいは <code>write-block</code> (<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)。
+</p></dd>
+</dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.57 util.sparse - 疎なデータコンテナ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.57 util.sparse - 疎なデータコンテナ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.57 util.sparse - 疎なデータコンテナ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_183.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_182.html#util_002erelation-_002d-_00e3_0083_00aa_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a-1"></a>
+<h2 class="section">11.57 <code>util.sparse</code> - 疎なデータコンテナ</h2>
+
+<dl>
+<dt><a name="index-util_002esparse"></a><u>Module:</u> <b>util.sparse</b></dt>
+<dd><a name="index-util_002esparse-1"></a>
+<p>This module provides a <em>sparse vector</em>, a space efficient
+data containter indexed by nonnegative integer, and
+a <em>sparse table</em>, a hash table using a sparse vector
+as a backing storage.
+</p></dd></dl>
+
+<p>A sparse vector associates a nonnegative integer index
+to a value.  It has <em>vector</em> in its name since it is indexed
+by an integer, but it isn’t like a flat array on contiguous memory;
+it’s more like an associative array.  (Internally, the current
+implementation uses compact trie structure.)
+It is guaranteed that you can store a value with index at least
+up to <code>2^32-1</code>; the actual maximum bits of indexes can
+be queried by <code>sparse-vector-max-index-bits</code>.
+</p>
+<p>Unlike ordinary vectors, you don’t need to specify the size
+of a sparse vector when you create one.  You can just set
+a value to any index in the supported range.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define v (make-sparse-vector))
+
+(sparse-vector-set! v 0 'a)
+(sparse-vector-ref v 0) ⇒ a
+
+(sparse-vector-set! v 100000000 'b)
+(sparse-vector-ref v 100000000) ⇒ b
+</pre></td></tr></tbody></table>
+
+<p>If you try to access an element that hasn’t been set,
+an error is signalled by default.  You can give a
+fallback value to <code>sparse-vector-ref</code> to suppress
+the error.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sparse-vector-ref v 1)        ⇒ <span class="roman">error</span>
+(sparse-vector-ref v 1 'noval) ⇒ noval
+</pre></td></tr></tbody></table>
+
+<p>A sparse table works just like a hash table, but it uses
+a sparse vector to store the values using hashed number of keys.
+</p>
+<p>The main reason of these sparse data containers are for
+memory efficiency.   If you want to store values in a vector
+but knows you’ll use only some entries sparsely, obviously it
+is waste to allocate a large vector and to leave many entries unused.
+But it is worse than that; Gauche’s GC doesn’t like a large
+contiguous region of memory.  Using lots of large vectors adds
+GC overhead quickly.  It becomes especially visible when you
+store large number of entries (like &gt;100,000) into hash tables,
+since Gauche’s builtin hash tables use a flat vector as a backing
+storage.   You’ll see the heap size grows quickly and
+GC runs more frequently and longer.
+On the other hand, sparse table works pretty stable with
+large number of entries.
+</p>
+<p>Sparse data containers does have overhead on access speed.
+They are a bit slower than the ordinary hash tables,
+and much slower than ordinary vectors.  We should note, however,
+as the number of entries grow, access speed on ordinary hash
+tables grows quicker than sparse tables and eventually two become
+comparable.
+</p>
+<p>It depends on your application which you should use, and
+if you’re not sure, you need to benchmark.
+As a rule of thumb, if you use more than several hashtables
+each of which contains more than a few tens of thousands of
+entries, sparse tables may work better.
+If you see GC Warnings telling “repeated allocation of large
+blocks”, you should definitely consider sparse tables.
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf">11.57.1 疎なベクタ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">11.57.2 疎なテーブル</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf-1"></a>
+<h3 class="subsection">11.57.1 疎なベクタ</h3>
+
+<dl>
+<dt><a name="index-_003csparse_002dvector_002dbase_003e"></a><u>Class:</u> <b>&lt;sparse-vector-base&gt;</b></dt>
+<dd><a name="index-sparse_002dvector_002dbase"></a>
+<p>An abstract base class of sparse vectors.
+Inherits <code>&lt;dictionary&gt;</code> and <code>&lt;collection&gt;</code>.
+Note that sparse vectors are <em>not</em> <code>&lt;sequence&gt;</code>; even
+they can be indexable by integers, they don’t have
+means of <em>ordered</em> access.
+</p>
+<p>Sparse vector may be a general vector
+that can contain any Scheme objects (like <code>&lt;vector&gt;</code>),
+or a specialized vector that can contain only certain
+types of numbers (like <code>&lt;s8vector&gt;</code> etc.).
+</p>
+<p>All of these sparse vectors can be accessed by the same API.
+</p>
+<p>Sparse vectors also implements the Collection API
+(See section <a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>) and the Dictionary API
+(See section <a indepth="true" href="gauche-refj_80.html#gauche_002edictionary-_002d-_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.dictionary</code> - ディクショナリフレームワーク</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csparse_002dvector_003e"></a><u>Class:</u> <b>&lt;sparse-vector&gt;</b></dt>
+<dt><a name="index-_003csparse_002d"></a><u>Class:</u> <b>&lt;sparse-</b><i><var>TAG</var>vector&gt;</i></dt>
+<dd><a name="index-sparse_002dvector"></a>
+<a name="index-sparse_002ds8vector"></a>
+<a name="index-sparse_002du8vector"></a>
+<a name="index-sparse_002ds16vector"></a>
+<a name="index-sparse_002du16vector"></a>
+<a name="index-sparse_002ds32vector"></a>
+<a name="index-sparse_002du32vector"></a>
+<a name="index-sparse_002ds64vector"></a>
+<a name="index-sparse_002du64vector"></a>
+<a name="index-sparse_002df16vector"></a>
+<a name="index-sparse_002df32vector"></a>
+<a name="index-sparse_002df64vector"></a>
+<p>The actual sparse vector classes.  Inherits <code>&lt;sparse-vector-base&gt;</code>.
+An instance of <code>&lt;sparse-vector&gt;</code> can contain any Scheme objects.
+</p>
+<p><var>TAG</var> either one of <code>s8</code>, <code>u8</code>,
+<code>s16</code>, <code>u16</code>, <code>s32</code>, <code>u32</code>,
+<code>s64</code>, <code>u64</code>, <code>f16</code>, <code>f32</code>, or <code>f64</code>.
+The range of values an instance of those classes can hold
+is the same as the corresponding <code>&lt;<var>TAG</var>vector&gt;</code> class
+in <code>gauche.uvector</code> (See section <a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>).  That is,
+<code>&lt;sparse-u8vector&gt;</code> can have exact integer values
+between 0 and 255.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dsparse_002dvector"></a><u>Function:</u> <b>make-sparse-vector</b><i> :optional type</i></dt>
+<dd><p>Creates an empty sparse vector.  The <var>type</var> argument can be
+<code>#f</code> (default), one of subclasses of <code>&lt;sparse-vector-base&gt;</code>,
+or a symbol of either one of <code>s8</code>, <code>u8</code>,
+<code>s16</code>, <code>u16</code>, <code>s32</code>, <code>u32</code>,
+<code>s64</code>, <code>u64</code>, <code>f16</code>, <code>f32</code>, or <code>f64</code>.
+</p>
+<p>If <var>type</var> is omitted or <code>#f</code>, a <code>&lt;sparse-vector&gt;</code> is
+created.  If it is a class, an instance of the class is created
+(It is an error to pass a class that is not a subclass of
+<code>&lt;sparse-vector-base&gt;</code>.)
+If it is a symbol, an instance of corresponding <code>&lt;sparse-<var>TAG</var>vector&gt;</code>
+is created.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dmax_002dindex_002dbits"></a><u>Function:</u> <b>sparse-vector-max-index-bits</b></dt>
+<dd><p>Returns maximum number of bits of allowed integer.  If this
+returns 32, the index up to <code>(expt 2 32)</code> is supported.
+It is guaranteed that this is at least 32.
+</p></dd></dl>
+
+<p>In the following entries, the argument <var>sv</var> denotes
+an instance of sparse vector; an error is signalled if other
+object is passed.
+</p>
+<dl>
+<dt><a name="index-sparse_002dvector_002dcopy"></a><u>Function:</u> <b>sparse-vector-copy</b><i> sv</i></dt>
+<dd><p>Returns a copy of a sparse vector <var>sv</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dref"></a><u>Function:</u> <b>sparse-vector-ref</b><i> sv k :optional default</i></dt>
+<dd><p>Returns <var>k</var>-th element of a sparse vector <var>sv</var>, where
+<var>k</var> must be a nonnegative exact integer.  If <var>k</var> is
+equal to or greater than the allowed index range, an error
+is signalled.
+</p>
+<p>If <var>k</var> is within the allowed range but the sparse vector
+doesn’t have a value for <var>k</var>, <var>default</var> is returned
+if it is provided, otherwise an error is signalled.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dset_0021"></a><u>Function:</u> <b>sparse-vector-set!</b><i> sv k value</i></dt>
+<dd><p>Sets <var>value</var> for <var>k</var>-th element of a sparse vector <var>sv</var>.
+<var>K</var> must be a nonnegative exact integer, and below the maximum
+allowed index.
+</p>
+<p>If <var>sv</var> is a numeric sparse vector, <var>value</var> must also be
+within the allowed range, or an error is signalled.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dnum_002dentries"></a><u>Function:</u> <b>sparse-vector-num-entries</b><i> sv</i></dt>
+<dd><p>Returns the number of entries in <var>sv</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dexists_003f"></a><u>Function:</u> <b>sparse-vector-exists?</b><i> sv k</i></dt>
+<dd><p>Returns <code>#t</code> if <var>sv</var> has an entry for index <var>k</var>,
+<code>#f</code> otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002ddelete_0021"></a><u>Function:</u> <b>sparse-vector-delete!</b><i> sv k</i></dt>
+<dd><p>Deletes the <var>k</var>-th entry of <var>sv</var>.  If <var>sv</var> had the entry ,
+returns <code>#t</code>.  If <var>sv</var> didn’t have the entry, returns <code>#f</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dclear_0021"></a><u>Function:</u> <b>sparse-vector-clear!</b><i> sv</i></dt>
+<dd><p>Empties a sparse vector.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dinc_0021"></a><u>Function:</u> <b>sparse-vector-inc!</b><i> sv k delta :optional (fallback 0)</i></dt>
+<dd><p>This is a shortcut of the following.  It is especially efficient
+for numeric sparse vectors.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sparse-vector-set! sv k (+ (sparse-vector-ref sv k fallback) delta))
+</pre></td></tr></tbody></table>
+
+<p>If the result of addition exceeds the allowed value range of <var>sv</var>,
+an error is signalled.  In future we’ll allow an option to clamp
+the result value within the range.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dupdate_0021"></a><u>Function:</u> <b>sparse-vector-update!</b><i> sv k proc :optional fallback</i></dt>
+<dt><a name="index-sparse_002dvector_002dpush_0021"></a><u>Function:</u> <b>sparse-vector-push!</b><i> sv k val</i></dt>
+<dt><a name="index-sparse_002dvector_002dpop_0021"></a><u>Function:</u> <b>sparse-vector-pop!</b><i> sv k :optional fallback</i></dt>
+<dd><p>Convenience routines to fetch-and-update an entry of
+a sparse vector.  Works just like <code>hash-table-update!</code>,
+<code>hash-table-push!</code> and <code>hash-table-pop!</code>;
+(See section <a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">ハッシュテーブル</a>).
+</p></dd></dl>
+
+
+<p>The following procedures traverses a sparse vector.
+Note that elements are not visited in the order of index;
+it’s just like hash table traversers.
+</p>
+<p>At this moment, if you want to walk a sparse vector with
+increasing/decreasing index order, you have to get a list
+of keys by <code>sparse-vector-keys</code>, sort it, then use
+it to retrieve values.
+We may add an option in future to <code>make-sparse-vector</code> so that
+those walk operation
+</p>
+<dl>
+<dt><a name="index-sparse_002dvector_002dfold"></a><u>Function:</u> <b>sparse-vector-fold</b><i> sv proc seed</i></dt>
+<dd><p>For each entry in <var>sv</var>, calls <var>proc</var> as
+<code>(proc <var>k_n</var> <var>v_n</var> <var>seed_n</var>)</code>, where
+<var>k_n</var> is an index and <var>v_n</var> is a value for it,
+and <var>seed_n</var> is the returned value of the previous
+call to <code>proc</code> if <var>n</var> <code>&gt;=</code> 1, and <var>seed</var> if <var>n</var> = 0.
+Returns the value of the last call of <code>proc</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dfor_002deach"></a><u>Function:</u> <b>sparse-vector-for-each</b><i> sv proc</i></dt>
+<dt><a name="index-sparse_002dvector_002dmap"></a><u>Function:</u> <b>sparse-vector-map</b><i> sv proc</i></dt>
+<dd><p>Calls <code>proc</code> with index and value, e.g. <code>(proc k value)</code>,
+for each element of <var>sv</var>.
+</p>
+<p>The results of <var>proc</var> are discarded by <code>sparse-vector-for-each</code>,
+and gathered to a list and returned by <code>sparse-vector-map</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dvector_002dkeys"></a><u>Function:</u> <b>sparse-vector-keys</b><i> sv</i></dt>
+<dt><a name="index-sparse_002dvector_002dvalues"></a><u>Function:</u> <b>sparse-vector-values</b><i> sv</i></dt>
+<dd><p>Returns a list of all keys and all values in <var>sv</var>, respectively.
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab-1"></a>
+<h3 class="subsection">11.57.2 疎なテーブル</h3>
+
+<dl>
+<dt><a name="index-_003csparse_002dtable_003e"></a><u>Class:</u> <b>&lt;sparse-table&gt;</b></dt>
+<dd><a name="index-sparse_002dtable"></a>
+<p>A class for sparse table.  Inherits <code>&lt;dictionary&gt;</code> and
+<code>&lt;collection&gt;</code>.
+</p>
+<p>Operationally sparse tables are the same as hash tables, but
+the former consumes less memory in trade of slight slower access.
+(Roughly x1.5 to x2 access time when the table is small.
+As the table gets larger the difference becomes smaller.)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dsparse_002dtable"></a><u>Function:</u> <b>make-sparse-table</b><i> type</i></dt>
+<dd><p>Creates and returns an empty sparse table.  The <var>type</var> argument
+specifies how to compare the elements; currently it can be
+one of the symbols <code>eq?</code>, <code>eqv?</code>, <code>equal?</code> and
+<code>string=?</code>, like hash tables (See section <a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab">ハッシュテーブル</a>).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dcopy"></a><u>Function:</u> <b>sparse-table-copy</b><i> st</i></dt>
+<dd><p>Returns a copy of a sparse table <var>st</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dnum_002dentries"></a><u>Function:</u> <b>sparse-table-num-entries</b><i> st</i></dt>
+<dd><p>Returns the number of entries in a sparse table <var>st</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dref"></a><u>Function:</u> <b>sparse-table-ref</b><i> st key :optional fallback</i></dt>
+<dd><p>Retrieves a value associated to the <var>key</var> in <var>st</var>.
+If no entry with <var>key</var> exists, <var>fallback</var> is returned
+when it is provided, or an error is signalled otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dset_0021"></a><u>Function:</u> <b>sparse-table-set!</b><i> st key value</i></dt>
+<dd><p>Sets <var>value</var> with <var>key</var> in <var>st</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dexists_003f"></a><u>Function:</u> <b>sparse-table-exists?</b><i> st key</i></dt>
+<dd><p>Returns <code>#t</code> if an entry with <var>key</var> exists in <var>st</var>,
+<code>#f</code> otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002ddelete_0021"></a><u>Function:</u> <b>sparse-table-delete!</b><i> st key</i></dt>
+<dd><p>Deletes an entry with <var>key</var> in <var>st</var> if it exists.
+Returns <code>#t</code> if an entry is actually deleted, or <code>#f</code>
+if there hasn’t been an entry with <var>key</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dclear_0021"></a><u>Function:</u> <b>sparse-table-clear!</b><i> st</i></dt>
+<dd><p>Empties <var>st</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dupdate_0021"></a><u>Function:</u> <b>sparse-table-update!</b><i> st key proc :optional fallback</i></dt>
+<dt><a name="index-sparse_002dtable_002dpush_0021"></a><u>Function:</u> <b>sparse-table-push!</b><i> st key val</i></dt>
+<dt><a name="index-sparse_002dtable_002dpop_0021"></a><u>Function:</u> <b>sparse-table-pop!</b><i> st key :optional fallback</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dfold"></a><u>Function:</u> <b>sparse-table-fold</b><i> st proc seed</i></dt>
+<dt><a name="index-sparse_002dtable_002dfor_002deach"></a><u>Function:</u> <b>sparse-table-for-each</b><i> st proc</i></dt>
+<dt><a name="index-sparse_002dtable_002dmap"></a><u>Function:</u> <b>sparse-table-map</b><i> st proc</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-sparse_002dtable_002dkeys"></a><u>Function:</u> <b>sparse-table-keys</b><i> st</i></dt>
+<dt><a name="index-sparse_002dtable_002dvalues"></a><u>Function:</u> <b>sparse-table-values</b><i> st</i></dt>
+</dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#util_002esparse-_002d-_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0086_00e3_0083_008a" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

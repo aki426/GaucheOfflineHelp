@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.17 os.windows - Windowsのサポート</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.17 os.windows - Windowsのサポート">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.17 os.windows - Windowsのサポート">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_142.html#Mersenne-Twister_00e4_00b9_00b1_00e6_0095_00b0_00e7_0099_00ba_00e7_0094_009f_00e5_0099_00a8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Windows-dialogs" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="os_002ewindows-_002d-Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<h2 class="section">11.17 <code>os.windows</code> - Windowsのサポート</h2>
+
+<dl>
+<dt><a name="index-os_002ewindows"></a><u>Module:</u> <b>os.windows</b></dt>
+<dd><a name="index-os_002ewindows-1"></a>
+<p>This module is only available on Windows-native Gauche, and
+provides Windows-specific procedures.
+You can check <code>gauche.os.windows</code> feature with
+ <code>cond-expand</code> macro (See section <a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>)
+to conditionalize windows-specific code.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+  [gauche.os.windows
+   (use os.windows)
+   ... Windows-specific code ...]
+  [else
+   ... Unix code ...])
+</pre></td></tr></tbody></table>
+
+<p>Currently there aren’t enough procedures provided here, but
+eventually we want to support simple scripting on Windows.
+</p>
+<p>Unless otherwise noted,
+when Windows API returns an error value, a <code>&lt;system-error&gt;</code> condition
+is thrown.
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Windows-dialogs">11.17.1 Windows dialogs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Windows-console-API">11.17.2 Windows console API</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Windows-dialogs"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Windows-console-API" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Windows-dialogs-1"></a>
+<h3 class="subsection">11.17.1 Windows dialogs</h3>
+
+<p>Currenly we only have MessageBox API.
+</p>
+<dl>
+<dt><a name="index-sys_002dmessage_002dbox"></a><u>Function:</u> <b>sys-message-box</b><i> window message :optional caption flags</i></dt>
+<dd><p>Calls Windows MessageBox API.   The <var>window</var> argument should
+be a handle for a window, or <code>#f</code>; at the moment we don’t
+provide any API that retrieves window handles, so you should always
+pass <code>#f</code> here.  The <var>message</var> argument takes a string
+for the content of the message box.  Optional <var>caption</var>
+argument takes a string to be used in the window title.
+</p>
+<p>The <var>flags</var> argument is an integer; it should be <code>logior</code>
+of values from one or more of the following groups.  See the
+Windows reference manual for the details.
+</p>
+<dl compact="compact">
+<dt> <em>Buttons</em></dt>
+<dd><p><code>MB_ABORTRETRYIGNORE</code>,
+<code>MB_CANCELTRYCONTINUE</code>,
+<code>MB_HELP</code>,
+<code>MB_OK</code> (default),
+<code>MB_OKCANCEL</code>,
+<code>MB_RETRYCANCEL</code>,
+<code>MB_YESNO</code>,
+<code>MB_YESNOCANCEL</code>
+</p></dd>
+<dt> <em>Icon</em></dt>
+<dd><p>Default is no icon.  Possible values:
+<code>MB_ICONEXCLAMATION</code>,
+<code>MB_ICONWARNING</code>,
+<code>MB_ICONINFORMATION</code>,
+<code>MB_ICONASTERISK</code>,
+<code>MB_ICONQUESTION</code>,
+<code>MB_ICONSTOP</code>,
+<code>MB_ICONERROR</code>,
+<code>MB_ICONHAND</code>
+</p></dd>
+<dt> <em>Default button</em></dt>
+<dd><p><code>MB_DEFBUTTON1</code> (default),
+<code>MB_DEFBUTTON2</code>,
+<code>MB_DEFBUTTON3</code>,
+<code>MB_DEFBUTTON4</code>
+</p></dd>
+<dt> <em>Modality</em></dt>
+<dd><p><code>MB_APPLMODAL</code> (default),
+<code>MB_SYSTEMMODAL</code>,
+<code>MB_TASKMODAL</code>
+</p></dd>
+<dt> <em>Other options</em></dt>
+<dd><p><code>MB_DEFAULT_DESKTOP_ONLY</code>,
+<code>MB_RIGHT</code>,
+<code>MB_RTLREADING</code>,
+<code>MB_SETFOREGROUND</code>,
+<code>MB_TOPMOST</code>,
+<code>MB_SERVICE_NOTIFICATION</code>
+</p></dd>
+</dl>
+
+<p>Return value is one of the following integer constants,
+indicating which button is pressed:
+<code>IDABORT</code>,
+<code>IDCANCEL</code>,
+<code>IDCONTINUE</code>,
+<code>IDIGNORE</code>,
+<code>IDNO</code>,
+<code>IDOK</code>,
+<code>IDRETRY</code>,
+<code>IDTRYAGAIN</code>, or
+<code>IDYES</code>
+</p></dd></dl>
+
+<hr size="6">
+<a name="Windows-console-API"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Windows-dialogs" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Windows-console-API-1"></a>
+<h3 class="subsection">11.17.2 Windows console API</h3>
+
+<p>Most of these procedures corresponds to Windows Console API one-to-one.
+See the Windows reference for the detail description of what each API does.
+</p>
+<a name="Attaching-and-detaching"></a>
+<h4 class="subsubheading">Attaching and detaching</h4>
+
+<dl>
+<dt><a name="index-sys_002dalloc_002dconsole"></a><u>Function:</u> <b>sys-alloc-console</b></dt>
+<dt><a name="index-sys_002dfree_002dconsole"></a><u>Function:</u> <b>sys-free-console</b></dt>
+<dd><p>[Windows]
+Calls <code>AllocConsole</code> and <code>FreeConsole</code>, respectively.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgenerate_002dconsole_002dctrl_002devent"></a><u>Function:</u> <b>sys-generate-console-ctrl-event</b><i> event pgid</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-CTRL_005fC_005fEVENT"></a><u>Constant:</u> <b>CTRL_C_EVENT</b></dt>
+<dt><a name="index-CTRL_005fBREAK_005fEVENT"></a><u>Constant:</u> <b>CTRL_BREAK_EVENT</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<a name="Console-codepage"></a>
+<h4 class="subsubheading">Console codepage</h4>
+
+<dl>
+<dt><a name="index-sys_002dget_002dconsole_002dcp"></a><u>Function:</u> <b>sys-get-console-cp</b></dt>
+<dt><a name="index-sys_002dget_002dconsole_002doutput_002dcp"></a><u>Function:</u> <b>sys-get-console-output-cp</b></dt>
+<dt><a name="index-sys_002dset_002dconsole_002dcp"></a><u>Function:</u> <b>sys-set-console-cp</b><i> codepage</i></dt>
+<dt><a name="index-sys_002dset_002dconsole_002doutput_002dcp"></a><u>Function:</u> <b>sys-set-console-output-cp</b><i> codepage</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dconsole_002dcursor_002dinfo"></a><u>Function:</u> <b>sys-get-console-cursor-info</b><i> handle</i></dt>
+<dt><a name="index-sys_002dset_002dconsole_002dcursor_002dinfo"></a><u>Function:</u> <b>sys-set-console-cursor-info</b><i> handle size visible</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dset_002dconsole_002dcursor_002dposition"></a><u>Function:</u> <b>sys-set-console-cursor-position</b><i> handle x y</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<a name="Console-mode"></a>
+<h4 class="subsubheading">Console mode</h4>
+
+<dl>
+<dt><a name="index-sys_002dget_002dconsole_002dmode"></a><u>Function:</u> <b>sys-get-console-mode</b><i> handle</i></dt>
+<dt><a name="index-sys_002dset_002dconsole_002dmode"></a><u>Function:</u> <b>sys-set-console-mode</b><i> handle mode</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ENABLE_005fLINE_005fINPUT"></a><u>Constant:</u> <b>ENABLE_LINE_INPUT</b></dt>
+<dt><a name="index-ENABLE_005fECHO_005fINPUT"></a><u>Constant:</u> <b>ENABLE_ECHO_INPUT</b></dt>
+<dt><a name="index-ENABLE_005fPROCESSED_005fINPUT"></a><u>Constant:</u> <b>ENABLE_PROCESSED_INPUT</b></dt>
+<dt><a name="index-ENABLE_005fWINDOW_005fINPUT"></a><u>Constant:</u> <b>ENABLE_WINDOW_INPUT</b></dt>
+<dt><a name="index-ENABLE_005fMOUSE_005fINPUT"></a><u>Constant:</u> <b>ENABLE_MOUSE_INPUT</b></dt>
+<dt><a name="index-ENABLE_005fPROCESSED_005fOUTPUT"></a><u>Constant:</u> <b>ENABLE_PROCESSED_OUTPUT</b></dt>
+<dt><a name="index-ENABLE_005fWRAP_005fAT_005fEOL_005fOUTPUT"></a><u>Constant:</u> <b>ENABLE_WRAP_AT_EOL_OUTPUT</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<a name="Screen-buffer"></a>
+<h4 class="subsubheading">Screen buffer</h4>
+
+<dl>
+<dt><a name="index-sys_002dcreate_002dconsole_002dscreen_002dbuffer"></a><u>Function:</u> <b>sys-create-console-screen-buffer</b><i> desired-access share-mode inheritable</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-GENERIC_005fREAD"></a><u>Constant:</u> <b>GENERIC_READ</b></dt>
+<dt><a name="index-GENERIC_005fWRITE"></a><u>Constant:</u> <b>GENERIC_WRITE</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-FILE_005fSHARE_005fREAD"></a><u>Constant:</u> <b>FILE_SHARE_READ</b></dt>
+<dt><a name="index-FILE_005fSHARE_005fWRITE"></a><u>Constant:</u> <b>FILE_SHARE_WRITE</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dset_002dconsole_002dactive_002dscreen_002dbuffer"></a><u>Function:</u> <b>sys-set-console-active-screen-buffer</b><i> handle</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dscroll_002dconsole_002dscreen_002dbuffer"></a><u>Function:</u> <b>sys-scroll-console-screen-buffer</b><i> handle scroll-rectangle clip-rectangle x y fill</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cwin_003aconsole_002dscreen_002dbuffer_002dinfo_003e"></a><u>Class:</u> <b>&lt;win:console-screen-buffer-info&gt;</b></dt>
+<dd><p>[Windows]
+</p>
+<dl>
+<dt><a name="index-size_002ex"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>size.x</b></dt>
+<dt><a name="index-size_002ey"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>size.y</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-cursor_002dposition_002ex"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>cursor-position.x</b></dt>
+<dt><a name="index-cursor_002dposition_002ey"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>cursor-position.y</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-attributes"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>attributes</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-window_002eleft"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>window.left</b></dt>
+<dt><a name="index-window_002etop"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>window.top</b></dt>
+<dt><a name="index-window_002eright"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>window.right</b></dt>
+<dt><a name="index-window_002ebottom"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>window.bottom</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-maximum_002dwindow_002dsize_002ex"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>maximum-window-size.x</b></dt>
+<dt><a name="index-maximum_002dwindow_002dsize_002ey"></a><u>Instance Variable of &lt;win:console-screen-buffer-info&gt;:</u> <b>maximum-window-size.y</b></dt>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-FOREGROUND_005fBLUE"></a><u>Constant:</u> <b>FOREGROUND_BLUE</b></dt>
+<dt><a name="index-FOREGROUND_005fGREEN"></a><u>Constant:</u> <b>FOREGROUND_GREEN</b></dt>
+<dt><a name="index-FOREGROUND_005fRED"></a><u>Constant:</u> <b>FOREGROUND_RED</b></dt>
+<dt><a name="index-FOREGROUND_005fINTENSITY"></a><u>Constant:</u> <b>FOREGROUND_INTENSITY</b></dt>
+<dt><a name="index-BACKGROUND_005fBLUE"></a><u>Constant:</u> <b>BACKGROUND_BLUE</b></dt>
+<dt><a name="index-BACKGROUND_005fGREEN"></a><u>Constant:</u> <b>BACKGROUND_GREEN</b></dt>
+<dt><a name="index-BACKGROUND_005fRED"></a><u>Constant:</u> <b>BACKGROUND_RED</b></dt>
+<dt><a name="index-BACKGROUND_005fINTENSITY"></a><u>Constant:</u> <b>BACKGROUND_INTENSITY</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dconsole_002dscreen_002dbuffer_002dinfo"></a><u>Function:</u> <b>sys-get-console-screen-buffer-info</b><i> handle</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dlargest_002dconsole_002dwindow_002dsize"></a><u>Function:</u> <b>sys-get-largest-console-window-size</b><i> handle</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dset_002dscreen_002dbuffer_002dsize"></a><u>Function:</u> <b>sys-set-screen-buffer-size</b><i> handle x y</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<a name="Console-input_002foutput"></a>
+<h4 class="subsubheading">Console input/output</h4>
+
+<dl>
+<dt><a name="index-_003cwin_003ainput_002drecord_003e"></a><u>Class:</u> <b>&lt;win:input-record&gt;</b></dt>
+<dd><p>[Windows]
+</p>
+<dl>
+<dt><a name="index-event_002dtype"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>event-type</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-key_002edown"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>key.down</b></dt>
+<dt><a name="index-key_002erepeat_002dcount"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>key.repeat-count</b></dt>
+<dt><a name="index-key_002evirtual_002dkey_002dcode"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>key.virtual-key-code</b></dt>
+<dt><a name="index-key_002eunicode_002dchar"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>key.unicode-char</b></dt>
+<dt><a name="index-key_002eascii_002dchar"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>key.ascii-char</b></dt>
+<dt><a name="index-key_002econtrol_002dkey_002dstate"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>key.control-key-state</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-mouse_002ex"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>mouse.x</b></dt>
+<dt><a name="index-mouse_002ey"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>mouse.y</b></dt>
+<dt><a name="index-mouse_002ebutton_002dstate"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>mouse.button-state</b></dt>
+<dt><a name="index-mouse_002eevent_002dflags"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>mouse.event-flags</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-window_002dbuffer_002dsize_002ex"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>window-buffer-size.x</b></dt>
+<dt><a name="index-window_002dbuffer_002dsize_002ey"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>window-buffer-size.y</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-menu_002ecommand_002did"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>menu.command-id</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-focus_002eset_002dfocus"></a><u>Instance Variable of &lt;win:input-record&gt;:</u> <b>focus.set-focus</b></dt>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dnumber_002dof_002dconsole_002dinput_002devents"></a><u>Function:</u> <b>sys-get-number-of-console-input-events</b><i> handle</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dnumber_002dof_002dconsole_002dmouse_002dbuttons"></a><u>Function:</u> <b>sys-get-number-of-console-mouse-buttons</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dpeek_002dconsole_002dinput"></a><u>Function:</u> <b>sys-peek-console-input</b><i> handle</i></dt>
+<dt><a name="index-sys_002dread_002dconsole_002dinput"></a><u>Function:</u> <b>sys-read-console-input</b><i> handle</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dread_002dconsole"></a><u>Function:</u> <b>sys-read-console</b><i> handle buf</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dread_002dconsole_002doutput"></a><u>Function:</u> <b>sys-read-console-output</b><i> handle buf w h x y region</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dread_002dconsole_002doutput_002dattribute"></a><u>Function:</u> <b>sys-read-console-output-attribute</b><i> handle buf x y</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dread_002dconsole_002doutput_002dcharacter"></a><u>Function:</u> <b>sys-read-console-output-character</b><i> handle len x y</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dset_002dconsole_002dtext_002dattribute"></a><u>Function:</u> <b>sys-set-console-text-attribute</b><i> handle attr</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dset_002dconsole_002dwindow_002dinfo"></a><u>Function:</u> <b>sys-set-console-window-info</b><i> handle absolute window</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwrite_002dconsole"></a><u>Function:</u> <b>sys-write-console</b><i> handle string</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwrite_002dconsole_002doutput_002dcharacter"></a><u>Function:</u> <b>sys-write-console-output-character</b><i> handle string x y</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dconsole_002dtitle"></a><u>Function:</u> <b>sys-get-console-title</b></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<a name="Standard-handles"></a>
+<h4 class="subsubheading">Standard handles</h4>
+
+<dl>
+<dt><a name="index-sys_002dget_002dstd_002dhandle"></a><u>Function:</u> <b>sys-get-std-handle</b><i> which</i></dt>
+<dt><a name="index-sys_002dset_002dstd_002dhandle"></a><u>Function:</u> <b>sys-set-std-handle</b><i> which handle</i></dt>
+<dd><p>[Windows]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-STD_005fINPUT_005fHANDLE"></a><u>Constant:</u> <b>STD_INPUT_HANDLE</b></dt>
+<dt><a name="index-STD_005fOUTPUT_005fHANDLE"></a><u>Constant:</u> <b>STD_OUTPUT_HANDLE</b></dt>
+<dt><a name="index-STD_005fERROR_005fHANDLE"></a><u>Constant:</u> <b>STD_ERROR_HANDLE</b></dt>
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Windows-dialogs" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

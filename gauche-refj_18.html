@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>3.6 プロファイリングとチューニング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 3.6 プロファイリングとチューニング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 3.6 プロファイリングとチューニング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_18.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_17.html#g_t_00e3_0083_0097_00e3_0083_00a9_00e3_0083_0083_00e3_0083_0088_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e4_00be_009d_00e5_00ad_0098_00e3_0081_00ae_00e6_00a9_009f_00e8_0083_00bd" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0-1"></a>
+<h2 class="section">3.6 プロファイリングとチューニング</h2>
+
+<p>自分のスクリプトのスピードが十分に出ないというときには、
+性能を改善するポイントとして考えられる点がいくつかあります。
+</p>
+<p>どんなときでも、実行時間を食いつぶしているコード部分を見つけるというの
+を先ず最初にやるのがよいでしょう。Gauche にはこの作業を補助する基本的
+なツールが2つあります。組込のサンプリングプロファイラ(これについては次
+の節で説明します)を使えば各手続きでどれほどの時間がかかり、その手続き
+が何回呼ばれたかを表示できます。<code>gauche.time</code> モジュール
+(<a indepth="true" href="gauche-refj_104.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac"><code>gauche.time</code> - 時間の計測</a>) ではコードの中の特定の部分の実行にかかる時間を
+測定するためのAPIが提供されています。
+</p>
+<p>最適化というのは特殊化ということでもあります。もっともよく使われる
+実行のパターンを探して、そこを効率よく実行する専用のパスを設けることで
+す。Gauche 自身も例外ではありません。したがって、Gaucheが効率よく実行
+できるパターンがいくつかありますし、また一方では効率よく実行できないパ
+ターンもあります。次の節では、<a href="#g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088">パフォーマンスに関するヒント</a> では Gauche が効
+率良く実行できるパターンにコードをあわせるチョットしたコツを教えましょう。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086">3.6.1 プロファイラを使う</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088">3.6.2 パフォーマンスに関するヒント</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086-1"></a>
+<h3 class="subsection">3.6.1 プロファイラを使う</h3>
+
+<p>0.8.4 から Gauche は組込みのプロファイラを備えています。これは
+現時点ではまだ実験的なもので、Linux 上でしかテストしていません。すべてのプ
+ラットフォームで利用できるわけではありませんし、シングルスレッドの
+アプリケーションでしか動きません。
+</p>
+<p>非対話環境でこのプロファイラを使うには、gosh のコマンドラインオプショ
+ンとして <code>-ptime</code>を指定してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">% gosh -ptime your-script.scm
+</pre></td></tr></tbody></table>
+
+<p>‘<tt>your-script.scm</tt>’ の実行完了後、Gauche は各関数についてその呼び出し回数
+および消費時間を示した表を印字します。この表は総消費時間の順でソートさ
+れています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">Profiler statistics (total 1457 samples, 14.57 seconds)
+                                                    num    time/    total
+Name                                                calls  call(ms) samples
+---------------------------------------------------+------+-------+-----------
+combinations*                                       237351  0.0142   337( 23%)
+(lset-difference #f)                               1281837  0.0020   256( 17%)
+(make-anchor make-anchor)                          3950793  0.0005   198( 13%)
+member                                             4627246  0.0004   190( 13%)
+filter                                              273238  0.0030    81(  5%)
+every                                              1315131  0.0004    59(  4%)
+(lset-difference #f #f)                            1281837  0.0004    54(  3%)
+(make-entry make-entry)                             730916  0.0005    40(  2%)
+(clear? #f)                                         730884  0.0005    33(  2%)
+(initialize #f)                                     599292  0.0005    32(  2%)
+fold                                                237307  0.0013    30(  2%)
+acons                                               806406  0.0004    29(  1%)
+clear?                                               33294  0.0084    28(  1%)
+(combinations* #f)                                  805504  0.0002    15(  1%)
+(make-exit make-exit)                               730884  0.0002    15(  1%)
+lset-difference                                     237318  0.0006    15(  1%)
+reverse!                                            475900  0.0001     6(  0%)
+(fold &lt;top&gt; &lt;top&gt; &lt;list&gt;)                           237323  0.0003     6(  0%)
+procedure?                                          238723  0.0002     4(  0%)
+pair?                                               237307  0.0001     3(  0%)
+ :
+ :
+</pre></td></tr></tbody></table>
+
+<p>時間プロファイラは統計的標本化をおこなっていることに注意してください。
+プロファイラは10ミリ秒ごとにプロセスに割込んで、その時点で実行されてい
+る関数を記録します。ナノ秒オーダの関数呼出しごとの個別の実行時間に比べる
+と、このサンプリングレートはかなり粗いものです。しかしながら、プロ
+グラムの実行時間が長ければ、各関数ごとの標本分布は関数ごとの消費時間を
+ほぼ反映しているだろうと期待できます。
+</p>
+<p>数字はあくまで近似にすぎないこと
+を心にとめておいてください。ひとつの関数あたりの標本数はプログラムが扱
+うデータが違えば、すぐに変化してしまうことがあります。
+また、今のところGCにかかる時間はGCがトリガされた関数の実行時間に
+算入されてしまっていることに注意して下さい。これによって、あまり
+重要でない関数がリストの上位に浮かびあがってくることがあります。
+一般的なパターンを知るには、プログラムをいろいろなデータで走らせて
+みると良いでしょう。
+</p>
+<p>一方、関数呼び出し回数のカウントは正確なものです。これは Gauche は
+実際の呼出しごとにカウントしているからです。
+</p>
+<p>Schemeでは基本的にすべての関数は無名なので、プロファイル結果の’name’
+フィールドはヒントにすぎません。トップレベルで束縛されている関数につい
+ては通常それが最初に束縛されたグローバル変数名が印字されます。内部関数
+については関数の入れ子構造を反映して名前のリストが印字されます。
+メソッドは、名前と特定化子のリストとして印字されます。
+</p>
+<p>プロファイラはそれ自身にオーバヘッドがあります。通常は、処理時間が
+20-30% 増加します。プロファイラを選択的にオンにしたい場合や、
+停止しないサーバプログラムを走らせていて、そのサーバを停止することなく、
+統計を取りたいような場合には、プログラムからプロファイラ APIを呼ぶこと
+ができます。詳細については <a indepth="true" href="gauche-refj_64.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9API">プロファイラAPI</a> を参照してください。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_19.html#Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0091_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_009e_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e3_0083_0092_00e3_0083_00b3_00e3_0083_0088-1"></a>
+<h3 class="subsection">3.6.2 パフォーマンスに関するヒント</h3>
+
+<p>「論より run 」これがパフォーマンスチューニングの第一法則です。
+Scheme のような高級言語では、何がパフォーマンスに強い影響を
+与えるかはことのほかその実装に大きく依存し、ある処理系では
+とても安価な操作が別の処理系ではとても高価になり得ます。
+Gauche にもそのようなパフォーマンスに関する実装特有の特徴があり、
+それらのうちのいくつかを知っておくことは、ベンチマークの結果の
+どこに着目すべきかを知るうえで助けになるでしょう。
+</p>
+<p>「ソースコードの2割が実行時間の8割を消費する」というのも古くから
+言われています。実際の実行時間に大した影響を及ぼさないところを
+下手にいじくってプログラムをわかりづらくすることは避けましょう。
+これからいくつかのヒントを述べますが、これらのことを四六時中気にして
+プログラミングしなければならないということではありません。
+むしろ、出来るだけ明瞭でわかりやすいプログラムを心がけ、ループの一番深いところ
+(もっとも時間を消費するところ)でこれらのトリックを使うのが良いでしょう。
+</p>
+<p><strong>Ports</strong>: SRFI-18 (スレッド) の仕様を満たすために
+Gauche のすべての入出力基本関数はポートをロックします。
+このオーバーヘッドは小単位(例えばバイト毎)の入出力を行なう
+アプリケーションでは無視できないでしょう。
+入出力基本関数は通常呼びだし毎にポートをロックし、そこからの
+下位レベルの入出力はロックのオーバーヘッドの影響を受けずに
+行なわれます。ですから <code>read</code> や<code>raed-block</code>
+などのより大きな単位で入出力を行なう基本関数では問題と
+なることが少なくなります。
+(注意：これらの基本関数が常にポートをロックしつづけることを
+保証するものではないことに注意してください。また、ポートのロックは
+競合がほとんど発生しない場合に最適化されています。
+ポートへのアクセスが複数のスレッドで競合する可能性がある場合は、
+アプリケーション側でmutexを明示的に用いて競合を避けてください。)
+</p>
+<p>ポートロックが実際に問題となった場合、二つばかり対処策が考えられます。
+(1) より大きな単位で入出力を行なう。(2) <code>with-port-locking</code>
+(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">ポートとスレッド</a> 参照)を使ってより広範囲でポートをロックする。
+</p>
+<p><strong>文字列</strong>: 多バイト文字列の取扱いのため、Gauche では文字列の
+変更とインデックスによるアクセスが特に高価な操作となります。
+これは意図的な設計です。 Gauche ではこの二つの操作を避けたプログラミングを
+推奨しています。 文字列の中の文字を順にアクセスするには
+(インデックスを使わずに)文字列ポート(<a indepth="true" href="gauche-refj_60.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">文字列ポート</a>参照)を使うと
+より明瞭かつ効率的なプログラムとなり、一方サーチして部分文字列をとり出す
+といった操作には、多彩な高レベル関数が用意されています。
+(例えば <a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">文字列を扱うその他の手続き</a>、<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>、
+ <a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-13</code> - 文字列ライブラリ</a> 等を参照。)  バイト列を表現するのに
+文字列を使っていたなら、代わりにユニフォームベクタ(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>
+参照)を使いましょう。
+</p>
+<p><strong>深い再帰</strong>: Gauche の仮想機械(VM)は効率的な
+ローカルフレーム割り当てのためにスタックを使っています。
+再帰が深くなって(プログラムにもよりますが、大体数百回から千回)
+スタックがオーバーフローするとスタックの内容をヒープに退避するという
+オーバーヘッドが生じます。 あるデータ量を越えたところでパフォーマンスの
+低下が見られたならば、深い再帰がないか調べてみて下さい。
+</p>
+<p><strong>Generic functions</strong>: Generic function の持つ動的な性質の
+ため、これらの呼び出しは通常の手続き呼び出しより遅くなります。
+実行時のディスパッチのオーバヘッドだけでなく、
+VM コードへのコンパイル時にたいして最適化が行えないためです。
+パフォーマンスのために Generic function の利用をどんな場合にも避ける
+という必要はありませんが、もしある一つの関数が実行時間の大部分を
+占めていて、その関数が Generic function を内部で呼び出しているなら
+それを使わないように変更してみる価値はあるでしょう。
+</p>
+<p><strong>組込み関数の再定義</strong>:
+Gauche のコンパイラはいくつかの組込み関数を(それらが再定義されていなければ)
+インライン展開します。 基本関数を再定義するのは時には便利ですが、
+限られた範囲にとどめておいた方がよいでしょう。
+やり方は、再定義をどこか別のモジュールに集めておき、どうしても再定義
+バージョンが必要なときに限ってそのモジュール use するというように
+しておけばよいでしょう。
+</p>
+<p><strong>クロージャの作成</strong>: クロージャを作成するとそれが持つ環境がヒープに
+コピーされます。 オーバーヘッドは小さいですが、何百万回も呼ばれるような
+ループの中で作成されれば無視できなくなるでしょう。そんな疑いがあれば
+その関数を逆アセンブルしてみましょう。 Gauche のコンパイラはクロージャの
+簡単な解析を行ない生成をなるべく避けるようになっています。そのような場合
+局所関数の本体はインライン展開されています。逆アセンブルのコードに
+<code>CLOSURE</code>命令が含まれていれば、残念ながらクロージャが生成されます。
+</p>
+<p>これらのヒント集は完全でないし、Gauche の改良とともに変わっていくでしょう。
+ですから、固定された特徴だとは思わないで下さい。
+このヒント集は今後、折を見て実装に対応させて更新してゆきます。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_19.html#Gauche_00e3_0081_00ae_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

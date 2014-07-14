@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.42 text.parse - 入力ストリームのパージング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.42 text.parse - 入力ストリームのパージング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.42 text.parse - 入力ストリームのパージング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_167.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_169.html#text_002eprogress-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e7_00ab_00af_00e6_009c_00ab_00e4_00b8_008a_00e3_0081_00a7_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_0092_00e8_00a1_00a8_00e7_00a4_00ba_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002eparse-_002d-_00e5_0085_00a5_00e5_008a_009b_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">11.42 <code>text.parse</code> - 入力ストリームのパージング</h2>
+
+<dl>
+<dt><a name="index-text_002eparse"></a><u>Module:</u> <b>text.parse</b></dt>
+<dd><a name="index-text_002eparse-1"></a>
+<p>入力ポートに対して単純な解析を行うユーティリティのコレクションです。
+API は Oleg Kiselyov 氏の入力解析ライブラリ (<a indepth="true" href="gauche-refj_189.html#oleg1">OLEG1</a>) に
+触発され、互換性を持つものです。氏のライブラリは、他のたくさんの
+ライブラリで使われています。特に、Scheme のみで書かれたパーサ/ジェネレータ
+である SSAX (<a indepth="true" href="gauche-refj_189.html#ssax">SSAX</a>) が挙げられます。
+</p>
+<p>このモジュールは、氏の <code>input-parse.scm</code> や <code>look-for-str.scm</code>
+の代わりに使うことができます。
+</p>
+<p>Gauche で効果的になるように手続きを再実装しました。特に、<code>string-set!</code>
+の使用は完全に取り除きました。インターフェースを少し拡張したので、
+文字セットや述語、文字のリストにも使うことができます。
+</p>
+<p>これらの手続きは、与えられた入力ポートに対してシーケンシャルに動作します。
+それは、ポートから必要なだけ読み、余分な文字をバッファリングしないということです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-find_002dstring_002dfrom_002dport_003f"></a><u>Function:</u> <b>find-string-from-port?</b><i> str in-port :optional max-no-chars</i></dt>
+<dd><p>入力ポート <var>in-port</var> から、文字列 <var>str</var> を探します。
+オプショナル引数 <var>max-no-chars</var> は、ポートから読み込まれる最大文字数を
+制限します。省略されると、検索する範囲は EOF までとなります。
+</p>
+<p><var>str</var> が見つかると、手続きはすでに読み込んだ文字の数を返します。
+<var>in-port</var> の次回の読み込みは、<var>str</var> の次の文字を返します。
+<var>str</var> が見つからない場合、<code>#f</code> が返ります。
+</p>
+<p>注意: この手続きはその名前に「<code>?</code>」がつきますが、Scheme の慣習に反し、
+真偽値ではない値を返すことがあります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-peek_002dnext_002dchar"></a><u>Function:</u> <b>peek-next-char</b><i> :optional port</i></dt>
+<dd><p>現在の文字を破棄し、<var>port</var> から次の文字を読みます。一文字先読みするのに
+便利です。<var>port</var> が省略されると、現在の入力ポートが使われます。
+</p></dd></dl>
+
+<p>以下の手続きでは、<var>char-list</var> は次のどれかを意味します。
+</p><ul>
+<li>
+文字セット。
+</li><li>
+文字、文字セット、シンボル <code>*eof*</code> の任意の組み合わせのリスト。
+</li></ul>
+<p>[That denotes a set of characters.] シンボル <code>*eof*</code> が含まれる場合、
+EOF の条件もまた含まれます。<code>*eof*</code> が含まれない場合、EOF の条件は
+エラーとして扱われます。
+</p>
+<dl>
+<dt><a name="index-assert_002dcurr_002dchar"></a><u>Function:</u> <b>assert-curr-char</b><i> char-list string :optional port</i></dt>
+<dd><p><var>port</var> から文字を読みます。その文字が <var>char-list</var> に含まれている場合は
+その文字を返します。そうでなければ、<var>string</var> を含むメッセージとともに
+エラーを通知します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-skip_002duntil"></a><u>Function:</u> <b>skip-until</b><i> char-list/number :optional port</i></dt>
+<dd><p><var>char-list/number</var> は、文字のリストか数です。
+数の場合、たくさんの文字を読んで、<code>#f</code> を返します。
+入力が十分に長くない場合は、エラーが通知されます。
+<var>char-list/number</var> が文字のリストの場合、その文字リストに属する文字に
+出会うまで <var>port</var> を読み込み、その文字を返します。
+<var>port</var> が省略された場合、現在の入力ポートが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-skip_002dwhile"></a><u>Function:</u> <b>skip-while</b><i> char-list :optional port</i></dt>
+<dd><p><var>char-list</var> に属しない文字に出会うまで、<var>port</var> を読み込みます。
+文字はストリームに残されます。EOF に達したら EOF が返されます。
+<var>port</var> が省略された場合、現在の入力ポートが使われます。
+</p>
+<p>この例では、入力から空白スペースをスキップしています。ポートからの次の
+読み込みは、最初の空白スペースでない文字を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(skip-while #[\s] port)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-next_002dtoken"></a><u>Function:</u> <b>next-token</b><i> prefix-char-list break-char-list :optional comment port</i></dt>
+<dd><p><var>prefix-char-list</var> に含まれる文字はいくつでもスキップします。
+そして、<var>break-char-list</var> に含まれる文字に出会うまで、文字を
+蓄積します。蓄積された文字群は文字列として返されます。
+中断文字は <var>port</var> に残されます。
+</p>
+<p>手続きが EOF に達し、<code>*eof*</code> が <var>break-char-list</var> に含まれていない
+場合、<var>comment</var> が含まれたメッセージとともにエラーが通知されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-next_002dtoken_002dof"></a><u>Function:</u> <b>next-token-of</b><i> char-list/pred :optional port</i></dt>
+<dd><p>読み込んだ文字が <var>char-list/pred</var> にある限り蓄積し、文字列として
+返します。<var>char-list/pred</var> に含まれない最初の文字はポートに残されます。
+</p>
+<p><var>char-list/pred</var> は文字のリストか文字を取る述語です。述語の場合、
+それぞれの文字がその述語に渡され、真の値が返る場合はその文字は
+<var>char-list/pred</var> に属するとみなされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dstring"></a><u>Function:</u> <b>read-string</b><i> n :optional port</i></dt>
+<dd><p><var>n</var> 文字まで読み込み、文字列として蓄積しそれを返します。
+入力ストリームに含まれる文字のほうが少ない場合、有効な文字を可能な限り
+含む文字列が返ります。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_167.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_169.html#text_002eprogress-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e7_00ab_00af_00e6_009c_00ab_00e4_00b8_008a_00e3_0081_00a7_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_0092_00e8_00a1_00a8_00e7_00a4_00ba_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

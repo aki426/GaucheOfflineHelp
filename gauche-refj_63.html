@@ -1,0 +1,2811 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.25 システムインタフェース</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.25 システムインタフェース">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.25 システムインタフェース">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_63.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_62.html#g_t_00e6_00af_0094_00e8_00bc_0083_00e3_0081_00a8_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9-1"></a>
+<h2 class="section">6.25 システムインタフェース</h2>
+
+<p>GaucheはPOSIX.1の多くの関数と、さまざまなUnixで共通して使われているシステム関数へのインタフェースを
+組込み手続きとして提供しています。
+</p>
+<p>多くのScheme実装はいろいろな形で何らかのシステムインタフェースを提供
+しています。名前だけが違うもの(例：<code>delete-file</code>、<code>remove-file</code>
+、<code>unlink</code>) もあれば、新しいSchemeオブジェクトを導入して
+抽象化を行っているものもあります。Gaucheでは、既存のAPIのどれかを
+そのまま真似るのではなく、2つのレイヤを提供することにしました。
+この章で述べられる低レベルレイヤは、OSのインタフェースに似せたものを実装します。
+その上に、既存のシステムと互換性のある高レベルのインタフェースが実装されます。
+</p>
+<p><code>sys-</code><var>name</var>という名前を持つ手続きは、多くの場合、
+システムコール<var>name</var>に対応しています。
+可能な限り、インタフェースが似るようにしました。
+</p>
+<p>なお、Gaucheはシステムコールがシグナルによって割り込まれた場合、
+システムコールをリスタートします。詳しくは<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab">シグナル</a>を参照して下さい。
+</p>
+<p>Cによるシステムプログラミングに慣れている方は、
+<a indepth="true" href="gauche-refj_190.html#C_00e3_0081_00a8Scheme_00e3_0081_00ae_00e9_0096_00a2_00e6_0095_00b0_00e3_0081_00ae_00e5_00af_00be_00e5_00bf_009c">CとSchemeの関数の対応</a>も参考にして下さい。
+Cの標準ライブラリとGaucheの手続きとの対応が示してあります。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086">6.25.1 プログラムの終了</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">6.25.2 環境の問い合わせ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">6.25.3 ファイルシステム</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6">6.25.4 Unixのグループとユーザ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab">6.25.5 ロケール</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab">6.25.6 シグナル</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">6.25.7 システムへの問い合わせ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0099_0082_00e9_0096_0093">6.25.8 時間</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">6.25.9 プロセス管理</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096">6.25.10 I/Oの多重化</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab">6.25.11 その他のシステムコール</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086-1"></a>
+<h3 class="subsection">6.25.1 プログラムの終了</h3>
+
+<p>Gaucheは(<code>main</code>から返る以外に)自分自身を終了させる方法をいくつか
+提供しています。<code>exit</code>手続きが、正しいクリーンアップを行って
+優雅に終了する方法です。一方、正しいクリーンアップが不可能な非常事態には
+<code>sys-exit</code>か<code>sys-abort</code>を使います。
+</p>
+
+<dl>
+<dt><a name="index-exit"></a><u>Function:</u> <b>exit</b><i> :optional (code 0) (fmtstr #f) args …</i></dt>
+<dd><p>[POSIX]
+現在のプロセスを終了し、<var>code</var>を終了コードにします。
+<var>code</var>はゼロもしくは正の正確な整数でなければなりません。
+<var>fmtstr</var>文字列が与えられた場合、それは残りの引数<var>args</var>と
+ともに<code>format</code>に渡され、standard error portにメッセージとして
+印字されます (<code>current-error-port</code>ではありません。
+<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照。また、<code>format</code>については
+<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照。)
+</p>
+<p>実のところ、プロセス終了の手続きはもう少し複雑です。
+正確な段階を次に説明します。
+</p>
+<ol>
+<li>
+パラメータ<code>exit-handler</code>の値がチェックされます。
+もしそれが<code>#f</code>でなければ、それは3引数の手続きとみなされ、
+<var>code</var>、<var>fmtstr</var>、そして残りの引数のリストを引数として
+呼び出されます。実はメッセージを標準エラー出力に出しているのは
+デフォルトの<code>exit-handler</code>です。
+終了ハンドラの中でエラーが起きた場合、そのエラーは捕捉され捨てられます。
+エラー以外の例外は捕捉されません。
+
+</li><li>
+アクティブな<code>dynamic-wind</code>の<var>after</var>サンクが順に呼び出されます。
+<var>after</var>サンク中で発生した例外は捕捉され捨てられます。
+
+</li><li>
+C APIの<code>Scm_AddCleanupHandler</code>で登録されたクリーンアップハンドラが
+呼ばれます。このハンドラは通常、Gaucheを内蔵しているアプリケーション特有の
+クリーンアップをするために使われます。Schemeの世界からはあまり気にする必要は
+ないでしょう。
+
+</li><li>
+まだ閉じられていない出力ポートのバッファが掃き出されます。
+
+</li><li>
+<code>exit(3)</code>を呼び、プロセスは<var>code</var>を終了コードとして終了します。
+</li></ol>
+
+<p><code>exit-handler</code>のメカニズムはアプリケーションが終了処理をフックすることを
+可能にします。ただし、単純なクリーンアップ処理のためのものではありません
+(クリーンアップ処理には
+<code>dynamic-wind</code>, <code>guard</code>あるいは<code>unwind-protect</code>を使う方が
+適切です。)
+<code>exit-handler</code>はもっと「アプリケーションの終了」という特定の事態に
+対して何か処理を行いたい場合に使います。
+例えばGUIアプリケーションはメッセージを標準エラー出力ではなく
+ダイアログとして表示する、というようなことです。
+</p>
+<p>従って、ライブラリコードは<code>exit-handler</code>に触るべきではありません。
+アプリケーションの終了時に何をすべきかを知っているのはアプリケーション自身なのですから。
+</p>
+<p>別の使いどころとしては、サードパーティ製のコードで中で<code>exit</code>が
+呼ばれる可能性のあるものを安全に呼び出したいという場合があります。
+そのコードを呼び出している間だけ、<code>exit-handler</code>を
+エラーではない例外を発生させる手続きへと差し替えます。
+エラーではない例外は<code>exit</code>では捕捉されないので、実質的に
+上で説明したような終了処理のステップは中断されることになります
+(但し、ダイナミックハンドラの<var>after</var>サンクは通常の例外発生時と
+同じように処理されます)。
+アプリケーションコードの方でその例外を捕捉してやればよいのです。
+<code>parameterize</code>を使えば<code>exit-handler</code>を動的に、
+かつスレッドセーフに差し替えることが容易になります
+(<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>参照)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (e [(eq? e 'exit-called) (handle-exit-as-desired)])
+  (parameterize ((exit-handler (lambda (c f a) (raise 'exit-called))))
+    (call-third-party-library)))
+</pre></td></tr></tbody></table>
+
+<p>一般的に、他のスレッドが走っている時に<code>exit</code>を呼ぶことは推奨されません。
+<code>exit</code>手続きは該当スレッド上でアクティブなダイナミックハンドラしか巻き
+戻さないので、他のスレッドはいきなり終了させられてしまいます。
+しかし<code>exit</code>を呼ばざるを得ない場合には、
+<code>exit-handler</code>を使って他のスレッドにアプリケーションが終了しつつあることを
+伝えられるかもしれません (但しGauche自身は走っているスレッドのリストといった
+情報は持っていないので、アプリケーションごとに固有のロジックを実装する必要が
+あります。)
+</p>
+<p>設計に関する覚書: 終了を一種の例外とすることで、
+終了処理を例外処理と統合している言語もあります。
+良いアイディアに思えたので我々もそのような実装を試してみましたが、
+Gaucheではうまくいきませんでした。大きな理由のひとつは、
+<code>dynamic-wind</code>の巻き戻し中に<var>after</var>で例外が
+発生すると、その例外がもともとの「終了」例外を隠してしまうことでした。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-exit_002dhandler"></a><u>Function:</u> <b>exit-handler</b><i> :optional new-handler</i></dt>
+<dd><p>引数なしで呼ばれた場合、現在のexit handlerの値を返します。
+引数つきで呼ばれた場合は、<var>new-handler</var>を現在のexit handlerの
+値とし、以前の値を返します。<var>new-handler</var>は3つの引数をとる
+手続きか、<code>#f</code>でなければなりません。
+</p>
+<p>exit handlerの値はスレッドごとに固有で、デフォルト値はスレッドが作られた時点の
+親スレッドのexit handlerの値から引き継がれます。
+<code>exit-handler</code>はあたかもパラメータのように<code>parameterize</code>マクロで
+使うことができます (<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>参照)。
+</p></dd></dl>
+
+
+
+<dl>
+<dt><a name="index-sys_002dexit"></a><u>Function:</u> <b>sys-exit</b><i> code</i></dt>
+<dd><p>[POSIX]
+現在のプロセスを終了し、<var>code</var>を終了コードにします。
+<var>code</var>はゼロもしくは正の正確な整数でなければなりません。
+この手続きは<code>_exit(2)</code>を直接コールします。
+クリーンアップは一切行われません。
+フラッシュされてないファイルバッファの内容は捨てられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dabort"></a><u>Function:</u> <b>sys-abort</b></dt>
+<dd><p>[POSIX]
+POSIXのabort()を呼びます。通常、現在のプロセスは終了され、コアダンプされます。
+クリーンアップは一切行われません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e7_00b5_0082_00e4_00ba_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b-1"></a>
+<h3 class="subsection">6.25.2 環境の問い合わせ</h3>
+
+<dl>
+<dt><a name="index-sys_002dgetenv"></a><u>Function:</u> <b>sys-getenv</b><i> name</i></dt>
+<dd><p>[POSIX]
+環境変数<var>name</var>の値を文字列で返します。もし<var>name</var>が定義されていなければ、
+<code>#f</code>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002denviron"></a><u>Function:</u> <b>sys-environ</b></dt>
+<dd><p>現在の環境を文字列のリストとして返します。それぞれの文字列は
+<code>NAME=VALUE</code>というフォーマットになっています。ここで<code>NAME</code>は
+環境変数名、<code>VALUE</code>はその値です。<code>NAME</code>が文字<code>#\=</code>を含
+むことはありません。この手続きは現在のプロセスの環境変数をすべて取得し
+たい場合に便利です。特定の環境変数の値が欲しい場合には
+<code>sys-getenv</code>を使ってください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002denviron_002d_003ealist"></a><u>Function:</u> <b>sys-environ-&gt;alist</b><i> :optional envlist</i></dt>
+<dd><p><code>sys-environ</code>の便利版。環境リスト(<code>sys-environ</code>が返すような
+形式のもの)を<var>envlist</var>として与えると、この手続きは各環境変数を名前
+と値に分けて連想リストにして返します。
+</p>
+<p><var>envlist</var>を省略すると、この手続きは<code>sys-environ</code>を呼んで現在
+の環境変数を取得します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-environ-&gt;alist '("A=B" "C=D=E"))
+  =&gt; (("A" . "B") ("C" . "D=E"))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-sys_002dsetenv"></a><u>Function:</u> <b>sys-setenv</b><i> name value &amp;optional overwrite</i></dt>
+<dt><a name="index-sys_002dputenv"></a><u>Function:</u> <b>sys-putenv</b><i> name=value</i></dt>
+<dd><p><var>sys-setenv</var> inserts an environment variable <var>name</var> with
+the value <var>value</var>.
+Both <var>name</var> and <var>value</var> must be a string.
+If the optional argument <var>overwrite</var> is <code>#f</code> (default),
+the enviornment is untouched if a variable with <var>name</var> already
+exists.   If <var>overwrite</var> is <code>#t</code>, the variable is overwritten.
+</p>
+<p>Fir <code>sys-putenv</code>, you have to give a single string
+with the form of <code>NAME=VALUE</code>, that is, concatenating <var>name</var>
+and <var>value</var> with <code>#\=</code>.  If the enviornmet variable with
+the same name exists, it will be overwritten.
+</p>
+<p>These API reflects POSIX <code>setenv(3)</code> and <code>putenv(3)</code>.
+However, unlike <code>putenv(3)</code>, modifying the string passed
+to <code>sys-putenv</code> afterwards won’t affect the environment.
+</p>
+<p>These procedures are only available when a feature identifier
+<code>gauche.sys.setenv</code> exists.  Use <code>cond-expand</code>
+(See section <a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>) to check their availability.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ [gauche.sys.setenv
+   ... use sys-setenv or sys-putenv ... ]
+ [else
+   ... fallback code ...])
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dunsetenv"></a><u>Function:</u> <b>sys-unsetenv</b><i> name</i></dt>
+<dt><a name="index-sys_002dclearenv"></a><u>Function:</u> <b>sys-clearenv</b></dt>
+<dd><p>Remove the environment variable with <var>name</var> (<code>sys-unsetenv</code>),
+or all enviornment variables.  <code>sys-clearenv</code> is handy
+when you need to run subprocess, but you cannot trust the inherited
+environment.
+</p>
+<p>These procedures are only available when a feature identifier
+<code>gauche.sys.unsetenv</code> exists.  Use <code>cond-expand</code>
+(See section <a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>) to check their availability.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ [gauche.sys.unsetenv
+   ... use sys-unsetenv or sys-clearenv ... ]
+ [else
+   ... fallback code ...])
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<p>SRFI-98 (<a indepth="true" href="gauche-refj_125.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e5_00a4_0089_00e6_0095_00b0_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9"><code>srfi-98</code> - 環境変数へのアクセス</a>参照) にも、
+環境変数を読み出すための、上記の手続きのサブセットにあたるものが
+定義されています。ポータブルなコードにしたければそちらも見てみてください。
+</p>
+
+<dl>
+<dt><a name="index-gauche_002dversion"></a><u>Function:</u> <b>gauche-version</b></dt>
+<dt><a name="index-gauche_002darchitecture"></a><u>Function:</u> <b>gauche-architecture</b></dt>
+<dt><a name="index-gauche_002dlibrary_002ddirectory"></a><u>Function:</u> <b>gauche-library-directory</b></dt>
+<dt><a name="index-gauche_002darchitecture_002ddirectory"></a><u>Function:</u> <b>gauche-architecture-directory</b></dt>
+<dt><a name="index-gauche_002dsite_002dlibrary_002ddirectory"></a><u>Function:</u> <b>gauche-site-library-directory</b></dt>
+<dt><a name="index-gauche_002dsite_002darchitecture_002ddirectory"></a><u>Function:</u> <b>gauche-site-architecture-directory</b></dt>
+<dd><p>これらの手続きはGaucheインタプリタの情報を文字列で返します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0-1"></a>
+<h3 class="subsection">6.25.3 ファイルシステム</h3>
+
+<p>ファイルシステムに関するシステムコール群です。
+ここで述べる手続きの上に、より高レベルなAPIがモジュール<code>file.util</code>として
+実装されています。<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"><code>file.util</code> - ファイルシステムユーティリティ</a>を参照して下さい。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa">6.25.3.1 ディレクトリ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">6.25.3.2 ディレクトリ操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d">6.25.3.3 パス名</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">6.25.3.4 ファイルの状態</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">6.25.3.5 他のファイル操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-1"></a>
+<h4 class="subsubsection">6.25.3.1 ディレクトリ</h4>
+
+<p>高レベルAPIに関しては<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ディレクトリユーティリティ</a>も参照して下さい。
+</p>
+<dl>
+<dt><a name="index-sys_002dreaddir"></a><u>Function:</u> <b>sys-readdir</b><i> path</i></dt>
+<dd><p><var>path</var>は存在するディレクトリを示すパス名でなければなりません。
+この手続きはディレクトリの全エントリを文字列のリストとして返します。
+リストはソートされません。<var>path</var>が存在しなかったり、ディレクトリでなかった場合は
+エラーとなります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-glob"></a><u>Function:</u> <b>glob</b><i> pattern :key separator folder</i></dt>
+<dt><a name="index-sys_002dglob"></a><u>Function:</u> <b>sys-glob</b><i> pattern :key separator folder</i></dt>
+<dd><p>伝統的なUnixのglob(3)の機能を提供します。この手続きは<var>pattern</var>とマッ
+チするパス名のリストを返します。
+</p>
+<p>この機能は、かつてはプラットフォームが提供する<code>glob</code>関数をラップする
+もので、<code>sys-glob</code>という名前でした。しかし、プラットフォーム間の非互
+換性を解消し機能の追加を容易にするために、Gauche 0.8.12以降、システムコー
+ルの上にSchemeで再実装されています。そのため、<code>glob</code>と改名してあ
+ります。古い方の名前<code>sys-glob</code>は互換性のために残してありますが、
+新たにプログラムを書くときは<code>glob</code>を使ってください。
+</p>
+<p>引数<var>pattern</var>は単一の<em>グロブパターン</em>もしくは、グ
+ロブパターンのリストです。リストが渡されたときには、
+最低1つのパターンにマッチするパス名がすべて返されます。
+Unixのユーザならglobの動作は馴染み深いものでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (glob "*.scm")
+("test.scm" "ext.scm")
+gosh&gt; (glob "src/*.[ch]")
+("src/ext.c" "src/ext.h")
+gosh&gt; (glob '("*.scm" "src/*.c"))
+("src/ext.c" "test.scm" "ext.scm")
+</pre></td></tr></tbody></table>
+
+<p>シェルのグロブとはちがって、マッチするパス名がないときは、<code>()</code>が返ります。
+</p>
+<p>グロブはファイルシステムに限らず階層的なデータ構造を検索するのに非常に便利なツールです。
+したがって、<code>glob</code>関数はファイルシステムからは切り離して実装されています。
+キーワード引数を使うことで、どのようなツリー状のデータ構造からでもグロブできます。
+デフォルト値がファイルシステム用に設定されているにすぎません。
+</p>
+<p>引数<var>separator</var>は文字の集合を与えます。これを使って<var>pattern</var>を
+コンポーネントに分割します。デフォルトは<code>#[/]</code>です。実際のパス名
+をマッチさせるのには使われません。
+</p>
+<p><var>folder</var>はデータ構造をトラバースするための手続きです。この手続きは
+引数を5つとります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(folder <var>proc</var> <var>seed</var> <var>parent</var> <var>regexp</var> <var>non-leaf?</var>)
+</pre></td></tr></tbody></table>
+
+<p><var>proc</var>は引数を2つ取る手続きです。<var>folder</var>は、<var>parent</var>内で
+コンポーネントとなる名前が<var>regexp</var>とマッチする各ノードと、
+<code>fold</code>と同様に順に渡されるシード値とで、<var>proc</var>を呼びます。
+<var>folder</var>は<var>proc</var>が最後に返した値を返します。たとえば、
+<code>cons</code>が<var>proc</var>として、<code>()</code>が<var>seed</var>として渡されれば、
+folder手続きが返す値は<var>regexp</var>とマッチするノードのリストになります。
+</p>
+<p>ノードの表現がどうなるかは<var>folder</var>の実装によります。
+パス名であったり、オブジェクトであったりするかもしれません。
+<code>glob</code>手続きはノードの表現については感知しません。
+<code>glob</code>手続きがやることはノードを次に呼ぶ
+<code>folder</code>に<var>parent</var>引数として渡して、
+その結果のノードリストを返すだけです。
+</p>
+<p><var>parent</var>引数は基本的にはノードで、<var>folder</var>はその子ノードを
+対象にマッチするものを探索します。
+例外は最初に<var>folder</var>が呼ばれる時です。その時点では<code>glob</code>は
+ノードについて何も知らないので、
+絶対パスでマッチをかける場合は<code>#t</code>を、
+相対パスでマッチをかける場合は<code>#f</code>を最初の<var>parent</var>の値として渡します。
+</p>
+<p><var>regexp</var>引数は子ノードをフィルターするのに使い、ディレクトリ名を含
+まない、子のコンポーネントである名前に対して照合されるものです。特別な
+場合として、シンボル<code>dir</code>にすることができます。この場合は、folder
+は<var>node</var>そのものを返し、<var>node</var>は<em>ディレクトリ</em>と見なされ
+ます。すなわち、<var>node</var>がパス名を表わす場合には、folderはディレクト
+リ区切り子が最後に付いたパス名を返します。
+特別な場合として、<var>node</var>がブール値でかつ
+<var>regexp</var>が<code>dir</code>である場合、folderはルートノードをあらわすノー
+ドあるいはカレントノードを返すことになっています。すなわち、<var>node</var>
+はパス名を表す場合、folderは<code>"/"</code>または<code>"./"</code>を返します。
+</p>
+<p><var>non-leaf</var>引数はブール値フラッグです。真なら、フィルタは結果からリー
+フノードをのぞきます(すなわち、ディレクトリだけが含まれるようになり
+ます)。
+</p>
+<p>ここからはグロブパターンマッチングの細かい仕様をみていきます。
+</p>
+<p>各グロブパターンはパス名様式文字列にマッチする文字列です。
+</p>
+<p>パス名様式文字列は1つ以上の<em>セパレータ</em>で区切られた
+<em>コンポーネント</em>から構成される文字列です。
+デフォルトのセパレータは<code>#[/]</code>です。キーワード引数<var>separator</var>
+を使うとこれを変更できます。コンポーネントにはセパレータを含められませ
+ん。また空文字列にすることもできません。連続したセパレータは単一のセパ
+レータとみなされます。パス名様式の文字列は状況に応じてセパレータから始
+めたり、セパレータで終端したりできます(両方をやるのも可)。
+</p>
+<p>グロブパターンもコンポーネントとセパレータ文字から構成されます。コンポー
+ネントにおいては、以下の文字、構文は特別な意味を持ちます。
+</p>
+<dl compact="compact">
+<dt> <code>*</code></dt>
+<dd><p>これがコンポーネントの先頭に表われた場合、0個以上のピリオド(<code>.</code>)
+を除く文字にマッチします。入力文字列のコンポーネントがピリオドではじま
+るような文字列の場合にはマッチしません。
+</p>
+<p>先頭以外の場所では、0個以上の文字の列にマッチします。
+</p>
+</dd>
+<dt> <code>**</code></dt>
+<dd><p>コンポーネントが<code>**</code>だけの場合、これは<code>*</code>にマッチする0個以上の
+コンポーネントにマッチします。例えば<code>src/**/*.h</code>は
+次のようなパターン全てにマッチします。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">src/*.h
+src/*/*.h
+src/*/*/*.h
+src/*/*/*/*.h
+...
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <code>?</code></dt>
+<dd><p>コンポーネントの先頭にあらわれた場合、ピリオド(<code>.</code>)以外の一文字に
+マッチします。先頭以外の場所では任意の一文字にマッチします。
+</p>
+</dd>
+<dt> <code>[<i>chars</i>]</code></dt>
+<dd><p>文字の集合を指定します。その集合に含まれる文字のどれかにマッチします。
+<i>chars</i>の構文はGaucheの文字集合を表す構文と同じです
+(<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>参照)。伝統的なグロブとの互換性のために、<code>!</code>
+文字をつかって、補集合で文字集合を表わすこともできるようになっています。
+すなわち、<code>[!abc]</code>は<code>[^abc]</code>と同じです。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-glob_002dfold"></a><u>Function:</u> <b>glob-fold</b><i> pattern proc seed :key separator folder</i></dt>
+<dd><p>これはグロブ関数の低レベル版です。実際<var>glob</var>は以下のように書いたの
+と同じです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (glob patterns . opts)
+  (apply glob-fold patterns cons '() opts))
+</pre></td></tr></tbody></table>
+
+<p><var>pattern</var>、<var>separator</var>および<var>folder</var>の意味を前述のものと同
+じです。
+</p>
+<p><var>pattern</var>にパス名ごとに<code>glob-fold</code>は<var>proc</var>をパス名とシー
+ド値で呼びます。最初のシード値は<var>seed</var>で、<var>proc</var>が返す値は次の
+シード値になります。最後の<var>proc</var>の呼び出し結果は<code>glob-fold</code>の
+結果となります。マッチするパス名が存在しないときは、<var>proc</var>は呼ばれ
+ずに、<var>seed</var>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dglob_002dfs_002dfold"></a><u>Function:</u> <b>make-glob-fs-fold</b><i> :key root-path current-path</i></dt>
+<dd><p>これは<code>glob-fold</code>や<code>glob</code>の<var>folder</var>キーワード引数に
+渡せる形の手続きを作るユーティリティ手続きです。
+引数を渡さなければ、<code>glob-fold</code>や<code>glob</code>がデフォルトで使うのと
+同じ手続きが返ります。
+</p>
+<p>キーワード引数<var>root-path</var>および<var>current-path</var>はそれぞれ、
+<code>glob-fold</code>が探索を開始するディレクトリを指定します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (glob "/tmp/*.scm")
+("/tmp/x.scm" "/tmp/y.scm")
+gosh&gt; (glob "/*.scm"
+            :folder (make-glob-fs-fold :root-path "/tmp"))
+("/tmp/x.scm" "/tmp/y.scm")
+gosh&gt; (glob "*.scm"
+            :folder (make-glob-fs-fold :current-path "/tmp"))
+("/tmp/x.scm" "/tmp/y.scm")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>パスがディレクトリかどうかチェックする方法は、<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>を参照してください。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h4 class="subsubsection">6.25.3.2 ディレクトリ操作</h4>
+
+<dl>
+<dt><a name="index-sys_002dremove"></a><u>Function:</u> <b>sys-remove</b><i> filename</i></dt>
+<dd><p>[POSIX]
+<var>filename</var>がファイルであればそれを消去します。
+システムによっては<var>filename</var>が空のディレクトリであっても動作しますが、
+移植性を気にする場合はその動作に依存しない方が良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002drename"></a><u>Function:</u> <b>sys-rename</b><i> old new</i></dt>
+<dd><p>[POSIX]
+ファイル<var>old</var>を<var>new</var>にリネームします。新しい名前は
+古い名前と異なるディレクトリにあってもかまいませんが、両者は同じデバイス上に
+なければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtmpnam"></a><u>Function:</u> <b>sys-tmpnam</b></dt>
+<dd><p>[POSIX]
+ユニークなファイル名を作成して返します。この関数はPOSIXに含まれていますが、
+セキュリティ上の問題が指摘されており、使わない方が良いとされています。
+可能なら下にあげる<code>sys-mkstemp</code>を使って下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dmkstemp"></a><u>Function:</u> <b>sys-mkstemp</b><i> template</i></dt>
+<dd><p>ユニークな名前を持つファイルを作成してオープンし、オープンされたポートとファイル名の
+二つの値を返します。ファイルは排他的に作成されるため、レースコンディションは起こりません。
+<var>template</var>はファイル名のプレフィックスに使われます。Unixのmkstempと違って、
+パディングキャラクタをつける必要はありません。ファイルは書き込み用としてオープンされ、
+パーミッションは600にセットされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dlink"></a><u>Function:</u> <b>sys-link</b><i> existing new</i></dt>
+<dd><p>[POSIX]
+既存のファイル<var>existing</var>に対し、<var>new</var>という名のハードリンクを作成します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dunlink"></a><u>Function:</u> <b>sys-unlink</b><i> pathname</i></dt>
+<dd><p>[POSIX]
+<var>pathname</var>で示されるファイルを消去します。
+<var>pathname</var>はディレクトリであってはなりません。
+もし消去に成功したら<code>#t</code>が、<var>pathname</var>が存在しなければ<code>#f</code>が返されます。
+他の場合はエラーが通知されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsymlink"></a><u>Function:</u> <b>sys-symlink</b><i> existing new</i></dt>
+<dd><p><var>existing</var>を指す<var>new</var>という名のシンボリックを作成します。
+シンボリックリンクをサポートしないシステムでは、この手続きは定義されません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dreadlink"></a><u>Function:</u> <b>sys-readlink</b><i> path</i></dt>
+<dd><p><var>path</var>で示されるファイルがシンボリックリンクならば、それが指すパスを返します。
+もし<var>path</var>が存在しなかったり、シンボリックリンクでなければ、エラーが通知されます。
+シンボリックリンクをサポートしないシステムでは、この手続きは定義されません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dmkdir"></a><u>Function:</u> <b>sys-mkdir</b><i> pathname mode</i></dt>
+<dd><p>[POSIX]
+ディレクトリ<var>pathname</var>をモード<var>mode</var>で作成します。
+(<var>mode</var>はさらにumaskでマスクされることに注意して下さい；下の<code>sys-umask</code>
+参照)。
+<var>pathname</var>の親ディレクトリは存在して、プロセスが書き込めるようになっていなければ
+なりません。中間のディレクトリも一度に作成するには、
+<code>file.util</code>の<code>make-directory*</code>が使えます
+(<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ディレクトリユーティリティ</a>)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002drmdir"></a><u>Function:</u> <b>sys-rmdir</b><i> pathname</i></dt>
+<dd><p>[POSIX]
+ディレクトリ<var>pathname</var>を消去します。ディレクトリは空でなければなりません。
+ディレクトリの内容も一緒に消去するには、<code>file.util</code>の<code>remove-directory*</code>
+が使えます(<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ディレクトリユーティリティ</a>)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dumask"></a><u>Function:</u> <b>sys-umask</b><i> :optional mode</i></dt>
+<dd><p>[POSIX]
+umaskを<var>mode</var>にセットします。変更される前のumaskを返します。
+<var>mode</var>が省略されるか<code>#f</code>が渡された場合、
+現在のumaskを変更せずにその値を返します。
+umaskについては<code>man umask</code>を参照してください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d-1"></a>
+<h4 class="subsubsection">6.25.3.3 パス名</h4>
+
+<p>高レベルのAPIに関しては<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_008d_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">パスネームユーティリティ</a>も参照して下さい。
+</p>
+<dl>
+<dt><a name="index-sys_002dnormalize_002dpathname"></a><u>Function:</u> <b>sys-normalize-pathname</b><i> pathname :key absolute expand canonicalize</i></dt>
+<dd><p>与えられたキーワード引数によって<var>pathname</var>を以下のように変換します。
+キーワード引数は同時に複数指定できます。
+</p><dl compact="compact">
+<dt> <code>absolute</code></dt>
+<dd><p>  このキーワード引数に真の値が与えられて、<var>pathname</var>が絶対パスでない場合、
+  <var>pathname</var>の前にプロセスのワーキングディレクトリを足して絶対パスにします。
+</p></dd>
+<dt> <code>expand</code></dt>
+<dd><p>  このキーワード引数に真の値が与えられて、<var>pathname</var>が‘<code>~</code>’ で始まっていた
+  場合、以下のように展開されます。
+</p><ul>
+<li>
+    <var>pathname</var>が“<code>~</code>”のみであるか、または“<code>~/</code>”で始まっている
+    場合、文字“<code>~</code>”が現在のプロセスのユーザのホームディレクトリに置き換えられます。
+</li><li>
+    上記以外の場合、‘<code>~</code>’以降、‘<code>/</code>’か<var>pathname</var>の終端までの文字列
+    がユーザ名とみなされ、そのユーザのホームディレクトリに置換されます。もし該当するユーザが
+    いなければエラーとなります。
+</li></ul>
+</dd>
+<dt> <code>canonicalize</code></dt>
+<dd><p>  パス名から “<code>.</code>” や “<code>..</code>” を除き、単純化します。
+  この操作は実際のファイルシステムを参照せずに行われます。元のパス名がディレクトリへの
+  シンボリックリンクを含んでいた場合、単純化されたパス名は正しくないかもしれません。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dbasename"></a><u>Function:</u> <b>sys-basename</b><i> pathname</i></dt>
+<dt><a name="index-sys_002ddirname"></a><u>Function:</u> <b>sys-dirname</b><i> pathname</i></dt>
+<dd><p><code>sys-basename</code>は与えられたパスのベース名、すなわち最後のコンポーネントを返します。
+<code>sys-dirname</code>は与えられたパスのディレクトリ名、すなわち最後のコンポーネント以外の
+コンポーネントを返します。<var>pathname</var>の末尾が‘<code>/</code>’である場合、その文字は
+無視されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-basename "foo/bar/bar.z") ⇒ "bar.z"
+(sys-basename "coo.scm") ⇒ "coo.scm"
+(sys-basename "x/y/") ⇒ "y"
+(sys-dirname "foo/bar/bar.z") ⇒ "foo/bar"
+(sys-dirname "coo.scm") ⇒ "."
+(sys-dirname "x/y/") ⇒ "x"
+</pre></td></tr></tbody></table>
+<p>この手続きは<var>pathname</var>が存在するかどうかはチェックしません。
+</p>
+<p>特殊なケース：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-basename "") ⇒ ""
+(sys-dirname "") ⇒ "."
+
+(sys-basename "/") ⇒ ""
+(sys-dirname "/") ⇒ "/"
+</pre></td></tr></tbody></table>
+<p>註：このふるまいはPerlの<code>basename</code>および<code>dirname</code>と同様です。
+システムによっては、コマンドの<code>basename</code>は<code>"/"</code>に対して<code>"/"</code>を、
+<code>"."</code>に対して<code>"."</code>を返すものがあります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002drealpath"></a><u>Function:</u> <b>sys-realpath</b><i> pathname</i></dt>
+<dd><p><code>sys-realpath</code>は“<code>.</code>”, “<code>..</code>”およびシンボリックリン
+クを含まない<var>pathname</var>の絶対パスを返します。<var>pathname</var>自体が存在しなかったり、
+存在しないパスを指すシンボリックリンクが含まれていたり、関連するパスへのアクセス権限が
+不足している場合はエラーが通知されます。
+</p>
+<p>注：POSIXの<code>realpath(3)</code>は安全でない場合があるので、
+Gaucheは内部でCランタイムの<code>realpath</code>を呼ばずに、
+独自に<code>sys-realpath</code>の機能を実装しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtmpdir"></a><u>Function:</u> <b>sys-tmpdir</b></dt>
+<dd><p>一時ファイルを置くためのデフォルトのディレクトリ名を返します。
+</p>
+<p>Unix系システムでは、環境変数<code>TMPDIR</code>と<code>TMP</code>がこの順でチェックされ、
+フォールバックとして<code>/tmp</code>が返されます。
+</p>
+<p>Windowsネイティブの環境では、<code>GetTempPath</code> Windows APIを呼びます。
+これは環境変数<code>TMP</code>、<code>TEMP</code>、<code>USERPROFILE</code>を順に調べ、
+いずれも定義されていなければWindowsシステムディレクトリを返します。
+</p>
+<p>いずれのプラットフォームでも、返されたパス名は存在しないかもしれず、
+また書き込み可能ではないかもしれないことに注意してください。
+</p>
+<p>一般的に、ユーザプログラムやライブラリは<code>temporary-directory</code>
+(<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ディレクトリユーティリティ</a>参照) の方を利用するのが良いでしょう。
+<code>sys-tmpdir</code>はプラットフォームが推奨する生の値を知りたい場合に
+限り使ってください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0091_00e3_0082_00b9_00e5_0090_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b-1"></a>
+<h4 class="subsubsection">6.25.3.4 ファイルの状態</h4>
+
+<p>高レベルのAPIに関しては<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e5_00b1_009e_00e6_0080_00a7_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ファイル属性ユーティリティ</a>も参照して下さい。
+</p>
+<dl>
+<dt><a name="index-file_002dexists_003f"></a><u>Function:</u> <b>file-exists?</b><i> path</i></dt>
+<dt><a name="index-file_002dis_002dregular_003f"></a><u>Function:</u> <b>file-is-regular?</b><i> path</i></dt>
+<dt><a name="index-file_002dis_002ddirectory_003f"></a><u>Function:</u> <b>file-is-directory?</b><i> path</i></dt>
+<dd><p>それぞれ、<var>path</var>が存在するか、存在してそれがレギュラーファイルであるか、
+存在してそれがディレクトリであれば<code>#t</code>を返します。
+</p>
+<p>これらの手続きは便利であり、STkとの互換性もあるので定義されていますが、
+実体は下に説明されている低レベル手続きの上に作成されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csys_002dstat_003e"></a><u>Builtin Class:</u> <b>&lt;sys-stat&gt;</b></dt>
+<dd><a name="index-sys_002dstat"></a>
+<p>ファイルシステム内のエントリの属性を表す、<code>struct stat</code>のラッパー
+オブジェクトです。以下に示す読みだし専用のスロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-type"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>type</b></dt>
+<dd><p>ファイルのタイプを示すシンボルです。
+</p><table>
+<tbody><tr><td><code>regular</code></td><td>通常のファイル</td></tr>
+<tr><td><code>directory</code></td><td>ディレクトリ</td></tr>
+<tr><td><code>character</code></td><td>キャラクタデバイス</td></tr>
+<tr><td><code>block</code></td><td>ブロックデバイス</td></tr>
+<tr><td><code>fifo</code></td><td>FIFO</td></tr>
+<tr><td><code>symlink</code></td><td>シンボリックリンク</td></tr>
+<tr><td><code>socket</code></td><td>ソケット</td></tr>
+</tbody></table>
+<p>以上のどれにも当てはまらない場合は<code>#f</code>が返されます。
+</p>
+<p>注：いくつかのオペレーティングシステムでは<code>socket</code>ファイルタイプを
+<code>fifo</code>と区別せず、どちらに対しても<code>fifo</code>を返します。
+ポータブルなプログラムを書くときは注意して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-perm"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>perm</b></dt>
+<dd><p>パーミッションビットマスク。"mode"スロットの下位9ビットと同じですが、
+便利なので独立したスロットとして提供されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mode"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>mode</b></dt>
+<dt><a name="index-ino"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>ino</b></dt>
+<dt><a name="index-dev"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>dev</b></dt>
+<dt><a name="index-rdev"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>rdev</b></dt>
+<dt><a name="index-nlink"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>nlink</b></dt>
+<dt><a name="index-uid"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>uid</b></dt>
+<dt><a name="index-gid"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>gid</b></dt>
+<dt><a name="index-size"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>size</b></dt>
+<dd><p><code>struct stat</code>の該当するフィールドの値。正確な整数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-atime"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>atime</b></dt>
+<dt><a name="index-mtime"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>mtime</b></dt>
+<dt><a name="index-ctime"></a><u>Instance Variable of &lt;sys-stat&gt;:</u> <b>ctime</b></dt>
+<dd><p><code>struct stat</code>の該当するフィールドの値を、Unix Epochからの秒数で。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dstat-1"></a><u>Function:</u> <b>sys-stat</b><i> path</i></dt>
+<dt><a name="index-sys_002dfstat"></a><u>Function:</u> <b>sys-fstat</b><i> port-or-fd</i></dt>
+<dd><p>[POSIX]
+与えられたパス名<var>path</var>、またはポートかファイルディスクリプタ
+<var>port-or-fd</var>で示されるファイルの情報を<code>&lt;sys-stat&gt;</code>オブジェクトで
+返します。
+</p>
+<p><code>sys-stat</code>は、<var>path</var>がシンボリックリンクであった場合は
+リンクの指す先のファイルに関する情報を返します。
+</p>
+<p><code>sys-fstat</code>は、<var>port-or-fd</var>がファイルに関係ないポートであった
+場合は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dlstat"></a><u>Function:</u> <b>sys-lstat</b><i> path</i></dt>
+<dd><p><code>sys-stat</code>と同じですが、<var>path</var>がシンボリックリンクであった
+場合はリンクそのものの情報を返します。
+</p></dd></dl>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (describe (sys-stat "gauche.h"))
+#&lt;&lt;sys-stat&gt; 0x815af70&gt; is an instance of class &lt;sys-stat&gt;
+slots:
+  type      : regular
+  perm      : 420
+  mode      : 33188
+  ino       : 845140
+  dev       : 774
+  rdev      : 0
+  nlink     : 1
+  uid       : 400
+  gid       : 100
+  size      : 79549
+  atime     : 1020155914
+  mtime     : 1020152005
+  ctime     : 1020152005
+</pre></td></tr></tbody></table>
+
+<dl>
+<dt><a name="index-sys_002dstat_002d_003emode"></a><u>Function:</u> <b>sys-stat-&gt;mode</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003eino"></a><u>Function:</u> <b>sys-stat-&gt;ino</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003edev"></a><u>Function:</u> <b>sys-stat-&gt;dev</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003erdev"></a><u>Function:</u> <b>sys-stat-&gt;rdev</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003enlink"></a><u>Function:</u> <b>sys-stat-&gt;nlink</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003esize"></a><u>Function:</u> <b>sys-stat-&gt;size</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003euid"></a><u>Function:</u> <b>sys-stat-&gt;uid</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003egid"></a><u>Function:</u> <b>sys-stat-&gt;gid</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003eatime"></a><u>Function:</u> <b>sys-stat-&gt;atime</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003emtime"></a><u>Function:</u> <b>sys-stat-&gt;mtime</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003ectime"></a><u>Function:</u> <b>sys-stat-&gt;ctime</b><i> stat</i></dt>
+<dt><a name="index-sys_002dstat_002d_003efile_002dtype"></a><u>Function:</u> <b>sys-stat-&gt;file-type</b><i> stat</i></dt>
+<dd><p><strong>Deprecated</strong>.
+<code>&lt;sys-stat&gt;</code>オブジェクトの情報にアクセスするには<code>slot-ref</code>を
+使って下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002daccess"></a><u>Function:</u> <b>sys-access</b><i> pathname amode</i></dt>
+<dd><p>[POSIX]
+<var>pathname</var>へのアクセスが
+<var>mode</var>に示されるモードで許可されているかどうかを示す真偽値を返します。
+この手続きは、suid/sgidプログラムで使われるとエラーとなります(下記註参照)。
+<var>mode</var>は以下に示す定数のコンビネーション(logical or)です。
+</p><dl compact="compact">
+<dt> <code>R_OK</code></dt>
+<dd><a name="index-R_005fOK"></a>
+<p><var>pathname</var>をカレントユーザが読み出し可能かどうか
+</p></dd>
+<dt> <code>W_OK</code></dt>
+<dd><a name="index-W_005fOK"></a>
+<p><var>pathname</var>へカレントユーザが書き込み可能かどうか
+</p></dd>
+<dt> <code>X_OK</code></dt>
+<dd><a name="index-X_005fOK"></a>
+<p><var>pathname</var>をカレントユーザが実行可能かどうか(<var>pathname</var>が
+ディレクトリの場合はサーチ可能かどうか)
+</p></dd>
+<dt> <code>F_OK</code></dt>
+<dd><a name="index-F_005fOK"></a>
+<p><var>pathname</var>のパーミッションフラグにかかわらず、<var>pathname</var>が
+存在するかどうか (但し<var>pathname</var>があるディレクトリの読みだし許可は必要)。
+</p></dd>
+</dl>
+
+<p><em>註:</em> access(2)は、suid/sgidプログラム中で
+実ユーザの権限を確かめるために使われた場合、セキュリティホールと
+なります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dchmod"></a><u>Function:</u> <b>sys-chmod</b><i> path mode</i></dt>
+<dt><a name="index-sys_002dfchmod"></a><u>Function:</u> <b>sys-fchmod</b><i> port-or-fd mode</i></dt>
+<dd><p>名前<var>path</var>を持つ、もしくは<var>port-or-fd</var>で指定される
+ファイルのパーミッションビットを<var>mode</var>に変更します。
+<var>mode</var>は小さな正の正確な整数で、POSIXスタイルのパーミッションビットマスク
+でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dchown"></a><u>Function:</u> <b>sys-chown</b><i> path owner-id group-id</i></dt>
+<dd><p>ファイル<var>path</var>のオーナーとグループを<var>owner-id</var>と<var>gruop-id</var>
+で示されるものに変更します。<var>owner-id</var>と<var>gruop-id</var>は正確な整数で
+なければなりません。どちらかに-1が渡された場合は、対応する情報は変更されません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dutime"></a><u>Function:</u> <b>sys-utime</b><i> path :optional atime mtime</i></dt>
+<dd><p>ファイルのアクセスタイムと変更タイムを<var>atime</var>と<var>mtime</var>が示す
+値にセットします。<var>atime</var>と<var>mtime</var>が省略された場合もしくは
+<code>#f</code>の場合は現在の時刻が使われます。
+<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">ファイル操作</a>の<code>touch-file</code>も参照して下さい。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h4 class="subsubsection">6.25.3.5 他のファイル操作</h4>
+
+<dl>
+<dt><a name="index-sys_002dchdir"></a><u>Function:</u> <b>sys-chdir</b><i> dir</i></dt>
+<dd><p>[POSIX]
+<code>chdir(2)</code>へのインタフェースです。
+<code>current-directory</code>(<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ディレクトリユーティリティ</a>)も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dpipe"></a><u>Function:</u> <b>sys-pipe</b><i> :key (buffering :line)</i></dt>
+<dd><p>[POSIX] パイプを作り、ポートを2つ返します。
+最初に返されるポートは入力ポートで、2番目に返されるポートは出力ポートです。
+出力ポートへ書き出したデータは、入力ポートから読み込めます。
+</p>
+<p><var>buffering</var>は<code>:full</code>、<code>:line</code>、<code>:none</code>のいずれかで、
+パイプ上に開かれたポートのバッファリングモードを指定します。
+バッファリングモードの詳細については、<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>を参照して下さい。
+通常のケースでは、デフォルトのモードで間に合うでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(receive (in out) (sys-pipe)
+  (display "abc\n" out)
+  (flush out)
+  (read-line in)) ⇒ "abc"
+</pre></td></tr></tbody></table>
+
+<p>注意: 戻り値はバージョン0.3.15から変更されています。それまでは、
+<code>sys-pipe</code>は2つのポートのリストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dmkfifo"></a><u>Function:</u> <b>sys-mkfifo</b><i> path mode</i></dt>
+<dd><p>[POSIX] 名前が<var>path</var>でモードが<var>mode</var>のFIFO(名前付きパイプ)を
+作ります。<var>mode</var>はファイルのモードを表す正の正確整数でなければ
+なりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002disatty"></a><u>Function:</u> <b>sys-isatty</b><i> port-or-fd</i></dt>
+<dd><p>[POSIX] <var>port-or-fd</var>はポートか整数のファイルディスクリプタです。
+ポートがコンソールに接続されていれば<code>#t</code>を、そうでなければ<code>#f</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dttyname"></a><u>Function:</u> <b>sys-ttyname</b><i> port-or-fd</i></dt>
+<dd><p>[POSIX] <var>port-or-fd</var>はポートか整数のファイルディスクリプタです。
+ポートに接続された端末の名前か、ポートが端末に接続されていなければ
+<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtruncate"></a><u>Function:</u> <b>sys-truncate</b><i> path length</i></dt>
+<dt><a name="index-sys_002dftruncate"></a><u>Function:</u> <b>sys-ftruncate</b><i> port-or-fd length</i></dt>
+<dd><p>[POSIX]
+<var>path</var>あるいは<var>port-or-fd</var>によって指定される通常ファイルの長さを
+<var>length</var>にします。
+ファイルが<var>length</var>より長かった場合、余分なデータは捨てられます。
+ファイルが<var>length</var>より短かった場合、残りの部分にはゼロが詰められます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6-1"></a>
+<h3 class="subsection">6.25.4 Unixのグループとユーザ</h3>
+
+<a name="Unix-groups"></a>
+<h4 class="subsubheading">Unix groups</h4>
+
+<dl>
+<dt><a name="index-_003csys_002dgroup_003e"></a><u>Builtin Class:</u> <b>&lt;sys-group&gt;</b></dt>
+<dd><a name="index-sys_002dgroup"></a>
+<p>Unixのグループの情報です。以下のスロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-name"></a><u>Instance Variable of &lt;sys-group&gt;:</u> <b>name</b></dt>
+<dd><p>グループ名。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gid-1"></a><u>Instance Variable of &lt;sys-group&gt;:</u> <b>gid</b></dt>
+<dd><p>グループID
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-passwd"></a><u>Instance Variable of &lt;sys-group&gt;:</u> <b>passwd</b></dt>
+<dd><p>グループパスワード。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mem"></a><u>Instance Variable of &lt;sys-group&gt;:</u> <b>mem</b></dt>
+<dd><p>このグループに属するユーザ名のリスト。
+</p></dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetgrgid"></a><u>Function:</u> <b>sys-getgrgid</b><i> gid</i></dt>
+<dt><a name="index-sys_002dgetgrnam"></a><u>Function:</u> <b>sys-getgrnam</b><i> name</i></dt>
+<dd><p>[POSIX]
+グループID<var>gid</var>もしくはグループ名<var>name</var>で示されるグループの情報を
+<code>&lt;sys-group&gt;</code>で返します。該当するグループが存在しない場合は
+<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgid_002d_003egroup_002dname"></a><u>Function:</u> <b>sys-gid-&gt;group-name</b><i> gid</i></dt>
+<dt><a name="index-sys_002dgroup_002dname_002d_003egid"></a><u>Function:</u> <b>sys-group-name-&gt;gid</b><i> name</i></dt>
+<dd><p>グループIDとグループ名を相互変換する便利な手続きです。
+</p></dd></dl>
+
+<a name="Unix-users"></a>
+<h4 class="subsubheading">Unix users</h4>
+
+<dl>
+<dt><a name="index-_003csys_002dpasswd_003e"></a><u>Builtin Class:</u> <b>&lt;sys-passwd&gt;</b></dt>
+<dd><a name="index-sys_002dpasswd"></a>
+<p>Unixのユーザの情報です。以下のスロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-name-1"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>name</b></dt>
+<dd><p>ユーザ名。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-uid-1"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>uid</b></dt>
+<dd><p>ユーザID
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gid-2"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>gid</b></dt>
+<dd><p>ユーザのプライマリグループID。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-passwd-1"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>passwd</b></dt>
+<dd><p>ユーザの(暗号化された)パスワード。システムがシャドウパスワードファイルを
+使っている場合は、 "x" のような無意味な文字列が入っています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gecos"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>gecos</b></dt>
+<dd><p>Gecosフィールド。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dir"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>dir</b></dt>
+<dd><p>ユーザのホームディレクトリ。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shell"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>shell</b></dt>
+<dd><p>ユーザのログインシェル。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class"></a><u>Instance Variable of &lt;sys-passwd&gt;:</u> <b>class</b></dt>
+<dd><p>ユーザのクラス。(特定のシステムでのみ有効)。
+</p></dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetpwuid"></a><u>Function:</u> <b>sys-getpwuid</b><i> uid</i></dt>
+<dt><a name="index-sys_002dgetpwnam"></a><u>Function:</u> <b>sys-getpwnam</b><i> name</i></dt>
+<dd><p>[POSIX]
+ユーザID<var>uid</var>もしくはユーザ名<var>name</var>で示されるユーザの情報を
+<code>&lt;sys-passwd&gt;</code>で返します。該当するユーザが存在しない場合は
+<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002duid_002d_003euser_002dname"></a><u>Function:</u> <b>sys-uid-&gt;user-name</b><i> uid</i></dt>
+<dt><a name="index-sys_002duser_002dname_002d_003euid"></a><u>Function:</u> <b>sys-user-name-&gt;uid</b><i> name</i></dt>
+<dd><p>ユーザIDとユーザ名を相互変換する便利な手続きです。
+</p></dd></dl>
+
+
+<a name="Password-encryption"></a>
+<h4 class="subsubheading">Password encryption</h4>
+
+<dl>
+<dt><a name="index-sys_002dcrypt"></a><u>Function:</u> <b>sys-crypt</b><i> key salt</i></dt>
+<dd><p>これは、<code>crypt(3)</code>へのインターフェースです。<var>key</var>と<var>salt</var>は
+文字列でなければならず、暗号化された文字列が返されます。
+<code>crypt(3)</code>が利用できないシステムでこの関数を呼ぶとエラーが通知されます。
+</p>
+<p>このルーチンは、システムのパスワードデータベースを使ってパスワードチェックを
+しなければならない時以外に使うべきではありません。独自のパスワードデータベースを
+新たに作る場合は、<code>crypt.bcrypt</code>モジュール(<a indepth="true" href="gauche-refj_132.html#g_t_00e3_0083_0091_00e3_0082_00b9_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5"><code>crypt.bcrypt</code> - パスワードハッシュ</a>)を
+使ってください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab-1"></a>
+<h3 class="subsection">6.25.5 ロケール</h3>
+
+<dl>
+<dt><a name="index-sys_002dsetlocale"></a><u>Function:</u> <b>sys-setlocale</b><i> category locale</i></dt>
+<dd><p>[POSIX]
+カテゴリー<var>category</var>のロケールを<var>locale</var>にセットします。
+<var>category</var>は整数でなければなりません；以下の変数が<var>category</var>の
+ために定義されています。<var>locale</var>はロケールを表す文字列です。
+成功した場合は新しいロケール名を、ロケールが変更できなかった場合は<code>#f</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-LC_005fALL"></a><u>Variable:</u> <b>LC_ALL</b></dt>
+<dt><a name="index-LC_005fCOLLATE"></a><u>Variable:</u> <b>LC_COLLATE</b></dt>
+<dt><a name="index-LC_005fCTYPE"></a><u>Variable:</u> <b>LC_CTYPE</b></dt>
+<dt><a name="index-LC_005fMONETARY"></a><u>Variable:</u> <b>LC_MONETARY</b></dt>
+<dt><a name="index-LC_005fNUMERIC"></a><u>Variable:</u> <b>LC_NUMERIC</b></dt>
+<dt><a name="index-LC_005fTIME"></a><u>Variable:</u> <b>LC_TIME</b></dt>
+<dd><p><code>sys-setlocale</code>の<var>category</var>に渡せる数値を定義しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dlocaleconv"></a><u>Function:</u> <b>sys-localeconv</b></dt>
+<dd><p>[POSIX]
+現在のロケールで数値をフォーマットする際に必要な様々な情報をassoc listに
+して返します。
+</p></dd></dl>
+
+<p>例を示します。あなたのシステム設定によっては異なる結果になるかもしれません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-localeconv)
+ ⇒
+   ((decimal_point . ".") (thousands_sep . "")
+    (grouping . "") (int_curr_symbol . "")
+    (currency_symbol . "") (mon_decimal_point . "")
+    (mon_thousands_sep . "") (mon_grouping . "")
+    (positive_sign . "") (negative_sign . "")
+    (int_frac_digits . 127) (frac_digits . 127)
+    (p_cs_precedes . #t) (p_sep_by_space . #t)
+    (n_cs_precedes . #t) (n_sep_by_space . #t)
+    (p_sign_posn . 127) (n_sign_posn . 127))
+
+(sys-setlocale LC_ALL "fr_FR")
+ ⇒ "fr_FR"
+
+(sys-localeconv)
+ ⇒
+  ((decimal_point . ",") (thousands_sep . "")
+   (grouping . "") (int_curr_symbol . "FRF ")
+   (currency_symbol . "F") (mon_decimal_point . ",")
+   (mon_thousands_sep . " ") (mon_grouping . "\x03\x03")
+   (positive_sign . "") (negative_sign . "-")
+   (int_frac_digits . 2) (frac_digits . 2)
+   (p_cs_precedes . #f) (p_sep_by_space . #t)
+   (n_cs_precedes . #f) (n_sep_by_space . #t)
+   (p_sign_posn . 1) (n_sign_posn . 1))
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ad_00e3_0082_00b1_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab-1"></a>
+<h3 class="subsection">6.25.6 シグナル</h3>
+
+<p>Gaucheでは、OSのシグナルを自分自身や他のプロセスに送ったり、
+送られたシグナルを処理することができます。
+</p>
+<p>マルチスレッド環境では、全てのスレッドがシグナルハンドラを共有し、
+各スレッドが独自のシグナルマスクを持ちます。
+詳しくは<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">シグナルとスレッド</a>を参照して下さい。
+</p>
+<p>システムコールがシグナルによって割り込まれ、
+プログラマがシグナルハンドラをセットしており、そのハンドラが別コンテキストに
+制御を移さずに戻った場合、そのシステムコールはハンドラからの復帰後に
+リスタートされます。
+</p>
+<p>Windowsネイティブ環境では、<code>sys-kill</code>の限定的なサポートを
+除いてシグナルは動作しません。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088">6.25.6.1 シグナルとシグナルセット</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e9_0080_0081_00e5_0087_00ba">6.25.6.2 シグナルの送出</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">6.25.6.3 シグナルの処理</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f">6.25.6.4 シグナルのマスクと待機</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">6.25.6.5 シグナルとスレッド</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e9_0080_0081_00e5_0087_00ba" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088-1"></a>
+<h4 class="subsubsection">6.25.6.1 シグナルとシグナルセット</h4>
+
+<p>シグナルはオペレーティングシステムで定義された小さな整数値で表現されます。
+システムのシグナル番号に束縛された変数が定義されています。
+システムのシグナル番号はアーキテクチャによって異なるので、
+なるべく変数を利用するようにして下さい。
+</p>
+<dl>
+<dt><a name="index-SIGABRT"></a><u>Variable:</u> <b>SIGABRT</b></dt>
+<dt><a name="index-SIGALRM"></a><u>Variable:</u> <b>SIGALRM</b></dt>
+<dt><a name="index-SIGCHLD"></a><u>Variable:</u> <b>SIGCHLD</b></dt>
+<dt><a name="index-SIGCONT"></a><u>Variable:</u> <b>SIGCONT</b></dt>
+<dt><a name="index-SIGFPE"></a><u>Variable:</u> <b>SIGFPE</b></dt>
+<dt><a name="index-SIGHUP"></a><u>Variable:</u> <b>SIGHUP</b></dt>
+<dt><a name="index-SIGILL"></a><u>Variable:</u> <b>SIGILL</b></dt>
+<dt><a name="index-SIGINT"></a><u>Variable:</u> <b>SIGINT</b></dt>
+<dt><a name="index-SIGKILL"></a><u>Variable:</u> <b>SIGKILL</b></dt>
+<dt><a name="index-SIGPIPE"></a><u>Variable:</u> <b>SIGPIPE</b></dt>
+<dt><a name="index-SIGQUIT"></a><u>Variable:</u> <b>SIGQUIT</b></dt>
+<dt><a name="index-SIGSEGV"></a><u>Variable:</u> <b>SIGSEGV</b></dt>
+<dt><a name="index-SIGSTOP"></a><u>Variable:</u> <b>SIGSTOP</b></dt>
+<dt><a name="index-SIGTERM"></a><u>Variable:</u> <b>SIGTERM</b></dt>
+<dt><a name="index-SIGTSTP"></a><u>Variable:</u> <b>SIGTSTP</b></dt>
+<dt><a name="index-SIGTTIN"></a><u>Variable:</u> <b>SIGTTIN</b></dt>
+<dt><a name="index-SIGTTOU"></a><u>Variable:</u> <b>SIGTTOU</b></dt>
+<dt><a name="index-SIGUSR1"></a><u>Variable:</u> <b>SIGUSR1</b></dt>
+<dt><a name="index-SIGUSR2"></a><u>Variable:</u> <b>SIGUSR2</b></dt>
+<dd><p>これらの変数はPOSIXで定義された対応するシグナルの番号に束縛されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SIGTRAP"></a><u>Variable:</u> <b>SIGTRAP</b></dt>
+<dt><a name="index-SIGIOT"></a><u>Variable:</u> <b>SIGIOT</b></dt>
+<dt><a name="index-SIGBUS"></a><u>Variable:</u> <b>SIGBUS</b></dt>
+<dt><a name="index-SIGSTKFLT"></a><u>Variable:</u> <b>SIGSTKFLT</b></dt>
+<dt><a name="index-SIGURG"></a><u>Variable:</u> <b>SIGURG</b></dt>
+<dt><a name="index-SIGXCPU"></a><u>Variable:</u> <b>SIGXCPU</b></dt>
+<dt><a name="index-SIGXFSZ"></a><u>Variable:</u> <b>SIGXFSZ</b></dt>
+<dt><a name="index-SIGVTALRM"></a><u>Variable:</u> <b>SIGVTALRM</b></dt>
+<dt><a name="index-SIGPROF"></a><u>Variable:</u> <b>SIGPROF</b></dt>
+<dt><a name="index-SIGWINCH"></a><u>Variable:</u> <b>SIGWINCH</b></dt>
+<dt><a name="index-SIGPOLL"></a><u>Variable:</u> <b>SIGPOLL</b></dt>
+<dt><a name="index-SIGIO"></a><u>Variable:</u> <b>SIGIO</b></dt>
+<dt><a name="index-SIGPWR"></a><u>Variable:</u> <b>SIGPWR</b></dt>
+<dd><p>これらの変数はシステム依存のシグナル番号に束縛されています。
+全てのシステムで全てのシグナルがサポートされているわけではありません。
+</p></dd></dl>
+
+<p>それぞれのシグナル番号の他に、<code>&lt;sys-sigset&gt;</code>オブジェクトを使って
+シグナルの集合を扱うことができます。シグナルの集合はシグナルマスクを操作したり、
+ひとつのシグナルハンドラを多数のシグナルに同時に設定したりする際に使えます。
+</p>
+<dl>
+<dt><a name="index-_003csys_002dsigset_003e"></a><u>Class:</u> <b>&lt;sys-sigset&gt;</b></dt>
+<dd><a name="index-sys_002dsigset"></a>
+<p>シグナルの集合を表します。空のシグナルの集合は次の式で作成できます：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make &lt;sys-sigset&gt;) ⇒ #&lt;sys-sigset []&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsigset-1"></a><u>Function:</u> <b>sys-sigset</b><i> signal …</i></dt>
+<dd><p><var>signal</var> …をメンバーとする<code>&lt;sys-sigset&gt;</code>の
+インスタンスを作成して返します。
+各<var>signal</var>にはシグナル番号、他の<code>&lt;sys-sigset&gt;</code>オブジェクト、あるいは
+<code>#t</code>を渡すことができます。<code>#t</code>を渡した場合は全てのシグナルが
+対象となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-sigset SIGHUP SIGINT) ⇒ #&lt;sys-sigset [HUP|INT]&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsigset_002dadd_0021"></a><u>Function:</u> <b>sys-sigset-add!</b><i> sigset signal …</i></dt>
+<dt><a name="index-sys_002dsigset_002ddelete_0021"></a><u>Function:</u> <b>sys-sigset-delete!</b><i> sigset signal …</i></dt>
+<dd><p><var>sigset</var>は<code>&lt;sys-sigset&gt;</code>オブジェクトでなければなりません。
+これらの手続きは<var>sigset</var>に指定されたシグナルを追加、
+もしくは<var>sigset</var>から指定されたシグナルを削除します。
+変更された<var>sigset</var>が返されます。
+</p>
+<p><var>signal</var>にはシグナル番号、他の<code>&lt;sys-sigset&gt;</code>オブジェクト、あるいは
+<code>#t</code>を渡すことができます。<code>#t</code>を渡した場合は全てのシグナルが
+対象となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsigset_002dfill_0021"></a><u>Function:</u> <b>sys-sigset-fill!</b><i> sigset</i></dt>
+<dt><a name="index-sys_002dsigset_002dempty_0021"></a><u>Function:</u> <b>sys-sigset-empty!</b><i> sigset</i></dt>
+<dd><p>システムで定義された全てのシグナルを<var>sigset</var>にセット、
+もしくは<var>sigset</var>を空にします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsignal_002dname"></a><u>Function:</u> <b>sys-signal-name</b><i> signal</i></dt>
+<dd><p>シグナル番号の名前を返します。(シグナル番号はシステムに依存します)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-signal-name 2) ⇒ "SIGINT"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e9_0080_0081_00e5_0087_00ba"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e9_0080_0081_00e5_0087_00ba-1"></a>
+<h4 class="subsubsection">6.25.6.2 シグナルの送出</h4>
+
+<p>シグナルを送るには、<code>sys-kill</code>を使うことができます。
+これはシステムの<code>kill(2)</code>のように動作します。
+</p>
+<dl>
+<dt><a name="index-sys_002dkill"></a><u>Function:</u> <b>sys-kill</b><i> pid sig</i></dt>
+<dd><p>[POSIX]
+シグナル<var>sig</var>を指定されたプロセス(群)に送ります。
+<var>sig</var>は正確な正整数でなければなりません。<var>pid</var>は正確な整数でなければ
+ならず、次のルールで対象となるプロセスを指定します。
+</p><ul>
+<li>
+<var>pid</var>が正ならば、それがそのまま対象となるプロセスIDです。
+</li><li>
+<var>pid</var>がゼロならば、シグナルは現在のプロセスのプロセスグループ内の全ての
+プロセスに送られます。
+</li><li>
+<var>pid</var>が-1より小さければ、シグナルはプロセスグループIDが<var>-pid</var>である
+全てのプロセスに送られます。
+</li></ul>
+
+<p>Windowsネイティブ環境では、<code>sys-kill</code>は<var>pid</var>に正整数か
+プロセスハンドル(<code>&lt;win:handle&gt;</code>のインスタンス)を取ります。
+<var>sig</var>がサポートするのは<code>SIGKILL</code>、<code>SIGINT</code>、<code>SIGABRT</code>
+のみです。<code>SIGKILL</code>に対しては<code>TerminateProcess</code>を使って
+対象プロセスを終了させます。<code>SIGINT</code>と<code>SIGABRT</code>に対しては
+対象プロセスにそれぞれ<code>CTRL_C_EVENT</code>と<code>CTRL_BREAK_EVENT</code>を
+送ります。
+</p></dd></dl>
+
+<p>POSIXの<var>raise()</var>に対応するScheme関数はありませんが、
+<code>(sys-kill (sys-getpid) <var>sig</var>)</code> で同じことができます。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e9_0080_0081_00e5_0087_00ba" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086-1"></a>
+<h4 class="subsubsection">6.25.6.3 シグナルの処理</h4>
+
+<p>Schemeでシグナルを処理する手続きを登録できます。
+(マルチスレッド環境では、シグナルハンドラの設定は全てのスレッドで共有されます。
+<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">シグナルとスレッド</a>を参照して下さい)。
+</p>
+<p>シグナルがSchemeプロセスに送られると、VMはそれを記録し、
+VMの状態が一貫している「安全なポイント」に達した時に処理します。
+シグナルがVMに記録され、しかしまだ処理されていない状態を、
+シグナルが保留されていると呼ぶことにします。
+</p>
+<p>(このメカニズムのため、<code>SIGILL</code>のようなシグナルはSchemeレベルでは
+処理できません。そのシグナルを記録した後でプロセスが意味のある処理を続行できない
+からです)。
+</p>
+<p>VMがシグナルを処理する前に同じシグナルが到着した場合、後に到着した方の
+シグナルは無効になります。(これは伝統的なUnixのシグナル処理と同様です)。
+言い替えれば、各VM loop毎に、シグナルハンドラは各シグナルについて
+たかだか1回しか呼ばれません。
+</p>
+<p>同じシグナルがたくさん保留された状態になった場合、
+Gaucheは異常事態が起きたとみなし (例えばCルーチンで無限ループに
+入った等)、プロセスをabortします。デフォルトではこの限界は
+かなり低い値(3)に設定されています。これは、インタラクティブスクリプトが
+反応しなくなった場合にCtrl-Cを3回打てば強制終了できる、という場合を
+想定しているためです。この限界を調べるカウンタはシグナル毎にあるので、
+例えば<code>SIGHUP</code>がひとつ、<code>SIGINT</code>がふたつ保留になった、
+といった場合はabortしません。この限界は下で述べる<code>set-signal-pending-limit</code>
+で変更することができます。
+</p>
+<p><code>gosh</code>インタプリタを使っている場合、デフォルトでのシグナルの処理は
+次のように設定されています。
+</p>
+<dl compact="compact">
+<dt> <code>SIGABRT, SIGILL, SIGKILL, SIGCONT, SIGSTOP, SIGSEGV, SIGBUS</code></dt>
+<dd><p>Schemeでは処理できません。<code>gosh</code>ではこれらのシグナルを受けると
+システムのデフォルトの動作をします。
+</p></dd>
+<dt> <code>SIGCHLD, SIGTSTP, SIGTTIN, SIGTTOU, SIGWINCH</code></dt>
+<dd><p><code>gosh</code>は初期状態ではこれらのシグナルのハンドラを設定せず、
+       システムのデフォルトの振るまいに任せます。Schemeプログラムは必要ならば
+       これらのシグナルのハンドラを設定できます。
+</p></dd>
+<dt> <code>SIGHUP, SIGQUIT, SIGTERM</code></dt>
+<dd><p><code>gosh</code>はこれらのシグナルに対して、終了コード0でアプリケーションを
+       終了するシグナルハンドラをセットします。
+</p></dd>
+<dt> <code>SIGPWR, SIGXCPU, SIGUSR1, SIGUSR2</code></dt>
+<dd><p>Linuxプラットフォームでスレッドを使用している場合は、
+       これらのシグナルはシステムで使用されるため、Schemeからは使用できません。
+       他のシステムではこれらのシグナルは下記の「他のシグナル」と同じ動作と
+       なります。
+</p></dd>
+<dt> <code>他のシグナル</code></dt>
+<dd><p><code>gosh</code>はデフォルトのシグナルハンドラを設定します。
+デフォルトのシグナルハンドラは<code>&lt;unhandled-signal-error&gt;</code>コンディションを
+通知します(<a indepth="true" href="gauche-refj_58.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a>参照)。
+Schemeプログラムはシグナル毎に独自のハンドラを設定することが可能です。
+</p></dd>
+</dl>
+
+<p><code>gosh</code>でなく、他のアプリケーションに埋め込まれたGaucheを使っている場合、
+Schemeレベルでのシグナルの使用をアプリケーションが制限している場合があります。
+</p>
+<p>Schemeからシグナルハンドラを設定するには以下の手続きを使って下さい。
+</p>
+<dl>
+<dt><a name="index-set_002dsignal_002dhandler_0021"></a><u>Function:</u> <b>set-signal-handler!</b><i> signals handler :optional sigmask</i></dt>
+<dd><p><var>signals</var>はシグナル番号か<code>&lt;sys-sigset&gt;</code>オブジェクト、
+<var>handler</var>は<code>#t</code>、<code>#f</code>、<code>#&lt;undef&gt;</code>、
+一つの引数を取る手続きのいずれかでなければなりません。
+<var>handler</var>が手続きの場合、プロセスが指定されたシグナル(のうちのいずれか)を
+受けた時に、そのシグナル番号を引数として<var>handler</var>が呼ばれます。
+</p>
+<p>デフォルトでは、<var>handler</var>は、<var>signals</var>に含まれる
+シグナルが(その時点で有効なシグナルマスクに加えて)ブロックされた状態で
+実行されます。オプショナルな<var>sigmask</var>引数に
+<code>&lt;sys-sigset&gt;</code>オブジェクトを渡すことで、
+ブロックすべきシグナルを明示することもできます。
+ただ、シグナルマスクはスレッド毎であることに注意して下さい。
+もし複数のスレッドがあるシグナルをブロックしていない場合、例え<var>sigmask</var>
+を指定していたとしても、ひとつのスレッドで<var>handler</var>を実行中に
+別のスレッドで並行して<var>handler</var>が呼ばれる可能性はあります。
+各スレッドのシグナルマスクを適切に設定することでそのようなケースを
+避けるようにして下さい。
+</p>
+<p><var>handler</var>の中でできる操作にはほとんど制限がありません。
+<var>handler</var>からエラーを投げたり、他の場所で補捉された継続を呼ぶことも
+できます。但し、<var>handler</var>内で補捉した継続は<var>handler</var>から
+戻った時点で無効になります。
+</p>
+<p><var>handler</var>が<code>#t</code>の場合、指定されたシグナルにはオペレーティングシステムの
+デフォルトの振るまいが設定されます。
+<var>handler</var>が<code>#f</code>の場合、指定されたシグナルは無視されます。
+</p>
+<p><var>handler</var>が<code>#&lt;undef&gt;</code>
+(<a indepth="true" href="gauche-refj_43.html#g_t_00e6_009c_00aa_00e5_00ae_009a_00e7_00be_00a9_00e5_0080_00a4">未定義値</a>参照) であった場合は、
+Gaucheはその時点のOSレベルのシグナルハンドラを変更しません。
+この引数は<code>set-signal-handler!</code>に対してはあまり
+意味を持ちません; 何もせずに返るだけだからです。
+しかし、<code>get-signal-handler</code>で<code>#&lt;undef&gt;</code>が
+返った場合、Gaucheがそのシグナルハンドラを一度もいじっていないことを
+示します。
+(一度でもGaucheがシグナルハンドラをインストールした場合、
+<code>get-signal-handler</code>が<code>#&lt;undef&gt;</code>を再び
+返すことはありません。)
+</p>
+<p>マルチスレッドプログラムでは、
+シグナルハンドラの設定はスレッド間で共有されることに注意して下さい。
+ハンドラはシグナルを受けたスレッドで実行されます。
+詳しくは<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">シグナルとスレッド</a>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-get_002dsignal_002dhandler"></a><u>Function:</u> <b>get-signal-handler</b><i> signum</i></dt>
+<dt><a name="index-get_002dsignal_002dhandler_002dmask"></a><u>Function:</u> <b>get-signal-handler-mask</b><i> signum</i></dt>
+<dd><p>シグナル<var>signum</var>に設定されたハンドラもしくはシグナルマスクを
+それぞれ返します。<code>get-signal-handler</code>が返す値の意味については
+<code>set-signal-handler!</code>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-get_002dsignal_002dhandlers"></a><u>Function:</u> <b>get-signal-handlers</b></dt>
+<dd><p>現在の全てのシグナルハンドラの設定を連想リストにして返します。
+返されるリストの各要素のcarには<code>&lt;sys-sigset&gt;</code>オブジェクトが、
+cdrにはそれらのシグナルに対応するハンドラ(手続きもしくはブール値)がセットされて
+います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-get_002dsignal_002dpending_002dlimit"></a><u>Function:</u> <b>get-signal-pending-limit</b></dt>
+<dt><a name="index-set_002dsignal_002dpending_002dlimit"></a><u>Function:</u> <b>set-signal-pending-limit</b><i> limit</i></dt>
+</dl>
+
+
+<dl>
+<dt><a name="index-with_002dsignal_002dhandlers"></a><u>Macro:</u> <b>with-signal-handlers</b><i> (handler-clause …) thunk</i></dt>
+<dd><p><var>thunk</var>の実行中だけシグナルハンドラを一時的に設定する便利なマクロです
+(このマクロは便利ですが下に述べるような多少危険な性質もあるので、
+注意して使って下さい)。
+</p>
+<p><var>handler-clause</var>は以下のいずれかの形式です
+</p><dl compact="compact">
+<dt> <code>(<var>signals</var> <var>expr</var> …)</code></dt>
+<dd><p><var>signals</var>は、評価された時に単独のシグナル番号、シグナル番号のリスト、
+あるいは<code>&lt;sys-sigset&gt;</code>オブジェクトを生成する式でなければなりません。
+<var>signals</var>に含まれるシグナルを受け取った時に、<var>expr</var> …を
+評価するようなハンドラを設定します。
+</p>
+</dd>
+<dt> <code>(<var>signals</var> =&gt; <var>handler</var>)</code></dt>
+<dd><p><var>signals</var>は上と同じです。<var>signals</var>に含まれるシグナルに
+対して、処理<var>handler</var>を設定します。
+</p>
+<p><var>handler</var>は<code>#t</code>、<code>#f</code>、一つの引数を取る手続きのいずれか
+でなければなりません。
+<var>handler</var>が手続きの場合、プロセスが指定されたシグナル(のうちのいずれか)を
+受けた時に、そのシグナル番号を引数として<var>handler</var>が呼ばれます。
+<var>handler</var>が<code>#t</code>の場合、指定されたシグナルにはオペレーティングシステムの
+デフォルトの振るまいが設定されます。
+<var>handler</var>が<code>#f</code>の場合、指定されたシグナルは無視されます。
+</p></dd>
+</dl>
+
+<p><var>thunk</var>から制御が抜けた時に、<code>with-signal-handlers</code>が呼ばれた時点での
+シグナルハンドラが再設定されます。
+</p>
+<p><em>注意：</em> このフォームで一つ以上のシグナルハンドラを設定する場合、
+それらは順にシステムに設定されます。全てのハンドラの設定が終る前に
+シグナルが届いた場合、シグナルハンドラの設定や再設定が不完全なままになる
+かもしれません。また、シグナルハンドラはグローバルな設定であり、
+「スレッドローカル」なハンドラを設定することはできませんが、
+<code>with-signal-handlers</code>の形式はそれを誤解させるかもしれません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f-1"></a>
+<h4 class="subsubsection">6.25.6.4 シグナルのマスクと待機</h4>
+
+<p>Schemeプログラムで、送出がブロックされるシグナルの集合であるシグナルマスク
+をセットできます。プロセスで完全にブロックされるシグナルが送出されると、
+そのシグナルは“保留”となります。保留されたシグナルは、指定されたシグナルを
+ブロックしないようにシグナルマスクが変更されると送出されるかもしれません。
+(しかし、保留されたシグナルがキューに入れられるかどうかはオペレーティング
+システムに依存します。)
+</p>
+<p>マルチスレッドの環境では、スレッド毎に独自のシグナルマスクを持ちます。
+</p>
+<dl>
+<dt><a name="index-sys_002dsigmask"></a><u>Function:</u> <b>sys-sigmask</b><i> how mask</i></dt>
+<dd><p>現在のスレッドのシグナルマスクを変更し、以前のシグナルマスクを返します。
+<var>mask</var>には新しいマスクを指定する<code>&lt;sys-sigset&gt;</code>オブジェクトか、
+あるいはマスクを変更せず現在のマスクを得るだけなら<code>#f</code>を渡します。
+</p>
+<p><var>mask</var>に<code>&lt;sys-sigset&gt;</code>オブジェクトを渡した場合、
+引数<var>how</var>は以下の整数定数のうちの1つでなければなりません。
+</p><dl compact="compact">
+<dt> <code>SIG_SETMASK</code></dt>
+<dd><p><var>mask</var>をそのスレッドのシグナルマスクとしてセットします。
+</p></dd>
+<dt> <code>SIG_BLOCK</code></dt>
+<dd><p>そのスレッドのシグナルマスクに<var>mask</var>にあるシグナルを追加します。
+</p></dd>
+<dt> <code>SIG_UNBLOCK</code></dt>
+<dd><p>そのスレッドのシグナルマスクから<var>mask</var>にあるシグナルを削除します。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsigsuspend"></a><u>Function:</u> <b>sys-sigsuspend</b><i> mask</i></dt>
+<dd><p>アトミックに、スレッドのシグナルマスクを<var>mask</var>にセットし、
+呼び出しているスレッドを一時停止します。ブロックされておらずシグナル
+ハンドラがインストールされているシグナルが送出されると、関連
+付けられたハンドラが呼ばれ、<code>sys-sigsuspend</code>は戻ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsigwait"></a><u>Function:</u> <b>sys-sigwait</b><i> mask</i></dt>
+<dd><p>[POSIX]
+<var>mask</var>は<code>&lt;sys-sigset&gt;</code>オブジェクトでなければなりません。
+アトミックに、保留されたシグナルから<var>mask</var>にあるシグナルの1つを
+クリアし、クリアしたシグナルの番号を返します。<var>mask</var>にある
+シグナルが1つも保留されていなければ、<code>sys-sigwait</code>はシグナルが
+届くまでブロックします。
+</p>
+<p><code>sys-sigwait</code>を呼ぶ前に、<var>mask</var>にある全てのシグナルを、
+全スレッドからブロックしておく必要があります。シグナルをブロックして
+いないスレッドがある場合、<code>sys-sigwait</code>の動作は未定義です。
+</p>
+<p>註：<code>sys-sigwait</code>はシステムの<code>sigwait</code>関数を呼び出しますが、
+この関数は待つべきシグナルにシグナルハンドラが設定されていた場合の
+振る舞いが未定義となっています。困ったことになるのを避けるために、
+<code>sys-sigwait</code>はまず<var>mask</var>に含まれるシグナルに
+ハンドラが設定されていたらそれを<code>SIG_DFL</code>にリセットしてから
+<code>sigwait</code>を呼び出し、それが戻った後でハンドラを元に戻します。
+<code>sys-sigwait</code>が待っている間に他のスレッドでシグナルハンドラを
+変更してはいけません。そうした場合の動作は不定です。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_009e_00e3_0082_00b9_00e3_0082_00af_00e3_0081_00a8_00e5_00be_0085_00e6_00a9_009f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089-1"></a>
+<h4 class="subsubsection">6.25.6.5 シグナルとスレッド</h4>
+
+<p>シグナルのセマンティクスはマルチスレッド環境では少々複雑に見えます。
+しかし、いくつかのルールを覚えてしまえば、とても理解しやすいものでも
+あります。さらにGaucheでは、プログラマの簡単に使えるようにデフォルトの
+振る舞いをセットアップしています。
+</p>
+<p>細かいことは知りたくないという場合は、
+次の1つのことだけを覚えておいて下さい。
+<strong>デフォルトでは</strong>、シグナルはメインスレッドで処理されます。
+しかし、メインスレッドがmutexや条件変数で一時停止している場合は、
+シグナルは全く処理されないので注意が必要です。
+</p>
+<p>詳細に興味がある場合は、ここにルールがあります。
+</p><ul>
+<li>
+シグナルハンドラのセッティングは、全てのスレッドで共有されます。
+</li><li>
+シグナルマスクはスレッド固有です。
+</li><li>
+プロセスが非同期のシグナルを受け取ったら(他のプロセスからシグナルが
+送出されたと考えて下さい)、そのシグナルをブロックしていないスレッドの
+うちから任意の1つのスレッドが選ばれます。
+</li><li>
+シグナルハンドラは選択されたスレッドにおいて実行されます。
+しかし、選択されたスレッドがmutexのロックの獲得や条件変数を待っている
+場合は、シグナルの処理はそのスレッドが再開するまで遅延されます。
+シグナルの送出自体はスレッドを再開しません。
+</li></ul>
+
+<p>これらのルールにはいくつかの暗黙の了解があります。
+</p>
+<p>特定のシグナルをブロックしないスレッドが1つ以上ある場合、
+どのスレッドがそのシグナルを受け取るかを知る術はありません。
+そのような状況は、GaucheにおいてはCプログラムよりもさらに不便です。
+なぜなら、受信側のスレッドがmutexや条件変数で待機している場合、
+シグナル処理は無期限に遅延されうるからです。
+したがって、それぞれのシグナルについて、それを受け取ることのできるスレッドが
+常にただの1つしかないようにすることを推奨します。
+</p>
+<p>Gaucheでは、<code>make-thread</code>(<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">スレッド手続き</a>参照)
+で作られた全てのスレッドは、デフォルトで全てのシグナル(予約済みを除く)
+をブロックします。これは、全てのシグナルがメインスレッドへ
+送られるということです。
+</p>
+<p>もう1つの戦略は、シグナル処理のみを行うスレッドを作る方法です。
+</p>
+<p>もしシステムが<code>sys-sigwait</code>をサポートしていれば、ハンドル
+したい全てのシグナルを全てのスレッドでブロックしておき、シグナル
+処理専用のスレッドで<code>sys-sigwait</code>を呼び出してシグナルの
+受信を待つことができます。<code>sys-sigwait</code>の返り値がシグナル番号
+なので、その値でディスパッチしてください。この方法ではシグナル
+ハンドラが呼び出されることはありません。
+</p>
+<p><code>sys-sigwait</code>を使わないのであれば、メインスレッドでシグナルを
+ブロックして、シグナル処理専用スレッドを作り、そのスレッドで全ての
+シグナルを受け付けることができます。そのようなスレッドは<code>sys-pause</code>
+で単にループしていれば良いでしょう。<code>sys-pause</code>がシグナルで中断
+されると、シグナルハンドラがシグナル処理専用スレッドで呼び出されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(thread-start!
+  (make-thread
+    (lambda ()
+      (sys-sigmask SIG_SETMASK (make &lt;sys-sigset&gt;)) ;;empty mask
+      (let loop () (sys-pause) (loop)))))
+</pre></td></tr></tbody></table>
+
+<p>複雑なアプリケーションでは、正確にスレッド毎のシグナル処理を
+制御したいかもしれません。それは、いつでも、指定されたスレッドのみが
+望むシグナルをブロックしないようにすれば、可能です。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b-1"></a>
+<h3 class="subsection">6.25.7 システムへの問い合わせ</h3>
+
+<dl>
+<dt><a name="index-sys_002duname"></a><u>Function:</u> <b>sys-uname</b></dt>
+<dd><p>[POSIX] 次の5要素のリストを返します。
+<code>(<var>sysname</var> <var>nodename</var> <var>release</var> <var>version</var> <var>machine</var>)</code>。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgethostname"></a><u>Function:</u> <b>sys-gethostname</b></dt>
+<dd><p>ホスト名を返します。システムでgethostname()が使えない場合、
+<code>sys-uname</code>が返すリストの2番目の要素が使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetdomainname"></a><u>Function:</u> <b>sys-getdomainname</b></dt>
+<dd><p>ドメイン名を返します。システムでgetdomainname()が使えない場合、
+<code>"localdomain"</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetcwd"></a><u>Function:</u> <b>sys-getcwd</b></dt>
+<dd><p>[POSIX] 現在の作業ディレクトリを文字列で返します。
+システムから現在の作業ディレクトリが得られない場合は、エラーが通知されます。
+<code>sys-chdir</code>(<a href="#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c">他のファイル操作</a>参照)、<code>current-directory</code>
+(<a indepth="true" href="gauche-refj_140.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">ディレクトリユーティリティ</a>参照)も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetgid"></a><u>Function:</u> <b>sys-getgid</b></dt>
+<dt><a name="index-sys_002dgetegid"></a><u>Function:</u> <b>sys-getegid</b></dt>
+<dd><p>[POSIX] 現在のプロセスの実グループIDと実効グループIDをそれぞれ整数で返します。
+返されたグループIDからグループ名その他の情報を得るには
+<code>sys-gid-&gt;group-name</code>や<code>sys-getgrgid</code>を使って下さい
+(<a href="#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6">Unixのグループとユーザ</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsetgid"></a><u>Function:</u> <b>sys-setgid</b><i> gid</i></dt>
+<dd><p>[POSIX] 現在のプロセスの実効グループIDをセットします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetuid"></a><u>Function:</u> <b>sys-getuid</b></dt>
+<dt><a name="index-sys_002dgeteuid"></a><u>Function:</u> <b>sys-geteuid</b></dt>
+<dd><p>[POSIX] 現在のプロセスの実ユーザIDと実効ユーザIDをそれぞれ整数で返します。
+返されたユーザIDからユーザ名その他の情報を得るには
+<code>sys-uid-&gt;user-name</code>や<code>sys-getpwuid</code>を使って下さい
+(<a href="#Unix_00e3_0081_00ae_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_00bc_00e3_0083_0097_00e3_0081_00a8_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6">Unixのグループとユーザ</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsetuid"></a><u>Function:</u> <b>sys-setuid</b><i> uid</i></dt>
+<dd><p>[POSIX] 現在のプロセスの実効ユーザIDをセットします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetgroups"></a><u>Function:</u> <b>sys-getgroups</b></dt>
+<dd><p>[POSIX] 補助的なグループのIDの整数のリストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetlogin"></a><u>Function:</u> <b>sys-getlogin</b></dt>
+<dd><p>[POSIX] 現在のプロセスの制御端末にログインしているユーザの名前を文字列で
+返します。システムがその情報を決定できない場合、<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetpgrp"></a><u>Function:</u> <b>sys-getpgrp</b></dt>
+<dd><p>[POSIX] 現在のプロセスのプロセスグループIDを返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-sys_002dgetpgid"></a><u>Function:</u> <b>sys-getpgid</b><i> pid</i></dt>
+<dd><p><var>pid</var>で指定されたプロセスのプロセスグループIDを返します。
+<var>pid</var>が0の場合、現在のプロセスが使われます。
+</p>
+<p><code>getpgid()</code>はPOSIXではないことに注意して下さい。
+システムに<var>getpgid()</var>がない場合、<var>pid</var>が0ならば
+<var>sys-getpgid</var>がまだ動作しますが(それは単に<code>sys-getpgrp</code>を呼びます)
+、<var>pid</var>が0でない場合はエラーが通知されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsetpgid"></a><u>Function:</u> <b>sys-setpgid</b><i> pid pgid</i></dt>
+<dd><p>[POSIX] プロセス<var>pid</var>のプロセスグループIDを<var>pgid</var>にセットします。
+<var>pid</var>が0ならば、現在のプロセスのプロセスIDが使われます。
+<var>pgid</var>が0ならば、<code>pid</code>で指定されたプロセスのプロセスIDが
+使われます。
+(したがって、<code>sys-getpgid(0, 0)</code>は、現在のプロセスのプロセス
+グループIDを現在のプロセスIDにセットします。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsetsid"></a><u>Function:</u> <b>sys-setsid</b></dt>
+<dd><p>[POSIX] 呼んでいるプロセスがプロセスグループリーダでなければ、
+新しいセッションを作ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetpid"></a><u>Function:</u> <b>sys-getpid</b></dt>
+<dt><a name="index-sys_002dgetppid"></a><u>Function:</u> <b>sys-getppid</b></dt>
+<dd><p>[POSIX] 現在のプロセスIDと親プロセスのIDをそれぞれ返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtimes"></a><u>Function:</u> <b>sys-times</b></dt>
+<dd><p>[POSIX]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dctermid"></a><u>Function:</u> <b>sys-ctermid</b></dt>
+<dd><p>[POSIX] プロセスの制御端末の名前を返します。
+これは単に<code>``/dev/tty''</code>かもしれません。<code>sys-ttyname</code>も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetrlimit"></a><u>Function:</u> <b>sys-getrlimit</b><i> resource</i></dt>
+<dt><a name="index-sys_002dsetrlimit"></a><u>Function:</u> <b>sys-setrlimit</b><i> resource current :optional maximum</i></dt>
+<dd><p>[POSIX] Get and set resource limits respectively.
+<var>Resource</var> is an integer constant to specify the resource
+of concern.  The following constants are defined.
+(The constants marked as bsd and/or linux indicates that they
+are not defined in POSIX but defined in BSD and/or Linux.
+Other systems may or may not have them.  Consult <code>getrlimit</code>
+manpage of your system for the details.)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">RLIMIT_AS                      RLIMIT_CORE
+RLIMIT_CPU                     RLIMIT_DATA
+RLIMIT_FSIZE                   RLIMIT_LOCKS
+RLIMIT_MEMLOCK (bsd/linux)     RLIMIT_MSGQUEUE (linux)
+RLIMIT_NICE (linux)            RLIMIT_NOFILE
+RLIMIT_NPROC (bsd/linux)       RLIMIT_RSS (bsd/linux)
+RLIMIT_RTPRIO (linux)          RLIMIT_SIGPENDING (linux)
+RLIMIT_SBSIZE                  RLIMIT_STACK
+RLIMIT_OFILE
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-sys_002dstrerror"></a><u>Function:</u> <b>sys-strerror</b><i> errno</i></dt>
+<dd><p><var>error</var>はシステムエラー番号を表現する非負正確整数でなければなりま
+せん。この関数はエラーを説明する文字列を返します。
+</p>
+<p><var>errno</var>を表現するのに、以下の定義済み定数が使えます。各定数はシス
+テムエラーを表現する非負正確整数に束縛されています。実際の値はシステム
+ごとに違い、またシステムによっては定義されていない定数があるということ
+に注意してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">E2BIG             EHOSTDOWN         ENETDOWN          ENXIO
+EACCES            EHOSTUNREACH      ENETRESET         EOPNOTSUPP
+EADDRINUSE        EIDRM             ENETUNREACH       EOVERFLOW
+EADDRNOTAVAIL     EILSEQ            ENFILE            EPERM
+EADV              EINPROGRESS       ENOANO            EPFNOSUPPORT
+EAFNOSUPPORT      EINTR             ENOBUFS           EPIPE
+EAGAIN            EINVAL            ENOCSI            EPROTO
+EALREADY          EIO               ENODATA           EPROTONOSUPPORT
+EBADE             EISCONN           ENODEV            EPROTOTYPE
+EBADF             EISDIR            ENOENT            ERANGE
+EBADFD            EISNAM            ENOEXEC           EREMCHG
+EBADMSG           EKEYEXPIRED       ENOKEY            EREMOTE
+EBADR             EKEYREJECTED      ENOLCK            EREMOTEIO
+EBADRQC           EKEYREVOKED       ENOLINK           ERESTART
+EBADSLT           EL2HLT            ENOMEDIUM         EROFS
+EBFONT            EL2NSYNC          ENOMEM            ESHUTDOWN
+EBUSY             EL3HLT            ENOMSG            ESOCKTNOSUPPORT
+ECANCELED         EL3RST            ENONET            ESPIPE
+ECHILD            ELIBACC           ENOPKG            ESRCH
+ECHRNG            ELIBBAD           ENOPROTOOPT       ESRMNT
+ECOMM             ELIBEXEC          ENOSPC            ESTALE
+ECONNABORTED      ELIBMAX           ENOSR             ESTRPIPE
+ECONNREFUSED      ELIBSCN           ENOSTR            ETIME
+ECONNRESET        ELNRNG            ENOSYS            ETIMEDOUT
+EDEADLK           ELOOP             ENOTBLK           ETOOMANYREFS
+EDEADLOCK         EMEDIUMTYPE       ENOTCONN          ETXTBSY
+EDESTADDRREQ      EMFILE            ENOTDIR           EUCLEAN
+EDOM              EMLINK            ENOTEMPTY         EUNATCH
+EDOTDOT           EMSGSIZE          ENOTNAM           EUSERS
+EDQUOT            EMULTIHOP         ENOTSOCK          EWOULDBLOCK
+EEXIST            ENAMETOOLONG      ENOTTY            EXDEV
+EFAULT            ENAVAIL           ENOTUNIQ          EXFULL
+EFBIG
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0099_0082_00e9_0096_0093"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0099_0082_00e9_0096_0093-1"></a>
+<h3 class="subsection">6.25.8 時間</h3>
+
+<p>Gaucheでは時間は2種類の表現を持ちます。ひとつはPOSIX APIとコンパチブルな
+表現で、もう一つはSRFI-18、SRFI-19、SRFI-21とコンパチブルな表現です。
+多くの手続きはどちらの表現も理解しますが、そうでない場合は
+適用可能な表現を’POSIX time’または’SRFI time’と表記します。
+</p>
+<p>POSIX timeは実数で、Unix Epoch(Jan 1, 1970, 0:00:00GMT)からの秒数で
+表現されます。POSIXの<code>time(2)</code>に対応する<code>sys-time</code>手続きは
+この表現を返します。
+</p>
+<p>SRFI互換の時間は<code>&lt;time&gt;</code>クラスのインスタンスとして表現され、
+秒、およびナノ秒のスロットを持ちます。
+また、時間の種別(UTC、TAI、期間、プロセス時間、他)も保持しています。
+<code>Current-time</code>はこの表現を返します。
+</p>
+<a name="POSIX-time"></a>
+<h4 class="subsubheading">POSIX time</h4>
+
+<dl>
+<dt><a name="index-sys_002dtime"></a><u>Function:</u> <b>sys-time</b></dt>
+<dd><p>[POSIX] 現在の時間を POSIX 時間(エポック(00:00:00 UTC, January 1, 1970)
+からの秒数)で返します。マシンのアーキテクチャによっては、不正確数で
+あるかもしれません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgettimeofday"></a><u>Function:</u> <b>sys-gettimeofday</b></dt>
+<dd><p>2つの値を返します。1970/1/1 0:00:00 UTC を基準として、
+1つ目の値は秒数、2つ目の値は端数をマイクロ秒で表したものです。
+システムが <code>gettimeofday</code> 呼び出しをサポートしていない場合、
+この手続きは <code>time()</code> を呼び出し、その場合はマイクロ秒の
+部分はいつも 0 です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csys_002dtm_003e"></a><u>Builtin Class:</u> <b>&lt;sys-tm&gt;</b></dt>
+<dd><a name="index-sys_002dtm"></a>
+<p>カレンダーである、<code>struct tm</code> を表します。以下のスロットを持ちます。
+</p><dl>
+<dt><a name="index-sec"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>sec</b></dt>
+<dd><p>秒。0-61。
+</p></dd></dl>
+<dl>
+<dt><a name="index-min-1"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>min</b></dt>
+<dd><p>分。0-59。
+</p></dd></dl>
+<dl>
+<dt><a name="index-hour"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>hour</b></dt>
+<dd><p>時。0-23。
+</p></dd></dl>
+<dl>
+<dt><a name="index-mday"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>mday</b></dt>
+<dd><p>月の日。1 から数える。1-31。
+</p></dd></dl>
+<dl>
+<dt><a name="index-mon"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>mon</b></dt>
+<dd><p>月。0 から数える。0-11。
+</p></dd></dl>
+<dl>
+<dt><a name="index-year"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>year</b></dt>
+<dd><p>1900年からの年数。例えば、102 なら 2002年。
+</p></dd></dl>
+<dl>
+<dt><a name="index-wday"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>wday</b></dt>
+<dd><p>曜日。日曜は 0 .. 土曜は 6。
+</p></dd></dl>
+<dl>
+<dt><a name="index-yday"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>yday</b></dt>
+<dd><p>1年の中での日数。1月1日は 0 .. 12月31日は 364 か 365。
+</p></dd></dl>
+<dl>
+<dt><a name="index-isdst"></a><u>Instance Variable of &lt;sys-tm&gt;:</u> <b>isdst</b></dt>
+<dd><p>夏時間が有効であるかどうかを指定するフラグ。有効なら正の数、無効なら 0、
+分からなければ負の数。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgmtime"></a><u>Function:</u> <b>sys-gmtime</b><i> time</i></dt>
+<dt><a name="index-sys_002dlocaltime"></a><u>Function:</u> <b>sys-localtime</b><i> time</i></dt>
+<dd><p>[POSIX] <var>time</var> を <code>&lt;sys-tm&gt;</code> オブジェクトに変換します。
+標準時での表現かローカルタイムゾーンでの表現かで使い分けます。
+<var>Time</var> は POSIX 時間か SRFI 時間です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dctime"></a><u>Function:</u> <b>sys-ctime</b><i> time</i></dt>
+<dd><p>[POSIX] <var>time</var> を POSIX の ctime() を使って文字列表現に変換します。
+<var>Time</var> は POSIX 時間か SRFI 時間です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002ddifftime"></a><u>Function:</u> <b>sys-difftime</b><i> time1 time0</i></dt>
+<dd><p>[POSIX] 2つの時間の差を、秒の実数で返します。<var>Time0</var> と<var>time1</var> は
+POSIX 時間か SRFI 時間です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dasctime"></a><u>Function:</u> <b>sys-asctime</b><i> tm</i></dt>
+<dd><p>[POSIX] <code>&lt;sys-tm&gt;</code> オブジェクトである <var>tm</var> を文字列表現に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dstrftime"></a><u>Function:</u> <b>sys-strftime</b><i> format tm</i></dt>
+<dd><p>[POSIX] <code>&lt;sys-tm&gt;</code> オブジェクトである <var>tm</var> を、フォーマット文字列
+<var>format</var> に従って文字列表現に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dmktime"></a><u>Function:</u> <b>sys-mktime</b><i> tm</i></dt>
+<dd><p>[POSIX] ローカルタイムとして表現された <code>&lt;sys-tm&gt;</code> オブジェクトである
+<var>tm</var> を POSIX 時間(エポックからの秒数)に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dtm_002d_003ealist"></a><u>Function:</u> <b>sys-tm-&gt;alist</b><i> tm</i></dt>
+<dd><p>(Deprecated function)
+</p></dd></dl>
+
+
+<a name="SRFI-time"></a>
+<h4 class="subsubheading">SRFI time</h4>
+
+<dl>
+<dt><a name="index-_003ctime_003e"></a><u>Builtin Class:</u> <b>&lt;time&gt;</b></dt>
+<dd><p>ある時刻を表す<code>&lt;time&gt;</code>オブジェクトです。
+</p>
+<a name="index-time"></a>
+<dl>
+<dt><a name="index-type-1"></a><u>Instance Variable of &lt;time&gt;:</u> <b>type</b></dt>
+<dd><p>timeの型を表します。デフォルトは<code>time-utc</code>で、Unixエポックからの
+秒数を表します。SRFI-19(<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"><code>srfi-19</code> - 時間のデータ型と手続き</a>参照)
+ではさらに型が追加されています。
+</p></dd></dl>
+<dl>
+<dt><a name="index-second"></a><u>Instance Variable of &lt;time&gt;:</u> <b>second</b></dt>
+<dd><p>timeの秒の部分です。
+</p></dd></dl>
+<dl>
+<dt><a name="index-nanosecond"></a><u>Instance Variable of &lt;time&gt;:</u> <b>nanosecond</b></dt>
+<dd><p>timeのナノ秒の部分です。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-current_002dtime"></a><u>Function:</u> <b>current-time</b></dt>
+<dd><p>[SRFI-18][SRFI-21]
+現在の時間を<code>time-utc</code>で表す<code>&lt;time&gt;</code>オブジェクトを返します。
+<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"><code>srfi-19</code> - 時間のデータ型と手続き</a>では、<code>current-time</code>が再定義され、
+timeの型を指定するオプショナル引数を受け付けるようにされています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_003f"></a><u>Function:</u> <b>time?</b><i> obj</i></dt>
+<dd><p>[SRFI-18][SRFI-19][SRFI-21]
+<var>obj</var>がtimeオブジェクトなら<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002d_003eseconds"></a><u>Function:</u> <b>time-&gt;seconds</b><i> time</i></dt>
+<dt><a name="index-seconds_002d_003etime"></a><u>Function:</u> <b>seconds-&gt;time</b><i> seconds</i></dt>
+<dd><p>[SRFI-18][SRFI-21]
+timeオブジェクトと秒数(POSIX時間)を変換します。
+<code>time-&gt;seconds</code>の引数<var>time</var>は、<code>&lt;time&gt;</code>オブジェクトで
+なければなりません。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086-1"></a>
+<h3 class="subsection">6.25.9 プロセス管理</h3>
+
+<p>以下の手続きは、システムコールに対する直接的なインタフェースを提供します。
+<a indepth="true" href="gauche-refj_95.html#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>gauche.process</code> - 高レベルプロセスインタフェース</a>も合わせて参照して下さい。
+より高レベルの便利な手続きが定義されています。
+</p>
+<a name="Fork-and-exec"></a>
+<h4 class="subsubheading">Fork and exec</h4>
+
+<dl>
+<dt><a name="index-sys_002dsystem"></a><u>Function:</u> <b>sys-system</b><i> command</i></dt>
+<dd><p>[POSIX]
+サブプロセスで<var>command</var>を実行します。<var>command</var>は通常、
+<code>sh</code>へ渡されるので、シェルのメタキャラクタは解釈されます。
+</p>
+<p>この関数は、<code>system()</code>が返した整数値を返します。
+POSIXは<code>system()</code>が何を返すかを定義していないので、
+戻り値をポータブルな方法で解釈することができません。
+</p>
+<p>Windowsネイティブな環境では、引数は<code>cmd.exe</code>に渡されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfork"></a><u>Function:</u> <b>sys-fork</b></dt>
+<dd><p>[POSIX]
+現在のプロセスをフォークします。子プロセスにいるならば0が返り、
+親プロセスにいるならば子プロセスのプロセスIDが返ります。
+全ての開かれているファイルディスクリプタは、親プロセスと子プロセスで
+共有されます。詳細は、システムの<code>fork(2)</code>を参照して下さい。
+</p>
+<p>子プロセスが<code>sys-exec</code>を呼ぶ代わりにSchemeコードを実行して
+終了する場合は、<code>exit</code>ではなく<code>sys-exit</code>を呼ぶ必要があります。
+通常のexitの呼び出しはファイルバッファのフラッシュを試み、
+OSによっては親のファイルバッファを混乱させるでしょう。
+</p>
+<p><code>sys-fork</code>は複数のスレッドが走っている時には安全ではないことに
+注意してください。<code>fork(2)</code>システムコールはプロセスのメモリイメージを
+複製しますが、それには他のスレッドでロックされているmutexも含まれます。
+もし<code>sys-fork</code>の瞬間に他のスレッドが何かをロックしていたとすれば、
+子プロセスでもその資源はロックされたままになりますが、
+その時子プロセスはもはやその資源をアンロックするスレッドを持っていません。
+(これは内部で使っているmutexにも起こり得るため、Schemeレベルでmutexを
+全く使っていないとしても防ぐことはできません)。
+</p>
+<p>やりたいことが、マルチスレッドアプリケーションで別プログラムをspawnする
+ことであるなら、下に説明する<code>sys-fork-and-exec</code>を使ってください。
+どうしても別プロセスでSchemeコードを走らせたいのなら、よくある方法は、
+アプリケーションの起動後すぐにマネージャプロセスとなる子プロセスをfork
+しておき、新たなプロセスが欲しくなったらそのマネージャプロセスに
+forkを依頼するという方法です。
+</p>
+<p>Windowsネイティブな環境ではこの手続きは使えません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dexec"></a><u>Function:</u> <b>sys-exec</b><i> command args :key directory iomap sigmask</i></dt>
+<dd><p>[POSIX+]
+<var>command</var>を引数のリストである<var>args</var>を伴って実行します。
+現在のプロセスイメージは<var>command</var>に置き換えられるので、
+この関数は戻りません。
+</p>
+<p><var>args</var>の全ての要素は文字列でなければなりません。
+<var>args</var>の最初の要素は、<code>argv[0]</code>、すなわちプログラム名として
+使われます。
+</p>
+<p>キーワード引数<var>directory</var>は文字列によるディレクトリ名
+か<code>#f</code>でなければなりません。
+文字列だった場合、<code>sys-exec</code>はプログラムを実行する前に
+カレントワーキングディレクトリを指定ディレクトリに移動します。
+</p>
+<p>キーワード引数の<var>iomap</var>は、与えられた場合は、開かれている
+ファイルディスクリプタがどのように扱われるかを指定します。
+この引数は以下のフォーマットでなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((<i>to-fd</i> . <i>from-port-or-fd</i>) …)
+</pre></td></tr></tbody></table>
+<p><i>to-fd</i>は整数でなければならず、<i>from-port-or-fd</i>は整数のファイル
+ディスクリプタかポートでなければなりません。
+リストのそれぞれの要素は、現在のプロセスの<i>from-port-or-fd</i>の
+ファイルディスクリプタを、実行されているプロセスのファイルディスクリプタ
+<i>to-fd</i>にマップさせます。
+</p>
+<p><var>iomap</var>が与えられると、iomapリストで指定されていないいかなるファイル
+ディスクリプタも<code>exec()</code>の前に閉じられます。さもなければ、現在のプロセスの
+全てのファイルディスクリプタは開かれたままになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sys-exec "ls" '("ls" "-l")) ⇒ ;; ls is executed.
+
+(let ((out (open-output-file "ls.out")))
+  (sys-exec "ls" '("ls" "-l") :iomap `((2 . 1) (1 . ,out)))
+   ⇒
+  ;; ls is executed, with its stderr redirected
+  ;; to the current process's stdout, and its
+  ;; stdout redirected to the file "ls.out".
+</pre></td></tr></tbody></table>
+
+<p><var>sigmask</var>キーワード引数には、<code>&lt;sys-sigset&gt;</code>のインスタンスか
+<code>#f</code>を渡すことができます (シグナルマスクについてはSee section <a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab">シグナル</a>を
+参照して下さい)。<code>&lt;sys-sigset&gt;</code>のインスタンスを渡した場合、
+この関数を呼び出したスレッドのシグナルマスクが、<code>exec(2)</code>を呼ぶ
+直前にそれによって置き換えられます。
+これは、全てのシグナルをブロックしているスレッドから外部プログラムを走らせる
+ような場合に便利です (<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">シグナルとスレッド</a>で述べるように、
+新たなスレッドは全てのシグナルをデフォルトでブロックします)。
+このような場合に<var>sigmask</var>を設定しないと、<code>exec</code>されたプロセスは
+スレッドのシグナルマスクを継承し、ほとんどのシグナルを受け付けないプロセスと
+なってしまうからです。通常、それはあまり便利ではありません。
+</p>
+<p><code>sys-exec</code>がエラーに遭遇すると、たいていの場合エラー条件を投げます。
+しかし一旦ファイルディスクリプタの順番が変えられると、合理的な方法でエラーを処理する
+ことは実行不可能です(標準エラーがまだ有効かどうかさえ知る術がありません)。
+したがって、その場合はGaucheはエラー時には単に終了するだけです。
+</p>
+<p>Windowsネイティブ環境では、標準入力、標準出力、標準エラー出力に
+関するリダイレクションのみが処理されます。Windowsはプロセス間通信としての
+シグナルをサポートしないので、シグナルマスクは無視されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfork_002dand_002dexec"></a><u>Function:</u> <b>sys-fork-and-exec</b><i> command args :key directory iomap sigmask detached</i></dt>
+<dd><p><code>sys-exec</code>と同じですが、ファイルディスクリプタとシグナルマスクを変更して
+<code>execvp(2)</code>を実行する直前に、<code>fork(2)</code>を実行します。
+子プロセスのプロセスidを返します。引数の意味は<code>sys-exec</code>と同じです。
+</p>
+<p>他のスレッドが走っている環境下で別プログラムをspawnしたい場合は、
+<code>sys-fork</code>と<code>sys-exec</code>を別々に使うのではなく、
+この手続きを使ってください。
+この手続き中では、<code>fork(2)</code>と<code>execvp(2)</code>の間で
+メモリアロケーションもロックの獲得も行われないため、
+マルチスレッド環境で実行しても安全になっています。
+</p>
+<p>Windowsネイティブ環境では、この手続きはプロセスIDではなく
+作られたプロセスに対するWindowsのハンドルオブジェクト
+(<code>&lt;win:handle&gt;</code>) を返します。Windowsプロセスハンドル
+特有の手続きについては後に述べます。
+</p>
+<p>また、<code>sys-exec</code>同様、Windowsネイティブ環境では、標準入力、標準出力、標準エラー出力に
+関するリダイレクションのみが処理されます。
+</p>
+<p><var>detached</var>キーワード引数に真の値が与えられた場合、
+実行されるプロセスは現在のプロセスグループからは切り離されます。
+つまり、現在のプロセスグループに送られるシグナルを、新しいプロセスは受け取りません。
+この動作はデーモンプロセスを作る際の標準的な手順のひとつです。
+</p>
+<p>Unixでは、実行されるプロセスが<code>setsid(2)</code>を呼んで
+独自のセッションを作るだけでなく、余分な<code>fork(2)</code>
+を実行することで親を<code>init</code>プロセス (pid=1) に切り替えます。
+(つまり、実行されるプロセスは実は呼び出すプロセスの孫にあたります。
+親子関係はなくなりますが。返されるpidは実際に走っているこのプロセスのもので、
+すぐに終了する中間プロセスのものではありません。)
+</p>
+<p>実行されるプロセスの親が
+また。Windowsネイティブ環境では、
+実行されるプロセスが新たに作られたプロセスグループに属します。
+</p>
+<p>Windowsネイティブ環境では、このフラグがあると
+プロセス作成時に<code>CREATE_NEW_PROCESS_GROUP</code>フラグが使われます。
+</p></dd></dl>
+
+<a name="Wait"></a>
+<h4 class="subsubheading">Wait</h4>
+
+<dl>
+<dt><a name="index-sys_002dwait"></a><u>Function:</u> <b>sys-wait</b></dt>
+<dd><p>[POSIX] システムの<code>wait(2)</code>を呼びます。プロセスは、子プロセスの1つが
+終了するまでその実行を一時停止します。2つの正確整数、1つ目は子プロセスのID、
+2つ目はステータスコードを返します。ステータスコードは以下の関数によって
+解釈できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwaitpid"></a><u>Function:</u> <b>sys-waitpid</b><i> pid :key nohang untraced</i></dt>
+<dd><p>[POSIX] これは、waitの拡張バージョンである、<code>waitpid(3)</code>への
+インターフェースです。
+</p>
+<p><var>pid</var>は、待つべき子プロセスを指定する正確な整数です。正の整数ならば、
+特定の子プロセスを待ちます。0ならば、このプロセスグループのいずれかの
+メンバを待ちます。-1ならば、いずれかの子プロセスを待ちます。
+-1よりも小さければ、プロセスグループIDが<var>pid</var>の絶対値と等しいいずれかの
+子プロセスを待ちます。
+</p>
+<p>待つべき子プロセスが存在しない場合や、<var>pid</var>に具体的なプロセスIDが
+与えられたがそれが現在のプロセスの子プロセスで内場合は
+エラー(<code>&lt;system-error&gt;</code>, <code>ECHILD</code>)となります。
+</p>
+
+<p>キーワード引数<var>nohang</var>に真値が指定されていなければ、
+呼んでいるプロセスは、それらの子プロセスのうちの1つが終了するまで一時停止します。
+</p>
+<p>キーワード引数<var>untraced</var>に真値が指定されていれば、
+停止した子プロセスのステータスも返ります。
+</p>
+<p>戻り値は2つの正確整数で、1つ目は子プロセスのID、2つ目はステータスコードです。
+<var>nohang</var>が真で子プロセスのステータスが利用できない場合は、1つ目の値は0です。
+</p>
+<p>Windowsネイティブ環境では、この関数は<var>pid</var>にWindowsプロセスハンドル
+(<code>&lt;win:handle&gt;</code>)オブジェクトを受け取ることもできます。
+その場合はそのハンドルの指すプロセスの終了を待ちます。
+また、<code>-1</code>を渡していずれかの子プロセスの終了を待つこともできますが、
+特定のプロセスグループの中の子プロセスを待つことはできません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwait_002dexited_003f"></a><u>Function:</u> <b>sys-wait-exited?</b><i> status</i></dt>
+<dt><a name="index-sys_002dwait_002dexit_002dstatus"></a><u>Function:</u> <b>sys-wait-exit-status</b><i> status</i></dt>
+<dd><p>[POSIX]
+引数は<code>sys-wait</code>か<code>sys-waitpid</code>の2番目の値として返される
+終了ステータスです。子プロセスが正常終了したら、<code>sys-wait-exited?</code>は
+<code>#t</code>を返します。<code>sys-wait-exit-status</code>は、子プロセスが
+<code>exit(2)</code>に渡した終了コードか、<code>main()</code>の戻り値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwait_002dsignaled_003f"></a><u>Function:</u> <b>sys-wait-signaled?</b><i> status</i></dt>
+<dt><a name="index-sys_002dwait_002dtermsig"></a><u>Function:</u> <b>sys-wait-termsig</b><i> status</i></dt>
+<dd><p>[POSIX]
+引数は、<code>sys-wait</code>か<code>sys-waitpid</code>の2つ目の戻り値である終了ステータスです。
+子プロセスが捕捉されないシグナルで終了した場合は、<code>sys-wait-signaled?</code>は
+<code>#t</code>を返します。
+<code>sys-wait-termsig</code>は、子プロセスを終了したシグナルの番号を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwait_002dstopped_003f"></a><u>Function:</u> <b>sys-wait-stopped?</b><i> status</i></dt>
+<dt><a name="index-sys_002dwait_002dstopsig"></a><u>Function:</u> <b>sys-wait-stopsig</b><i> status</i></dt>
+<dd><p>[POSIX]
+引数は、<code>sys-waitpid</code>の2つ目の戻り値である終了ステータスです。
+子プロセスが停止されれば、<code>sys-wait-stopped?</code>は<code>#t</code>を
+返します。このステータスは、<code>sys-waitpid</code>が<var>untraced</var>引数に
+真値を持っている場合にのみ捕捉されます。<code>sys-wait-stopsig</code>は
+子プロセスを停止させたシグナルの番号を返します。
+</p></dd></dl>
+
+<p>Windowsネイティブ環境では、終了コードはUnixのように構造化されておらず、
+プロセスが自発的に終了したか強制的に終了させられたかを判断する一般的な方法は
+ありません。Gauche自身は他のプロセスを<code>sys-kill</code>で
+終了させる場合に終了コード<code>#xff09</code>を送り、上の<code>sys-wait-*</code>
+手続きもそれに合わせてあります。従ってGaucheによって終了させられたプロセスでは
+<code>sys-wait-signaled?</code>でそのことを検出できる可能性が高いでしょう。
+(Windows上のシグナルのサポートについては<a href="#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab">シグナル</a>を参照してください。)
+Windowsネイティブ環境では、<code>sys-wait-stopped?</code>が真を返すことは
+(今のところ)ありません。
+</p>
+<a name="Windows-specific-utilities"></a>
+<h4 class="subsubheading">Windows specific utilities</h4>
+
+<p>The following procedures are to access Windows process handle.
+They are only available on Windows native platforms.
+</p>
+<dl>
+<dt><a name="index-sys_002dwin_002dprocess_003f"></a><u>Function:</u> <b>sys-win-process?</b><i> obj</i></dt>
+<dd><p>[Windows] Returns <code>#t</code> iff <var>obj</var> is a Windows process handle object.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dwin_002dprocess_002dpid"></a><u>Function:</u> <b>sys-win-process-pid</b><i> handle</i></dt>
+<dd><p>[Windows] Returns an integer PID of the process represented by
+a Windows process handle <var>handle</var>.  An error is signalled
+if <var>handle</var> is not a valid Windows process handle.
+</p>
+<p>Note that the API to get a pid from a process handle is only
+provided on or after Windows XP SP1.  If you call this
+procedure on Windows version before that, <code>-1</code> will be
+returned.
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096-1"></a>
+<h3 class="subsection">6.25.10 I/Oの多重化</h3>
+
+<p><code>select(2)</code>へのインターフェース関数です。
+これらのプリミティブの上に構築された高次元のインターフェースが
+提供されています。<a indepth="true" href="gauche-refj_98.html#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3"><code>gauche.selector</code> - 簡単なディスパッチャ</a>を
+参照して下さい。
+</p>
+<dl>
+<dt><a name="index-_003csys_002dfdset_003e"></a><u>Builtin Class:</u> <b>&lt;sys-fdset&gt;</b></dt>
+<dd><a name="index-sys_002dfdset"></a>
+<p>ファイルディスクリプタの集合である<code>fd_set</code>を表します。
+makeメソッドによって、空のファイルディスクリプタの集合を作れます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make &lt;sys-fdset&gt;)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfdset-1"></a><u>Function:</u> <b>sys-fdset</b><i> elt …</i></dt>
+<dd><p><var>elt</var> …で指定されたファイルディスクリプタを持つ
+新たな<code>&lt;sys-fdset&gt;</code>のインスタンスを作成して返します。
+各<var>elt</var>は、ファイルディスクリプタを指定する整数、ポート、
+もしくは<code>&lt;sys-fdset&gt;</code>のインスタンスでなければなりません。
+最後の場合は、与えられたfdsetに含まれるディスクリプタが
+新たなfdsetにコピーされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfdset_002dref"></a><u>Function:</u> <b>sys-fdset-ref</b><i> fdset port-or-fd</i></dt>
+<dt><a name="index-sys_002dfdset_002dset_0021"></a><u>Function:</u> <b>sys-fdset-set!</b><i> fdset port-or-fd flag</i></dt>
+<dd><p><var>fdset</var>の特定のファイルディスクリプタビットを取得・セットできます。
+<var>port-or-fd</var>は関連付けられたファイルディスクリプタを持っていないポートで、
+<code>sys-fdset-ref</code>は<code>#f</code>を返し、<code>sys-fdset-set!</code>は<var>fdset</var>を
+変更しません。<var>flag</var>は真偽値でなければなりません。
+</p>
+<p>下記のように、<code>sys-fdset-ref</code>のジェネリックなセッタが使えます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(set! (sys-fdset-ref fdset port-or-fd) flag)
+  ≡ (sys-fdset-set! fdset port-or-fd flag)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfdset_002dcopy_0021"></a><u>Function:</u> <b>sys-fdset-copy!</b><i> dest-fdset src-fdset</i></dt>
+<dd><p><var>src-fdset</var>の内容を<var>dest-fdset</var>にコピーします。
+<var>dest-fdset</var>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfdset_002dclear_0021"></a><u>Function:</u> <b>sys-fdset-clear!</b><i> fdset</i></dt>
+<dd><p><var>fdset</var>の内容をクリアし、それ自身を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfdset_002d_003elist"></a><u>Function:</u> <b>sys-fdset-&gt;list</b><i> fdset</i></dt>
+<dt><a name="index-list_002d_003esys_002dfdset"></a><u>Function:</u> <b>list-&gt;sys-fdset</b><i> fds</i></dt>
+<dd><p>fdsetを整数のファイルディスクリプタのリストに変換し、またその逆を行います。
+実際は、<code>list-&gt;sys-fdset</code>は
+<code>(lambda (fds) (apply sys-fdset fds))</code> のように動作するため、
+整数のファイルディスクリプタ以外にポートや他のfdsetを与えることもできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dfdset_002dmax_002dfd"></a><u>Function:</u> <b>sys-fdset-max-fd</b><i> fdset</i></dt>
+<dd><p><var>fdset</var>にある最大のファイルディスクリプタ番号を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dselect"></a><u>Function:</u> <b>sys-select</b><i> readfds writefds exceptfds :optional timeout</i></dt>
+<dt><a name="index-sys_002dselect_0021"></a><u>Function:</u> <b>sys-select!</b><i> readfds writefds exceptfds :optional timeout</i></dt>
+<dd><p>ステータスを変更するためにファイルディスクリプタの集合を待ちます。
+<var>readfds</var>、<var>writefds</var>、<var>exceptfds</var>は、注目するファイル
+ディスクリプタの集合を表す<code>&lt;fdset&gt;</code>オブジェクトです。
+<var>readfds</var>にあるファイルディスクリプタは、文字を読み込む準備が
+出来たかどうかを検査するために監視されています。
+<var>writefds</var>にあるファイルディスクリプタはそこへ書き込むことができる
+ようになったか監視されています。<var>exceptfds</var>にあるファイルディスクリプタは
+例外のために監視されています。条件を監視する必要がない場合は、これらの引数の
+1つ以上に<code>#f</code>を渡すことができます。
+</p>
+<p><var>timeout</var>は<code>sys-select</code>が条件の変更を待つ最大の時間を指定します。
+それは、マイクロ秒を表す実数か、1つ目が秒数で2つ目がマイクロ秒である
+2つの整数からなるリストです。<code>#f</code>を渡すと、<code>sys-select</code>は
+永久に待ちます。
+</p>
+<p><code>sys-select</code>は4つの値を返します。1つ目の値は、ステータスの変更を
+検知したディスクリプタの数です。timeoutが経過したら0になるでしょう。
+2、3、4番目の値は、それぞれ読み込み、書き出し、例外のステータスを変更
+するディスクリプタの集合を含む<code>&lt;fdset&gt;</code>オブジェクトです。
+<var>readfds</var>、<var>writefds</var>、<var>exceptfds</var>のうちの1つ以上に<code>#f</code>を
+渡すと、対応する戻り値は<code>#f</code>になります。
+</p>
+<p><code>sys-select!</code>の仲間は、それが渡された引数<code>&lt;fdset&gt;</code>を変更することを
+除けば、<code>sys-select</code>と同じように動作します。
+<code>sys-select</code>は、新しい<code>&lt;fdset&gt;</code>オブジェクトを作り、その
+引数を変更しません。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_64.html#g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab-1"></a>
+<h3 class="subsection">6.25.11 その他のシステムコール</h3>
+
+<dl>
+<dt><a name="index-sys_002dpause"></a><u>Function:</u> <b>sys-pause</b></dt>
+<dd><p>[POSIX]
+シグナルキャッチ関数の実行かプロセスの終了を指示するシグナルを
+受け取るまでプロセスを一時停止します。この関数は、シグナルキャッチ関数が
+戻ったときにのみ戻ります。戻り値は未定義です。
+</p>
+<p>Schemeレベルでは、<code>pause()</code>を呼ぶだけでは上記のセマンティクスを
+満足しません。内部的にこの手続きは現在のシグナルマスクを伴って、
+<code>sigsuspend()</code>を呼びます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dalarm"></a><u>Function:</u> <b>sys-alarm</b><i> seconds</i></dt>
+<dd><p>[POSIX] SIGALRMシグナルが<var>seconds</var>秒後に送出されるように準備します。
+以前のアラームクロックのセッティングはキャンセルされます。
+<var>seconds</var>に0を渡すと、新しいアラームをスケジューリングしません。
+以前にスケジューリングされていたアラームが送出されるまでの残り時間を
+秒数で返します(アラームがアクティブでない場合は0を返します)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsleep"></a><u>Function:</u> <b>sys-sleep</b><i> seconds</i></dt>
+<dd><p>[POSIX] 指定された秒数が経過するまで、あるいはプロセスがシグナルを受け取るまで
+スレッドを一時停止します。指定時間が満了した場合は0を返し、
+シグナルによって一時停止が解除された場合は、満了までの秒数を返します。
+</p>
+<p>POSIX実装間でポータブルにするためには、<var>seconds</var>を65536より小さく保って
+下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dnanosleep"></a><u>Function:</u> <b>sys-nanosleep</b><i> nanoseconds</i></dt>
+<dd><p>[POSIX]
+指定されたナノ秒が経過するか、シグナルを受け取るまでプロセスを一時停止します。
+引数<var>nanoseconds</var>は<code>&lt;time&gt;</code>オブジェクト(<a href="#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)か
+実数です。<var>nanoseconds</var>が経過したら<code>#f</code>を返し、
+<code>sys-nanosleep</code>がシグナルによって割り込まれると残りの時間を表す
+<code>&lt;time&gt;</code>オブジェクトを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;<span class="roman">wait for 0.5 sec</span>
+(sys-nanosleep 500000000)
+
+;<span class="roman">wait for 1.3 sec</span>
+(sys-nanosleep (make &lt;time&gt; :second 1 :nanosecond 300000000))
+</pre></td></tr></tbody></table>
+
+<p>Windowsネイティブ環境では、この関数は<code>Sleep</code>によってエミュレートされます。
+引数はミリ秒の単位に切り上げられます。またシグナルによって中断されることはありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002drandom"></a><u>Function:</u> <b>sys-random</b></dt>
+<dt><a name="index-sys_002dsrandom"></a><u>Function:</u> <b>sys-srandom</b><i> seed</i></dt>
+<dd><p>擬似的な乱数ジェネレータです。
+<code>sys-random</code>は0から<var>rand_max</var>(それ自体を含む)までの間で乱数を
+返します。これは<code>random(3)</code>への直接的なインターフェースです。
+システムに<code>random(3)</code>がない場合、<code>lrand48(3)</code>が使われます。
+</p>
+<p><code>sys-srandom</code>は乱数ジェネレータの種をセットします。
+システムによって、<code>srandom(3)</code>か<code>srand48(3)</code>を使います。
+</p>
+<p>これらの関数の意図は、乱数ジェネレータ(RNG; random number generator)の
+品質や速度を気にしないアプリケーションに、簡便なRNGを提供することです。
+本格的な統計分析には、<code>math.mt-random</code>モジュールのMersenne Twister RNGを
+使って下さい(<a indepth="true" href="gauche-refj_142.html#Mersenne-Twister_00e4_00b9_00b1_00e6_0095_00b0_00e7_0099_00ba_00e7_0094_009f_00e5_0099_00a8"><code>math.mt-random</code> - Mersenne Twister乱数発生器</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-RAND_005fMAX"></a><u>Variable:</u> <b>RAND_MAX</b></dt>
+<dd><p><code>sys-random</code>が返す正の整数に束縛されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dget_002dosfhandle"></a><u>Function:</u> <b>sys-get-osfhandle</b><i> port-or-fd</i></dt>
+<dd><p>[Windows] This procedure is only available on Windows native platforms.
+Returns a Windows file handle associated to the given port or
+integer file descriptor.   Throws an error if the given argument
+does not have associated file handle.
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#I_002fO_00e3_0081_00ae_00e5_00a4_009a_00e9_0087_008d_00e5_008c_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_64.html#g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

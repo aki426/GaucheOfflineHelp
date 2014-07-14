@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.2 binary.pack - バイナリデータのパック</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.2 binary.pack - バイナリデータのパック">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.2 binary.pack - バイナリデータのパック">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_127.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_129.html#compat_002enorational-_002d-_00e6_009c_0089_00e7_0090_0086_00e6_0095_00b0_00e3_0081_00ae_00e3_0081_00aa_00e3_0081_0084_00e7_00ae_0097_00e8_00a1_0093_00e6_00bc_0094_00e7_00ae_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="binary_002epack-_002d-_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"></a>
+<h2 class="section">11.2 <code>binary.pack</code> - バイナリデータのパック</h2>
+
+<dl>
+<dt><a name="index-binary_002epack"></a><u>Module:</u> <b>binary.pack</b></dt>
+<dd><a name="index-binary_002epack-1"></a>
+<p>このモジュールは、バイナリデータをテンプレートを使って
+パック/アンパック(読み書き)するためのインタフェースを提供します。
+この機能は、その多くをPerlのpack/unpack関数から着想し、他の言語での
+同じような機能と比較しながら、しかし、データベースライクな処理に
+便利なように、より一般的でより効率が良くなるように実装しました。
+これを受けて、最も大きな相違点は、全てのパック可能な値はアンパック
+可能で(逆も同様)、パック/アンパックのデフォルトの振る舞いはポートI/Oを
+使うので、巨大なファイルを読みながらそこからアンパックすることが
+できます。また、テンプレートはディスパッチクロージャとして格納でき、
+パック、アンパック、あるいは値のスキップさえも、テンプレートを
+パーズし直すことなく行えます。
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-pack"></a><u>Function:</u> <b>pack</b><i> template list :key :output :to-string?</i></dt>
+<dd><p><var>list</var>にある値を、文字列<var>template</var>で指定されたフォーマットに
+したがって、現在の出力ポートに書き出します。テンプレート文字列は、
+1文字のコードの連続で、オプションで(デフォルトが1である)カウント用の数字
+が続きます。
+</p>
+<p>フォーマット文字は一般的に、カウントを文字のバイト数と解釈する
+文字列型と、カウントを繰り返し指示子と解釈するオブジェクト型に
+分けられます。カウントは文字<code>*</code>で指定され、文字列型では
+文字列の全体の長さを、オブジェクト型では残りの全ての値を使うことを
+意味します。
+</p>
+<p>カウントは大括弧に囲まれたテンプレートとしても指定でき、その場合
+カウントはその大括弧を囲んでいるテンプレートのバイト数を意味します。
+例えば、<code>x[L]</code>はlongをスキップします。
+</p>
+<p>特別なフォーマット文字<code>/</code>は、パックされたデータが、値に続く
+動的なカウント分を含むという構造を表すために使われます。
+テンプレートは、<code>&lt;count-item&gt;/&lt;value-item&gt;</code>のように書かれ、
+ここでは<code>&lt;count-item&gt;</code>は数値のカウントと解釈されるいかなる
+テンプレート文字、<code>&lt;value-item&gt;</code>はこのカウントを使ういかなる
+他のテンプレート文字です。
+<code>&lt;value-item</code>&gt;の後に通常のカウントが与えられても、無視されます。
+</p>
+<p>フォーマット文字<code>@</code>は、カウントとともに使われ、テンプレートの
+最初からの絶対位置までパディングします。
+</p>
+<p>サブテンプレートは、括弧の中にグループ化されます。&lt;&gt;が使われると、
+ネストされたリストに再帰的に適用されるグループ化オペレータとしても
+振舞います。
+</p>
+<p>文字列型:
+</p>
+<dl compact="compact">
+<dt> <code>a</code></dt>
+<dd><p>任意の不完全文字列。NULLでパディングされます。
+</p>
+</dd>
+<dt> <code>A</code></dt>
+<dd><p>テキスト文字列。空白スペースでパディングされます。
+</p>
+</dd>
+<dt> <code>Z</code></dt>
+<dd><p>NULL終端(ASCIZ)文字列。NULLでパディングされます。
+</p>
+</dd>
+<dt> <code>b</code></dt>
+<dd><p>ビット文字列(それぞれのバイトにおけるビットオーダーは昇順)。
+</p>
+</dd>
+<dt> <code>B</code></dt>
+<dd><p>ビット文字列(それぞれのバイトにおけるビットオーダーは降順)。
+</p>
+</dd>
+<dt> <code>h</code></dt>
+<dd><p>16進文字列(低いニブルが先)。
+</p>
+</dd>
+<dt> <code>H</code></dt>
+<dd><p>16進文字列(高いニブルが先)。
+</p></dd>
+</dl>
+
+<p>オブジェクト型:
+</p>
+<dl compact="compact">
+<dt> <code>c</code></dt>
+<dd><p>符号付き8ビット整数。
+</p>
+</dd>
+<dt> <code>C</code></dt>
+<dd><p>符号なし8ビット整数。
+</p>
+</dd>
+<dt> <code>s</code></dt>
+<dd><p>符号付き16ビット整数。
+</p>
+</dd>
+<dt> <code>S</code></dt>
+<dd><p>符号なし16ビット整数。
+</p>
+</dd>
+<dt> <code>i</code></dt>
+<dd><p>符号付き整数(&gt;= 32ビット)。
+</p>
+</dd>
+<dt> <code>I</code></dt>
+<dd><p>符号なし整数(&gt;= 32ビット)。
+</p>
+</dd>
+<dt> <code>l</code></dt>
+<dd><p>符号付きlong(32ビット)。
+</p>
+</dd>
+<dt> <code>L</code></dt>
+<dd><p>符号なしlong(32ビット)。
+</p>
+</dd>
+<dt> <code>n, n!</code></dt>
+<dd><p>ネットワークオーダー(ビッグエンディアン)での符号なし/符号つきshort(16ビット)。
+</p>
+</dd>
+<dt> <code>N, N!</code></dt>
+<dd><p>ネットワークオーダー(ビッグエンディアン)での符号なし/符号つきlong(32ビット)。
+</p>
+</dd>
+<dt> <code>v, v!</code></dt>
+<dd><p>VAXオーダー(リトルエンディアン)での符号なし/符号つきshort(16ビット)。
+</p>
+</dd>
+<dt> <code>V, V!</code></dt>
+<dd><p>VAXオーダー(リトルエンディアン)での符号なし/符号つきlong(32ビット)。
+</p>
+</dd>
+<dt> <code>q</code></dt>
+<dd><p>符号付きquad(64ビット)。
+</p>
+</dd>
+<dt> <code>Q</code></dt>
+<dd><p>符号なしquad(64ビット)。
+</p>
+</dd>
+<dt> <code>f</code></dt>
+<dd><p>ネイティブ形式の単精度float。
+</p>
+</dd>
+<dt> <code>d</code></dt>
+<dd><p>ネイティブ形式の倍精度float。
+</p>
+</dd>
+<dt> <code>w</code></dt>
+<dd><p>BER圧縮された整数。ベース128における符号なし整数で、最も大きな桁が
+最初で、高いビットが最後の(一番小さな)バイト以外にセットされる。
+したがって、どのような大きさの整数もエンコードできるが、
+エンコーディングは効率的で、小さな整数は通常のchar/short/int
+エンコーディングの場合よりも占有する空間が少ない。
+</p>
+</dd>
+<dt> <code>x</code></dt>
+<dd><p>NULLバイト。
+</p>
+</dd>
+<dt> <code>o</code></dt>
+<dd><p>S式。<code>read</code>と<code>write</code>で扱われる。
+</p>
+</dd>
+</dl>
+
+<p>オプションのキーワード<var>:output</var>が与えられると、
+現在の出力ポートの代わりにそのポートが使われます。
+<var>:to-string?</var>が与えられそれが真である場合は、
+パックは蓄積され、その出力は文字列として返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(pack "CCCC" '(65 66 67 68) :to-string? #t)
+ ⇒ "ABCD"
+
+(pack "C/a*" '("hello") :to-string? #t)
+ ⇒ "\x05hello"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-unpack"></a><u>Function:</u> <b>unpack</b><i> template :key :input :from-string</i></dt>
+<dd><p>packの逆を行うもので、unpackは現在の入力ポートから、値が文字列の
+templateでパックされているものとして読み込み、その値をリストとして
+返します。unpackはpackと同じフォーマット文字列を受け付けます。
+また、いかなるリスト<var>x</var>とフォーマット文字列<var>fmt</var>においても、
+次のようなトートロジーが維持されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(equal? x (unpack fmt :from-string (pack fmt x :to-string? #t)))
+</pre></td></tr></tbody></table>
+
+<p>ただ一つの例外は、テンプレートが<code>*</code>を含み、<code>o</code>テンプレートが
+使われている場合です。これは、Schemeの数値リテラルは確実に区切られる
+ことができないからです(<code>pack</code>の将来のバージョンでは、
+新しいread構文を登録することによってこれは回避されるでしょう)。
+</p>
+<p>オプションのキーワード<var>:input</var>が与えられると、現在の入力ポートの
+代わりにそのポートが使われます。<var>:from-string</var>が与えられると、
+packはその文字列を入力とします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(unpack "CCCC" :from-string "ABCD")
+ ⇒ '(65 66 67 68)
+
+(unpack "C/a*" :from-string "\x05hello")
+ ⇒ '("hello")
+</pre></td></tr></tbody></table>
+
+<p><em>註:</em> 現在のバージョンには、<code>unpack</code>のテンプレートの
+<code>@</code>が想定したように動かないというバグがあります。
+将来のバージョンでfixされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-unpack_002dskip"></a><u>Function:</u> <b>unpack-skip</b><i> template :key :input</i></dt>
+<dd><p>unpack-skipは、値を返さないことを除いてunpackと同じです。
+いくつかのケースでは、特に固定サイズのテンプレートを使うときには、
+単に値を読み飛ばしたいときにより効率的です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dpacker"></a><u>Function:</u> <b>make-packer</b><i> template</i></dt>
+<dd><p>低レベルなインタフェースです。この関数は、pack、unpackやキャッシュ
+された同じテンプレートを読み飛ばす時に使われるディスパッチクロージャを
+返します。ディスパッチクロージャは、以下のようにシンボルメソッドを
+受け付けます。
+</p>
+<dl compact="compact">
+<dt> <code>'pack list</code></dt>
+<dd><p>listにあるアイテムを、現在の出力ポートへpackします。
+</p>
+</dd>
+<dt> <code>'unpack</code></dt>
+<dd><p>現在の入力ポートからアイテムをunpackします。
+</p>
+</dd>
+<dt> <code>'skip</code></dt>
+<dd><p>現在の入力ポートからのアイテムをスキップします。
+</p>
+</dd>
+<dt> <code>'packer</code></dt>
+<dd><p>キャッシュされた’packクロージャを返します。
+</p>
+</dd>
+<dt> <code>'unpacker</code></dt>
+<dd><p>キャッシュされた’unpackクロージャを返します。
+</p>
+</dd>
+<dt> <code>'skipper</code></dt>
+<dd><p>キャッシュされた’skipクロージャを返します。
+</p>
+</dd>
+<dt> <code>'length</code></dt>
+<dd><p>テンプレートの知られている固定された長さを返します。
+</p>
+</dd>
+<dt> <code>'variable-length?</code></dt>
+<dd><p>テンプレートが可変長の要素を持っている場合に#tを返します。
+</p></dd>
+</dl>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_127.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_129.html#compat_002enorational-_002d-_00e6_009c_0089_00e7_0090_0086_00e6_0095_00b0_00e3_0081_00ae_00e3_0081_00aa_00e3_0081_0084_00e7_00ae_0097_00e8_00a1_0093_00e6_00bc_0094_00e7_00ae_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

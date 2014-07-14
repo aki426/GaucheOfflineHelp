@@ -1,0 +1,1530 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.22 入出力</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.22 入出力">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.22 入出力">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_60.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_59.html#eval-_00e3_0081_00a8-repl" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b-1"></a>
+<h2 class="section">6.22 入出力</h2>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">6.22.1 ポート</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089">6.22.2 ポートとスレッド</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">6.22.3 ポート共通の操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">6.22.4 ファイルポート</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">6.22.5 文字列ポート</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">6.22.6 コーディング認識ポート</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_0085_00a5_00e5_008a_009b">6.22.7 入力</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_0087_00ba_00e5_008a_009b">6.22.8 出力</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088-1"></a>
+<h3 class="subsection">6.22.1 ポート</h3>
+
+<dl>
+<dt><a name="index-_003cport_003e"></a><u>Builtin Class:</u> <b>&lt;port&gt;</b></dt>
+<dd><a name="index-port-2"></a>
+<p>Portは、Schemeにおいて抽象化された入出力のインタフェースを提供します。
+Gaucheはportにいくつかの拡張を行い、いろいろなアプリケーションに対応できるようにしました。
+</p>
+<p>標準のSchemeでは、portはキャラクタを一文字づつ読み込む(一文字先読み可)、
+もしくは書き出すだけのもので、他の入出力ルーチンはその上に構築されています。
+</p>
+<p>Gaucheではさらに次のような操作がportに対して可能になっています。
+</p>
+<dl compact="compact">
+<dt> バイナリI/O</dt>
+<dd><p>キャラクタ毎でなく、オクテット毎のI/Oが可能です(Gaucheではマルチバイト文字を
+扱うので、この２つが異なることに注意して下さい)。大抵のポートでは
+キャラクタI/OとバイナリI/Oを混ぜて使うことができます。
+</p>
+<p>最も基本的なバイナリI/Oプリミティブは<code>read-byte</code>と<code>write-byte</code>です。
+また、より高機能な<code>pack</code>や<code>unpack</code>といった手続きが
+<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"><code>binary.pack</code> - バイナリデータのパック</a> で提供されています。
+</p>
+</dd>
+<dt> ブロックI/O</dt>
+<dd><p>ポートから指定した数のバイト列を読んだり、ポートへ書いたりできます。
+ポートがブロックI/Oを行うデバイスに接続されている場合、ある程度大きなブロック毎に
+読み書きすると効率の良いデータ転送ができます。
+</p>
+</dd>
+<dt> 変換</dt>
+<dd><p>ポートはまた、データストリームを変換するのにも使えます。例えば<code>gauche.charconv</code>
+モジュールでは、文字コード間の変換を行うポートを提供しています
+(詳しくは<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>を参照)。
+</p>
+</dd>
+<dt> 追加機能</dt>
+<dd><p>また、特殊な機能を実現するポートもあります。
+コーディング認識ポート(<a href="#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">コーディング認識ポート</a>参照)は
+ファイル中の特殊なコメントを認識して、そのファイルがどの文字エンコーディング
+で書かれているかを検出します。
+仮想ポート(<a indepth="true" href="gauche-refj_107.html#g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"><code>gauche.vport</code> - 仮想ポート</a>参照)はSchemeでふるまいをプログラムできる
+ポートを提供します。
+</p></dd>
+</dl>
+
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089-1"></a>
+<h3 class="subsection">6.22.2 ポートとスレッド</h3>
+
+<p>GaucheがスレッドサポートをONにしてコンパイルされている場合、
+組み込みのポート操作関数はポートをロックして、
+複数のスレッドからの同一のポートへのアクセスがポートの内部状態を壊さないように
+しています。
+(SRFI-18によって要求されている動作です)。
+ここで「組み込みのポート操作関数」はGaucheにより提供される、
+ポートを引数に取り何らかのI/O動作や問い合わせを行う手続きで、
+<code>read</code>/<code>write</code>、<code>read-char</code>/<code>write-char</code>、
+<code>port-&gt;string</code>等を含みます。
+但し、<code>call-with-*</code>や<code>with-*</code>系関数は、
+与えられた手続きを呼ぶ際にはポートをロックしません。
+その手続きが別のスレッドにポートを渡すかもしれず、Gaucheにはそれを知ることが
+できないからです。
+</p>
+<p>従って、マルチスレッド環境でポートへのアクセス競合により
+ポートの内部状態を壊してしまうんじゃないか、などとあまり神経質に
+なる必要はありません。但し、このロック機構はあくまで予想外の
+アクセス競合によってポートがおかしな状態になってしまうことを
+防ぐための安全ネットであって、一般的な排他制御機構として使われる
+ことは想定していないのに注意して下さい。このロックの実装は、
+ポートへのアクセス競合は例外的な場合のみであると仮定し、
+通常のアクセスにおけるオーバヘッドを避けるために、スピンロックを
+使用します。もし、意図的にポートアクセスが競合するようなコードを書く場合は、
+明示的に排他制御をしてください。
+</p>
+<dl>
+<dt><a name="index-with_002dport_002dlocking"></a><u>Function:</u> <b>with-port-locking</b><i> port thunk</i></dt>
+<dd><p><var>port</var>をロックし、<var>thunk</var>を実行します。
+ロックは<var>thunk</var>のダイナミックエクステントの期間有効です。
+</p>
+<p><var>port</var>がロックされている期間での組み込みのポートアクセス関数の
+呼び出しは排他制御をバイパスするため、性能向上が見込まれます。
+</p>
+<p>ロックの有効期間は<var>thunk</var>のダイナミックエクステントなので、
+<var>thunk</var>内から<code>with-port-locking</code>の外で捕捉された
+継続を呼んだ場合、ロックは解放されます。その後、<var>thunk</var>内で
+捕捉された継続が呼ばれた場合、再びロックが獲得されます。
+</p>
+<p><code>with-port-locking</code>はネスト可能です。ロックは最も外側の
+<code>with-port-locking</code>の期間中有効となります。
+</p>
+<p>この手続きはポート組込みのロック機構を利用します。つまり、ポートアクセスが
+競合した場合はbusy waitになるということです。この手続きはあくまで
+頻繁なロックによるオーバヘッドを回避するためのものです。
+もし本当に競合が予測される場合は明示的に排他制御を行ってください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_00a8_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h3 class="subsection">6.22.3 ポート共通の操作</h3>
+
+<dl>
+<dt><a name="index-port_003f"></a><u>Function:</u> <b>port?</b><i> obj</i></dt>
+<dt><a name="index-input_002dport_003f"></a><u>Function:</u> <b>input-port?</b><i> obj</i></dt>
+<dt><a name="index-output_002dport_003f"></a><u>Function:</u> <b>output-port?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var> がそれぞれポート、入力ポート、出力ポートなら真を返します。
+<code>port?</code>はR5RSの"Standard Procedures"の項には
+載っていませんが、"Disjointness of Types"の項に挙げられています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dclosed_003f"></a><u>Function:</u> <b>port-closed?</b><i> port</i></dt>
+<dd><p><var>obj</var>がポートであり、既に閉じられていた場合に真を返します。
+一度閉じたポートは再び開くことはできません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002dinput_002dport"></a><u>Function:</u> <b>current-input-port</b></dt>
+<dt><a name="index-current_002doutput_002dport"></a><u>Function:</u> <b>current-output-port</b></dt>
+<dd><p>[R5RS]
+現在の入力ポートと出力ポートをそれぞれ返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002derror_002dport"></a><u>Function:</u> <b>current-error-port</b></dt>
+<dd><p>現在のエラーポートを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-standard_002dinput_002dport"></a><u>Function:</u> <b>standard-input-port</b><i> :optional new-port</i></dt>
+<dt><a name="index-standard_002doutput_002dport"></a><u>Function:</u> <b>standard-output-port</b><i> :optional new-port</i></dt>
+<dt><a name="index-standard_002derror_002dport"></a><u>Function:</u> <b>standard-error-port</b><i> :optional new-port</i></dt>
+<dd><p>引数無しで呼ぶと、プログラム開始時点の標準入出力ポートを返します。これらの値が
+<code>current-input-port</code>、<code>current-output-port</code>、
+<code>current-error-port</code>のデフォルトとなります。
+</p>
+<p>引数にポート(<code>standard-input-port</code>には入力ポート、
+<code>standard-output-port</code>と<code>standard-error-port</code>には
+出力ポート)を渡すことで、これらの手続きが次回から返すポートを変えることができます。
+引数ありで呼ばれた場合、これらの手続きは変更前の、現在の値を返します。
+Schemeプログラムからこれらの値を変更する必要はほとんどないでしょう。
+というのも、これらの値は通常は<code>current-input-port</code>などを初期化する際にだけ
+使われるからです。また、低レベルのCライブラリが参照している標準入出力を
+これらの手続きで置き換えることもできません。
+どうしても必要がある場合にだけ変更を考えてください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dinput_002dfrom_002dport"></a><u>Function:</u> <b>with-input-from-port</b><i> port thunk</i></dt>
+<dt><a name="index-with_002doutput_002dto_002dport"></a><u>Function:</u> <b>with-output-to-port</b><i> port thunk</i></dt>
+<dt><a name="index-with_002derror_002dto_002dport"></a><u>Function:</u> <b>with-error-to-port</b><i> port thunk</i></dt>
+<dd><p>それぞれ入力、出力、エラーポートを<var>port</var>にセットした状態で<var>thunk</var>を呼び出します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dports"></a><u>Function:</u> <b>with-ports</b><i> iport oport eport thunk</i></dt>
+<dd><p>上の3つの動作を同時に行う手続きです。
+入力、出力、エラーの各ポートをそれぞれ<var>iport</var>, <var>oport</var>, <var>eport</var>に
+セットして<var>thunk</var>を呼び出します。変更する必要がないポートの引数には
+<code>#f</code>を渡すことができます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-close_002dinput_002dport"></a><u>Function:</u> <b>close-input-port</b><i> port</i></dt>
+<dt><a name="index-close_002doutput_002dport"></a><u>Function:</u> <b>close-output-port</b><i> port</i></dt>
+<dd><p>[R5RS]
+それぞれ、入力ポートと出力ポートを閉じます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dtype"></a><u>Function:</u> <b>port-type</b><i> port</i></dt>
+<dd><p><var>port</var>のタイプを、シンボル<code>file</code>、<code>string</code>、<code>proc</code>の
+いずれかで返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dname"></a><u>Function:</u> <b>port-name</b><i> port</i></dt>
+<dd><p><var>port</var>の名前を返します。ポートがファイルに関連付けられている場合は、ポートの名前は
+ファイル名です。そうでない場合、ポートを説明する文字列が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dbuffering"></a><u>Function:</u> <b>port-buffering</b><i> port</i></dt>
+<dt><a name="index-_0028setter-port_002dbuffering_0029"></a><u>Function:</u> <b>(setter port-buffering)</b><i> port buffering-mode</i></dt>
+<dd><p>ファイルポート(<code>(port-type <var>port</var>)</code>が<code>file</code>を返すもの)
+に対して、そのバッファリングモードを読みだし、もしくは変更します。
+入力ポートではバッファリングモードは
+<code>:full</code>、 <code>:modest</code>、<code>:none</code>のいずれかです。
+出力ポートでは
+<code>:full</code>、 <code>:line</code>、<code>:none</code>のいずれかです。
+バッファリングモードの詳細な説明は、<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a> を参照してください。
+</p>
+<p><code>port-buffering</code>がファイルポート以外のポートに対して呼ばれた場合は
+<code>#f</code>を返します。<code>port-buffering</code>のsetterが
+ファイルポート以外のポートに対して呼ばれた場合はエラーとなります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dcurrent_002dline"></a><u>Function:</u> <b>port-current-line</b><i> port</i></dt>
+<dd><p><var>port</var>の現在の行番号を返します。行番号は、ファイルに関連付けられたポートで
+かつシーケンシャルなキャラクタI/Oを行っている場合のみ有効です。それ以外の場合は
+-1を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dfile_002dnumber"></a><u>Function:</u> <b>port-file-number</b><i> port</i></dt>
+<dd><p><var>port</var>がファイルに関連付けられている場合、そのファイルディスクリプタ番号を
+返します。それ以外の場合は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dseek"></a><u>Function:</u> <b>port-seek</b><i> port offset :optional whence</i></dt>
+<dd><p><var>port</var>がランダムアクセス可能なポートの場合、
+この手続きは<var>port</var>のread/writeポインタを<var>offset</var>と<var>whence</var>の値によって
+設定し、新たなread/writeポインタの値(データの先頭からのバイトオフセット)を
+返します。<var>port</var>がランダムアクセス可能でない場合は<code>#f</code>が返されます。
+現在のバージョンでは、ファイルポートおよび入力文字列ポートがランダムアクセス可能です。
+出力文字列ポートは現在のポインタの値を問い合わせる動作だけが可能です。
+</p>
+<p>ポートのポインタはバイト数で表現され、文字数とは異なることに注意して下さい。
+</p>
+<p><var>port</var>が出力ファイルポートの場合は、データの終端を超えた位置までseek
+することが可能です。その場合の動作はPOSIXのlseek(2)に準じます。
+入力ファイルポートや入力文字列ポートではデータの終端以降にseekすることはできません。
+</p>
+<p><var>whence</var>引数は、<var>offset</var>の基準を指定する小さな整数です。
+以下の定数が定義されています。
+</p>
+<dl compact="compact">
+<dt> <code>SEEK_SET</code></dt>
+<dd><p><var>offset</var>はデータ先頭からのバイト数を指定します。
+<var>whence</var>が省略された場合のデフォルトの動作です。
+</p>
+</dd>
+<dt> <code>SEEK_CUR</code></dt>
+<dd><p><var>offset</var>は現在のread/writeポインタからの相対バイト数を指定します。
+<var>offset</var>が0であれば、ポインタを動かさずに現在のポート位置を知ることができます。
+</p>
+</dd>
+<dt> <code>SEEK_END</code></dt>
+<dd><p><var>offset</var>はデータの終端からの相対バイト数を指定します。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-port_002dtell"></a><u>Function:</u> <b>port-tell</b><i> port</i></dt>
+<dd><p><var>port</var>の現在のread/writeポインタの値をバイト数で返します。
+<var>port</var>がランダムアクセス可能でない場合は<code>#f</code>が返されます。
+これは以下の呼び出しと等価です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(port-seek <var>port</var> 0 SEEK_CUR)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p><em>名前に関するメモ</em>: <code>port-seek</code>は他の処理系で
+<code>seek</code>、<code>file-position</code>、<code>input-port-position</code>/
+<code>output-port-position</code>等と呼ばれています。
+<code>port-tell</code>は<code>tell</code>、<code>ftell</code>、<code>set-file-position!</code>等と
+呼ばれています。いくつかの処理系は<code>port-position</code>という手続きを
+持っていますが、<code>port-seek</code>とは別の機能を実現しています。
+<code>file-position</code>はCommonLisp由来の名前ですが、
+fileポート以外のものも扱うため採用しませんでした。
+また、<code>seek</code>と<code>tell</code>はPOSIXの名前由来であり、
+Gaucheの名前付け規則を使って<code>sys-seek</code>と<code>sys-tell</code>としても
+よさそうですが、portの操作はシステムコールレベルよりも抽象度が高いため
+これも採用しませんでした。結局、新しい名前を採用することにしました。
+</p>
+<dl>
+<dt><a name="index-copy_002dport"></a><u>Function:</u> <b>copy-port</b><i> src dst :key (unit 0) (size #f)</i></dt>
+<dd><p><var>src</var>からEOFまでデータを読みだし、<var>dst</var>へ書き出します。
+</p>
+<p>キーワード引数<var>unit</var>は0以上の整数か、シンボル<code>byte</code>もしくは<code>char</code>
+でなければなりません。これはデータをコピーする単位を指定します。
+整数ならば、その大きさ(0の場合はシステム規定の大きさ)のバッファが確保され、
+ブロックI/Oを使って転送が行われます。通常のファイルをコピーする場合などはこれが
+速いでしょう。もし<var>unit</var>がシンボル<code>byte</code>であれば、バイト毎
+に読みだし／書き込みが行われます。<var>unit</var>がシンボル<code>char</code>であれば、
+キャラクタ毎に読みだし／書き込みが行われます。
+</p>
+<p>キーワード引数<var>size</var>に非負の整数が与えられた場合、それはコピーされるデータの
+最大量を指定します。<var>unit</var>がシンボル<code>char</code>の場合は<var>size</var>は
+コピーされる文字数を、そうでない場合はバイト数を指定します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088-1"></a>
+<h3 class="subsection">6.22.4 ファイルポート</h3>
+
+<dl>
+<dt><a name="index-open_002dinput_002dfile"></a><u>Function:</u> <b>open-input-file</b><i> filename :key if-does-not-exist buffering element-type encoding conversion-buffer-size</i></dt>
+<dt><a name="index-open_002doutput_002dfile"></a><u>Function:</u> <b>open-output-file</b><i> filename :key if-does-not-exist if-exists buffering element-type encoding conversion-buffer-size</i></dt>
+<dd><p>[R5RS+]
+ファイル<var>filename</var>を入力または出力用にオープンし、
+入力ポートまたは出力ポートを作成して返します。
+</p>
+<p>キーワード引数により、動作を細かく指定できます。
+</p>
+<dl compact="compact">
+<dt> <code>:if-exists</code></dt>
+<dd><p>このキーワード引数は<code>open-output-file</code>のみに指定でき、
+<var>filename</var>が既に存在した場合の動作を指定します。次の値のいずれかを与えることができます。
+</p><dl compact="compact">
+<dt> <code>:supersede</code></dt>
+<dd><p>既存のファイルが長さ0に縮められます。これが既定の動作です。
+</p></dd>
+<dt> <code>:append</code></dt>
+<dd><p>既存のファイルにこれから書き出す内容が追加されます。
+</p></dd>
+<dt> <code>:overwrite</code></dt>
+<dd><p>既存のファイルにこれから書き出す内容が上書きされます。
+書き出されるデータが既存のファイルのデータよりも短い場合、
+残りの部分はそのまま残されます。
+</p></dd>
+<dt> <code>:error</code></dt>
+<dd><p>エラーが報告されます。
+</p></dd>
+<dt> <code>#f</code></dt>
+<dd><p>何もせず、<code>#f</code>を返します。
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>:if-does-not-exist</code></dt>
+<dd><p>このキーワード引数は<var>filename</var>が存在しない場合の動作を指定します。
+</p><dl compact="compact">
+<dt> <code>:error</code></dt>
+<dd><p>エラーを報告します。これが<code>open-input-file</code>の既定の動作です。
+</p></dd>
+<dt> <code>:create</code></dt>
+<dd><p>ファイルが作成されます。これが<code>open-output-file</code>の既定の動作です。
+ファイルの存在のチェックと作成はアトミックに行われます。
+このオプションに加え、<var>if-exists</var>オプションに<code>:error</code>か<code>#f</code>を
+指定することで、排他的にファイルを作成することができます。
+<code>open-input-file</code>に対してはこの値を指定することはできません。
+</p></dd>
+<dt> <code>#f</code></dt>
+<dd><p>何もせず、<code>#f</code>を返します。
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>:buffering</code></dt>
+<dd><p>この引数はバッファリングモードを指定します。以下の値が設定できます。
+ポートのバッファリングモードは手続き<code>port-buffering</code>
+(<a href="#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>参照)によって
+読みだし/変更可能です。
+</p><dl compact="compact">
+<dt> <code>:full</code></dt>
+<dd><p>出来る限りデータをバッファリングします。これがデフォルトのモードです。
+</p></dd>
+<dt> <code>:none</code></dt>
+<dd><p>バッファリングを行いません。出力ポートにデータが書き出されるか、
+入力ポートからデータが読み込まれる度に、下位にあるシステムコールが呼ばれます。
+プロセスの標準エラーポートはこのモードでオープンされています。
+</p></dd>
+<dt> <code>:line</code></dt>
+<dd><p>このモードは出力ポートにのみ有効です。書き出されたデータはバッファに
+貯められますが、改行文字が書かれたらフラッシュされます。
+このモードは対話的な出力ポートなどに便利です。
+プロセスの標準出力ポートはこのモードでオープンされています。
+(これは、Cのstdioライブラリの「ラインバッファリング」とちょっと違うことに
+注意してください。stdioでは同じファイルディスクリプタから入力が行われる時も
+バッファはフラッシュされますが、Gaucheではそうはなりません)。
+</p></dd>
+<dt> <code>:modest</code></dt>
+<dd><p>このモードは入力ポートにのみ有効です。ほとんど<code>:full</code>バッファリングモードと
+同じですが、<code>read-block</code>はポートに要求されたデータより少ないデータしか
+無かった場合、要求された量がたまるまで待つのではなく、今あるデータだけを
+返します。このモードはポートがパイプやネットワークに接続されている場合に
+便利です。
+</p></dd>
+</dl>
+
+</dd>
+<dt> <code>:element-type</code></dt>
+<dd><p>この引数はファイルのタイプを指定します。
+</p><dl compact="compact">
+<dt> <code>:character</code></dt>
+<dd><p>ファイルはキャラクタモード(テキストモード)でオープンされます。
+</p></dd>
+<dt> <code>:binary</code></dt>
+<dd><p>ファイルはバイナリモードでオープンされます。
+</p></dd>
+</dl>
+<p><em>現在のバージョンでは、この引数は無視され、全てのファイルはバイナリモードで
+オープンされます。いずれにせよUnixプラットフォームでは違いはありません。</em>
+</p>
+</dd>
+<dt> <code>:encoding</code></dt>
+<dd><p>この引数はファイルの文字エンコーディングを指定します。引数は文字列かシンボルで、
+文字エンコーディングスキーム(CES)の名前を渡します。
+</p>
+<p><code>open-input-file</code>では、ここにワイルドカードCES (例: <code>*jp</code>) を
+渡して、入力ファイルのエンコーディングを推測させることもできます
+(<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00ae_00e8_0087_00aa_00e5_008b_0095_00e5_0088_00a4_00e5_00ae_009a">文字エンコーディングの自動判定</a>参照)。
+また、ここに<code>#t</code>を渡すと、入力ポートはCoding aware portでラップされます
+(<a href="#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">コーディング認識ポート</a>参照)。入力ファイルがエンコーディング指定の
+マジックコメントを持っていることが期待できる場合に便利です。
+</p>
+<p>この引数が与えられた場合、Gaucheは自動的に<code>gauche.charconv</code>モジュールを
+ロードし、ポートの入出力時に文字コード変換を行います。
+CESについて詳しくは<a indepth="true" href="gauche-refj_76.html#g_t_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0081_0095_00e3_0082_008c_00e3_0082_008b_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0">サポートされる文字エンコーディング</a>を参照してください。
+</p>
+</dd>
+<dt> <code>:conversion-buffer-size</code></dt>
+<dd><p>この引数は、文字エンコーディング変換に使うバッファサイズを指定するために
+<var>encoding</var>引数と共に使うことができます。渡された値はそのまま
+文字コード変換ポートのコンストラクタの<var>buffer-size</var>引数に渡されます
+(<a indepth="true" href="gauche-refj_76.html#g_t_00e5_00a4_0089_00e6_008f_009b_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">変換ポート</a>参照)。
+</p>
+<p>この引数を指定する必要は滅多にありませんが、入力ファイルの文字エンコーディングを
+推測しなければならない場合、大きめのバッファサイズの方が精度が上がります。
+推測ルーチンがより多くのデータを見て文字エンコーディングを決定できるからです。
+</p></dd>
+</dl>
+
+<p><var>if-exists</var>と<var>if-does-not-exist</var>フラグの組合せにより、
+色々な動作を実現できます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(open-output-file "foo" :if-exists :error)
+ ⇒ ;<span class="roman">"foo"を排他的にオープンするかエラーを報告する</span>
+
+(open-output-file "foo" :if-exists #f)
+ ⇒ ;<span class="roman">"foo"を排他的にオープンするか</span>#f<span class="roman">を返す</span>
+
+(open-output-file "foo" :if-exists :append
+                        :if-does-not-exist :error)
+ ⇒ ;<span class="roman">"foo"が既に存在する場合に限り、それを追加モードでオープン</span>
+</pre></td></tr></tbody></table>
+
+<p>ファイルをオープンせずにその存在をチェックするには、
+<code>sys-access</code>か<code>file-exists?</code>を使って下さい (<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e7_008a_00b6_00e6_0085_008b">ファイルの状態</a>参照)。
+</p>
+<p>移植性に関する註：Schemeシステムによっては、<var>filename</var>のところに
+シェルコマンドを指定して、サブプロセスの標準入出力と通信できるようにするものが
+あります。他のスクリプティング言語(例：Perl)にも同様の機能があります。
+Gaucheでは、<code>open-input-file</code>と<code>open-output-file</code>は
+あくまでファイル (OSがファイルとして扱うもの) のみに対して使えます。
+サブプロセスと通信するためには、「プロセスポート」という機能が提供されています。
+<a indepth="true" href="gauche-refj_95.html#Process-ports">Process ports</a>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dinput_002dfile"></a><u>Function:</u> <b>call-with-input-file</b><i> string proc :key if-does-not-exist buffering element-type encoding conversion-buffer-size</i></dt>
+<dt><a name="index-call_002dwith_002doutput_002dfile"></a><u>Function:</u> <b>call-with-output-file</b><i> string proc :key if-does-not-exist if-exists buffering element-type encoding conversion-buffer-size</i></dt>
+<dd><p>[R5RS]
+<var>string</var>で示されるファイルを入力または出力用にオープンし、
+作成されたポートを引数として手続き<var>proc</var>を呼び出します。
+<var>proc</var>が正常終了するか、<var>proc</var>内で捕捉されないエラーが起きた場合に
+ファイルはクローズされます。
+</p>
+<p>キーワード引数は
+<code>open-input-file</code>及び<code>open-output-file</code>のものと同じ意味を持ちます。
+<var>if-exists</var>や<var>if-does-not-exist</var>に<code>#f</code>を指定した場合、
+ファイルがオープンされなかった場合は<var>proc</var>にポートではなく<code>#f</code>が渡される
+ことに注意して下さい。
+</p>
+<p><var>proc</var>が返す値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dinput_002dfrom_002dfile"></a><u>Function:</u> <b>with-input-from-file</b><i> string thunk :key if-does-not-exist buffering element-type encoding conversion-buffer-size</i></dt>
+<dt><a name="index-with_002doutput_002dto_002dfile"></a><u>Function:</u> <b>with-output-to-file</b><i> string thunk :key if-does-not-exist if-exists buffering element-type encoding conversion-buffer-size</i></dt>
+<dd><p>[R5RS]
+<var>string</var>で示されるファイルを入力または出力用にオープンし、オープンされた
+ポートを現在の入力または出力ポートに設定して、<var>thunk</var>を呼び出します。
+<var>thunk</var>が戻るか、<var>thunk</var>内で捕捉されないエラーが生じた際にファイルは閉じられます。
+</p>
+<p><var>thunk</var>が返す値を返します。
+</p>
+<p>キーワード引数は
+<code>open-input-file</code>及び<code>open-output-file</code>のものと同じ意味を持ちます。
+但し<var>if-exists</var>や<var>if-does-not-exist</var>に<code>#f</code>が指定され、
+ファイルがオープンできなかった場合は、<var>thunk</var>は呼ばれずに
+直ちに<code>#f</code>が返されます。
+</p></dd></dl>
+
+<p><em>ポートを閉じるセマンティクスについて:</em>
+R5RSは<code>call-with-input-file</code>等の説明において、次のように述べています。
+「<em>procが戻って来なかった場合、今後ポートが読み書きに一切使われないことが
+証明できない限りは、ポートは自動的には閉じられない</em>」。
+</p>
+<p>Gaucheの実装は若干この条件には反しています。捕捉されないエラーが<var>proc</var>から
+発せられたというだけでは、そのポートが今後一切使われないかどうかはわかりません。
+しかし実際には、そのようなエラーが発せられた後でポートに対して意味のある操作をするのは
+非現実的です。ポートがどのような状態にあるかわからないわけですから。
+現実的なプログラムでは、ポートに対して意味のある操作をしつづけたいのなら、
+<var>proc</var>の中で明示的にエラーをハンドルすべきでしょう。
+</p>
+<p><code>call-with-input-file</code>の外で捕捉された継続を<var>proc</var>内で呼んだ場合には
+ポートは閉じられないことに注意して下さい。後で<var>proc</var>へと制御が戻ってくるかも
+しれないからです (コルーチン等)。また、
+低レベルの例外メカニズム(<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">例外の処理</a>
+参照)を利用した場合、エラー時にポートを閉じるのはプログラマの責任になります。
+</p>
+
+<dl>
+<dt><a name="index-open_002dinput_002dfd_002dport"></a><u>Function:</u> <b>open-input-fd-port</b><i> fd :key buffering name owner?</i></dt>
+<dt><a name="index-open_002doutput_002dfd_002dport"></a><u>Function:</u> <b>open-output-fd-port</b><i> fd :key buffering name owner?</i></dt>
+<dd><p>与えられたファイルディスクリプタにアクセスする入力または出力ポートを
+作成して返します。<var>buffering</var> は<code>open-input-file</code> の項で
+説明されたポートのバッファリングモードを指定します。デフォルトは<code>:full</code>です。
+<var>name</var>は<code>port-name</code>によって返されるポートの名前を指定します。
+<var>owner?</var> は、このポートを閉じた時に<var>fd</var>もクローズすべきかどうかを
+指定するブーリアン値です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dfd_002ddup_0021"></a><u>Function:</u> <b>port-fd-dup!</b><i> toport fromport</i></dt>
+<dd><p>システムの<code>dup2(2)</code>のインタフェースです。
+アトミックに<var>toport</var>のファイルディスクリプタをクローズし、<var>fromport</var>の
+ファイルディスクリプタを複製したものを<var>toport</var>に設定します。
+<var>toport</var>、<var>fromport</var>はいずれもファイルポートでなければなりません。
+</p>
+<p>ファイルディスクリプタが「複製」されると、ふたつのディスクリプタ番号が異なっていても
+それらはシステムのオープンファイルテーブルの同じエントリを指します。
+例えば、現在の(システムレベルでの)ファイル上の読み書き位置は共有されます。
+<code>port-fd-dup!</code>の後で、<code>port-seek</code>を<var>fromport</var>に
+対して呼び出せば、その変更は<var>toport</var>の読み書き位置にも影響を与えるでしょうし、
+その逆もまたあります。ただし、共有されるのはシステムレベルの情報のみで、
+<var>toport</var>や<var>fromport</var>がバッファリングされている場合、バッファの内容は
+共有されません。
+</p>
+<p>この手続きは、主にファイルディスクリプタを明示的に制御する必要のあるプログラム
+のために用意されています。例えばデーモンプロセスがその入出力を‘<tt>/dev/null</tt>’などの
+無難なデバイスに切り替えたり、シェルプロセスが子プロセスを<code>exec</code>する前に
+そのファイルディスクリプタをセットアップしたりするような場合です。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088-1"></a>
+<h3 class="subsection">6.22.5 文字列ポート</h3>
+
+<p>文字列ポートは、メモリ上のデータと関連付けられたポートです。
+</p>
+<dl>
+<dt><a name="index-open_002dinput_002dstring"></a><u>Function:</u> <b>open-input-string</b><i> string</i></dt>
+<dd><p>[SRFI-6]
+<var>string</var>を内容とする入力文字列ポートを作って返します。
+文字列に逐次的にアクセスする場合、インデックスをインクリメントしながら
+<code>string-ref</code>を呼び出すより効率の良い方法です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define p (open-input-string "文字 列"))
+(read p) ⇒ 文字
+(read-char p) ⇒ #\space
+(read-char p) ⇒ #\列
+(read-char p) ⇒ #&lt;eof&gt;
+(read-char p) ⇒ #&lt;eof&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-get_002dremaining_002dinput_002dstring"></a><u>Function:</u> <b>get-remaining-input-string</b><i> port</i></dt>
+<dd><p><var>port</var>は入力文字列ポートでなければなりません。
+入力ポートに残っている文字列を返します。
+<var>port</var>の内部ポインタは動かされないので、<var>port</var>に対するreadは
+影響を受けません。<var>port</var>が既にEOFに達していた場合は、空文字列が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define p (open-input-string "abc\ndef"))
+(read-line p)                  ⇒ "abc"
+(get-remaining-input-string p) ⇒ "def"
+(read-char p)                  ⇒ #\d
+(read-line p)                  ⇒ "ef"
+(get-remaining-input-string p) ⇒ ""
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-open_002doutput_002dstring"></a><u>Function:</u> <b>open-output-string</b></dt>
+<dd><p>[SRFI-6]
+出力文字列ポートを作成して返します。このポートに書き出された文字列は
+内部のバッファにたくわえられ、<code>get-output-string</code> で取り出すことが
+できます。
+これは、順番に文字列を構成する方法として、あらかじめ文字列をアロケートして
+<code>string-set!</code>で埋めて行くよりもずっと効率の良い方法です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-get_002doutput_002dstring"></a><u>Function:</u> <b>get-output-string</b><i> port</i></dt>
+<dd><p>[SRFI-6]
+出力文字列ポート<code>port</code>を取り、それまでそのポートに蓄積された
+文字列を返します。バイトデータがそのポートに書き出されていた場合、
+この手続きはまず内部バッファをスキャンし、結果が完全な文字列で表現できるかどうかを
+調べます。もし表現できなければ、不完全な文字列が返されます。
+</p>
+<p>これは<var>port</var>の操作には影響をあたえません。<code>get-ouptut-string</code>を
+呼んだ後でも、<var>port</var>に内容を蓄積しつづけることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dinput_002dstring"></a><u>Function:</u> <b>call-with-input-string</b><i> string proc</i></dt>
+<dt><a name="index-call_002dwith_002doutput_002dstring"></a><u>Function:</u> <b>call-with-output-string</b><i> proc</i></dt>
+<dt><a name="index-with_002dinput_002dfrom_002dstring"></a><u>Function:</u> <b>with-input-from-string</b><i> string thunk</i></dt>
+<dt><a name="index-with_002doutput_002dto_002dstring"></a><u>Function:</u> <b>with-output-to-string</b><i> thunk</i></dt>
+<dd><p>これらのユーティリティ関数は次に定義されるような動作をします。
+インタフェースはファイルポートを扱う類似の関数と揃えてあります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (call-with-output-string proc)
+  (let ((out (open-output-string)))
+    (proc out)
+    (get-output-string out)))
+
+(define (call-with-input-string str proc)
+  (let ((in (open-input-string str)))
+    (proc in)))
+
+(define (with-output-to-string thunk)
+  (let ((out (open-output-string)))
+    (with-output-to-port out thunk)
+    (get-output-string out)))
+
+(define (with-input-from-string str thunk)
+  (with-input-from-port (open-input-string str) thunk))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dstring_002dio"></a><u>Function:</u> <b>call-with-string-io</b><i> str proc</i></dt>
+<dt><a name="index-with_002dstring_002dio"></a><u>Function:</u> <b>with-string-io</b><i> str thunk</i></dt>
+<dd><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (call-with-string-io str proc)
+  (let ((out (open-output-string))
+        (in  (open-input-string str)))
+    (proc in out)
+    (get-output-string out)))
+
+(define (with-string-io str thunk)
+  (with-output-to-string
+    (lambda ()
+      (with-input-from-string str
+        thunk))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-write_002dto_002dstring"></a><u>Function:</u> <b>write-to-string</b><i> obj :optional writer</i></dt>
+<dt><a name="index-read_002dfrom_002dstring"></a><u>Function:</u> <b>read-from-string</b><i> string :optional start end</i></dt>
+<dd><p>文字列ポートを使う定型句をユーティリティ関数にしました。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(write-to-string obj writer)
+  ≡
+  (with-output-to-string (lambda () (writer obj)))
+
+(read-from-string string)
+  ≡
+  (with-input-from-string string read)
+</pre></td></tr></tbody></table>
+<p><var>writer</var>の既定値は<code>write</code>です。<var>start</var>, <var>end</var>は
+省略されればそれぞれ0と文字列の長さになります。
+</p>
+<p>移植性への註：Common Lispに同名の関数があります。必須引数の動作は同じですが、
+省略可能な引数は異なります。
+STkには<code>read-from-string</code>がありますが、省略可能な引数は取りません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088-1"></a>
+<h3 class="subsection">6.22.6 コーディング認識ポート</h3>
+
+<p>コーディング認識ポートは特殊な手続的入力ポートで、<code>load</code>が
+プログラムソースコードを読む際に使われています。このポートは
+<code>;; -*- coding: utf-8 -*-</code>のような、プログラムソースの
+文字エンコーディングを指定する特殊なコメントを認識し、適切な
+文字エンコーディング変換を行います。
+特殊なコメントでソースの文字エンコーディングを指定することについては、
+<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088">マルチバイトスクリプト</a>を参照して下さい。
+</p>
+<dl>
+<dt><a name="index-open_002dcoding_002daware_002dport"></a><u>Function:</u> <b>open-coding-aware-port</b><i> iport</i></dt>
+<dd><p>入力ポートを引数としてとりコーディング認識入力ポートを返します。
+基本的には <var>iport</var> からの入力データをリーダにわたしているだけです。
+しかし、<var>iport</var> からの入力データの最初の2行以内に、特別な呪文コメント
+が現れた場合、コーディング認識ポートは、その後に読み込まれるデータについて
+必要な文字エンコーディング変換を行います。
+</p>
+<p>引数として渡されたポート、<var>iport</var> は生成されたコーディング認識
+ポートによって所有されます。つまり、コーディング認識ポートがクローズ
+されると、<var>iport</var> もクローズされます。<var>iport</var> から読み込まれた
+内容はコーディング認識ポート内でバッファリングさます、したがって、
+別のコードで <var>iport</var> から読み出しを行うべきではありません。
+</p>
+<p>デフォルトでは、Gauche の <code>load</code> はプログラムソースを読むのに
+コーディング認識ポートを使います。したがって、文字エンコーディングを
+示す特別な呪文コメントは、Gauche のソースプログラムでは有効になります
+(<a indepth="true" href="gauche-refj_61.html#Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089">Schemeファイルのロード</a>参照)。ただし、この機構自身は <code>load</code> とは
+独立しており、このポートを別の目的で利用できます。特にコーディングの
+呪文コメントがある Scheme のソースプログラムを処理する関数を書くときに
+便利です。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e5_0085_00a5_00e5_008a_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_0085_00a5_00e5_008a_009b-1"></a>
+<h3 class="subsection">6.22.7 入力</h3>
+
+<p>入力に関する手続きで、省略可能な引数<var>iport</var>は入力ポートでなければなりません。
+省略された場合が現在の入力ポートが使われます。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">6.22.7.1 データの読み込み</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf">6.22.7.2 読み込み時コンストラクタ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">6.22.7.3 入力ユーティリティ手続き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf-1"></a>
+<h4 class="subsubsection">6.22.7.1 データの読み込み</h4>
+
+<dl>
+<dt><a name="index-read"></a><u>Function:</u> <b>read</b><i> :optional iport</i></dt>
+<dd><p>[R5RS]
+<var>iport</var>からS式をひとつ読み込んで返します。
+GaucheはR5RSに定義されている構文要素に加え、<a indepth="true" href="gauche-refj_22.html#g_t_00e5_00ad_0097_00e5_008f_00a5_00e6_00a7_008b_00e9_0080_00a0">字句構造</a>に
+定義されている拡張構文要素を認識します。
+</p>
+<p><var>iport</var>が既にEOFに達していた場合は、EOFオブジェクトが返されます。
+</p>
+<p>この手続きはS式を構成する最後の文字までを読み、その後の文字はポートに
+残します。これは、S式に続く空白文字も読み込むCommonLispの<code>read</code>の
+振る舞いとは異なります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dwith_002dshared_002dstructure"></a><u>Function:</u> <b>read-with-shared-structure</b><i> :optional iport</i></dt>
+<dt><a name="index-read_002fss"></a><u>Function:</u> <b>read/ss</b><i> :optional iport</i></dt>
+<dd><p>[SRFI-38]
+これらの手続きは、SRFI-38 で定義されていて、共有構造を表す記法
+(<code>#n=</code>, <code>#n#</code>)を認識できます。Gauche の組み込み <code>read</code> は
+この SRFI-38 の記法を認識します。それゆえ、これらの手続きは、<code>read</code>
+と同じで、SRFI-38 との互換性のために用意されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dchar"></a><u>Function:</u> <b>read-char</b><i> :optional iport</i></dt>
+<dd><p>[R5RS]
+<var>iport</var>から1文字読み込んで返します。
+<var>iport</var>が既にEOFに達していた場合はeofオブジェクトを返します。
+<var>iport</var>にあるバイトストリームが正しい文字を構成しない場合、
+ふるまいは未定義です。(将来はポート側に、不正な文字に対する対応を決める
+オプションを設ける予定です)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-peek_002dchar"></a><u>Function:</u> <b>peek-char</b><i> :optional iport</i></dt>
+<dd><p>[R5RS]
+<var>iport</var>から1文字読み込んで返します。文字はそのまま<var>iport</var>に留まります。
+<var>iport</var>が既にEOFに達していた場合はeofオブジェクトを返します。
+<var>iport</var>にあるバイトストリームが正しい文字を構成しない場合、
+ふるまいは未定義です。(将来はポート側に、不正な文字に対する対応を決める
+オプションを設ける予定です)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dbyte"></a><u>Function:</u> <b>read-byte</b><i> :optional iport</i></dt>
+<dd><p>入力ポート<var>iport</var>から1バイト読み込み、0から255までの整数値として返します。
+<var>iport</var>が既にEOFに達していた場合はeofオブジェクトを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-peek_002dbyte"></a><u>Function:</u> <b>peek-byte</b><i> :optional iport</i></dt>
+<dd><p>入力ポート<var>iport</var>の先頭の1バイトを見て、それを0から255までの整数値として返します。
+<var>iport</var>が既にEOFに達していた場合はeofオブジェクトを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dline"></a><u>Function:</u> <b>read-line</b><i> :optional iport allow-byte-string?</i></dt>
+<dd><p>入力ポートから、行末もしくはEOFまで読み込んで文字列として返します。
+よく使われる行末 (LF only, CRLF, and CR only) を認識します。
+戻り値にはこれらの行末文字は含まれません。
+<var>iport</var>が既にEOFに達していた場合はeofオブジェクトを返します。
+</p>
+<p><var>iport</var>から、内部文字エンコーディングでは文字を構成し得ないバイトシーケンスが
+読まれた場合、デフォルトでは<code>read-line</code>はエラーを通知します。
+しかし、省略可能な引数<var>allow-byte-string?</var>に真の値が与えられた場合は、
+<code>read-line</code>はエラーを通知せず、かわりにバイト文字列 (不完全な文字列) を
+返します。この動作は、特に文字エンコーディングが不明なソースから読み込む際に
+便利です。例えばXMLドキュメントを読み込む際、最初の行のcharsetパラメータを
+チェックしてから適切な文字エンコーディング変換ポートを使うといった用途などです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dblock"></a><u>Function:</u> <b>read-block</b><i> nbytes :optional iport</i></dt>
+<dd><p><var>nbytes</var>バイトのデータを<var>iport</var>から読み込み、
+不完全な文字列として返します。<var>iport</var>に十分なデータが無い場合、
+返される文字列は<var>nbytes</var>より短いかもしれません。
+<var>nbytes</var>が0の場合は、常に空文字列が返されます。
+</p>
+<p><var>iport</var>が既にEOFに達していた場合はEOFオブジェクトが返されます。
+</p>
+<p><var>iport</var>がファイルポートだった場合、<code>read-block</code>は
+ポートのバッファリングモードによってふるまいが異なります
+(バッファリングモードの詳細については<a href="#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>を参照して下さい)。
+</p><ul>
+<li>
+バッファリングモードが<code>:full</code>の場合、<code>read-block</code>は
+EOFを読まない限り、<var>nbytes</var>のデータが読まれるまで待ちます。
+</li><li>
+バッファリングモードが<code>:modest</code>か<code>:none</code>である場合、
+<code>read-block</code>はEOFが読まれなくても、すぐに読めるデータが<var>nbytes</var>よりも
+少ない場合はそのデータだけを返します。
+</li></ul>
+
+<p><code>read-block</code>は呼ばれるたびに新たな文字列をアロケートします。
+アロケーションを避け、あらかじめ用意された固定長のバッファにデータを読み込みたい
+場合は、<code>gauche.uvector</code>モジュールの<code>read-block!</code>
+を使って下さい (<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)。
+<code>Read-block!</code>はuniform vectorをバッファとして用います。
+</p>
+<p>データブロックをポートに書き出すには、データが文字列で表現されている
+場合は単純に<code>display</code>が使えます。データがuniform vectorで表現されている
+場合は<code>gauche.uvector</code>モジュールの<code>write-block</code>が
+使えます (<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0096_00e3_0083_00ad_00e3_0083_0083_00e3_0082_00af_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b">ユニフォームベクタのブロック入出力</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-eof_002dobject"></a><u>Function:</u> <b>eof-object</b></dt>
+<dd><p>[R6RS]
+EOFオブジェクトを返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-eof_002dobject_003f"></a><u>Function:</u> <b>eof-object?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>がEOFオブジェクトなら<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002dready_003f"></a><u>Function:</u> <b>char-ready?</b><i> port</i></dt>
+<dd><p>[R5RS]
+<var>port</var>から文字が読み出せる状態ならば<code>#t</code>を返します。
+</p>
+<p>今のところ、この手続きは<var>port</var>から少なくとも1バイト読み出せる状態なら<code>#t</code>
+を返します。そのバイトがマルチバイト文字を構成する場合、<code>char-ready?</code>を返した
+ポートから文字全てを読み込もうとすると、ブロックする可能性があります。
+(通常の使用状況ではそのようなことは起きないでしょうが、理論的には起こり得ます。
+慎重を期したい場合は<code>read-block</code>でバイトシーケンスとして読み込んだ後、
+入力文字列ポート等を使って文字毎に読むようにして下さい。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-byte_002dready_003f"></a><u>Function:</u> <b>byte-ready?</b><i> port</i></dt>
+<dd><p>If one byte (octet) is ready to be read from <var>port</var>, returns
+<code>#t</code>.
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf-1"></a>
+<h4 class="subsubsection">6.22.7.2 読み込み時コンストラクタ</h4>
+
+<p>SRFI-10で定義されている読み込み時コンストラクタは、ユーザ定義の構造の
+外部表現を作るための簡単な方法を提供します。
+</p>
+<dl>
+<dt><a name="index-_0023_002c_0028tag-arg-_2026_0029"></a><u>Reader Syntax:</u> <b><code>#,(<var>tag</var> <var>arg</var> …)</code></b></dt>
+<dd><p>[SRFI-10]
+Gaucheは<var>tag</var> (シンボル)を<em>コンストラクタ手続き</em>に関連付ける
+グローバルなテーブルを管理しています。
+</p>
+<p>リーダーがこの構文に出会ったとき、<var>arg</var> …を読み込み、
+<var>tag</var>に関連付けられた読み込みコンストラクタを探し、
+<var>arg</var> …を引数としてそのコンストラクタを呼び出し、
+その構文を読み込んだ結果としてそのコンストラクタが返した値を挿入します。
+</p>
+<p>この構文はリーダー内部で処理されることに注意して下さい。評価器は
+<var>arg</var>を見ず、リーダーが返したオブジェクトしか見ません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-define_002dreader_002dctor"></a><u>Function:</u> <b>define-reader-ctor</b><i> <var>tag</var> <var>procedure</var></i></dt>
+<dd><p>[SRFI-10]
+読み込みコンストラクタ<var>procedure</var>を<var>tag</var>に関連付けます。
+</p>
+<p>例:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-reader-ctor 'pi (lambda () (* (atan 1) 4)))
+
+#,(pi) ⇒ 3.141592653589793
+
+'(#,(pi)) ⇒ (3.141592653589793)
+
+(define-reader-ctor 'hash
+  (lambda (type . pairs)
+    (let ((tab (make-hash-table type)))
+      (for-each (lambda (pair)
+                  (hash-table-put! tab (car pair) (cdr pair)))
+                pairs)
+      tab)))
+
+(define table
+ #,(hash eq? (foo . bar) (duh . dah) (bum . bom)))
+
+table ⇒ #&lt;hash-table eq? 0x80f9398&gt;
+(hash-table-get table 'duh) ⇒ dah
+</pre></td></tr></tbody></table>
+
+<p><code>write-object</code>メソッド(<a href="#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照)と組み合わせて、
+読み戻ることが可能なフォームで書かれたユーザ定義のクラスを
+作ることが簡単になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;point&gt; ()
+  ((x :init-value 0 :init-keyword :x)
+   (y :init-value 0 :init-keyword :y)))
+
+(define-method write-object ((p &lt;point&gt;) out)
+  (format out "#,(&lt;point&gt; ~s ~s)" (ref p 'x) (ref p 'y)))
+
+(define-reader-ctor '&lt;point&gt;
+  (lambda (x y) (make &lt;point&gt; :x x :y y)))
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<p><em>注意:</em> <code>define-reader-ctor</code>の効果の範囲はSRFI-10には
+規定されておらず、SRFI-10をサポートする実装においても互換性の問題を
+起こすことがあるかもしれません。
+(実際に、<code>define-reader-ctor</code>の存在そのものが実装の選択に
+任されています。)
+</p>
+<p>Gaucheでは、現時点においては、<code>define-reader-ctor</code>はそのフォームが
+コンパイルされ評価された時点で効力を持ちます。
+Gaucheはトップレベルのフォームを順番にコンパイル・評価するので、
+<code>define-reader-ctor</code>で指定された<var>tag</var>は、その指定の直後から
+使えます。
+しかし、<code>define-reader-ctor</code>の呼び出しと<var>tag</var>の使用が
+<code>begin</code>フォームで囲まれている場合は、<code>begin</code>フォーム全体は
+評価される前に一度にコンパイルされるため、うまく動作しません。
+</p>
+<p>他の実装では、<code>define-reader-ctor</code>の呼び出しが効力を持つようにする
+前にファイル全体を読み込むことを要求するかも知れません。
+その場合は、<code>define-reader-ctor</code>と定義された<var>tag</var>の使用を
+同じファイルに置く事は実質的に不可能です。
+可能ならば、<code>define-reader-ctor</code>の呼び出しと、<var>tag</var>の使用は
+異なるファイルに分離されることが望まれます。
+</p>
+<p>現在の<code>define-reader-ctor</code>に関するもう1つの問題は、それが
+Gaucheシステムのグローバルテーブルを変更してしまうことで、それゆえに
+モジュール性が良くありません。
+複数人によって書かれたコードは同じタグを使っているかも知れず、
+期待されない結果を引き起こすかも知れません。
+作者にはまだ明確なアイデアがありませんが、将来のバージョンでは、
+Gaucheには<var>tag</var>のスコープをカプセル化する方法が導入されるかも
+しれません。
+</p>
+
+<hr size="6">
+<a name="g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e8_00aa_00ad_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e6_0099_0082_00e3_0082_00b3_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00a9_00e3_0082_00af_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0087_00ba_00e5_008a_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d-1"></a>
+<h4 class="subsubsection">6.22.7.3 入力ユーティリティ手続き</h4>
+
+<dl>
+<dt><a name="index-port_002d_003estring"></a><u>Function:</u> <b>port-&gt;string</b><i> port</i></dt>
+<dt><a name="index-port_002d_003elist"></a><u>Function:</u> <b>port-&gt;list</b><i> reader port</i></dt>
+<dt><a name="index-port_002d_003estring_002dlist"></a><u>Function:</u> <b>port-&gt;string-list</b><i> port</i></dt>
+<dt><a name="index-port_002d_003esexp_002dlist"></a><u>Function:</u> <b>port-&gt;sexp-list</b><i> port</i></dt>
+<dd><p>便利な入力手続きです。APIはScshとSTkから取りました。
+</p>
+<p><code>port-&gt;string</code>は<var>port</var>をEOFまで読み込み、
+読んだものを文字列として返します。
+</p>
+<p><code>port-&gt;list</code>は手続き<var>reader</var>を<var>port</var>に繰り返し適用し、
+結果をリストに蓄積します。<var>reader</var>がEOFを返したら
+蓄積されたリストを返します。
+</p>
+<p><code>port-&gt;string-list</code>は<code>port-&gt;list</code>を
+<code>read-line</code>で特定化したもので、
+<code>port-&gt;sexp-list</code>は<code>port-&gt;list</code>を
+<code>read</code>で特定化したものです。
+</p>
+<p>もし入力にGaucheの内部エンコーディングにおいて有効な文字をつくらない
+バイト列が含まれていた場合、<code>port-&gt;string</code>と<code>port-&gt;string-list</code>
+の返り値には不完全な文字列が含まれている可能性があります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002dfold"></a><u>Function:</u> <b>port-fold</b><i> fn knil reader</i></dt>
+<dt><a name="index-port_002dfold_002dright"></a><u>Function:</u> <b>port-fold-right</b><i> fn knil reader</i></dt>
+<dt><a name="index-port_002dfor_002deach"></a><u>Function:</u> <b>port-for-each</b><i> fn reader</i></dt>
+<dt><a name="index-port_002dmap"></a><u>Function:</u> <b>port-map</b><i> fn reader</i></dt>
+<dd><p><var>reader</var>によって読まれる入力に対する便利な繰り返し手続きです。
+</p>
+<p>実際にはこれらの手続きはポートからの入力以外にも使えるため、それぞれ
+<code>generator-fold</code>, <code>generator-fold-right</code>,
+<code>generator-for-each</code>, <code>generator-map</code>によって置き換えられました。
+詳しくは<a indepth="true" href="gauche-refj_56.html#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf">生成された値の畳み込み</a>を参照してください。
+</p>
+<p>これらの手続きは後方互換性のためだけに提供されています。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e5_0087_00ba_00e5_008a_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_61.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_0087_00ba_00e5_008a_009b-1"></a>
+<h3 class="subsection">6.22.8 出力</h3>
+
+<p>以下の手続きで、省略可能な引数<var>port</var>は出力ポートでなければなりません。
+省略された場合が現在の出力ポートが使われます。
+</p>
+<dl>
+<dt><a name="index-write"></a><u>Function:</u> <b>write</b><i> obj :optional port</i></dt>
+<dt><a name="index-display"></a><u>Function:</u> <b>display</b><i> obj :optional port</i></dt>
+<dd><p>[R5RS]
+オブジェクト<var>obj</var>の表示可能な表現を生成し、出力ポートに書き出します。
+<code>write</code>は可能な限り、<var>obj</var>の標準的な外部表現を使い、
+生成された出力が<code>read</code>で再び読み込めるようにします。
+<var>display</var>はより人間にとって可読性の高い出力を生成します。
+</p>
+<p><code>write</code>や<code>display</code>が表示中にユーザ定義クラスのオブジェクトに
+出会った場合は、ジェネリックファンクション<code>write-object</code>を呼び出します。
+</p>
+<p><var>obj</var>が循環する構造を持っていた場合、これらの手続きは停止しないかも
+しれません。<code>write/ss</code>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002dwith_002dshared_002dstructure"></a><u>Function:</u> <b>write-with-shared-structure</b><i> obj :optional port</i></dt>
+<dt><a name="index-write_002fss"></a><u>Function:</u> <b>write/ss</b><i> obj :optional port</i></dt>
+<dt><a name="index-write_002a"></a><u>Function:</u> <b>write*</b><i> obj :optional port</i></dt>
+<dd><p>[SRFI-38]
+<code>write</code>と同じような出力を生成しますが、これらの手続きはさらに
+共有される部分構造や循環構造を認識し、<code>#n=</code>, <code>#n#</code>構文を使って
+それらを表現します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(write/ss
+  (let ((x (list 'a)))
+    (list x x)))
+ ⇒ ;; writes (#0=(a) #0#)
+
+(write/ss
+  (let ((x (list 'a)))
+    (set-cdr! x x)
+    x))
+ ⇒ ;; writes #0=(a . #0#)
+</pre></td></tr></tbody></table>
+
+<p><code>read</code>手続きもこの構文を認識するので、読み込めば
+もとの構造と同型の構造が得られます。
+</p>
+<p>3つの手続きは等価です。
+Gaucheは、STklosから取った<code>write*</code>という名前を長く使ってきましたが、
+srfi-38によって<code>write-with-shared-structure</code>と<code>write/ss</code>が
+定義されました。今後は後者の名前を使った方がポータブルでしょう。
+</p>
+<p>註: ユーザ定義の<code>write-object</code>メソッドはこれらの手続きに対して
+透過的に動作します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-print"></a><u>Function:</u> <b>print</b><i> expr …</i></dt>
+<dd><p><var>expr</var> … を<code>display</code>を使って現在の出力ポートに表示し、
+最後に改行を書き出します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002dobject"></a><u>Method:</u> <b>write-object</b><i> (obj &lt;object&gt;) port</i></dt>
+<dd><p>このメソッドをつかって、オブジェクトをどのように印字するかをカスタマイズ
+できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-newline"></a><u>Function:</u> <b>newline</b><i> :optional port</i></dt>
+<dd><p>[R5RS]
+<var>port</var>に改行文字を書き出します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-flush"></a><u>Function:</u> <b>flush</b><i> :optional port</i></dt>
+<dt><a name="index-flush_002dall_002dports"></a><u>Function:</u> <b>flush-all-ports</b></dt>
+<dd><p>それぞれ、<var>port</var>、および全てのポートにバッファされているデータを
+全て書き出します。
+</p>
+<p>手続き"flush"はScheme実装によって様々な名前で呼ばれています：
+<code>force-output</code> (Scsh, SCM)、
+<code>flush-output</code> (Gambit)、<code>flush-output-port</code> (Bigloo) 等。
+<code>flush</code>の名前はSTkとSTklosから取りました。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002dchar"></a><u>Function:</u> <b>write-char</b><i> char :optional port</i></dt>
+<dd><p>[R5RS]
+文字<var>char</var>をポートに出力します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002dbyte"></a><u>Function:</u> <b>write-byte</b><i> byte :optional port</i></dt>
+<dd><p>出力ポートに1バイトのデータ<var>byte</var>を書き出します。
+<var>byte</var>は0から255の間の正確な整数でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-format"></a><u>Function:</u> <b>format</b><i> port string arg …</i></dt>
+<dt><a name="index-format-1"></a><u>Function:</u> <b>format</b><i> string arg …</i></dt>
+<dd><p>[SRFI-28+]
+<var>string</var> の指示に従い、<var>arg</var> …をフォーマットします。
+この手続きはCommonLispの<code>format</code>のサブセットに、Gauche独自の拡張を
+加えたものです。また、これはSRFI-28 "Basic format strings" のスーパーセットに
+なっています (<a indepth="true" href="gauche-refj_189.html#srfi_002d28">SRFI-28</a>)。
+</p>
+<p><var>port</var>は出力先を指定します。それが出力ポートであれば、フォーマットされた
+結果はそのポートに書き出されます。<var>port</var>が<code>#t</code>であれば、結果は
+現在の出力ポートに書き出されます。<var>port</var>が<code>#f</code>であれば、結果は
+文字列として<code>format</code>から返されます。
+<var>port</var>は省略することもできます。その場合は、<code>port</code>に<code>#f</code>
+を指定したのと同じ動作をします(SRFI-28の<code>format</code>)。
+</p>
+<p><var>string</var>はフォーマット指示子を含んだ文字列です。
+フォーマット指示子はチルダ‘<code>~</code>’から始まり、特定の文字で終了する文字の並びで、
+それぞれのフォーマット指示子が対応する<var>arg</var>を取りフォーマットします。
+<var>string</var>内のフォーマット指示子以外の文字列はそのまま出力されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(format #f "the answer is ~s" 42)
+  ⇒ "the answer is 42"
+</pre></td></tr></tbody></table>
+
+<p>フォーマット指示子は一つ以上のコンマで区切られたパラメータを取ることもできます。
+パラメータは整数か文字です。文字の場合、クオート文字に続けてその文字を置きます。
+パラメータが省略された場合は既定値が使われます。パラメータの意味はフォーマット指示子毎に
+異なります。
+</p>
+<p>さらに、フォーマット指示子は2種類のフラグ、‘<code>@</code>’ と ‘<code>:</code>’ を
+取ることができます。これらの組合せでフォーマットの動作が変わります。フラグは
+(もしあれば)パラメータの後、指示子の文字の直前に置かれなければなりません。
+</p>
+<p>パラメータの位置に文字 ‘<code>v</code>’ か ‘<code>V</code>’ を置くこともできます。
+その場合、パラメータの値が引数リストから取られます。対応する引数は整数か
+文字、または<code>#f</code>でなければなりません。<code>#f</code>の場合はそのパラメータが
+省略されたのと同じになります。
+</p>
+<p>いくつかの例です。
+</p>
+<dl compact="compact">
+<dt> <code>~10,2s</code></dt>
+<dd><p>パラメータ10と2を伴う、フォーマット指示子<code>~s</code>。
+</p></dd>
+<dt> <code>~12,,,'*A</code></dt>
+<dd><p>第1パラメータに数値12、第4パラメータに文字‘<code>*</code>’を取るフォーマット指示子<code>~a</code>。
+第2と第3のパラメータは省略されています。
+</p></dd>
+<dt> <code>~10@d</code></dt>
+<dd><p>フォーマット指示子<code>~d</code>。パラメータ10と‘<code>@</code>’フラグがついています。
+</p></dd>
+<dt> <code>~v,vx</code></dt>
+<dd><p>フォーマット指示子<code>~x</code>。第1パラメータと第2パラメータは引数リストから取られます。
+</p></dd>
+</dl>
+
+<p>以下にサポートされているフォーマット指示子を示します。フォーマット指示子の文字自体は
+大文字であっても小文字であっても構いません。特に断りのない限り両者は同じ動作をします。
+</p>
+<dl compact="compact">
+<dt> <b>~</b><var>mincol</var>,<var>colinc</var>,<var>minpad</var>,<var>padchar</var>,<var>maxcol</var><b>A</b></dt>
+<dd><p>ASCII出力。対応する引数が<code>display</code>を使ってフォーマットされます。
+整数が<var>mincol</var>に与えられた場合、それは出力される最小の文字数を指定します。
+引数のフォーマット結果が<var>mincol</var>より短ければ、空白が右に追加されます(つまり、
+左詰めになります)。
+</p>
+<p><var>colinc</var>、<var>minpad</var>、そして<var>padchar</var>は更に細かいパディング方法を
+指定します。<var>padchar</var>に文字が与えられた場合、それが空白文字の代わりにパディング文字と
+して使われます。<var>minpad</var>に0以上の整数が与えられた場合、少なくともその数だけの
+パディング文字が追加されます。<var>colinc</var>が指定された場合、
+追加されるパディング文字の数が<var>colinc</var>の倍数に調整されます。
+</p>
+<p>アトマーク ‘<code>@</code>’ フラグが与えられた場合、結果は右詰めになります。
+</p>
+<p><var>maxcol</var>パラメータは与えられていれば書かれる文字数の上限を指定します。
+フォーマット後の文字列の長さが<var>maxcol</var>を超えた場合、<var>maxcol</var>文字だけが
+書かれます。コロン ‘<code>:</code>’ フラグが同時に与えられていれば、
+<var>maxcol</var> - 4 文字が書かれた後、文字列“<code> ...</code>”が書かれます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(format #f "|~a|" "oops")
+  ⇒ "|oops|"
+(format #f "|~10a|" "oops")
+  ⇒ "|oops      |"
+(format #f "|~10@a|" "oops")
+  ⇒ "|      oops|"
+(format #f "|~10,,,'*@a|" "oops")
+  ⇒ "|******oops|"
+(format #f "|~10,,,'☆a|" "oops")
+  ⇒ "|oops☆☆☆☆☆☆|"
+
+(format #f "|~,,,,10a|" '(abc def ghi jkl))
+  ⇒ "|(abc def gh|"
+(format #f "|~,,,,10:a|" '(abc def ghi jkl))
+  ⇒ "|(abc de ...|"
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <b>~</b><var>mincol</var>,<var>colinc</var>,<var>minpad</var>,<var>padchar</var>,<var>maxcol</var><b>S</b></dt>
+<dd><p>S式出力。対応する引数が<code>write</code>を使ってフォーマットされます。
+パラメータの意味は<code>~A</code>指示子と同じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(format #f "|~s|" "oops")
+  ⇒ "|\"oops\"|"
+(format #f "|~10s|" "oops")
+  ⇒ "|\"oops\"    |"
+(format #f "|~10@s|" "oops")
+  ⇒ "|    \"oops\"|"
+(format #f "|~10,,,'*@s|" "oops")
+  ⇒ "|****\"oops\"|"
+(format #f "|~10,,,'★s|" "oops")
+  ⇒ "|\"oops\"★★★★|"
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <b>~</b><var>mincol</var>,<var>padchar</var>,<var>commachar</var>,<var>interval</var><b>D</b></dt>
+<dd><p>10進出力。対応する引数が10進数表記でフォーマットされます。もし引数が数値でなければ、
+全てのパラメータは(‘<code>v</code>’パラメータの処理後に)無視され、
+引数は<code>~A</code>でフォーマットされます。
+</p>
+<p>もし<var>mincol</var>に整数が与えられたら、それが最小の文字数を指定します。
+結果の文字数がそれより少なければ、文字<var>padchar</var>が左に追加されます(右詰めになります)。
+<var>padchar</var>が省略された場合は空白文字が使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(format #f "|~d|" 12345)
+  ⇒ "|12345|"
+(format #f "|~10d|" 12345)
+  ⇒ "|     12345|"
+(format #f "|~10,'0d|" 12345)
+  ⇒ "|0000012345|"
+</pre></td></tr></tbody></table>
+
+<p>アトマーク ‘<code>@</code>’ フラグが与えられた場合、正の引数に対して ‘<code>+</code>’ が
+先頭につけられます。
+</p>
+<p>コロンフラグ ‘<code>:</code>’ が与えられた場合、結果の文字は<var>interval</var>文字毎に
+まとめられ、間に文字<var>commachar</var>が挿入されます。デフォルトでは3文字毎にコンマが
+挿入されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(format #f "|~:d|" 12345)
+  ⇒ "|12,345|"
+(format #f "|~,,'_,4:d|" -12345678)
+  ⇒ "|-1234_5678|"
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <b>~</b><var>mincol</var>,<var>padchar</var>,<var>commachar</var>,<var>interval</var><b>B</b></dt>
+<dd><p>2進出力。対応する引数が2進数の整数としてフォーマットされます。
+パラメータの意味は<code>~D</code>と同じです。
+</p>
+</dd>
+<dt> <b>~</b><var>mincol</var>,<var>padchar</var>,<var>commachar</var>,<var>interval</var><b>O</b></dt>
+<dd><p>8進出力。対応する引数が8進数の整数としてフォーマットされます。
+パラメータの意味は<code>~D</code>と同じです。
+</p>
+</dd>
+<dt> <b>~</b><var>mincol</var>,<var>padchar</var>,<var>commachar</var>,<var>interval</var><b>X</b></dt>
+<dt> <b>~</b><var>mincol</var>,<var>padchar</var>,<var>commachar</var>,<var>interval</var><b>x</b></dt>
+<dd><p>16進出力。対応する引数が16進数の整数としてフォーマットされます。
+フォーマット指示文字に ‘<code>X</code>’ が与えられた場合は ‘<code>ABCDEF</code>’ が桁文字として
+使われ、 ‘<code>x</code>’ が与えられた場合は ‘<code>abcdef</code>’ が桁文字として使われます。
+パラメータの意味は<code>~D</code>と同じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(format #f "~8,'0x" 259847592)
+  ⇒ "0f7cf5a8"
+(format #f "~8,'0X" 259847592)
+  ⇒ "0F7CF5A8"
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <b>~</b><var>count</var><b>*</b></dt>
+<dd><p>引数のカウンタを<var>count</var>だけ後方にずらします。つまり、<var>count</var>個の引数が
+無視されることになります。<var>count</var>のデフォルト値は1です。
+コロンフラグが与えられた場合は引数カウンタを前方に動かします。
+例えば<code>~:*</code>は次のディレクティブが直前に使った引数を再び使うようにします。
+アトマークフラグが与えられた場合は、<var>count</var>が引数の絶対位置を示します。
+0が最初の引数です。
+</p></dd>
+</dl>
+
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_008a_009b_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_61.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

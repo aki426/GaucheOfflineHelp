@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.48 util.combinations - 組み合わせ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.48 util.combinations - 組み合わせ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.48 util.combinations - 組み合わせ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_173.html#Full-string-case-conversion" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_175.html#g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002ecombinations-_002d-_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"></a>
+<h2 class="section">11.48 <code>util.combinations</code> - 組み合わせ</h2>
+
+<dl>
+<dt><a name="index-util_002ecombinations"></a><u>Module:</u> <b>util.combinations</b></dt>
+<dd><a name="index-util_002ecombinations-1"></a>
+<p>このモジュールは、いくつかの便利なコンビネーションや順列とそれに関連する
+操作の手続きを実装しています。
+</p>
+<p>このモジュールのほとんどの手続きは2つのバージョンを持っています。
+1つはアスタリスクの付かない手続き(例えば、<code>permutations</code>)で、
+与えられたセットにある全ての要素を区別して扱います。もう1つは、
+アスタリスクの付く手続き(例えば、<code>permutations*</code>)で、重複を
+考慮します。アスタリスクの付く手続きは、オプショナルな<var>eq</var>引数を取り
+ます。それは等値性のテストに使われ、デフォルトは<code>eqv?</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-permutations"></a><u>Function:</u> <b>permutations</b><i> set</i></dt>
+<dt><a name="index-permutations_002a"></a><u>Function:</u> <b>permutations*</b><i> set :optional eq</i></dt>
+<dd><p>リスト<var>set</var>の全ての順列のリストを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(permutations '(a b c))
+  ⇒ ((a b c) (a c b) (b a c) (b c a) (c a b) (c b a))
+
+(permutations '(a a b))
+  ⇒ ((a a b) (a b a) (a a b) (a b a) (b a a) (b a a))
+
+(permutations* '(a a b))
+  ⇒ ((a a b) (a b a) (b a a))
+</pre></td></tr></tbody></table>
+
+<p><var>set</var>がある程度の要素を持っている場合、可能性のある順列の数は
+爆発的に大きくなります。注意して使って下さい。
+一度にそれぞれの順列を処理したい場合は、下記の<code>permutations-for-each</code>の
+使用を考慮して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-permutations_002dfor_002deach"></a><u>Function:</u> <b>permutations-for-each</b><i> proc set</i></dt>
+<dt><a name="index-permutations_002a_002dfor_002deach"></a><u>Function:</u> <b>permutations*-for-each</b><i> proc set :optional eq</i></dt>
+<dd><p>リスト<var>set</var>のそれぞれの順列に対して、<var>proc</var>を呼び出します。
+戻り値は未定義値です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-combinations"></a><u>Function:</u> <b>combinations</b><i> set n</i></dt>
+<dt><a name="index-combinations_002a"></a><u>Function:</u> <b>combinations*</b><i> set n :optional eq</i></dt>
+<dd><p>リスト<var>set</var>の<var>n</var>個の要素の可能性のある全ての順列のリストを
+返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(combinations '(a b c) 2)
+  ⇒ ((a b) (a c) (b c))
+
+(combinations '(a a b) 2)
+  ⇒ ((a a) (a b) (a b))
+
+(combinations* '(a a b) 2)
+  ⇒ ((a a) (a b))
+</pre></td></tr></tbody></table>
+
+<p><var>set</var>が大きいときは、組み合わせの爆発について注意して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-combinations_002dfor_002deach"></a><u>Function:</u> <b>combinations-for-each</b><i> proc set n</i></dt>
+<dt><a name="index-combinations_002a_002dfor_002deach"></a><u>Function:</u> <b>combinations*-for-each</b><i> proc set n :optional eq</i></dt>
+<dd><p><var>set</var>の<var>n</var>個の要素のそれぞれの組み合わせについて<var>proc</var>を
+呼び出します。戻り値は未定義値です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-power_002dset"></a><u>Function:</u> <b>power-set</b><i> set</i></dt>
+<dt><a name="index-power_002dset_002a"></a><u>Function:</u> <b>power-set*</b><i> set :optional eq</i></dt>
+<dd><p>リスト<var>set</var>の累乗集合(全てのサブセット)を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(power-set '(a b c))
+  ⇒ (() (a) (b) (c) (a b) (a c) (b c) (a b c))
+
+(power-set* '(a a b)
+  ⇒ (() (a) (b) (a a) (a b) (a a b))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-power_002dset_002dfor_002deach"></a><u>Function:</u> <b>power-set-for-each</b><i> proc set</i></dt>
+<dt><a name="index-power_002dset_002a_002dfor_002deach"></a><u>Function:</u> <b>power-set*-for-each</b><i> proc set :optional eq</i></dt>
+<dd><p><var>set</var>のそれぞれのサブセットについて<var>proc</var>を呼び出す。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-power_002dset_002dbinary"></a><u>Function:</u> <b>power-set-binary</b><i> set</i></dt>
+<dd><p><code>power-set</code>のように、<var>set</var>の累乗集合を返しますが、順番が異なります。
+<code>power-set-binary</code>はサブセットの空間を深さ優先でトラバースしますが、
+<code>power-set</code>は横型探索を行います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(power-set-binary '(a b c))
+  ⇒ (() (c) (b) (b c) (a) (a c) (a b) (a b c))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-cartesian_002dproduct"></a><u>Function:</u> <b>cartesian-product</b><i> list-of-sets</i></dt>
+<dt><a name="index-cartesian_002dproduct_002dright"></a><u>Function:</u> <b>cartesian-product-right</b><i> list-of-sets</i></dt>
+<dd><p><var>list-of-sets</var>にあるセットのデカルト積を返します。
+<code>cartesian-product</code>は左固定順で結果を構築しますが
+(一番右の要素がまず異なる)、
+<code>cartesian-product-right</code>は右固定順で行います
+(一番左の要素がまず異なる)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cartesian-product '((a b c) (0 1)))
+  ⇒ ((a 0) (a 1) (b 0) (b 1) (c 0) (c 1))
+
+(cartesian-product-right '((a b c) (0 1)))
+  ⇒ ((a 0) (b 0) (c 0) (a 1) (b 1) (c 1))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_173.html#Full-string-case-conversion" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_175.html#g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

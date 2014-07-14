@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.3 compat.norational - 有理数のない算術演算</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.3 compat.norational - 有理数のない算術演算">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.3 compat.norational - 有理数のない算術演算">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="compat_002enorational-_002d-_00e6_009c_0089_00e7_0090_0086_00e6_0095_00b0_00e3_0081_00ae_00e3_0081_00aa_00e3_0081_0084_00e7_00ae_0097_00e8_00a1_0093_00e6_00bc_0094_00e7_00ae_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_130.html#A-common-job-descriptor-for-control-modules" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="compat_002enorational-_002d-_00e6_009c_0089_00e7_0090_0086_00e6_0095_00b0_00e3_0081_00ae_00e3_0081_00aa_00e3_0081_0084_00e7_00ae_0097_00e8_00a1_0093_00e6_00bc_0094_00e7_00ae_0097-1"></a>
+<h2 class="section">11.3 <code>compat.norational</code> - 有理数のない算術演算</h2>
+
+<dl>
+<dt><a name="index-compat_002enorational"></a><u>Module:</u> <b>compat.norational</b></dt>
+<dd><a name="index-compat_002enorational-1"></a>
+
+<p>リリース 0.8.7 までは、Gauche は正確な有理数をサポートしていませんでし
+た。<code>2/3</code>のような有理数リテラルを読み込むことはできていましたが、
+約分して整数になる場合をのぞいては、その場で不正確な実数に変換されてい
+ました。正確な整数を正確な整数で割った場合も約分して整数になる場合をの
+ぞき、結果は不正確な実数になりました。
+</p>
+<p>リリース 0.8.8 ではもうこのようなことはありません。正確な数同士の割り
+算の結果は常に正確な数になります。ゼロで割ったときはもちろん例外です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(/ 2 3)  ⇒ 2/3
+(/ 5)    ⇒ 1/5
+(/ 4 2)  ⇒ 2
+</pre></td></tr></tbody></table>
+
+<p>計算は正確な値でできますが、ひとつ欠点もあります。正確有理数演算は整
+数演算や不正確実数同士の演算にくらべてはるかに遅いのです。意図せず、計
+算の初期段階で有理数を生成してしまうとその後の計算にはすべて正確な演算
+が適用されてしまい性能は悲惨なことになります。
+</p>
+<p>この問題を解決する適切は方法は適切な場所に<code>exact-&gt;inexact</code>を挿入
+することです。しかし、この変換を簡単におこなうには、このモジュールをイ
+ンポートし、割り算に<code>/</code>を使うだけですみます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use compat.norational)
+
+(/ 2 3)  ⇒ 0.6666666666666666
+(/ 5)    ⇒ 0.2
+(/ 4 2)  ⇒ 2
+</pre></td></tr></tbody></table>
+
+<p>効果はグローバルには起こらず、明示的に<code>compat.norational</code>をインポー
+トしたモジュールでのみ有効です。
+</p>
+<p>このモジュールは<code>/</code>を再定義しているだけです。したがって、コードに
+正確な有理数のリテラルが含まれていても、それは不正確な実数に変換される
+ことはなく、正確な有理数としてあつかわれます。Gaucheに不正確な実数とし
+て有理数リテラルを扱わせるには、<code>#i</code>という接頭辞を追加しなければ
+なりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; 1/3
+1/3
+gosh&gt; #i1/3
+0.3333333333333333
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_130.html#A-common-job-descriptor-for-control-modules" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

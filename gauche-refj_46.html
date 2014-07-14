@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.8 キーワード</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.8 キーワード">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.8 キーワード">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00ad_00e3_0083_00bc_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_45.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_47.html#Identifier" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00ad_00e3_0083_00bc_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089-1"></a>
+<h2 class="section">6.8 キーワード</h2>
+
+<dl>
+<dt><a name="index-_003ckeyword_003e"></a><u>Builtin Class:</u> <b>&lt;keyword&gt;</b></dt>
+<dd><a name="index-keyword"></a>
+<p>キーワードは特別なシンボルの一種で、自動的にクォートされます。
+名前で渡す引数(キーワード引数)や、キーワード-値のリストで広く使われて
+います。
+CommonLisp とは異なり、キーワードとシンボルは別々の型として扱われます。
+</p>
+<p>Gaucheにおけるキーワード引数のサポートについては<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>を、
+また独自にキーワード-値リストをパーズする方法については
+<code>let-keywords</code> マクロ(<a indepth="true" href="gauche-refj_56.html#g_t_00e7_009c_0081_00e7_0095_00a5_00e5_008f_00af_00e8_0083_00bd_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_00b3_00e3_0082_00b0">省略可能引数のパージング</a>) も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003aname"></a><u>Reader syntax:</u> <b><code>:<var>name</var></code></b></dt>
+<dd><p>名前が <var>name</var> であるキーワードとして読み込まれます。
+(先行する ’:’ は、キーワードの名前の一部ではないことに注意してください。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-keyword_003f"></a><u>Function:</u> <b>keyword?</b><i> obj</i></dt>
+<dd><p><var>obj</var> がキーワードであれば、<code>#t</code> を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dkeyword"></a><u>Function:</u> <b>make-keyword</b><i> name</i></dt>
+<dd><p>名前が <var>name</var> であるキーワードを返します。<var>name</var>には
+文字列かシンボルが許されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-keyword "foo")  ⇒ :foo
+
+(make-keyword 'foo)   ⇒ :foo
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-keyword_002d_003estring"></a><u>Function:</u> <b>keyword-&gt;string</b><i> keyword</i></dt>
+<dd><p>キーワード <var>keyword</var> の名前を文字列で返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(keyword-&gt;string :foo) ⇒ "foo"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-get_002dkeyword"></a><u>Function:</u> <b>get-keyword</b><i> key kv-list :optional fallback</i></dt>
+<dd><p>キー-値のリストから値を取り出すのに便利な手続きです。
+キー-値のリスト <var>kv-list</var> は偶数個の要素を持たなければなりません。
+1つ目、3つ目、5つ目、… の要素はキーとして扱われ、
+2つ目、4つ目、6つ目、… の要素は、その前の要素をキーとした値と
+なります。
+</p>
+<p>この手続きは、キーの集合から <var>key</var> を探して、それが見つかれば、
+対応する値を返します。
+2つ以上のキーにマッチしたら、最左のものとなります。
+マッチするキーがない場合、<var>fallback</var> が与えられていればそれを
+返し、さもなければエラーを通知します。
+</p>
+<p><var>kv-list</var> が正しい偶数個の要素を持つリストでない場合は、エラーに
+なります。
+</p>
+<p>キーワード-値リストの ‘キーワード’ と、<var>key</var> 引数は、実際には
+キーワードである必要はありません。いかなる Scheme オブジェクトで
+あっても良いです。キーの比較は、<code>eq?</code> によって行われます。
+</p>
+<p>この手続きは、STk から導入されました。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(get-keyword :y '(:x 1 :y 2 :z 3))
+  ⇒ 2
+(get-keyword 'z '(x 1 y 2 z 3))
+  ⇒ 3
+
+(get-keyword :t '(:x 1 :y 2 :z 3))
+  ⇒ #&lt;error&gt;
+(get-keyword :t '(:x 1 :y 2 :z 3) #f)
+  ⇒ #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-get_002dkeyword_002a"></a><u>Macro:</u> <b>get-keyword*</b><i> key kv-list :optional fallback</i></dt>
+<dd><p><code>get-keyword</code> と同様ですが、<var>kv-list</var> が <var>key</var> を
+含まない場合にのみ <var>fallback</var> が評価されることだけが違います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-delete_002dkeyword"></a><u>Function:</u> <b>delete-keyword</b><i> key kv-list</i></dt>
+<dt><a name="index-delete_002dkeyword_0021"></a><u>Function:</u> <b>delete-keyword!</b><i> key kv-list</i></dt>
+<dd><p><var>kv-list</var> から <var>key</var> に <code>eq?</code> であるキーをもつキーと値を
+削除します。
+</p>
+<p><code>delete-keyword</code> は <var>kv-list</var> を変更しません。しかし、
+返されたリストは共通の末尾部分を共有します。
+</p>
+<p><code>delete-keyword!</code> は新しくアロケートされることはありません。
+そして、破壊的に <var>kv-list</var> を変更する<em>可能性があります</em>。
+最初のキーがマッチした場合元のリストは変更されないこともありえますが、
+返り値のリストを使わなければいけません。
+</p>
+<p><var>key</var> にマッチするキーがない場合 <var>kv-list</var> が返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(delete-keyword :y '(:x 1 :y 2 :z 3 :y 4))
+ ⇒ (:x 1 :z 3)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-delete_002dkeywords"></a><u>Function:</u> <b>delete-keywords</b><i> keys kv-list</i></dt>
+<dt><a name="index-delete_002dkeywords_0021"></a><u>Function:</u> <b>delete-keywords!</b><i> keys kv-list</i></dt>
+<dd><p><code>delete-keyword</code>や<code>delete-keyword!</code>と似ていますが、
+<var>keys</var>にオブジェクトのリストを指定できます。
+<var>kv-list</var>中のキーが<var>keys</var>のうちのどれかに一致すれば、
+そのキーと続く値が<var>kv-list</var>から取り除かれます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(delete-keywords '(:x :y) '(:x 1 :y 2 :z 3 :y 4))
+ ⇒ (:z 3)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_45.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_47.html#Identifier" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

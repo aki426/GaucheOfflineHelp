@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.1 型とクラス</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.1 型とクラス">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.1 型とクラス">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_009e_008b_00e3_0081_00a8_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_40.html#g_t_00e7_00ad_0089_00e4_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_009e_008b_00e3_0081_00a8_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9-1"></a>
+<h2 class="section">6.1 型とクラス</h2>
+
+<p>Schemeは動的な強い型付けの言語です。つまり、全ての値は
+実行時に自分の型を知っていて、その型が値に適用できる操作を決定します。
+</p>
+<p>Gaucheでは、<em>クラス</em>によって型を記述します。クラス自身もオブジェクトであり、
+実行時に取り扱うことができます。新たなクラスを作成することで、
+既存の型とは異なるユーザ定義型を使うことができます。
+</p>
+<p>この節ではもっとも基本的な型システムへのインタフェースを説明します。
+新たなクラスを定義し、そのインスタンスを作る方法については
+<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">オブジェクトシステム</a>を参照してください。
+</p>
+<p>あらかじめ定義されているクラスはグローバル変数に束縛されています。Gaucheでの
+慣習として、クラスを格納している変数は<code>&lt;string&gt;</code>のように
+<code>&lt;</code>と<code>&gt;</code>で囲まれた名前を持ちます。
+(この<code>&lt;</code>や<code>&gt;</code>は文法的には何ら特別な意味を持ちません。
+普通に変数名として使える文字です)。
+組み込みの型に対応するクラスについては、この章の中で順に紹介してゆきます。
+まずは次のいくつかのクラスから始めましょう。
+</p>
+<dl>
+<dt><a name="index-_003ctop_003e"></a><u>Builtin Class:</u> <b>&lt;top&gt;</b></dt>
+<dd><a name="index-top"></a>
+<p>全ての型のスーパータイプを表現するクラスです。
+つまり、どんなクラス<code>X</code>に対しても<code>(subtype? X &lt;top&gt;)</code>は<code>#t</code>であり、
+どんなオブジェクト<code>x</code>に対しても<code>(is-a? x &lt;top&gt;)</code>は<code>#t</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cbottom_003e"></a><u>Builtin Class:</u> <b>&lt;bottom&gt;</b></dt>
+<dd><a name="index-bottom"></a>
+<p>全ての型のサブタイプを表現するクラスです。
+どんなクラス<code>X</code>に対しても<code>(subtype? &lt;bottom&gt; X)</code>は<code>#t</code>であり、
+どんなオブジェクト<code>x</code>に対しても<code>(is-a? x &lt;bottom&gt;)</code>は<code>#f</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cobject_003e"></a><u>Builtin Class:</u> <b>&lt;object&gt;</b></dt>
+<dd><a name="index-object"></a>
+<p>このクラスは、ユーザ定義されたクラスのスーパータイプを表現するクラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-class_002dof"></a><u>Function:</u> <b>class-of</b><i> obj</i></dt>
+<dd><p><var>obj</var>のクラスを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(class-of 3)         ⇒ #&lt;class &lt;integer&gt;&gt;
+(class-of "foo")     ⇒ #&lt;class &lt;string&gt;&gt;
+(class-of &lt;integer&gt;) ⇒ #&lt;class &lt;class&gt;&gt;
+</pre></td></tr></tbody></table>
+
+<p>註: Gaucheでは、ユーザ定義クラスを再定義することができます。
+新たな定義でインスタンスの構造が変更された場合、以前のクラスか作られた
+インスタンスに<code>class-of</code>を適用すると、インスタンスが新しいクラスに
+適合するようにアップデートされます。詳しくは<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9">クラスの再定義</a>を参照して
+ください。インスタンスアップデートを避けるには<code>current-class-of</code>を
+使います(<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9">インスタンスへのアクセス</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-is_002da_003f"></a><u>Function:</u> <b>is-a?</b><i> obj class</i></dt>
+<dd><p><var>obj</var>が<var>class</var>のインスタンスであるか、<var>class</var>のサブクラスの
+インスタンスである場合に、真を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(is-a? 3 &lt;integer&gt;)   ⇒ #t
+(is-a? 3 &lt;real&gt;)      ⇒ #t
+(is-a? 5+3i &lt;real&gt;)   ⇒ #f
+(is-a? :foo &lt;symbol&gt;) ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>註：<var>obj</var>のクラスが再定義されていた場合、<code>is-a?</code>はインスタンスアップデートを
+トリガします。<a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9">クラスの再定義</a>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-subtype_003f"></a><u>Function:</u> <b>subtype?</b><i> sub super</i></dt>
+<dd><p>クラス<var>sub</var>がクラス<var>super</var>のサブクラスであれば(<var>sub</var>と<var>super</var>が
+同じである場合も含め)<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p>
+<p>(<code>subtype?</code>という名前はCommon Lispの<code>subtypep</code>から来ています)。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_40.html#g_t_00e7_00ad_0089_00e4_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>8.2 ライブラリの命名規則</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 8.2 ライブラリの命名規則">
+<meta name="keywords" content="Gauche ユーザリファレンス: 8.2 ライブラリの命名規則">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e5_0091_00bd_00e5_0090_008d_00e8_00a6_008f_00e5_0089_0087"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_72.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00a8_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e5_0091_00bd_00e5_0090_008d_00e8_00a6_008f_00e5_0089_0087-1"></a>
+<h2 class="section">8.2 ライブラリの命名規則</h2>
+
+<p>下の表は、モジュールの名前付けの分類を示します。
+外部モジュール、及び将来予定されているモジュールも含みます。
+</p>
+<dl compact="compact">
+<dt> <code>binary.*</code></dt>
+<dd><p>バイナリデータを扱うためのユーティリティ。
+</p>
+</dd>
+<dt> <code>compat.*</code></dt>
+<dd><p>互換性のためのレイヤを提供。
+</p>
+</dd>
+<dt> <code>dbi.*, dbd.*</code></dt>
+<dd><p>データベース独立インタフェース層とドライバー。
+</p>
+</dd>
+<dt> <code>dbm.*</code></dt>
+<dd><p>DBMインタフェース
+</p>
+</dd>
+<dt> <code>gauche.*</code></dt>
+<dd><p>Gauche本体の一部として考えられている機能。
+</p>
+</dd>
+<dt> <code>gl.*</code></dt>
+<dd><p>OpenGLバインディングと関連するライブラリ (外部パッケージ)。
+</p>
+</dd>
+<dt> <code>gtk.*</code></dt>
+<dd><p>GTk+バインディングと関連するライブラリ (外部パッケージ)。
+</p>
+</dd>
+<dt> <code>file.*</code></dt>
+<dd><p>ファイルとディレクトリの操作。
+</p>
+</dd>
+<dt> <code>lang.*</code></dt>
+<dd><p>言語に関するライブラリ(人工的なものも自然言語関連も)。(予定)
+</p>
+</dd>
+<dt> <code>math.*</code></dt>
+<dd><p>数学。
+</p>
+</dd>
+<dt> <code>compat.*</code></dt>
+<dd><p>他の実装とのコンパチビリティに関するライブラリ。 (予定)
+</p>
+</dd>
+<dt> <code>rfc.*</code></dt>
+<dd><p>RFCで定義されているデータフォーマットやネットワークプロトコルの実装。
+</p>
+</dd>
+<dt> <code>srfi-*</code></dt>
+<dd><p>SRFIの実装
+</p>
+</dd>
+<dt> <code>sxml.*</code></dt>
+<dd><p>SXMLライブラリ。
+</p>
+</dd>
+<dt> <code>text.*</code></dt>
+<dd><p>テキストデータを扱うライブラリ
+</p>
+</dd>
+<dt> <code>util.*</code></dt>
+<dd><p>汎用的なアルゴリズムの実装。
+</p>
+</dd>
+<dt> <code>www.*</code></dt>
+<dd><p>WWWで主として使われるプロトコルやデータフォーマットの実装。
+</p></dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_72.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa-_002d-_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00a8_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

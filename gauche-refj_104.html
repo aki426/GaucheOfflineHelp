@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.30 gauche.time - 時間の計測</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.30 gauche.time - 時間の計測">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.30 gauche.time - 時間の計測">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_104.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002etime-_002d-_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac"></a>
+<h2 class="section">9.30 <code>gauche.time</code> - 時間の計測</h2>
+
+<dl>
+<dt><a name="index-gauche_002etime"></a><u>Module:</u> <b>gauche.time</b></dt>
+<dd><a name="index-gauche_002etime-1"></a>
+<p>Schemeコードの実行時間を測る3つの方法を提供します。
+インタラクティブな使用に便利な<code>time</code>マクロ、
+ベンチマークのための手続きのセット、
+プログラム中に埋め込んで使える<code>&lt;time-counter&gt;</code>オブジェクトです。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0081_00aa_00e5_00ae_009f_00e8_00a1_008c_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e8_00a8_0088_00e6_00b8_00ac"></a>
+<h3 class="subheading">インタラクティブな実行時間の計測</h3>
+
+<p>註: <code>time</code>マクロは<code>gauche.time</code>モジュールをオートロードする
+ようにあらかじめ定義されているので、<code>time</code>マクロを使うだけなら
+<code>(use gauche.time)</code>としておく必要はありません。
+</p>
+<dl>
+<dt><a name="index-time-1"></a><u>Macro:</u> <b>time</b><i> expr expr2 …</i></dt>
+<dd><p>式<var>expr</var> <var>expr2</var> … を順に評価し、最後の式の結果を返します。
+結果が返される前に、全ての式の評価にかかった実(経過)時間および
+ユーザースペース、カーネルスペースで費されたCPU時間がカレントエラーポートに
+報告されます。
+</p>
+<p>現在の実装は、経過時間に対しては<code>sys-gettimeofday</code>
+(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)を、CPU時間に対しては<code>sys-times</code>
+(<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>参照)を用いています。従って、
+それぞれの数値の分解能はこれらの手続きが用いているシステムコールに依存します。
+CPU時間は10ms単位で、経過時間はそれより細かいことが多いです。
+但しgettimeofday(2)コールをサポートしていないOSでは経過時間が最悪の場合
+秒単位になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">gosh&gt; (time (length (sort (call-with-input-file "/usr/share/dict/words"
+                                                port-&gt;string-list))))
+;(time (length (sort (call-with-input-file "/usr/share/dict/words" port- ...
+; real   0.357
+; user   0.350
+; sys    0.000
+45427
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0083_00b3_00e3_0083_0081_00e3_0083_009e_00e3_0083_00bc_00e3_0082_00af"></a>
+<h3 class="subheading">ベンチマーク</h3>
+
+<p>It is not unusual that the routine you want to measure takes only
+a fraction of second, so you have to run it many times for better
+measurement.  It is also common that you want to compare results
+of measurement of two or more implementation strategies.
+Here are useful procedures to do so.
+</p>
+<p>The name and behavior of those benchmarking routines are inspired
+by Perl’s Benchmark module.
+</p>
+<dl>
+<dt><a name="index-time_002dthis"></a><u>Function:</u> <b>time-this</b><i> how thunk</i></dt>
+<dd><p>Calls <var>thunk</var> many times and measure its execution time.
+The argument <var>how</var> can be one of the following forms.
+</p>
+<dl compact="compact">
+<dt> <code><var>integer</var></code></dt>
+<dd><p>It calls <var>thunk</var> as many times as the given number.
+</p></dd>
+<dt> <code>(cpu <var>real</var>)</code></dt>
+<dd><p>It calls <var>thunk</var> as many times as the total cpu time exceeds
+the given number of seconds.
+</p></dd>
+</dl>
+
+<p>It also runs an empty loop as the same times and subtract the
+time took for the empty loop from the measured time, to get
+more accurate result.
+</p>
+<p>The result is returned in a <code>&lt;time-result&gt;</code> record, described below.
+Here are some examples:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">;; Run the thunk 1,000,000 times
+(time-this 1000000 (lambda () (expt 100 30)))
+  ⇒ #&lt;time-result 1000000 times/  1.030 real/  1.040 user/  0.000 sys&gt;
+
+;; Run the thunk at least 5.0 cpu seconds
+(time-this '(cpu 5.0) (lambda () (expt 100 30)))
+  ⇒ #&lt;time-result 4903854 times/  5.090 real/  5.050 user/  0.010 sys&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003ctime_002dresult_003e"></a><u>Record:</u> <b>&lt;time-result&gt;</b></dt>
+<dd><p>A record to hold the benchmark result.
+Following slots are defined.
+</p>
+<dl>
+<dt><a name="index-count"></a><u>Instance Variable of &lt;time-result&gt;:</u> <b>count</b></dt>
+<dd><a name="index-time_002dresult_002dcount"></a>
+<p>The number of times the thunk was run.   This slot is also
+accessed by a procedure <code>time-result-count</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-real-1"></a><u>Instance Variable of &lt;time-result&gt;:</u> <b>real</b></dt>
+<dd><a name="index-time_002dresult_002dreal"></a>
+<p>The total real (elapsed) time running the thunk took.
+This slot is also accessed by a procedure <code>time-result-real</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-user-2"></a><u>Instance Variable of &lt;time-result&gt;:</u> <b>user</b></dt>
+<dd><a name="index-time_002dresult_002duser"></a>
+<p>The total user cpu time running the thunk took.
+This slot is also accessed by a procedure <code>time-result-user</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys"></a><u>Instance Variable of &lt;time-result&gt;:</u> <b>sys</b></dt>
+<dd><a name="index-time_002dresult_002dsys"></a>
+<p>The total system cpu time running the thunk took.
+This slot is also accessed by a procedure <code>time-result-sys</code>.
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dtime_002dresult"></a><u>Function:</u> <b>make-time-result</b><i> count real user sys</i></dt>
+<dd><p>The constructor of <code>&lt;time-result&gt;</code> records.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dresult_003f"></a><u>Function:</u> <b>time-result?</b><i> obj</i></dt>
+<dd><p>The predicate of <code>&lt;time-result&gt;</code> records.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dresult_002b"></a><u>Function:</u> <b>time-result+</b><i> t1 t2 :key (with-count #f)</i></dt>
+<dt><a name="index-time_002dresult_002d"></a><u>Function:</u> <b>time-result-</b><i> t1 t2 :key (with-count #f)</i></dt>
+<dd><p>Add or subtract two <code>&lt;time-result&gt;</code> records and returns a new record.
+</p>
+<p>If <var>with-count</var> is false,
+only the real, user and sys slots are added or subtracted,
+and the result’s count slot is set to the same as <var>t1</var>’s count slot.
+It is supposed to be used to calculate on measurement
+from different chunk of code.
+</p>
+<p>If <var>with-count</var> is true,
+then the values of count slot is also added or subtracted.
+It is supposed to calculate on
+multiple benchmark results of the same code.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dthese"></a><u>Function:</u> <b>time-these</b><i> how alist</i></dt>
+<dt><a name="index-time_002dthese_002freport"></a><u>Function:</u> <b>time-these/report</b><i> how alist</i></dt>
+<dd><p>These procedures benchmarks multiple chunks of code to compare.
+</p>
+<p>The <var>alist</var> argument must be the form of
+<code>((key . thunk) …)</code>, where <code>key</code> is a symbol
+and <var>thunk</var> is a procedure taking no arguments.
+</p>
+<p>The <var>how</var> argument is the same as <code>time-this</code>; that is,
+either an integer for number of iterations, or a list
+<code>(cpu <var>x</var>)</code> to indicate <var>x</var> seconds of cpu time.
+</p>
+<p><code>time-these</code> runs benchmarks for each thunk in <var>alist</var>
+using <code>time-this</code>, and returns the result in a list of
+the form
+<code>(<var>how</var> (<var>key1</var> . <var>result1</var>) (<var>key2</var> . <var>result2</var>) …)</code>,
+where each <var>result</var> is a <code>&lt;time-result&gt;</code> object.
+</p>
+<p><code>time-these/report</code> outputs the benchmark results and
+comparison matrix in human readable way to the current output port.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">gosh&gt; (time-these/report '(cpu 3.0)
+        `((real1 . ,(cut expt 100 20))
+          (real2 . ,(cut %expt 100 20))
+          (imag  . ,(cut expt +100i 20))))
+Benchmark: ran real1, real2, imag, each for at least 3.0 cpu seconds.
+  real1: 3.312 real, 3.320 cpu (3.320 user + 0.000 sys)@ 1694277.11/s n=5625000
+  real2: 2.996 real, 3.010 cpu (3.010 user + 0.000 sys)@35595634.55/s n=107142860
+   imag: 3.213 real, 3.190 cpu (3.190 user + 0.000 sys)@  862068.97/s n=2750000
+
+              Rate  real1 real2   imag
+  real1  1694277/s     -- 0.048  1.965
+  real2 35595635/s 21.009    -- 41.291
+   imag   862069/s  0.509 0.024     --
+</pre></td></tr></tbody></table>
+
+<p>The first part of the report shows, for each thunks,
+the real (elapsed) time,
+the cpu time used (and its breakdown of user and system time),
+the rate of iteration per second, and the total number of iterations.
+</p>
+<p>The second part compares the speed between each pair of the benchmarks.
+For example, its first row tells that the benchmark <code>real1</code> is
+0.048 times faster than <code>real2</code> and 1.965 times faster than
+<code>imag</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-report_002dtime_002dresults"></a><u>Function:</u> <b>report-time-results</b><i> result</i></dt>
+<dd><p>This is a utility procedure to create a report from
+the result of <code>time-these</code>.  Actually, <code>time-these/report</code>
+is just a combination of <code>time-these</code> and this procedure:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (time-these/report how samples)
+  (report-time-results (time-these how samples)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<a name="g_t_00e3_0082_0088_00e3_0082_008a_00e7_00b4_00b0_00e3_0081_008b_00e3_0081_0084_00e8_00a8_0088_00e6_00b8_00ac"></a>
+<h3 class="subheading">より細かい計測</h3>
+
+<dl>
+<dt><a name="index-_003ctime_002dcounter_003e"></a><u>Class:</u> <b>&lt;time-counter&gt;</b></dt>
+<dd><a name="index-time_002dcounter"></a>
+<p>時間カウンタの抽象クラスです。時間カウンタは
+時間の経過と共にその値が増加してゆく一種のタイマーです。
+何度でもカウントを止めたり開始したりできます。
+カウンタの値はカウントが止まっている時に読み出すことができます。
+複数の時間カウンタを使えば、
+例えばループ中の二つの部分について費される時間を別々に計測することもできます。
+</p>
+<p>具体的なサブクラスが、どの時間をカウントするかを決定します。
+時間カウンタを使うには、下に挙げるサブクラスのいずれかを
+インスタンシエイトしなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003creal_002dtime_002dcounter_003e"></a><u>Class:</u> <b>&lt;real-time-counter&gt;</b></dt>
+<dt><a name="index-_003cuser_002dtime_002dcounter_003e"></a><u>Class:</u> <b>&lt;user-time-counter&gt;</b></dt>
+<dt><a name="index-_003csystem_002dtime_002dcounter_003e"></a><u>Class:</u> <b>&lt;system-time-counter&gt;</b></dt>
+<dt><a name="index-_003cprocess_002dtime_002dcounter_003e"></a><u>Class:</u> <b>&lt;process-time-counter&gt;</b></dt>
+<dd><a name="index-real_002dtime_002dcounter"></a>
+<a name="index-user_002dtime_002dcounter"></a>
+<a name="index-system_002dtime_002dcounter"></a>
+<a name="index-process_002dtime_002dcounter"></a>
+<p>それぞれ、実経過時間、ユーザースペースCPU時間、カーネルスペースCPU時間、
+総CPU時間 (ユーザー+カーネル)を計測する時間カウンタのクラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dcounter_002dstart_0021"></a><u>Method:</u> <b>time-counter-start!</b><i> (counter &lt;time-counter&gt;)</i></dt>
+<dt><a name="index-time_002dcounter_002dstop_0021"></a><u>Method:</u> <b>time-counter-stop!</b><i> (counter &lt;time-counter&gt;)</i></dt>
+<dd><p>時間カウンタ<var>counter</var>を開始/停止します。カウンタが走っている間の時間が、
+カウンタが停止した時点でカウンタの値に加算されます。
+</p>
+<p>開始/停止の対はネストすることができます。その場合は、一番外側の対のみが
+有効です。
+つまり、既に走っているカウンタに対し<code>time-counter-start!</code>を呼んでも
+何も起こりませんが、一度余分に<code>time-counter-stop!</code>を呼ばないと
+カウンタは止まりません。
+これは、内部に既に開始/停止の対を含んでいるかもしれない大きなコードブロックの
+全体の時間を計測したいというような場合に便利です。
+</p>
+<p>既に停止しているカウンタに対して<code>time-counter-stop!</code>を呼んでも
+何も起こりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dcounter_002dreset_0021"></a><u>Method:</u> <b>time-counter-reset!</b><i> (counter &lt;time-counter&gt;)</i></dt>
+<dd><p>カウンタ<var>counter</var>の値をリセットします。既に<var>counter</var>が走っている
+場合は、リセットの前にカウンタは停止させられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dcounter_002dvalue"></a><u>Method:</u> <b>time-counter-value</b><i> (counter &lt;time-counter&gt;)</i></dt>
+<dd><p>カウンタ<var>counter</var>の現在の値(秒数)を実数で返します。
+分解能はそれぞれのカウンタが用いているシステムコールに依存します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dtime_002dcounter"></a><u>Macro:</u> <b>with-time-counter</b><i> counter expr …</i></dt>
+<dd><p>式<var>expr</var> …が評価される間だけ<var>counter</var>を走らせる、
+便利なマクロです。最後の式の結果を返します。このマクロは次のように
+定義されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-syntax with-time-counter
+  (syntax-rules ()
+    ((_ counter . exprs)
+     (dynamic-wind
+      (lambda () (time-counter-start! counter))
+      (lambda () . exprs)
+      (lambda () (time-counter-stop! counter))))
+    ))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>下の例では、ループ内でのprocess-Aとprocess-Bにて費された
+概略の時間をそれぞれ計測します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((ta (make &lt;real-time-counter&gt;))
+      (tb (make &lt;real-time-counter&gt;)))
+  (dotimes (i 100000)
+    (with-time-counter ta
+      (process-A))
+    (with-time-counter tb
+      (process-B)))
+  (format #t "Time spent in process-A: ~s\n" (time-counter-value ta))
+  (format #t "Time spent in process-B: ~s\n" (time-counter-value tb))
+  )
+</pre></td></tr></tbody></table>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089_00e4_00be_008b_00e5_00a4_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

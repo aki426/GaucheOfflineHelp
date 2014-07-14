@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.10 srfi-27 - ランダムビットのソース</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.10 srfi-27 - ランダムビットのソース">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.10 srfi-27 - ランダムビットのソース">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0097_00a5_00e4_00bb_0098_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e6_009b_00b8_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d27-_002d-_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9"></a>
+<h2 class="section">10.10 <code>srfi-27</code> - ランダムビットのソース</h2>
+
+<dl>
+<dt><a name="index-srfi_002d27"></a><u>Module:</u> <b>srfi-27</b></dt>
+<dd><a name="index-srfi_002d27-1"></a>
+<p>このモジュールはメルセンヌツイスタアルゴリズム
+(<a indepth="true" href="gauche-refj_142.html#Mersenne-Twister_00e4_00b9_00b1_00e6_0095_00b0_00e7_0099_00ba_00e7_0094_009f_00e5_0099_00a8"><code>math.mt-random</code> - Mersenne Twister乱数発生器</a> 参照)
+を基礎に用いたSRFI-27疑似乱数発生器インタフェースを提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dinteger"></a><u>Function:</u> <b>random-integer</b><i> n</i></dt>
+<dd><p>[SRFI-27]
+デフォルトの乱数発生源を用いて、0 から <var>n</var>-1 までの正確な整数の乱数を
+返します。この手続きの乱数のシードを設定するには
+<code>default-random-source</code> に対して
+<code>random-source-randomize!</code> あるいは、
+<code>random-source-pseudo-randomize!</code> を用います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dreal"></a><u>Function:</u> <b>random-real</b></dt>
+<dd><p>[SRFI-27]
+デフォルトの乱数発生源を用いて、0 より大きく、1 未満の実数乱数を返します。
+この手続きの乱数のシードを設定するには <code>default-random-source</code> に対して
+<code>random-source-randomize!</code> あるいは、
+or <code>random-source-pseudo-randomize!</code> を用います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-default_002drandom_002dsource"></a><u>Variable:</u> <b>default-random-source</b></dt>
+<dd><p>[SRFI-27]
+<code>random-integer</code> が利用するデフォルトの乱数発生源を保持しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002drandom_002dsource"></a><u>Function:</u> <b>make-random-source</b></dt>
+<dd><p>[SRFI-27]
+乱数の発生源を生成し返します。
+現在の Gauche の実装では、これは <code>&lt;mersenne-twister&gt;</code> のオブジェクトです。
+将来の実装では変更される可能性があります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dsource_003f"></a><u>Function:</u> <b>random-source?</b><i> obj</i></dt>
+<dd><p>[SRFI-27]
+<var>obj</var> が乱数発生源オブジェクトであれば、<code>#t</code> を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dsource_002dstate_002dref"></a><u>Function:</u> <b>random-source-state-ref</b><i> s</i></dt>
+<dt><a name="index-random_002dsource_002dstate_002dset_0021"></a><u>Function:</u> <b>random-source-state-set!</b><i> s state</i></dt>
+<dd><p>[SRFI-27]
+乱数発生源 <var>s</var> の状態の「スナップショット」を獲得あるいは設定します。
+<var>state</var> は背後にある発生器に依存する内容をもつ不透明なオブジェクトです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dsource_002drandomize_0021"></a><u>Function:</u> <b>random-source-randomize!</b><i> s</i></dt>
+<dd><p>[SRFI-27]
+乱数発生源 <var>s</var> の状態を完全にランダムな状態にしようとします。
+現在の実装では乱数のシードを設定するのに、現在の時刻とプロセス ID を
+使います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dsource_002dpseudo_002drandomize_0021"></a><u>Function:</u> <b>random-source-pseudo-randomize!</b><i> s i j</i></dt>
+<dd><p>[SRFI-27]
+乱数発生源 <var>s</var> の状態を発生源とは独立した (<var>i</var>, <var>j</var>) 番の
+初期状態に設定します。<var>i</var> および <var>j</var> は非負の整数です。
+この手続きは乱数発生源 <var>s</var> を二つの非負整数でインデックス付した、
+大規模の独立の乱数発生源として再利用するときに利用できます。
+この手続きは、完全な決定性があることに注意してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dsource_002dmake_002dintegers"></a><u>Function:</u> <b>random-source-make-integers</b><i> s</i></dt>
+<dd><p>[SRFI-27]
+呼出しのたびに乱数発生源 <var>s</var> より、 0 から <var>n</var>-1 までの整数の
+乱数を返す、一つの整数 <var>n</var> を引数としてとる手続きを、返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-random_002dsource_002dmake_002dreals"></a><u>Function:</u> <b>random-source-make-reals</b><i> s :optional unit</i></dt>
+<dd><p>[SRFI-27]
+呼出しのたびに乱数発生源 <var>s</var> から 0 より大きく 1 未満の実数乱数を
+返す、無引数の手続きを返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0097_00a5_00e4_00bb_0098_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e6_009b_00b8_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

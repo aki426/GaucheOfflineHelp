@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.19 遅延評価</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.19 遅延評価">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.19 遅延評価">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_56.html#g_t_00e7_0094_009f_00e6_0088_0090_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e5_0080_00a4_00e3_0081_00ae_00e7_0095_00b3_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Delay_00e3_0081_00a8force_00e3_0081_00a8lazy" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1-1"></a>
+<h2 class="section">6.19 遅延評価</h2>
+
+<p>Gaucheには、ふたつの組み込みの遅延評価メカニズムがあります。
+</p>
+<p>ひとつめはScheme標準で定められている、明示的なメカニズムです。遅延評価したい式を
+<code>delay</code>構文でマークし、値が必要になったところで<code>force</code>により
+評価を強制します。Gaucheはさらに、srfi-45で導入された、
+末尾再帰アルゴリズムでメモリを効率的に利用するための<code>lazy</code>というプリミティブも
+サポートしています。
+</p>
+<p>もうひとつは遅延シーケンスです。こちらは評価を<code>force</code>で明示する必要が
+ありません。Schemeプログラムからは、遅延シーケンスは通常のリストと全く
+同じに見えます。<code>car</code>や<code>cdr</code>を使ったり、<code>map</code>を始めとする
+様々なリスト手続きをそのまま適用することができます。けれども内部的には、
+遅延シーケンスの要素は必要になるまで計算されません。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Delay_00e3_0081_00a8force_00e3_0081_00a8lazy">6.19.1 Delayとforceとlazy</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9">6.19.2 遅延シーケンス</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+
+<hr size="6">
+<a name="Delay_00e3_0081_00a8force_00e3_0081_00a8lazy"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Delay_00e3_0081_00a8force_00e3_0081_00a8lazy-1"></a>
+<h3 class="subsection">6.19.1 Delayとforceとlazy</h3>
+
+<p>Schemeは伝統的に、<code>delay</code>と<code>force</code>を使った
+明示的な遅延評価メカニズムを提供してきました。しかし、R5RSの後で、
+それが末尾再帰的なアルゴリズムとの相性がよくないことがわかりました。
+末尾再帰的なアルゴリズムの本体が反復的に表現できるにもかかわらず、
+メモリを際限なく要求してしまうのです。SRFI-45によって、
+新たなプリミティブ構文<code>lazy</code>を使えばその問題が回避できることが示されました。
+詳しい議論はSRFI-45のドキュメントを見てください。
+ここでは3つのプリミティブの使い方を説明します。
+</p>
+<dl>
+<dt><a name="index-lazy"></a><u>Special Form:</u> <b>lazy</b><i> expression</i></dt>
+<dt><a name="index-delay"></a><u>Special Form:</u> <b>delay</b><i> expression</i></dt>
+<dd><p>[SRFI-45][R5RS]
+これらの形式は<var>expression</var>の評価を遅延する<em>プロミス</em>を生成し
+ます。<var>Expression</var> はこのプロミスが<code>force</code>にわたったときに評
+価されます。
+</p>
+<p><var>expression</var>自身がプロミスを返す式なら<code>lazy</code>を、
+そうでなければ、<code>delay</code>を使います。
+型で考えるとわかりやすいでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">lazy  : Promise a -&gt; Promise a
+delay : a -&gt; Promise a
+</pre></td></tr></tbody></table>
+
+<p>Schemeでは静的な型付けをしないので、この使い分けを強制することができません。
+文脈にしたがってプログラマが適切に選択する必要があります。
+一般的には<code>lazy</code>は遅延アルゴリズムを表現している関数本体全体を囲む場合
+にのみ出現します。
+</p>
+<p><code>lazy</code>の実用的な使用例については<code>util.stream</code>
+(<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>util.stream</code> - ストリームライブラリ</a>)の実装をチェックするといいでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-force"></a><u>Function:</u> <b>force</b><i> promise</i></dt>
+<dd><p>[R5RS]
+もし、<var>promise</var>がプロミスでなければ、それをそのまま返します。
+</p>
+<p>そうではない場合で、もし<var>promise</var>の値がまだ計算されていない場合には、
+<code>force</code>は<var>promise</var>が内包している式を評価し、その結果を返します。
+</p>
+<p>いったん、<var>promise</var>の値が計算されると、その値はメモ化され、あとで
+再び<code>force</code>されても、再計算がおこなわれることはありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-promise_003f"></a><u>Function:</u> <b>promise?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がプロミスオブジェクトである場合に
+<code>#t</code>を返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Delay_00e3_0081_00a8force_00e3_0081_00a8lazy" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9-1"></a>
+<h3 class="subsection">6.19.2 遅延シーケンス</h3>
+
+<a name="g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0083_0080_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<h4 class="subsubheading">イントロダクション</h4>
+
+<p>遅延シーケンスはリストのようなデータ構造ですが、要素は必要になるまで
+計算されません。内部的には、これは<code>cdr</code>の評価が遅延される特別な種類の
+ペアを使って実現されています。しかし、Schemeのレベルで
+「遅延ペア」のような特別なデータ型が見えることは決してありません。
+遅延ペアにアクセスしようとした途端、Gaucheは自動的に
+遅延されていた計算を<em>force</em>して、遅延ペアは通常のペアに変化してしまうからです。
+</p>
+<p>これはつまり、遅延シーケンスを<code>car</code>、<code>cdr</code>、<code>map</code>といった
+通常のリスト処理手続きにそのまま渡せるということです。
+</p>
+<p>次の例を見てください。<code>generator-&gt;lseq</code>は、
+「呼ばれる度に次の値を返す」という手続きを取り、返される値からなる遅延シーケンス
+にして返す手続きです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-input-from-file "file"
+  (^[] (let loop ([cs (generator-&gt;lseq read-char)] [i 0])
+         (match cs
+           [() #f]
+           [(#\c (or #\a #\d) #\r . _) i]
+           [(c . cs) (loop cs (+ i 1))]))))
+</pre></td></tr></tbody></table>
+
+<p>このコードは、ファイル‘<tt>file</tt>’中に最初に出現する
+“car”または”cdr”という文字列の場所を返します。
+文字は必要に応じて読まれ、目的の文字列が見つかれば残りは読まれません。
+これを遅延無しでやろうとすると、一旦全てのファイルを読み込んでリストに
+変換するか、あるいは便利な<code>match</code>マクロを使うのを諦めて
+一文字つづ読み込んで処理する原始的な状態機械を書くしかないでしょう。
+</p>
+<p>暗黙のforceの他にも、Gaucheの遅延シーケンスは
+Schemeの典型的な遅延ストリーム実装に比べて次のような違いがあります。
+</p>
+<ol>
+<li>
+遅延シーケンスを、繰り返しによる怠惰なアルゴリズムから構築する際に、
+遅延ペアの<code>cdr</code>側のみが遅延評価の対象となります。
+ペアの<code>car</code>側は直ちに評価されます。
+一方、<code>util.stream</code>の<code>stream-cons</code>では、
+<code>car</code>と<code>cdr</code>のどちらも遅延評価の対象となり、
+必要となるまで評価されません (<a indepth="true" href="gauche-refj_184.html#g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>util.stream</code> - ストリームライブラリ</a>参照)。
+</li><li>
+Gaucheの遅延シーケンスは、常に<em>ひとつ余分に</em>評価します。
+遅延ペアを手にした段階で、その中身にアクセスするかしないかにかかわらず、
+既にその<code>car</code>は評価済みであるということです。
+ひとつ余分に計算してしまうことのコストは、通常はあまり問題にならないでしょう
+(全てを余分に計算するよりは良いわけですから)。けれども、自分自身を参照
+する遅延データ構造、つまり、遅延シーケンスの次の要素を計算するために
+そのシーケンスの前の方の要素を参照する必要がある場合は注意が必要です。
+遅延評価言語で正しい自己参照遅延データの生成コードが、
+そのままではGaucheで停止しなくなる場合があります。後で例を示します。
+また、評価に副作用がある場合にもこの差異が観測される場合があります。
+例えば、ポートから一文字づつ読む遅延シーケンスは、
+見かけよりも一文字余分に読むことになるでしょう。
+</li></ol>
+
+<a name="g_t_00e3_0083_0097_00e3_0083_00aa_00e3_0083_009f_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096"></a>
+<h4 class="subsubheading">プリミティブ</h4>
+
+<dl>
+<dt><a name="index-generator_002d_003elseq"></a><u>Function:</u> <b>generator-&gt;lseq</b><i> generator</i></dt>
+<dt><a name="index-generator_002d_003elseq-1"></a><u>Function:</u> <b>generator-&gt;lseq</b><i> item … generator</i></dt>
+<dd><p>ジェネレータ手続き<var>generator</var>から生成される値の列を、遅延シーケンスとして返します。
+ジェネレータ手続きは引数を取らない手続きで、呼ばれる度に次の値を返すようなものです。
+EOFが返されたら、シーケンスの終了とみなされます (EOF自体はシーケンスには含まれません)。
+例えば<code>read-char</code>はそのまま<var>generator</var>に渡せます。
+ジェネレータ手続きを作ったり加工したりする便利なユーティリティが
+<code>gauche.generator</code>モジュールで提供されています (<a indepth="true" href="gauche-refj_82.html#g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.generator</code> - ジェネレータ</a>参照)。
+</p>
+<p>二番目の形式では、<var>item</var> …が遅延シーケンスの先頭に
+配置されます。遅延ペアと通常のペアは区別できないので、これは
+<code>(cons* item … (generator-&gt;lseq generator))</code>とも書けますが、
+少々冗長になるでしょう。
+</p>
+<p>内部的には、Gaucheの遅延シーケンスはジェネレータを使うように最適化
+されています。遅延シーケンスを作る最も効率の良い方法はこの手続きを使うことです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lcons"></a><u>Macro:</u> <b>lcons</b><i> car cdr</i></dt>
+<dd><p><var>car</var>と<var>cdr</var>からなる遅延ペアを作って返します。
+<var>car</var>は<code>lcons</code>を呼び出した時点で評価されますが、
+<var>cdr</var>の評価は遅延されます。
+</p>
+<p>遅延ペアと通常のペアを区別する方法はありません。ペアの<code>car</code>や<code>cdr</code>に
+アクセスしたり、それどころか<code>pair?</code>によって型を確かめただけでも、
+遅延ペアのcdr側はforceされて、遅延ペアは通常のペアへと変化します。
+</p>
+<p><code>cons</code>と違って、遅延ペアの<var>cdr</var>はリスト (遅延でも通常でも) を返す
+関数でなければなりません。遅延シーケンスは全てforceされたら、
+常に空リストで終端されているリストになる、と言っても良いでしょう。つまり、
+ドット対を最後に持つような「不完全なリスト」に対応する「不完全な遅延シーケンス」
+というものはありません。(Schemeは静的型ではないので、実際に評価するまで
+<var>cdr</var>が完全なリストを生成することを保証することができません。
+現在の実装では、<var>cdr</var>がリストでない値を生成した場合、
+それを単に無視して空リストが返されたかのように扱います)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define z (lcons (begin (print 1) 'a) (begin (print 2) '())))
+ ⇒ ; car部はすぐに評価されるので、'1'が表示される
+
+(cdr z) ⇒ () ;; そして'2'が表示される
+
+;; これも'2'を表示する。遅延ペアのcarにアクセスすると、その時点で
+;; cdr部の評価もforceされるので。
+(car (lcons 'a (begin (print 2) '()))) ⇒ a
+
+;; これも同じ。pair?と聞くだけで遅延ペアはforceされる
+(pair? (lcons 'a (begin (print 2) '()))) ⇒ #t
+
+;; 念のため。次の例では'2'は出力されない。二番目の遅延ペアはアクセス
+;; されていないので、そのcdrも評価されない。
+(pair? (lcons 'a (lcons 'b (begin (print 2) '())))) ⇒ #t
+</pre></td></tr></tbody></table>
+
+<p>Gaucheの「一つ先の要素まで計算」が問題となる例も見ておきましょう。
+次の例は、自己参照する遅延シーケンスを使った、とても美しい無限フィボナッチ数列の
+定義です (<code>lmap</code>は遅延バージョンのmapで、<code>gauche.lazy</code>モジュールで
+提供されています)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.lazy)  ;; for lmap
+(define *fibs* (lcons* 0 1 (lmap + *fibs* (cdr *fibs*)))) ;; BUGGY
+</pre></td></tr></tbody></table>
+
+<p>残念ながら、Gaucheではこれはうまく動きません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(car *fibs*)
+ ⇒ 0
+(cadr *fibs*)
+ ⇒ *** ERROR: Attempt to recursively force a lazy pair.
+</pre></td></tr></tbody></table>
+
+<p><code>*fibs*</code>の二番目の要素(<code>cadr</code>)にアクセスするということは、
+<code>*fibs*</code>の二番目のペアのcarを取るということです。<code>*fibs*</code>の
+二番目のペアは<code>1</code>と<code>(lmap ...)</code>の遅延ペアになっています。
+carを取ろうとした時点でこの遅延ペアはforceされ、そのcdrが計算されます。
+<code>lmap</code>が最初に返さなければならないのは、<code>*fibs*</code>の一番目と二番目の
+要素の和です。しかし<code>*fibs*</code>の二番目の要素は、今まさにアクセスしようと
+している値です!
+</p>
+<p>この問題は、ある要素を計算するために直前の要素を参照しなければ回避できます。
+フィボナッチ数はF(n) = F(n-1) + F(n-2) = 2*F(n-2) + F(n-3)と変形できるので、
+遅延フィボナッチシーケンスはこう定義できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define *fibs*
+  (lcons* 0 1 1 (lmap (^[a b] (+ a (* b 2))) *fibs* (cdr *fibs*))))
+</pre></td></tr></tbody></table>
+
+<p>これでok!
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(take *fibs* 20)
+  ⇒ (0 1 1 2 3 5 8 13 21 34 55 89 144 233
+     377 610 987 1597 2584 4181)
+</pre></td></tr></tbody></table>
+
+<p>多くの遅延アルゴリズムは、完全な遅延評価をするconsを基礎にしています。
+そういったアルゴリズムを<code>lcons</code>を使ってGaucheに移植する際には、
+Gaucheのこのちょっとした「熱心さ」に気をつけてください。
+</p>
+<p><code>lcons</code>は、実行の度にcdr部の評価を遅延するためのクロージャを
+作るということにも注意してください。<code>lcons</code>を使った遅延アルゴリズムでは
+要素ひとつにつきクロージャをひとつ作るオーバヘッドがかかります。
+性能が重要な部分では、可能な限り<code>generator-&gt;lseq</code>を使いましょう。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<h4 class="subsubheading">ユーティリティ</h4>
+
+<dl>
+<dt><a name="index-lcons_002a"></a><u>Macro:</u> <b>lcons*</b><i> x … tail</i></dt>
+<dt><a name="index-llist_002a"></a><u>Macro:</u> <b>llist*</b><i> x … tail</i></dt>
+<dd><p>遅延バージョンの<code>cons*</code>です (<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090">リストの作成</a>参照)。
+<code>lcons*</code>と<code>llist*</code>は全く同じです。
+<code>cons*</code>/<code>list*</code>との対称性から両方の名前が定義されています。
+</p>
+<p><var>tail</var>引数は(遅延もしくは通常の)リストを生成する式でなければなりません。
+<var>tail</var>引数の評価は遅延されます。<var>x</var> …引数はすぐに
+評価されます。次の関係が成り立ちます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lcons* a)           ≡ a
+(lcons* a b)         ≡ (lcons a b)
+(lcons* a b ... y z) ≡ (cons* a b … (lcons y z))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-lrange"></a><u>Function:</u> <b>lrange</b><i> start :optional end step</i></dt>
+<dd><p><var>start</var>から<var>step</var>づつ増加し、<var>end</var>を越える直前までの遅延数列を
+返します。<var>step</var>のデフォルトは1、<var>end</var>のデフォルトは無限大です。
+<var>end</var>を省略すると無限数列になるので、REPLで安易に
+<code>(lrange 0)</code>など評価しないようにしましょう。
+</p>
+<p><var>start</var>と<var>step</var>の少なくとも一方が不正確数なら、
+不正確数列が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(take (lrange -1) 3) ⇒ (-1 0 1)
+
+(lrange 0.0 5 0.5)
+  ⇒ (0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5)
+
+(lrange 1/4 1 1/8)
+  ⇒ (1/4 3/8 1/2 5/8 3/4 7/8)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-liota"></a><u>Function:</u> <b>liota</b><i> count :optional start step</i></dt>
+<dd><p>遅延バージョンの<code>iota</code>です (<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0081_00ae_00e4_00bd_009c_00e6_0088_0090">リストの作成</a>参照)。
+<var>start</var>(デフォルト0)から<var>step</var>(デフォルト1)づつ増加する、
+<var>count</var>個の遅延数列を返します。
+</p></dd></dl>
+
+<p>遅延シーケンスを作るユーティリティ関数は他にもたくさん提供されています。
+<a indepth="true" href="gauche-refj_85.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"><code>gauche.lazy</code> - 遅延シーケンスユーティリティ</a>を参照してください。
+</p>
+<a name="g_t_00e4_00be_008b"></a>
+<h4 class="subsubheading">例</h4>
+
+<p>素数の無限列を計算してみましょう。
+</p>
+<p>まず、既にある程度の計算済みの素数列が<code>*primes*</code>にあるとします。
+すると、与えられた<var>n</var>以上の素数を計算する手続きが次のとおり書けます
+(<var>n</var>は奇数とします。)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (next-prime n)
+  (let loop ([ps *primes*])
+    (let1 p (car ps)
+      (cond [(&gt; (* p p) n) n]
+            [(zero? (modulo n p)) (next-prime (+ n 2))]
+            [else (loop (cdr ps))]))))
+</pre></td></tr></tbody></table>
+
+<p>この手続きは素数列をループし、<code>(sqrt n)</code>以下の素数で
+<var>n</var>を割ろうとします。一つも割りきれる素数がなければ、<var>n</var>が素数です。
+(実際の条件は、<code>(&gt; p (sqrt n))</code>より効率の良い<code>(&gt; (* p p) n)</code>を
+使っています)。
+<var>n</var>を割り切る素数があった場合は、
+<code>next-prime</code>を再帰的に呼んで<code>(+ n 2)</code>を試します。
+</p>
+<p><code>next-prime</code>を使うと、次々に素数を生成してゆくジェネレータを書くことができます。
+次の手続きは<var>last</var>より大きい素数を次々に生成するジェネレータです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (gen-primes-above last)
+  (^[] (set! last (next-prime (+ last 2))) last))
+</pre></td></tr></tbody></table>
+
+<p><code>generator-&gt;lseq</code>を使えば、
+<code>gen-primes-above</code>を遅延シーケンスに変換することができ、
+それを<code>*prime*</code>の値とすることができます。最初の方の素数を計算するために、
+あらかじめ計算済みの素数をいくつか用意しておくのがポイントです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define *primes* (generator-&gt;lseq 2 3 5 (gen-primes-above 5)))
+</pre></td></tr></tbody></table>
+
+<p><code>*primes*</code>を直接REPLで評価しないように。無限リストなので、
+REPLの表示が終わらなくなります。
+かわりに、例えばこんなふうにして最初の20個の素数を見たり:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(take *primes* 20)
+ ⇒ (2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71)
+</pre></td></tr></tbody></table>
+
+<p>10000番目の素数は何かを見たり:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(~ *primes* 10000)
+ ⇒ 104743
+</pre></td></tr></tbody></table>
+
+<p>あるいは1000000以下の素数はいくつあるかを調べたりできます:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(any (^[p i] (and (&gt;= p 1000000) i)) *primes* (lrange 0))
+ ⇒ 78498
+</pre></td></tr></tbody></table>
+
+<p>註：遅延評価な関数型言語に慣れたプログラマには、この例は奇妙に見えるかもしれません。
+わざわざ副作用のあるジェネレータを経由しないでも、
+次に示すとおり、素数列は純粋に関数的な方法で定義できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.lazy)
+
+(define (prime? n)
+  (not (any (^p (zero? (mod n p)))
+            (ltake-while (^k (&lt;= (* k k) n)) *primes*))))
+
+(define (primes-from k)
+  (if (prime? k)
+    (lcons k (primes-from (+ k 2)))
+    (primes-from (+ k 2))))
+
+(define *primes* (llist* 2 3 5 (primes-from 7)))
+</pre></td></tr></tbody></table>
+
+<p>(<code>gauche.lazy</code>モジュールには、<code>take-while</code>の
+遅延バージョン<code>ltake-while</code>が定義されています。
+<code>any</code>については、遅延バージョンは必要ありません。<code>any</code>はもともと
+述語が真を返したら直ちに評価をやめて残りは見ないからです)。
+</p>
+<p><code>primes-from</code>での<code>lcons</code>を使った余再帰は、
+関数型プログラミングでの典型的なイディオムです。もちろん、
+Gaucheでもこのようなコードを書くことに何の問題もありません。
+ただし、Gaucheではジェネレータを使った方が<em>ずっと</em>効率が良くなります
+(筆者のマシンでは、最初の5000個の素数を計算するのに、
+ジェネレータ版は余再帰版より17倍速いです)。
+</p>
+<p>だからといって何が何でも余再帰を避けるべきということにはなりません。
+アルゴリズムが余再帰で自然にかけるならそうして構わないでしょう。
+ただその場合でも、遅延評価な関数型言語とのセマンティクスの違いを
+いつも気をつけるようにしてください。単に遅延評価アルゴリズムのコードを
+そのまま移植しても動くとは限りません。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Delay_00e3_0081_00a8force_00e3_0081_00a8lazy" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_58.html#g_t_00e4_00be_008b_00e5_00a4_0096" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0081_0085_00e5_00bb_00b6_00e8_00a9_0095_00e4_00be_00a1" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

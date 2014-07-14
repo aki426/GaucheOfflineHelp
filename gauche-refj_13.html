@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>3.1 Gaucheを起動する</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 3.1 Gaucheを起動する">
+<meta name="keywords" content="Gauche ユーザリファレンス: 3.1 Gaucheを起動する">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Gauche_00e3_0082_0092_00e8_00b5_00b7_00e5_008b_0095_00e3_0081_0099_00e3_0082_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_14.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0081_00aa_00e9_0096_008b_00e7_0099_00ba" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Gauche_00e3_0082_0092_00e8_00b5_00b7_00e5_008b_0095_00e3_0081_0099_00e3_0082_008b-1"></a>
+<h2 class="section">3.1 Gaucheを起動する</h2>
+
+<p>Gaucheは独立したSchemeインタプリタとしても、組み込みのSchemeライブラリとしても
+使うことができます。Gaucheのディストリビューションには、<code>gosh</code>という
+インタプリタが附属しています。
+</p>
+<dl>
+<dt><a name="index-gosh"></a><u>Program:</u> <b>gosh</b><i> [options] [scheme-file arg …]</i></dt>
+<dd><p>Gaucheのインタプリタです。  <var>scheme-file</var>が与えられなければ、
+<code>gosh</code>はインタラクティブに動作します。すなわち、標準入力からScheme式を読み込み、
+それを評価して結果をプリントするという動作を、EOFを読むか明示的に終了させられるまで
+続けます。
+</p>
+<p>もし<var>scheme-file</var>が与えられておらず、しかし入力が端末でない場合、
+<code>gosh</code>はread-eval-printループに入りますが、入力待ちの際にプロンプトを
+表示しません。これはScheme式をパイプで<var>gosh</var>に処理させる場合に便利です。
+<code>-b</code>または<code>-i</code>オプションでこの動作を強制的にonまたはoffできます。
+</p>
+<p><var>scheme-file</var>が与えられた場合、<code>gosh</code>はそれをSchemeプログラムとして
+ロードし、終了します。この動作に関しては<a indepth="true" href="gauche-refj_15.html#Scheme_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">Schemeスクリプトを書く</a>を参照して
+下さい。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00aa_00e3_0083_0097_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<h3 class="subheading">コマンドラインオプション</h3>
+
+<p><code>gosh</code>には以下のようなコマンドラインオプションがあります。
+‘-’ で始まらない最初のコマンドライン引数がスクリプトファイルと認識されます。
+スクリプトファイル名が ‘-’ で始まっている可能性がある場合は、ダミーオプション
+‘<code>--</code>’ をスクリプトファイル名の前に置いて下さい。
+</p>
+<dl>
+<dt><a name="index-_002dI"></a><u>Command Option:</u> <b>-I</b><i> path</i></dt>
+<dd><p><var>path</var>をロードパスのリストの最初に加えます。このオプションは複数指定できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dA"></a><u>Command Option:</u> <b>-A</b><i> path</i></dt>
+<dd><p><var>path</var>をロードパスのリストの末尾に加えます。このオプションは複数指定できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dq"></a><u>Command Option:</u> <b>-q</b></dt>
+<dd><p><code>gosh</code>が起動時にシステムの初期化ファイルをロードしないようにします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dV"></a><u>Command Option:</u> <b>-V</b></dt>
+<dd><p><code>gosh</code>のバージョンを表示して終了します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002du"></a><u>Command Option:</u> <b>-u</b><i> module</i></dt>
+<dd><p>起動後、インタラクティブなread-eval-printループに入る前、もしくは<var>scheme-file</var>
+をロードする前に<var>module</var>を“use”します。つまりそのモジュールがロードされ
+インポートされます。(<code>use</code>の詳細については<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e">モジュールの定義と選択</a>を参照して下さい。)
+このオプションは複数指定できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dl"></a><u>Command Option:</u> <b>-l</b><i> file</i></dt>
+<dd><p>起動後、インタラクティブなread-eval-printループに入る前、もしくは<var>scheme-file</var>
+をロードする前に<var>file</var>をロードします。ロードの詳細については<a indepth="true" href="gauche-refj_61.html#Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089">Schemeファイルのロード</a>
+を参照して下さい。このオプションは複数指定できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dL"></a><u>Command Option:</u> <b>-L</b><i> file</i></dt>
+<dd><p><code>-l</code>オプションと同様に<var>file</var>をロードしますが、
+<var>file</var>が見つからなかった場合はエラーを報告せずに黙って無視します。
+このオプションも複数指定できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002de"></a><u>Command Option:</u> <b>-e</b><i> scheme-expression</i></dt>
+<dd><p>起動後、インタラクティブなread-eval-printループに入る前、もしくは<var>scheme-file</var>
+をロードする前に<var>scheme-expression</var>を評価します。評価は
+<var>interaction-environment</var>中で行われます(<a indepth="true" href="gauche-refj_59.html#eval-_00e3_0081_00a8-repl">eval と repl</a>参照)。
+このオプションは複数指定できます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dE"></a><u>Command Option:</u> <b>-E</b><i> scheme-expression</i></dt>
+<dd><p>オプション-eとほぼ同じですが、<var>scheme-expression</var>は
+それが括弧で囲まれているかのように読まれます。
+このオプションは複数指定できます。例：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">% gosh -umath.const -E"print (sin (* pi/180 15))" -Eexit
+0.25881904510252074
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_002db"></a><u>Command Option:</u> <b>-b</b></dt>
+<dd><p>バッチ。入力が端末であってもプロンプトを出さないようにします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002di"></a><u>Command Option:</u> <b>-i</b></dt>
+<dd><p>インタラクティブ。入力が端末で無くてもプロンプトを出すようにします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002dm"></a><u>Command Option:</u> <b>-m</b><i> module</i></dt>
+<dd><p>スクリプトファイルが与えられた場合に、<code>main</code>手続きを
+探すモジュールを指定します。デフォルトでは<code>user</code>モジュールが探されます。
+スクリプトの実行について詳しくは<a indepth="true" href="gauche-refj_15.html#Scheme_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">Schemeスクリプトを書く</a>を見てください。
+</p>
+<p><var>module</var>で指定されたモジュールが、スクリプトファイルのロード後にも
+存在しない場合は、エラーが報告されます。
+</p>
+<p>このオプションは、スクリプトとしても使えるようなSchemeモジュールを書く際に便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002df"></a><u>Command Option:</u> <b>-f</b><i> compiler-option</i></dt>
+<dd><p>このオプションはコンパイラとランタイムの動作に影響を与えます。
+今のところ、次のオプションのみが<var>compiler-option</var>として有効です。
+</p><dl compact="compact">
+<dt> no-inline</dt>
+<dd><p>一切のインライン展開を行いません。このオプションは以下の no-inline-globals
+no-inline-locals および no-inline-constants を同時に指定したのと等価です。
+</p></dd>
+<dt> no-inline-globals</dt>
+<dd><p>大域(global)関数のインライン展開を展開を行ないません。
+</p></dd>
+<dt> no-inline-locals</dt>
+<dd><p>局所(local)関数のインライン展開を展開を行ないません。
+</p></dd>
+<dt> no-inline-constants</dt>
+<dd><p>定数のインライン展開を行ないません。
+</p></dd>
+<dt> no-source-info</dt>
+<dd><p>デバッグのためのソースファイル情報を保持しません。メモリの使用量は小さくなります。
+</p></dd>
+<dt> load-verbose</dt>
+<dd><p>ファイルがロードされる時にそれを報告します。
+</p></dd>
+<dt> case-fold</dt>
+<dd><p>R5RSに示される通り、シンボルの大文字小文字を区別しません。
+(デフォルトではこれらは区別されます)。 <a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5">大文字小文字の区別</a> を参照して下さい。
+</p></dd>
+<dt> test</dt>
+<dd><p>"<code>../src</code>" と "<code>../lib</code>" を、初期化ファイルを読む前に
+ロードパスに加えます。これは、作成された<code>gosh</code>をインストールせずに
+ソースツリーの中で実行してみるのに便利です。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_002dp"></a><u>Command Option:</u> <b>-p</b><i> profiler-option</i></dt>
+<dd><p>プロファイラを有効にします。以下のような<var>profiler-option</var>が
+今のところサポートされています。
+</p>
+<dl compact="compact">
+<dt> <code>time</code></dt>
+<dd><p>関数中で費された時間と、各関数が呼ばれた回数を記録して報告します。
+</p></dd>
+<dt> <code>load</code></dt>
+<dd><p>各モジュールをロードするのにかかった時間を記録して報告します。
+スクリプトの起動時間をチューンするのに便利です
+(実経過時間が報告されます)。
+</p></dd>
+</dl>
+
+<p>詳しくは<a indepth="true" href="gauche-refj_18.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086">プロファイラを使う</a>を参照して下さい。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-_002d_002d"></a><u>Command Option:</u> <b><code>--</code></b></dt>
+<dd><p>このオプションに出会うと、<code>gosh</code>はオプションの解析を止めて、その次の引数を
+無条件に<var>scheme-file</var>であると見倣します。<var>scheme-file</var>がマイナス記号で
+始まっている場合に必要です。
+</p></dd></dl>
+
+<p>オプション-I, -A, -l, -u, -e 及び -E は、それらがコマンドライン引数として
+出現した順に処理されます。例えば、-Iにより追加されるロードパスは
+それ以降の-lや-uオプションに影響を与えますが、それ以前のものには影響を
+与えません。
+</p>
+<a name="g_t_00e7_0092_00b0_00e5_00a2_0083_00e5_00a4_0089_00e6_0095_00b0"></a>
+<h3 class="subheading">環境変数</h3>
+
+<p>以下の環境変数を認識します。
+</p>
+<dl>
+<dt><a name="index-GAUCHE_005fLOAD_005fPATH"></a><u>Environment variable:</u> <b>GAUCHE_LOAD_PATH</b></dt>
+<dd><p>この環境変数によって、追加するロードパスを指定できます。
+パスは ’<code>:</code>’ で区切ります。
+この変数によって指定されたパスはシステムのデフォルトのロードパスの前に
+連結されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-GAUCHE_005fDYNLOAD_005fPATH"></a><u>Environment variable:</u> <b>GAUCHE_DYNLOAD_PATH</b></dt>
+<dd><p>この変数によって、動的にロードするオブジェクト用の追加ロードパスを
+指定できます。パスは ’<code>:</code>’ で区切ります。
+この変数によって指定されたパスはシステムのデフォルトのロードパスの前に
+連結されます。
+</p></dd></dl>
+
+<a name="Windows_00e7_0089_00b9_00e6_009c_0089_00e3_0081_00ae_00e5_00ae_009f_00e8_00a1_008c_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab"></a>
+<h3 class="subheading">Windows特有の実行ファイル</h3>
+
+<p>Windowsネイティブ環境(mingw)では、インタプリタとしてふたつの
+実行ファイルがインストールされます。
+<code>gosh.exe</code>はWindowsコンソールアプリケーションとしてコンパイルされ、
+普通の<code>gosh</code>のように、標準入出力を第一の通信手段とします。
+もう一つの実行ファイル<code>gosh-noconsole.exe</code>はWindows非コンソールアプリケーション
+としてコンパイルされています。こちらは起動時にコンソールに接続されません。
+標準入力は<code>NUL</code>デバイスに接続されます。標準出力と標準エラー出力は
+特殊なポートに接続され、最初に書き込みがあった時点で新たなコンソールが作られて
+出力されます。(このトリックはSchemeポート経由の出力のみで動きます。
+低レベルのCライブラリが標準出力や標準エラー出力に直接書き出したデータは捨てられます)。
+</p>
+<p><code>gosh-noconsole.exe</code>の目的は、Windows上でのスクリプティングです。
+Schemeスクリプトがもし<code>gosh.exe</code>に関連付けられていたとしたら、
+Explorerからそのスクリプトを起動するたびに、必ず新しいコンソールウィンドウが
+開くでしょう。そのコンソールはスクリプト終了時に消えてしまうので、
+多くの場合、ユーザには何が出力されているかを見る機会がなく、
+したがってほとんど役に立ちません。Schemeスクリプトを<code>gosh-noconsole.exe</code>に
+関連づけておけば、この煩わしいコンソールの出現を抑制できます。
+</p>
+<p>Windows版のオフィシャルのインストーラを使ってGaucheをインストールしたなら、
+Schemeスクリプト(‘<tt>*.scm</tt>’)は既に<code>gosh-noconsole.exe</code>に
+関連づけられているので、ExplorerからSchemeスクリプトをダブルクリックすれば
+Schemeプログラムを走らせることができます。
+‘<tt>C:\Program Files\Gauche\examples</tt>’の下にいくつかサンプルが
+あります
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_14.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0081_00aa_00e9_0096_008b_00e7_0099_00ba" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

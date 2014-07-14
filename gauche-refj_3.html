@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>1.2 表記について</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 1.2 表記について">
+<meta name="keywords" content="Gauche ユーザリファレンス: 1.2 表記について">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e8_00a1_00a8_00e8_00a8_0098_00e3_0081_00ab_00e3_0081_00a4_00e3_0081_0084_00e3_0081_00a6"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_2.html#Gauche_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e8_00a1_00a8_00e8_00a8_0098_00e3_0081_00ab_00e3_0081_00a4_00e3_0081_0084_00e3_0081_00a6-1"></a>
+<h2 class="section">1.2 表記について</h2>
+
+<p>このマニュアルでは、各項目は次のようなフォーマットで表記されています。
+</p>
+<dl>
+<dt><a name="index-foo"></a><u>カテゴリ:</u> <b>foo</b><i> arg1 arg2</i></dt>
+<dd><p>[spec] fooの説明
+</p></dd></dl>
+
+<p><var>カテゴリ</var> は項目<b>foo</b>の種別を示します。
+次のようなカテゴリがあります。
+</p>
+<table>
+<tbody><tr><td width="40%">Function</td><td width="60%">Scheme手続き</td></tr>
+<tr><td width="40%">Special Form</td><td width="60%">特殊形式 (R5RSでは「構文」)</td></tr>
+<tr><td width="40%">Macro</td><td width="60%">マクロ</td></tr>
+<tr><td width="40%">Module</td><td width="60%">モジュール</td></tr>
+<tr><td width="40%">Class</td><td width="60%">クラス</td></tr>
+<tr><td width="40%">Generic Function</td><td width="60%">ジェネリックファンクション</td></tr>
+<tr><td width="40%">Method</td><td width="60%">メソッド</td></tr>
+<tr><td width="40%">Reader Syntax</td><td width="60%">リーダによって解釈される構文要素</td></tr>
+</tbody></table>
+
+<p>手続き、特殊形式、マクロに関しては、エントリの後に引数の仕様が示されます。
+引数リストの中には次のような表記が現れることがあります。
+</p>
+<dl compact="compact">
+<dt> <var>arg …</var></dt>
+<dd><p>ゼロ個以上の可変個の引数。
+</p></dd>
+<dt> <var>:optional x y z</var></dt>
+<dt> <var>:optional (x x-default) (y y-default) z</var></dt>
+<dd><p>省略可能な引数の表記。この例では3つまでの省略可能な引数が取られることを示します。
+2番目の形式では<var>x</var>と<var>y</var>について省略された場合の既定値も示しています。
+この形式の引数表記は、Schemeに対するGaucheの独自拡張です。
+完全な仕様については<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>を参照してください。
+</p></dd>
+<dt> <var>:key x y z</var></dt>
+<dt> <var>:key (x x-default) (y y-default) z</var></dt>
+<dd><p>キーワード引数の表記。この例では<var>x</var>、<var>y</var>、<var>z</var>の3つのキーワード引数を
+取ることが示されます。2番目の形式では<var>x</var>と<var>y</var>について省略された場合の
+既定値も示しています。
+この形式の引数表記も、Schemeに対するGaucheの独自拡張です。
+完全な仕様については<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>を参照してください。
+</p></dd>
+<dt> <var>:rest args</var></dt>
+<dd><p>残りの引数全てがリストになって<var>args</var>に束縛されることを示します。
+この形式の引数表記も、Schemeに対するGaucheの独自拡張です。
+完全な仕様については<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>を参照してください。
+</p></dd>
+</dl>
+
+<p>説明が項目の行に続きます。もし項目が特定の標準に準拠している場合は、
+もととなった標準が次のような形式で示されます。
+</p>
+<dl compact="compact">
+<dt> [R5RS]</dt>
+<dt> [R5RS+]</dt>
+<dd><p>この項目はR5RSに定義されるように動作します。"[R5RS+]"とマークされている場合は
+R5RSの仕様に上位互換な形で追加の機能が実装されていることを示します。
+</p></dd>
+<dt> [SRFI-<var>n</var>]</dt>
+<dt> [SRFI-<var>n</var>+]</dt>
+<dd><p>この項目はSRFI-<var>n</var>に定義されるように動作します。"[SRFI-<var>n</var>+]"とマークされている場合は
+SRFI-<var>n</var>の仕様に上位互換な形で追加の機能が実装されていることを示します。
+</p></dd>
+<dt> [POSIX]</dt>
+<dd><p>この項目はPOSIXのAPIを反映していることを示します。
+</p></dd>
+</dl>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_2.html#Gauche_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_1.html#g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

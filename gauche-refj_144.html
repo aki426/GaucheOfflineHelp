@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.18 rfc.822 - RFC822メッセージ形式</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.18 rfc.822 - RFC822メッセージ形式">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.18 rfc.822 - RFC822メッセージ形式">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_143.html#Windows-console-API" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_145.html#Base64_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002e822-_002d-RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f"></a>
+<h2 class="section">11.18 <code>rfc.822</code> - RFC822メッセージ形式</h2>
+
+<dl>
+<dt><a name="index-rfc_002e822"></a><u>Module:</u> <b>rfc.822</b></dt>
+<dd><a name="index-rfc_002e822-1"></a>
+<p>電子メールを交換する際に使用されるテキストのフォーマットである、“インターネット・
+メッセージ・フォーマット”をパーズ/生成する手続きを定義しています。
+最新の仕様は、RFC2822 (<a indepth="true" href="gauche-refj_189.html#rfc2822">RFC2822</a>) にあります。
+このフォーマットは最初 RFC 822 で定義されたため、未だに“RFC822形式”と
+呼ばれています。それがこのモジュール名の由来です。
+以下では、このフォーマットを“RFC822形式”と呼びます。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0098_00e3_0083_0083_00e3_0083_0080_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba"></a>
+<h3 class="subheading">メッセージヘッダのパーズ</h3>
+
+<dl>
+<dt><a name="index-rfc822_002dread_002dheaders"></a><u>Function:</u> <b>rfc822-read-headers</b><i> iport :key strict? reader</i></dt>
+<dd><p>入力ポート <var>iport</var> から、メッセージ・ヘッダの終わりに達するまで、
+RFC822 形式のメッセージを読み込みます。
+ヘッダ・フィールドは以下のフォーマットのリストに展開、分離されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((name body) …)
+</pre></td></tr></tbody></table>
+<p><var>Name</var> … はフィールド名で、<var>body</var> … は対応するフィールドの
+ボディ、ともに文字列です。
+フィールド名は小文字に変換されます。フィールドのボディは、行折り返しが
+取り除かれる以外は変更されません。
+フィールドの順番は保存されます。
+</p>
+<p>デフォルトでは、パーザの動作は寛容です。ヘッダをパーズ中に EOF に
+出会うとそれをメッセージの終端とみなします。継続(折り返し)行でもなく、
+新しいヘッダフィールドの始端でもない行は無視します。このふるまいは
+キーワード引数 <var>strict?</var> に真の値を渡すことで変更することができます。
+真を渡すと、このような不正な形式のヘッダに対してエラーを発生させるように
+なります。
+</p>
+<p>キーワード引数 <var>reader</var> は <var>iport</var> から一行読み込む手続きを
+とります。デフォルトは <code>read-line</code> です。ほとんどの場合これで
+十分のはずです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rfc822_002dheader_002d_003elist"></a><u>Function:</u> <b>rfc822-header-&gt;list</b><i> iport :key strict? reader</i></dt>
+<dd><p>これは<code>rfc822-read-headers</code>の古い名前です。
+互換性のために残してありますが、新しいコードは
+<code>rfc822-read-headers</code>を使って下さい。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-rfc822_002dheader_002dref"></a><u>Function:</u> <b>rfc822-header-ref</b><i> header-list field-name :optional default</i></dt>
+<dd><p><code>rfc822-read-headers</code> が返すパーズ済みのヘッダリストから
+特定のフィールドを得るためのユーティリティ手続きです。
+</p>
+<p><var>Field-name</var> は小文字の文字列でフィールド名を指定します。
+与えられた名前をもつフィールドが <var>header-list</var> 中にあれば、
+その値を文字列で返します。そうでない場合、もし <var>default</var> が
+与えられていればそれが返り、与えられていなければ <code>#f</code> が返されます。
+</p></dd></dl>
+
+<a name="g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00bc_00e3_0083_00ab_00e3_0083_0089_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6"></a>
+<h3 class="subheading">基本的なフィールドパーザ</h3>
+
+<p>RFC2822メッセージの「構造化」されたヘッダフィールドをパーズするために、
+いくつかの手続きが提供されています。これらの手続きはヘッダフィールドの
+本体部を処理します。たとえば、ヘッダフィールドが、
+"<code>To: Wandering Schemer &lt;schemer@example.com&gt;</code>" であれば、これらの
+手続きは "<code>Wandering Schemer &lt;schemer@example.com&gt;</code>" をパーズします。
+</p>
+<p>ほとんどの手続きは入力ポートを引数にとります。通常は最初に、ヘッダフィールド
+全部を <code>rfc822-read-headers</code> でパーズし、ヘッダの本体を
+<code>rfc822-header-ref</code> で取得してから、その本体用に入力文字列ポートを
+オープンして、それをこれらの手続きを用いてパーズします。
+</p>
+<p>このように複雑になっているのは、フィールドのタイプによって別々の
+トークン化スキームが必要になるからです。RFC2822 では多くの場合
+トークン間にコメントがあらわれことを許しているので、初心な正規表現では
+うまくいきません。RFC2822 のコメントはネスト可能で、正規表現では表現
+しきれないからです。
+そういうわけで、このレイヤの手続きは、いろいろな構文に対応できるよう
+十分な柔軟性があるように設計されています。標準的なタイプのヘッダについては
+高水準のパーザも提供されています。後述の「特定フィールド用パーザ」を
+参照してください。
+</p>
+<dl>
+<dt><a name="index-rfc822_002dnext_002dtoken"></a><u>Function:</u> <b>rfc822-next-token</b><i> iport :optional tokenizer-specs</i></dt>
+<dd><p>基本的なトークナイザです。まず、もしあれば、白空白および/または
+コメント (<code>CFWS</code>) を <var>iport</var> から読み飛ばします。それから、
+<var>tokenizer-specs</var> にしたがってトークンをひとつ読み込みます。
+トークンを読み込む前に、<var>iport</var> が EOF に到達したら、EOF が
+返されます。
+</p>
+<p><var>tokenizer-specs</var> はトークナイザ仕様のリストです。
+トークナイザ仕様は、文字集合または文字集合と手続きのペアのどちらかです。
+</p>
+<p><code>CFWS</code> を読み飛ばしたあと、この手続きは <var>iport</var> の先頭の一文字
+を見て、<var>tokenizer-specs</var> のひとつひとつに対してチェックします。
+その文字が含まれている文字集合がみつかれば、トークンを次のようにして
+引き出します。トークナイザ仕様が文字集合だけの場合、その文字集合に
+属している文字の並びがトークンを構成します。トークナイザ仕様が文字集合と
+手続きのペアだったら、その手続きを <var>iport</var> とともに呼びだし、
+トークンを読み込みます。
+</p>
+<p>もし、先頭の文字がどの文字集合ともマッチしなければ、その文字が
+<var>iport</var> から取り出され、それが返されます。
+</p>
+<p>デフォルトの <var>tokenizer-specs</var> は以下のようになっています。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(list (cons #["] rfc822-quoted-string)
+      (cons *rfc822-atext-chars* rfc822-dot-atom))
+</pre></td></tr></tbody></table>
+<p>ここで <code>rfc822-quoted-string</code> および <code>rfc822-dot-atom</code> は
+後述するトークナイザ手続きで、<code>*rfc822-atext-chars*</code> は RFC2822 で
+規定された <code>atext</code> の文字集合に束縛されています。
+つまり、<code>rfc822-next-token</code> はデフォルトでは RFC2822 で規定された
+<code>quoted-string</code> あるいは <code>dot-atom</code> のトークンを引き出します。
+</p>
+<p><var>tokenizer-specs</var> をつかって、ヘッダフィールドのパーズ方法を
+カスタマイズすることができます。たとえば、(1) 英字で構成された単語、または
+(2) クウォート文字列、のトークンを取り出したいときには、
+<code>rfc822-next-token</code> をこんなふうに呼べます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rfc822-next-token iport
+   `(#[[:alpha:]] (#["] . ,rfc822-quoted-string)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-rfc822_002dfield_002d_003etokens"></a><u>Function:</u> <b>rfc822-field-&gt;tokens</b><i> field :optional tokenizer-specs</i></dt>
+<dd><p>これは便利関数です。フィールド本体 <var>field</var> に対応する入力文字列ポート
+を生成し、それに対して、<code>rfc822-next-token</code> を全入力を消費するまで、
+繰り返しよび、トークンのリストを返します。<var>Tokenizer-specs</var> は、
+<code>rfc822-next-token</code> に渡されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rfc822_002dskip_002dcfws"></a><u>Function:</u> <b>rfc822-skip-cfws</b><i> iport</i></dt>
+<dd><p><var>iport</var> から、すべてのコメントおよび/または白空白文字を消費し、
+白空白でもコメントでもない、先頭の文字を返します。返された文字は、
+<var>iport</var>に残ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002arfc822_002datext_002dchars_002a"></a><u>Constant:</u> <b>*rfc822-atext-chars*</b></dt>
+<dd><p><code>atom</code> を構成する有効な文字集合に束縛されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002arfc822_002dstandard_002dtokenizers_002a"></a><u>Constant:</u> <b>*rfc822-standard-tokenizers*</b></dt>
+<dd><p>デフォルトの <var>tokenizer-specs</var> に束縛されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rfc822_002datom"></a><u>Function:</u> <b>rfc822-atom</b><i> iport</i></dt>
+<dt><a name="index-rfc822_002ddot_002datom"></a><u>Function:</u> <b>rfc822-dot-atom</b><i> iport</i></dt>
+<dt><a name="index-rfc822_002dquoted_002dstring"></a><u>Function:</u> <b>rfc822-quoted-string</b><i> iport</i></dt>
+<dd><p>それぞれ、<code>atom</code>、<code>dot-atom</code> および <code>quoted-string</code> に
+対応するトークナイザです。<code>quoted-string</code> 中の二重引用符および
+エスケープのためのバックスラッシュは <code>rfc822-quoted-string</code> に
+よって取り除かれます。
+</p></dd></dl>
+
+<a name="g_t_00e7_0089_00b9_00e5_00ae_009a_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00bc_00e3_0083_00ab_00e3_0083_0089_00e7_0094_00a8_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6"></a>
+<h3 class="subheading">特定フィールド用パーザ</h3>
+
+<dl>
+<dt><a name="index-rfc822_002dparse_002ddate"></a><u>Function:</u> <b>rfc822-parse-date</b><i> string</i></dt>
+<dd><p>RFC822 形式の日付文字列を取り、8つの値を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">year, month, day-of-month, hour, minutes, seconds, timezone,
+day-of-week.
+</pre></td></tr></tbody></table>
+
+<p><em>timezone</em> は UT(グリニッジ標準時)からの分単位のオフセットです。
+<em>day-of-week</em> は日曜日から数えた曜日で、情報が不足している場合は #f です。
+<em>month</em>は1から12までの整数です。
+文字列がパーズ不可能ならば、全ての要素が #f になります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rfc822_002ddate_002d_003edate"></a><u>Function:</u> <b>rfc822-date-&gt;date</b><i> string</i></dt>
+<dd><p>RFC822形式の日付フォーマットをパーズし、SRFI-19 の <code>&lt;date&gt;</code> オブジェクト
+(<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0097_00a5_00e4_00bb_0098">日付</a> 参照) を返します。<var>string</var> がパーズできないときは
+かわりに <code>#f</code> を返します。
+</p>
+<p>SRFI-19の日付からRFC822形式の日付文字列を作成するには、
+後で述べる<code>date-&gt;rfc822-date</code>が使えます。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089"></a>
+<h3 class="subheading">メッセージの構築</h3>
+
+<dl>
+<dt><a name="index-rfc822_002dwrite_002dheaders"></a><u>Function:</u> <b>rfc822-write-headers</b><i> headers :key output continue check</i></dt>
+<dd><p>This is a sort of inverse function of <code>rfc822-read-headers</code>.
+It receives a list of header data, in which each header data
+consists of <code>(&lt;name&gt; &lt;body&gt;)</code>, and writes them out in RFC822 header
+field format to the output port specified by the <var>output</var> keyword
+argument.  The default output is the current output port.
+</p>
+<p>By default, the procedure assumes <var>headers</var> contains all the
+header fields, and adds an empty line in the end of output
+to indicate the end of the header.  You can pass a true value to
+the <var>continue</var> keyword argument to prevent this, enabling
+more headers can be added later.
+</p>
+<p>I said “a sort of” above.  That’s because this function doesn’t
+(and can’t) do the exact inverse.
+Specifically, the caller is responsible for line folding and
+make sure each header line doesn’t exceed the “hard limit” defined
+by RFC2822 (998 octets).  This procedure cannot do the line
+folding on behalf of the caller, because the places where
+line folding is possible depend on the semantics of each
+header field.
+</p>
+<p>It is also the caller’s responsibility to make sure header
+field bodies don’t have any characters except non-NUL US-ASCII
+characters.  If you want to include characters outside of that
+range, you should convert them in the way allowed by the
+protocol, e.g. MIME.  The <code>rfc.mime</code> module
+(See section <a indepth="true" href="gauche-refj_154.html#MIME_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_0087_00a6_00e7_0090_0086"><code>rfc.mime</code> - MIMEメッセージ処理</a>) provides a convenience procedure
+<code>mime-encode-text</code> for such purpose.
+Again, this procedure cannot do the encoding automatically,
+since the way the field
+should be encoded depends on header fields.
+</p>
+<p>What this procedure can do is to check and report such violations.
+By default, it runs several checks and signals an error if it finds any
+violations of RFC2822.  You can control this checking behavior
+by the <var>check</var> keyword argument.  It can take one of the
+following values:
+</p>
+<dl compact="compact">
+<dt> <code>:error</code></dt>
+<dd><p>Default.  Signals an error if a violation is found.
+</p></dd>
+<dt> <code>#f, :ignore</code></dt>
+<dd><p>Doesn’t perform any check.  Trust the caller.
+</p></dd>
+<dt> <code><var>procedure</var></code></dt>
+<dd><p>When <code>rfc822-write-headers</code> finds a violation, the procedure
+is called with three arguments; the header field name,
+the header field body, and the type of violation explained below.
+The procedure may correct the problem and return two values,
+the corrected header field name and body.  The returned values
+are checked again.  If the procedure returns the
+header field name and body unchanged, an error is signalled
+in the same way as <code>:error</code> is specified.
+</p></dd>
+</dl>
+
+<p>The third argument passed to the procedure given to the <var>check</var>
+argument is one of the following symbols.  New symbols may be
+added in future versions for more checks.
+</p>
+<dl compact="compact">
+<dt> <code>incomplete-string</code></dt>
+<dd><p>Incomplete string is passed.
+</p></dd>
+<dt> <code>bad-character</code></dt>
+<dd><p>Header field contains characters outside of US-ASCII or NUL.
+</p></dd>
+<dt> <code>line-too-long</code></dt>
+<dd><p>Line length exceeds 998 octet limit.
+</p></dd>
+<dt> <code>stray-crlf</code></dt>
+<dd><p>The string contains CR and/or LF character that doesn’t consist of
+proper line folding.
+</p></dd>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-date_002d_003erfc822_002ddate"></a><u>Function:</u> <b>date-&gt;rfc822-date</b><i> date</i></dt>
+<dd><p>SRFI-19の<code>&lt;date&gt;</code>オブジェクト(<a indepth="true" href="gauche-refj_117.html#g_t_00e6_0097_00a5_00e4_00bb_0098">日付</a>参照)
+を取り、そのrfc822日付形式表現の文字列を返します。
+<code>rfc822-date-&gt;date</code>の逆関数です。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_143.html#Windows-console-API" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_145.html#Base64_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

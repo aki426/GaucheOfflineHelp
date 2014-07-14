@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.12 gauche.listener - リスナー</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.12 gauche.listener - リスナー">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.12 gauche.listener - リスナー">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_85.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002elistener-_002d-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc"></a>
+<h2 class="section">9.12 <code>gauche.listener</code> - リスナー</h2>
+
+<dl>
+<dt><a name="index-gauche_002elistener"></a><u>Module:</u> <b>gauche.listener</b></dt>
+<dd><a name="index-gauche_002elistener-1"></a>
+<p>このモジュールは、
+複数のread-eval-printループ(repl)を並行して動作させるのに便利な機能を提供します。
+</p>
+<p>複数のreplを実現する自明な方法は、セッション毎にスレッドを生成して
+各スレッド上で<code>read-eval-print-loop</code> (<a indepth="true" href="gauche-refj_59.html#eval-_00e3_0081_00a8-repl">eval と repl</a>参照)を
+呼ぶことですが、シングルスレッドでの実装が好ましい場合もあります。
+例えばアプリケーションがMT-safeでないライブラリに大きく依存していたり、
+既にアプリケーションがselectやpollをベースにしたディスパッチメカニズムを
+持っているような場合です。
+</p>
+<p>シングルスレッドのselectionベースのアプリケーションでreplを実装するには、
+通常、listenしているポートにデータが到着した時に呼ばれるハンドラを登録します。
+ハンドラはポートからデータを読み、内部バッファに追加します。
+そして内部バッファをスキャンし、データが完全な式を構成した場合は
+それをS式として読みだし、評価して結果をポートに流します。
+このモジュールの<code>&lt;listener&gt;</code>クラスはこのハンドラのメカニズムを提供するので、
+アプリケーション側はそれを自分のディスパッチメカニズムに登録するだけで済みます。
+</p>
+<p>註：場合によっては、出力もバッファリングする必要があるかもしれませんが、
+現在はそれは実装されていません。
+</p></dd></dl>
+
+<a name="Listener-API"></a>
+<h3 class="subheading">Listener API</h3>
+
+<dl>
+<dt><a name="index-_003clistener_003e"></a><u>Class:</u> <b>&lt;listener&gt;</b></dt>
+<dd><p>Replセッションの状態を維持するオブジェクトです。
+オブジェクトのふるまいをカスタマイズするためにいくつもの外部スロットがあります。
+これらのスロットの値は、スロットの名前と同名のキーワード引数を用いて
+オブジェクトの構築時に指定することもできますし、オブジェクト構築後に
+<code>slot-set!</code>で設定することもできますが、<code>listener-read-handler</code>
+を呼ぶ前に確定していなければなりません。
+</p>
+<dl>
+<dt><a name="index-input_002dport"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>input-port</b></dt>
+<dd><p>リスナーが入力を受けとる入力ポートを指定します。デフォルト値は、
+オブジェクトが構築された時のカレント入力ポートです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-output_002dport"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>output-port</b></dt>
+<dd><p>リスナーが出力をおこなう出力ポートを指定します。デフォルト値は、
+オブジェクトが構築された時のカレント出力ポートです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-error_002dport"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>error-port</b></dt>
+<dd><p>リスナーのエラーメッセージを出力するポートを指定します。デフォルト値は、
+オブジェクトが構築された時のカレントエラー出力ポートです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reader"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>reader</b></dt>
+<dd><p>引数を取らない手続きです。呼び出し時のカレント入力ポートからScheme式を
+読み込まなければなりません。デフォルト値はシステムの<code>read</code>手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-evaluator"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>evaluator</b></dt>
+<dd><p>Scheme式と環境指定子のふたつの引数をとる手続きです。
+式を与えられた環境で評価し、0個以上の値を返さなければなりません。
+デフォルト値はシステムの<code>eval</code>手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-printer"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>printer</b></dt>
+<dd><p>0以上の引数をとり、カレント出力ポートに印字する手続きです。
+デフォルト値は、各値を<code>write</code>で印字したのち、改行する手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-prompter"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>prompter</b></dt>
+<dd><p>引数をとらない手続きです。カレント出力ポートにプロンプトを
+印字しなければなりません。リスナーは、この手続きが面倒を見なくてよいように、
+出力をフラッシュします。
+デフォルトの手続きは <code>"listener&gt; "</code> を印字します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-environment"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>environment</b></dt>
+<dd><p>式を評価する環境指定子です。デフォルト値は<code>(interaction-environment)</code>が
+返す値です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-finalizer"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>finalizer</b></dt>
+<dd><p><code>input-port</code>からEOFが読み込まれたときに呼び出されるサンクです。
+<var>finalizer</var>実行中は、現在の入力、出力、エラー出力ポートは、
+<code>listener-read-handler</code>が呼ばれたときのものに戻っています。
+</p>
+<p>このような手続きが必要ない場合は<code>#f</code>にしておいて構いません。
+デフォルトの値は<code>#f</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-error_002dhandler"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>error-handler</b></dt>
+<dd><p>エラー例外をひとつ引数としてとる手続きです。read-eval-printの最中に
+エラーが発生すると、エラーシグナルが発生すのと同じ動的環境で、
+呼び出されます。
+デフォルト値はエラー例外を<code>report-error</code>を使って印字する手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-fatal_002dhandler"></a><u>Instance Variable of &lt;listener&gt;:</u> <b>fatal-handler</b></dt>
+<dd><p>エラー例外をひとつの引数としてとる手続です。
+<em>fatal</em>エラー(詳しい定義については後述)が発生したときに呼び出され
+ます。このハンドラが呼び出された場合、リスナーセッションは安全に続ける
+ことはできないと思ってください。クライアントへのメッセージを書くこと
+もできません。このハンドラはこういう状況でログを残したりリスナーの
+クリーンアップするためのものです。<var>fatal-handler</var>を実行中は現在の
+入力、出力、エラー出力は<code>listener-read-handler</code>が呼ばれたときのも
+のに戻ります。
+</p>
+<p><var>fatal-handler</var>が<code>#f</code>を返す場合、<var>finalizer</var>は後で呼ばれ
+ます。これを利用して<var>finalizer</var>で共通のクリーンアップを実行するよ
+うな実装ができます。<var>fatal-handler</var>が真の値を返した場合には、
+<var>finalizer</var>は呼ばれません。
+</p>
+</dd></dl>
+
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-listener_002dread_002dhandler"></a><u>Method:</u> <b>listener-read-handler</b><i> (listener &lt;listener&gt;)</i></dt>
+<dd><p>リスナーの<code>input-port</code>から読み込んだデータが正しい時に
+呼ばれるサンクを返します。
+</p>
+<p>返されたサンク(readハンドラ)は、以下のように実行されます。
+この手続きは最初のプロンプトを印字<em>しない</em>ことに
+注意してください。これについては後述の<code>listener-show-prompt</code>を
+参照してください。
+</p><ol>
+<li>
+<code>input-port</code>にあるデータを読み、これをリスナーの内部バッファに
+連結する。
+</li><li>
+バッファをスキャンして、それが完結したS式であるかを確かめ、
+完結していなければ、リターンする。
+</li><li>
+バッファからそのS式を読み込み、そのバッファからは
+そのデータを除去する。
+</li><li>
+そのS式を評価して、結果を<code>output-port</code>へ印字する。
+<code>output-port</code>.
+</li><li>
+プロンプタ手続きを使って、プロンプトを<code>output-port</code>に印字したのち、
+<code>output-port</code>をフラッシュする。
+</li><li>
+2から繰り返す。
+</li></ol>
+</dd></dl>
+
+<dl>
+<dt><a name="index-listener_002dshow_002dprompt"></a><u>Method:</u> <b>listener-show-prompt</b><i> (listener &lt;listener&gt;)</i></dt>
+<dd><p>リスナーの出力ポートにプロンプトを表示します。表示にはリスナーの
+プロンプタ手続きを使います。通常この手続きは最初のプロンプトを
+印字するために使います。たとえば、クライアントがリスナーソケットに
+接続してきたときです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-complete_002dsexp_003f"></a><u>Function:</u> <b>complete-sexp?</b><i> str</i></dt>
+<dd><p>もし、<var>str</var>が完結したＳ式を含んでいれば<code>#t</code>を返します。
+このユーティリティ手続きは、他の目的にも有用なので、
+他の手続きといっしょにエクスポートしてあります。
+</p>
+<p>この手続きは構文のチェックをするだけで、(不正な文字名を含んだり、
+登録されていないSRFI-10のタグを含むなど)誤りのある式を判別するわけでは
+ないことに注意してください。この手続きは入力が’<code>#&lt;</code>’文字の
+シーケンスを含むと、エラーを発生させます。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00a8_00e3_0083_00a9_00e3_0083_00bc_00e5_0087_00a6_00e7_0090_0086"></a>
+<h3 class="subheading">エラー処理</h3>
+
+<p>エラー状況によりリスナーのエラー処理法が異ります。
+</p>
+<ul>
+<li>
+<em>致命的エラー</em> - もはやリスナーセッションを安全に続けることが不可
+能なエラー状況です。リスナーのクライアントとの接続が切れてしまうこと
+になるので、状況を知らせることもできません。できることはリスナーセッショ
+ンをクリーンアップする(たとえばハンドラを削除する)ことだけです。このエ
+ラーは以下の場合に発生します。(1) <var>input-port</var>からの読み込み中に低
+レベルのシステムエラーが発生した場合。(入力の構文エラーは致命的エラー
+とはみなさず、後述のREPLエラーとして処理されます。) (2)
+<var>output-port</var> へ書き出し中に <code>SIGPIPE</code> シグナルがあがった場合
+(3) <var>error-handler</var> を実行中に処理未設定エラーが発生した場合。
+
+<p>このような状況が起こると、<var>fatal-handler</var>が与えられていればそれが
+呼ばれます。<var>fatal-handler</var>が<code>#f</code>を返すか、
+<var>fatal-handler</var>が与えられていなければ、<var>finalizer</var>が呼ばれます。
+</p>
+</li><li>
+<em>リークエラー</em> - <var>fatal-handler</var>あるいは<var>finalizer</var>を実行
+中にエラーが起こるともはやセーフティネットはありません。このエラーはリ
+スナーハンドラの外に漏れだしますので、<code>gauche.listener</code>のユーザが
+自ら処理しなければなりません。
+
+<p>一般的にはこのような状況はプログラムのバグだと考えるべきです。したがっ
+て、想定されたエラーとして<var>fatal-handler</var>および<var>finalizer</var>内で
+捕捉されるべきです。
+</p>
+</li><li>
+<em>REPLエラー</em> - <var>error-handler</var>で処理されるその他のエラー
+</li></ul>
+
+<a name="g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc_00e3_0081_00ae_00e4_00be_008b"></a>
+<h3 class="subheading">リスナーの例</h3>
+
+<p>以下のコード断片は、サーバソケットをオープンし、クライアントが
+接続してきたときにSchemeの対話的セッションをオープンするというものです。
+(註: このコードはdemo用のコードです。決して、外のネットワークから
+アクセス可能なマシン上で走らせてはいけません！)
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.net)
+(use gauche.selector)
+(use gauche.listener)
+
+(define (scheme-server port)
+  (let ((selector (make &lt;selector&gt;))
+        (server   (make-server-socket 'inet port :reuse-addr? #t))
+        (cid      0))
+
+    (define (accept-handler sock flag)
+      (let* ((client (socket-accept server))
+             (id     cid)
+             (input  (socket-input-port client :buffering :none))
+             (output (socket-output-port client))
+             (finalize (lambda ()
+                         (selector-delete! selector input #f #f)
+                         (socket-close client)
+                         (format #t "client #~a disconnected\n" id)))
+             (listener (make &lt;listener&gt;
+                         :input-port input
+                         :output-port output
+                         :error-port output
+                         :prompter (lambda () (format #t "client[~a]&gt; " id))
+                         :finalizer finalize))
+             (handler (listener-read-handler listener))
+             )
+        (format #t "client #~a from ~a\n" cid (socket-address client))
+        (inc! cid)
+        (listener-show-prompt listener)
+        (selector-add! selector input (lambda _ (handler)) '(r))))
+
+    (selector-add! selector
+                   (socket-fd server)
+                   accept-handler
+                   '(r))
+    (format #t "scheme server started on port ~s\n" port)
+    (do () (#f) (selector-select selector))))
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_85.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

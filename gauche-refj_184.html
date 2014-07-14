@@ -1,0 +1,543 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.58 util.stream - ストリームライブラリ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.58 util.stream - ストリームライブラリ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.58 util.stream - ストリームライブラリ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_184.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_183.html#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_185.html#util_002etrie-_002d-Trie" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002estream-_002d-_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"></a>
+<h2 class="section">11.58 <code>util.stream</code> - ストリームライブラリ</h2>
+
+<dl>
+<dt><a name="index-util_002estream"></a><u>Module:</u> <b>util.stream</b></dt>
+<dd><a name="index-util_002estream-1"></a>
+<p>このモジュールは遅延ストリームのライブラリを提供します。このモジュール
+には SRFI-40 で定義されている関数および構文が含まれています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_003f"></a><u>Function:</u> <b>stream?</b><i> obj</i></dt>
+<dd><p>[SRFI-40]
+<var>obj</var>が<code>util.stream</code>の手続きによって作成されたストリームであ
+る場合にかぎり<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dnull"></a><u>Variable:</u> <b>stream-null</b></dt>
+<dd><p>[SRFI-40]
+NULLストリームのシングルトンインスタンス。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dcons"></a><u>Macro:</u> <b>stream-cons</b><i> object stream</i></dt>
+<dd><p>[SRFI-40]
+ストリームの基本構成子。<var>object</var>を<var>stream</var>の先頭に追加し、新し
+いストリームを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dnull_003f"></a><u>Function:</u> <b>stream-null?</b><i> obj</i></dt>
+<dd><p>[SRFI-40]
+<var>obj</var>がNULLストリームの場合にのみ<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dpair_003f"></a><u>Function:</u> <b>stream-pair?</b><i> obj</i></dt>
+<dd><p>[SRFI-40]
+<var>obj</var>がNULLストリームではないストリームのときにのみ<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dcar"></a><u>Function:</u> <b>stream-car</b><i> s</i></dt>
+<dd><p>[SRFI-40]
+ストリーム<var>s</var>の最初の要素を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dcdr"></a><u>Function:</u> <b>stream-cdr</b><i> s</i></dt>
+<dd><p>[SRFI-40]
+ストリーム<var>s</var>の最初の要素をのぞいたのこりの要素をストリームとして
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002ddelay"></a><u>Macro:</u> <b>stream-delay</b><i> expr</i></dt>
+<dd><p>[SRFI-40]
+<var>expr</var>の遅延形式であるストリームを返します。
+</p>
+<p>原則として、ストリームを生成する関数はすべからく結果を
+<code>stream-delay</code>でラップすべきです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream"></a><u>Function:</u> <b>stream</b><i> obj …</i></dt>
+<dd><p>[SRFI-40]
+要素が<var>obj</var> …であるような新しいストリームを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dunfoldn"></a><u>Function:</u> <b>stream-unfoldn</b><i> generator seed n</i></dt>
+<dd><p>[SRFI-40]
+互いに関連する <var>n</var> 本のストリームを生成します。それぞれの内容は
+<var>generator</var>および<var>seed</var>を使って生成します。
+</p>
+<p><var>generator</var>は現在のシード値とともに呼ばれ、<code><var>n</var>+1</code>個の値
+を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>generator</var> <var>seed</var>)
+  =&gt; seed result_0 result_1 … result_n-1
+</pre></td></tr></tbody></table>
+
+<p>最初の値は次のシード値になります。<var>Result_k</var>は以下の形式のどれかで
+なければなりません。
+</p><dl compact="compact">
+<dt> <code>(val)</code></dt>
+<dd><p><var>val</var>は<var>k</var>-番目のストリームの次のcar部になります。
+</p></dd>
+<dt> <code>#f</code></dt>
+<dd><p><var>k</var>-番目のストリームの新しい情報はありません。
+</p></dd>
+<dt> <code>()</code></dt>
+<dd><p><var>k</var>-番目のストリームの最後に到達しました。
+</p></dd>
+</dl>
+
+<p>以下の例では2つのストリームが作られます。最初のものは奇数の無限ストリー
+ムで、2つめのものは偶数の無限ストリームです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define-values (s0 s1)
+        (stream-unfoldn (lambda (i)
+                          (values (+ i 2)          ;; next seed
+                                  (list i)         ;; for the first stream
+                                  (list (+ i 1)))) ;; for the second stream
+                        0 2))
+#&lt;undef&gt;
+gosh&gt; (stream-&gt;list (stream-take s0 10))
+(0 2 4 6 8 10 12 14 16 18)
+gosh&gt; (stream-&gt;list (stream-take s1 10))
+(1 3 5 7 9 11 13 15 17 19)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dmap"></a><u>Function:</u> <b>stream-map</b><i> func . streams</i></dt>
+<dd><p>[SRFI-40]
+<var>streams</var>の各要素に<var>func</var>を適用した値を要素とする新しいストリー
+ムを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dfor_002deach"></a><u>Function:</u> <b>stream-for-each</b><i> func . streams</i></dt>
+<dd><p>[SRFI-40]
+<var>func</var>を<var>streams</var>の各要素に適用します。
+<var>streams</var>が終端にたっしたところで停止します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dfilter"></a><u>Function:</u> <b>stream-filter</b><i> pred? stream</i></dt>
+<dd><p>[SRFI-40]
+<var>pred?</var>をパスする要素のみからなる新しいストリームを返す。
+</p></dd></dl>
+
+<p>以下の手続きは Alejandro Forero Cuervo が Chicken Schemeのために書いた
+ライブラリから取ってきたものです。これらの手続きの名前は srfi-1
+(<a indepth="true" href="gauche-refj_110.html#List-library"><code>srfi-1</code> - List library</a>)の命名規則にならったものです。
+</p>
+<dl>
+<dt><a name="index-stream_002dxcons"></a><u>Function:</u> <b>stream-xcons</b><i> a b</i></dt>
+<dd><p><code>(stream-cons b a)</code>のこと。利便性のためだけにある。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dcons_002a"></a><u>Function:</u> <b>stream-cons*</b><i> elt … stream</i></dt>
+<dd><p><var>stream</var>の前に<var>elt</var> …を連結した新しいストリームを生成し
+ます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dstream"></a><u>Function:</u> <b>make-stream</b><i> n :optional init</i></dt>
+<dd><p><var>n</var>個の<var>init</var>を要素とする新しいストリームを生成します。
+<var>init</var>が省略された場合<code>#f</code>が使われます。<var>n</var>を負の値にする
+と無限ストリームが生成されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dtabulate"></a><u>Function:</u> <b>stream-tabulate</b><i> n init-proc</i></dt>
+<dd><p><var>n</var>個の要素をもつ新しいストリームを生成します。<var>k</var>-番目の要素
+は <var>init-proc</var> を <var>k</var> に適用して得られます。<var>n</var>を負の値にする
+と無限ストリームが生成されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002diota"></a><u>Function:</u> <b>stream-iota</b><i> count :optional start step</i></dt>
+<dd><p><var>start</var>からはじまり、<var>step</var>ずつ要素が増加する整数のストリーム
+を生成します。ストリームの長さは<var>count</var>が正ならその値になります。
+<var>count</var>が負なら無限ストリームになります。<var>start</var>のデフォルト値
+は 0、<var>step</var>のデフォルト値は 1 です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dformat"></a><u>Function:</u> <b>stream-format</b><i> fmt arg …</i></dt>
+<dd><p><code>string-&gt;stream</code>を<code>(format fmt arg …)</code>に適用した結果の
+ストリームを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002d_003elist"></a><u>Function:</u> <b>stream-&gt;list</b><i> stream</i></dt>
+<dt><a name="index-stream_002d_003estring"></a><u>Function:</u> <b>stream-&gt;string</b><i> stream</i></dt>
+<dd><p>Converts a stream to a list or a string.  All of <var>stream</var>’s
+elements are <code>force</code>d; if <var>stream</var> is infinite, these
+procedures won’t terminate.  For <code>stream-&gt;string</code>,
+all <var>stream</var> must be characters, or an error is signalled.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-list_002d_003estream"></a><u>Function:</u> <b>list-&gt;stream</b><i> list</i></dt>
+<dd><p>Converts a list to a stream of its elements.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003estream"></a><u>Function:</u> <b>string-&gt;stream</b><i> string :optional stream</i></dt>
+<dd><p>Convers a string to a stream of characters.  If an optional
+<var>stream</var> is given, it becomes the tail of the resulting
+stream.
+</p>
+<p>(stream-&gt;list (string-&gt;stream "abc" (list-&gt;stream ’(1 2 3))))
+ ⇒ (#\a #\b #\c 1 2 3)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-port_002d_003estream"></a><u>Function:</u> <b>port-&gt;stream</b><i> :optional iport reader closer</i></dt>
+<dd><p>Creates a stream, whose elements consist of the items
+read from the input port <var>iport</var>.
+The default <var>iport</var> is the current input port.
+The default <var>reader</var> is <code>read-char</code>.
+</p>
+<p>The result stream terminates at the point where <var>reader</var>
+returns EOF (EOF itself is not included in the stream).
+If <var>closer</var> is given, it is called with <var>iport</var> as
+an argument just after <var>reader</var> reads EOF.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-iterator_002d_003estream"></a><u>Function:</u> <b>iterator-&gt;stream</b><i> iter</i></dt>
+<dd><p>A generic procedure to turn an internal iterator <var>iter</var>
+into a stream of iterated results.
+</p>
+<p>The <var>iter</var> argument is a procedure that takes two arguments,
+<var>next</var> and <var>end</var>, where <var>next</var> is a procedure that takes
+one argument and <var>end</var> is a thunk.
+<var>Iter</var> is supposed to iterate over some set and call <var>next</var>
+for each argument, then call <var>end</var> to indicate the end of
+the iteration.  Here’s a contrived example:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(stream-&gt;list
+ (iterator-&gt;stream
+  (lambda (next end) (for-each next '(1 2 3 4 5)) (end))))
+ ⇒ (1 2 3 4 5)
+</pre></td></tr></tbody></table>
+
+<p>Internally <code>iterator-&gt;stream</code> uses the “inversion of iterator”
+technique, so that <var>iter</var> only iterates to the element that
+are needed by the stream.  Thus <var>iter</var> can iterate over
+an infinite set.  In the following example, <var>iter</var> is
+an infinite loop calling <var>next</var> with increasing integers,
+but only the first 10 elements are calculated because of
+<code>stream-take</code>:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(stream-&gt;list
+ (stream-take
+  (iterator-&gt;stream
+   (lambda (next end)
+     (let loop ((n 0)) (next n) (loop (+ n 1)))))
+  10))
+ ⇒ (0 1 2 3 4 5 6 7 8 9)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dlines"></a><u>Function:</u> <b>stream-lines</b><i> stream</i></dt>
+<dd><p>Splits <var>stream</var> where its element equals to <code>#\n</code>, and
+returns a stream of splitted streams.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(stream-&gt;list
+ (stream-map stream-&gt;string
+             (stream-lines (string-&gt;stream "abc\ndef\nghi"))))
+ ⇒ ("abc" "def" "ghi")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-stream_003d"></a><u>Function:</u> <b>stream=</b><i> elt= stream …</i></dt>
+<dd><p>Returns true iff each corresponding element of <var>stream</var> …
+are the same in terms of <var>elt=</var>.  This procedure won’t terminate
+if any of <var>stream</var>s is infinite.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dprefix_003d"></a><u>Function:</u> <b>stream-prefix=</b><i> stream prefix :optional elt=</i></dt>
+<dd><p>Compares initial elements of <var>stream</var> against
+a list <var>prefix</var> by <var>elt=</var>.  Only as many elements of <var>stream</var>
+as <var>prefix</var> has are checked.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dcaar"></a><u>Function:</u> <b>stream-caar</b><i> s</i></dt>
+<dt><a name="index-stream_002dcadr"></a><u>Function:</u> <b>stream-cadr</b><i> s</i></dt>
+<dd><a name="index-stream_002dcdar"></a>
+<a name="index-stream_002dcddr"></a>
+<a name="index-stream_002dcaaar"></a>
+<a name="index-stream_002dcaadr"></a>
+<a name="index-stream_002dcadar"></a>
+<a name="index-stream_002dcaddr"></a>
+<a name="index-stream_002dcdaar"></a>
+<a name="index-stream_002dcdadr"></a>
+<a name="index-stream_002dcddar"></a>
+<a name="index-stream_002dcdddr"></a>
+<a name="index-stream_002dcaaaar"></a>
+<a name="index-stream_002dcaaadr"></a>
+<a name="index-stream_002dcaadar"></a>
+<a name="index-stream_002dcaaddr"></a>
+<a name="index-stream_002dcadaar"></a>
+<a name="index-stream_002dcadadr"></a>
+<a name="index-stream_002dcaddar"></a>
+<a name="index-stream_002dcadddr"></a>
+<a name="index-stream_002dcdaaar"></a>
+<a name="index-stream_002dcdaadr"></a>
+<a name="index-stream_002dcdadar"></a>
+<a name="index-stream_002dcdaddr"></a>
+<a name="index-stream_002dcddaar"></a>
+<a name="index-stream_002dcddadr"></a>
+<p>…
+</p></dd></dl>
+<dl>
+<dt><a name="index-stream_002dcdddar"></a><u>Function:</u> <b>stream-cdddar</b><i> s</i></dt>
+<dt><a name="index-stream_002dcddddr"></a><u>Function:</u> <b>stream-cddddr</b><i> s</i></dt>
+<dd><p><code>(stream-caar s)</code> = <code>(stream-car (stream-car s))</code> etc.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dref"></a><u>Function:</u> <b>stream-ref</b><i> stream pos</i></dt>
+<dd><p>Returns the <var>pos</var>-th element in the stream.  <var>Pos</var>
+must be a nonnegative exact integer.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dfirst"></a><u>Function:</u> <b>stream-first</b><i> s</i></dt>
+<dt><a name="index-stream_002dsecond"></a><u>Function:</u> <b>stream-second</b><i> s</i></dt>
+<dt><a name="index-stream_002dthird"></a><u>Function:</u> <b>stream-third</b><i> s</i></dt>
+<dt><a name="index-stream_002dfourth"></a><u>Function:</u> <b>stream-fourth</b><i> s</i></dt>
+<dt><a name="index-stream_002dfifth"></a><u>Function:</u> <b>stream-fifth</b><i> s</i></dt>
+<dt><a name="index-stream_002dsixth"></a><u>Function:</u> <b>stream-sixth</b><i> s</i></dt>
+<dt><a name="index-stream_002dseventh"></a><u>Function:</u> <b>stream-seventh</b><i> s</i></dt>
+<dt><a name="index-stream_002deighth"></a><u>Function:</u> <b>stream-eighth</b><i> s</i></dt>
+<dt><a name="index-stream_002dninth"></a><u>Function:</u> <b>stream-ninth</b><i> s</i></dt>
+<dt><a name="index-stream_002dtenth"></a><u>Function:</u> <b>stream-tenth</b><i> s</i></dt>
+<dd><p><code>(stream-first s)</code> = <code>(stream-ref s 0)</code> etc.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dtake"></a><u>Function:</u> <b>stream-take</b><i> stream count</i></dt>
+<dt><a name="index-stream_002dtake_002dsafe"></a><u>Function:</u> <b>stream-take-safe</b><i> stream count</i></dt>
+<dd><p>Returns a new stream that consists of the first <var>count</var> elements
+of the given stream.   If the given stream has less than
+<var>count</var> elements, the stream returned by <code>stream-take</code>
+would raise an error when the elements beyond the original stream
+is accessed.  On the other hand, the stream returned by
+<code>stream-take-safe</code> will return a shortened stream when
+the given steram has less than <var>count</var> elements.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(stream-&gt;list (stream-take (stream-iota -1) 10))
+ ⇒ (0 1 2 3 4 5 6 7 8 9)
+
+(stream-take (stream 1 2) 5)
+ ⇒ <span class="roman">stream</span>
+
+(stream-&gt;list (stream-take (stream 1 2) 5))
+ ⇒ <span class="roman">error</span>
+
+(stream-&gt;list (stream-take-safe (stream 1 2) 5))
+ ⇒ (1 2)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-stream_002ddrop"></a><u>Function:</u> <b>stream-drop</b><i> stream count</i></dt>
+<dt><a name="index-stream_002ddrop_002dsafe"></a><u>Function:</u> <b>stream-drop-safe</b><i> stream count</i></dt>
+<dd><p>Returns a new stream that consists of the elements in the given
+stream except the first <var>count</var> elements.
+If the given stream has less than <var>count</var> elements,
+<code>stream-drop</code> returns a stream that raises an error
+if its element is accessed, and <code>stream-drop-safe</code>
+returns an empty stream.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dintersperse"></a><u>Function:</u> <b>stream-intersperse</b><i> stream element</i></dt>
+<dd><p>Returns a new stream in which <var>element</var> is
+inserted between elements of <var>stream</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-stream_002dsplit"></a><u>Function:</u> <b>stream-split</b><i> stream pred</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dlast"></a><u>Function:</u> <b>stream-last</b><i> stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dlast_002dn"></a><u>Function:</u> <b>stream-last-n</b><i> stream count</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dbutlast"></a><u>Function:</u> <b>stream-butlast</b><i> stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dbutlast_002dn"></a><u>Function:</u> <b>stream-butlast-n</b><i> stream count</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dlength"></a><u>Function:</u> <b>stream-length</b><i> stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dlength_003e_003d"></a><u>Function:</u> <b>stream-length&gt;=</b><i> stream n</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dappend"></a><u>Function:</u> <b>stream-append</b><i> stream …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dconcatenate"></a><u>Function:</u> <b>stream-concatenate</b><i> streams</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dreverse"></a><u>Function:</u> <b>stream-reverse</b><i> stream :optional tail-stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dcount"></a><u>Function:</u> <b>stream-count</b><i> pred stream …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dremove"></a><u>Function:</u> <b>stream-remove</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dpartition"></a><u>Function:</u> <b>stream-partition</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dfind"></a><u>Function:</u> <b>stream-find</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dfind_002dtail"></a><u>Function:</u> <b>stream-find-tail</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dtake_002dwhile"></a><u>Function:</u> <b>stream-take-while</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002ddrop_002dwhile"></a><u>Function:</u> <b>stream-drop-while</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dspan"></a><u>Function:</u> <b>stream-span</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dbreak"></a><u>Function:</u> <b>stream-break</b><i> pred stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dany"></a><u>Function:</u> <b>stream-any</b><i> pred stream …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002devery"></a><u>Function:</u> <b>stream-every</b><i> pred stream …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dindex"></a><u>Function:</u> <b>stream-index</b><i> pred stream …</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dmember"></a><u>Function:</u> <b>stream-member</b><i> obj stream :optional elt=</i></dt>
+<dt><a name="index-stream_002dmemq"></a><u>Function:</u> <b>stream-memq</b><i> obj stream</i></dt>
+<dt><a name="index-stream_002dmemv"></a><u>Function:</u> <b>stream-memv</b><i> obj stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002ddelete"></a><u>Function:</u> <b>stream-delete</b><i> obj stream :optional elt=</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002ddelete_002dduplicates"></a><u>Function:</u> <b>stream-delete-duplicates</b><i> stream :optional elt=</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-stream_002dgrep"></a><u>Function:</u> <b>stream-grep</b><i> re stream</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-write_002dstream"></a><u>Function:</u> <b>write-stream</b><i> stream :optional oport writer</i></dt>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_183.html#g_t_00e7_0096_008e_00e3_0081_00aa_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_185.html#util_002etrie-_002d-Trie" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

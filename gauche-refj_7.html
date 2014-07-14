@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.3 マルチバイトスクリプト</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.3 マルチバイトスクリプト">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.3 マルチバイトスクリプト">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_6.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088-1"></a>
+<h2 class="section">2.3 マルチバイトスクリプト</h2>
+
+<p>リテラル文字列や文字以外にも、コメント、シンボル名、
+リテラル正規表現など様々な箇所で、<code>us-ascii</code>以外の文字を
+使うことができます。
+</p>
+<p>いまのところ、Gaucheは<code>us-ascii</code>以外の文字を全て、シンボルを
+構成する文字として扱います。但し、Unicodeは十数個の「空白」文字を定義
+しており、将来はそれらの文字がプログラム上も空白として扱われるように
+なるでしょう。従って現在のところはそれらの文字の使用は
+(文字列、正規表現、文字以外の箇所では)避けておくのが良いでしょう。
+</p>
+<p>デフォルトでは、GaucheはSchemeプログラムをGaucheの内部文字エンコーディングで
+書かれているものとして扱います。これは、自分で書いたスクリプトを自分の
+環境で走らせるだけなら十分ですが、別の文字エンコーディングを使うように
+コンパイルされた環境でスクリプトを走らせたい場合に問題となります。
+</p>
+<p>そこで、Gaucheは、次のようなコメントがプログラムソースコードの
+2行目までに現れた場合、ソースコードの残りの部分が<code>&lt;encoding-name&gt;</code>で
+指定されるエンコーディングで書かれているものとして、必要ならば
+適切なエンコーディング変換を行います。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; coding: &lt;encoding-name&gt;
+</pre></td></tr></tbody></table>
+
+<p>より正確には、1行目または2行目のコメントで、
+正規表現<code>#/coding[:=]\s*([\w.-]+)/</code>にマッチするものがあった場合に、
+最初の部分マッチがエンコーディング名として認識されます。
+複数のマッチがあった場合は最初のものが有効になります。
+このメカニズムを利用するためには、最初の2行以内にus-ascii以外の文字を
+含めないようにして下さい。
+</p>
+<p>例えば次の例では、Gaucheはスクリプトがeuc-jpで書かれているものと
+認識します。coding指定の周囲の"<code>-*-</code>"は、Emacsが
+バッファのエンコーディングを適切に設定するのに使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#!/usr/bin/gosh
+;; -*- coding: euc-jp -*-
+
+... script written in euc-jp ...
+</pre></td></tr></tbody></table>
+
+<p>内部では、この特殊なコメントの処理は特別なポートによって
+行われています。詳細は<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">コーディング認識ポート</a>を参照して下さい。
+また、この処理を行わないようにする方法については
+<a indepth="true" href="gauche-refj_61.html#Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089">Schemeファイルのロード</a>を参照して下さい。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_6.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

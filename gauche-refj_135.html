@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.9 dbm.fsdbm - ファイルシステムdbm</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.9 dbm.fsdbm - ファイルシステムdbm">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.9 dbm.fsdbm - ファイルシステムdbm">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0dbm"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_134.html#DBM_00e5_00ae_009f_00e8_00a3_0085_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_136.html#GDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="dbm_002efsdbm-_002d-_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0dbm"></a>
+<h2 class="section">11.9 <code>dbm.fsdbm</code> - ファイルシステムdbm</h2>
+
+<dl>
+<dt><a name="index-dbm_002efsdbm"></a><u>Module:</u> <b>dbm.fsdbm</b></dt>
+<dd><a name="index-dbm_002efsdbm-1"></a>
+<p>Implements fsdbm.  Extends <code>dbm</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cfsdbm_003e"></a><u>Class:</u> <b>&lt;fsdbm&gt;</b></dt>
+<dd><a name="index-fsdbm"></a>
+<p><code>fsdbm</code>は、直接ファイルシステムを扱うDBM実装です。
+基本的には、ファイル名をキー、ファイルの内容を値として使います。
+他のDBM実装とは違い、これは他の特別なライブラリに依存しません
+(純粋にSchemeのみにより実装されています)。
+したがって、他のDBM実装が使えないときでも、いつでも使うことが
+できます。
+</p>
+<p>明らかに、たくさんのエントリを持っていたり、エントリの追加や
+削除が頻繁に起こるようなデータベースには向いていません。
+エントリの数が相対的に小さく、キーが小さいのに値が大きいような
+場合に向いています。
+</p>
+<p><code>&lt;fsdbm&gt;</code>のインスタンスに与えられるデータベース名は、
+データを格納するディレクトリの名前として使われます。
+</p>
+<p>データのファイルは、<code>fsdbm</code>インスタンスの<var>path</var>の
+サブディレクトリに格納され、キーによりハッシュされます。
+キーに英数字でない文字がある場合はエンコードされます。
+例えば、’<code>:</code>’は、<code>_3a</code>にエンコードされます。
+キーがファイル名としては長すぎる場合は、いくつかに
+分割され、その最後の文字列片以外はディレクトリ名として
+使われます。長いキー名は問題を引き起こすかも知れないことに
+注意して下さい。例えば、いくつかの古い’tar’コマンドは、256文字
+を越える長いパス名を扱えません(それぞれのパスコンポーネント
+ではなく、パス名全体でです)。
+</p></dd></dl>
+
+<p>fsdbmは、全てのDBMプロトコルを実装しています
+(<a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>dbm</code> - 汎用DBMインタフェース</a>参照)。
+fsdbm特有の手続きというものはありません。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_134.html#DBM_00e5_00ae_009f_00e8_00a3_0085_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_136.html#GDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

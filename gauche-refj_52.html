@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.14 ベクタ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.14 ベクタ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.14 ベクタ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e8_00aa_00bf_00e6_009f_00bb_00e3_0081_00a8_00e5_0090_0088_00e6_0088_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf-1"></a>
+<h2 class="section">6.14 ベクタ</h2>
+
+<dl>
+<dt><a name="index-_003cvector_003e"></a><u>Builtin Class:</u> <b>&lt;vector&gt;</b></dt>
+<dd><a name="index-vector"></a>
+<p>ベクタはSchemeオブジェクトの単純な一次元配列です。
+インデックスを用いて定数時間でその要素にアクセスできます。
+一度作成されたベクタはその大きさを変えることはできません。
+</p>
+<p><code>&lt;vector&gt;</code>クラスはまた<code>&lt;sequence&gt;</code>クラスを継承し、
+<code>map</code>や<code>fold</code>など様々な総称関数を使うことができます。
+<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a> と
+<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a> を参照して下さい。
+</p>
+<p>数値しか要素に持たないベクタを使う場合、SRFI-4の
+単一型ベクタも使えるかもしれません (<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>srfi-4</code> - 単一型のベクタ</a>参照)。
+</p>
+<p>より多くのベクタに対する操作が<a indepth="true" href="gauche-refj_122.html#Vector-library"><code>srfi-43</code> - ベクタライブラリ</a>で提供されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_003f"></a><u>Function:</u> <b>vector?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>がベクタなら<code>#t</code>を、そうでなければ<var>#f</var>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dvector"></a><u>Function:</u> <b>make-vector</b><i> k :optional fill</i></dt>
+<dd><p>[R5RS]
+長さ<var>k</var>のベクタを作成して返します。
+省略可能な引数<var>fill</var>が与えられていれば、ベクタの各要素はその値で
+初期化されます。そうでなければベクタの各要素の値は不定です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector-1"></a><u>Function:</u> <b>vector</b><i> obj …</i></dt>
+<dd><p>[R5RS]
+要素が<var>obj</var> …であるようなベクタを作成して返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dlength"></a><u>Function:</u> <b>vector-length</b><i> vector</i></dt>
+<dd><p>[R5RS]
+ベクタ<var>vector</var>の長さを返します。
+</p>
+<p><code>gauche.collection</code>モジュールをロードしていれば、
+メソッド<code>size-of</code>も同じ目的で使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dref"></a><u>Function:</u> <b>vector-ref</b><i> vector k :optional fallback</i></dt>
+<dd><p>[R5RS+]
+ベクタ<var>vector</var>の<var>k</var>番目の要素を返します。
+</p>
+<p><code>vector-ref</code>は<var>k</var>が負の値であったりベクタの長さより
+大きかったりした場合はエラーを通知します。但し、省略可能な引数<var>fallback</var>
+が与えられている場合はその値が返されます。これはGaucheの拡張です。
+</p>
+<p><code>gauche.sequence</code>モジュールをロードしていれば、
+メソッド<code>ref</code>も同じ目的で使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dset_0021"></a><u>Function:</u> <b>vector-set!</b><i> vector k obj</i></dt>
+<dd><p>[R5RS]
+ベクタ<var>vector</var>の<var>k</var>番目の要素を<var>obj</var>に変更します。
+<var>k</var>が負数であったりベクタの長さより大きい場合はエラーとなります。
+</p>
+<p><code>gauche.sequence</code>モジュールをロードしていれば、
+メソッド<code>ref</code>のsetterメソッドも使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002d_003elist"></a><u>Function:</u> <b>vector-&gt;list</b><i> vector :optional start end</i></dt>
+<dt><a name="index-list_002d_003evector"></a><u>Function:</u> <b>list-&gt;vector</b><i> list :optional start end</i></dt>
+<dd><p>[R5RS+][SRFI-43+]
+ベクタをリストに変換したり、その逆を行う手続きです。
+</p>
+<p>省略可能な引数<var>start</var>と<var>end</var>を与えることにより、
+値を取り出す範囲を制限することができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(vector-&gt;list '#(1 2 3 4 5))     ⇒ (1 2 3 4 5)
+(list-&gt;vector '(1 2 3 4 5))      ⇒ #(1 2 3 4 5)
+(vector-&gt;list '#(1 2 3 4 5) 2 4) ⇒ (3 4)
+(list-&gt;vector (circular-list 'a 'b 'c) 1 6)
+  ⇒ #(b c a b c)
+</pre></td></tr></tbody></table>
+
+<p><code>gauche.collection</code>モジュールをロードしていれば、
+<code>(coerce-to &lt;list&gt; <var>vector</var>)</code> と
+<code>(coerce-to &lt;vector&gt; <var>list</var>)</code> も同じ目的で使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dfill_0021"></a><u>Function:</u> <b>vector-fill!</b><i> vector fill :optional start end</i></dt>
+<dd><p>[R5RS+][SRFI-43]
+ベクタ<var>vector</var>の全ての要素を<var>fill</var>に変更します。
+</p>
+<p>省略可能な引数<var>start</var>と<var>end</var>が与えられた場合、
+<var>start</var>番目の要素から<var>end</var>-1番目の要素までのみに
+<var>fill</var>を格納します。<var>start</var>と<var>end</var>の既定値は
+それぞれ0と<var>vector</var>の大きさです。
+<var>start</var>, <var>end</var>引数はGaucheの拡張です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dcopy"></a><u>Function:</u> <b>vector-copy</b><i> vector :optional start end fill</i></dt>
+<dd><p>[SRFI-43]
+ベクタ<var>vector</var>をコピーします。引数<var>start</var>と<var>end</var>を与えることで
+コピーされる範囲を制限することができます。
+<var>start</var>と<var>end</var>で指定される範囲が元の<var>vector</var>の範囲を越えた
+場合は、その部分が<var>fill</var>で埋められます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(vector-copy '#(1 2 3 4 5))     ⇒ #(1 2 3 4 5)
+(vector-copy '#(1 2 3 4 5) 2 4) ⇒ #(3 4)
+(vector-copy '#(1 2 3 4 5) 3 7 #f) ⇒ #(4 5 #f #f)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e8_00aa_00bf_00e6_009f_00bb_00e3_0081_00a8_00e5_0090_0088_00e6_0088_0090" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.14 gauche.mop.propagate - スロットアクセスの伝播</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.14 gauche.mop.propagate - スロットアクセスの伝播">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.14 gauche.mop.propagate - スロットアクセスの伝播">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e4_00bc_009d_00e6_0092_00ad"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_89.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_0088_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002emop_002epropagate-_002d-_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e4_00bc_009d_00e6_0092_00ad"></a>
+<h2 class="section">9.14 <code>gauche.mop.propagate</code> - スロットアクセスの伝播</h2>
+
+<dl>
+<dt><a name="index-gauche_002emop_002epropagate"></a><u>Module:</u> <b>gauche.mop.propagate</b></dt>
+<dd><a name="index-gauche_002emop_002epropagate-1"></a>
+<p>Provides a metaclass to add <code>:propagated</code> slot allocation option.
+</p>
+<p>When a slot allocation has <code>:propagated</code>, access
+to the slot is redirected to other object’s slot.
+It is handy for composite objects to keep external
+interface simple, for access to the slot of inner objects
+can be disguised as if it is a slot of the parent object.
+</p></dd></dl>
+
+<p>An example would work better than explanation.
+Suppose you have a <code>&lt;rect&gt;</code> class to represent
+generic rectangular area, and you want to use it when you create
+a <code>&lt;viewport&gt;</code> class by composition, instead of
+inheritance.  A simple way would be as follows:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;rect&gt; ()
+  ((width  :init-keyword :width)
+   (height :init-keyword :height)))
+
+(define-class &lt;viewport&gt; ()
+  ((dimension :init-form (make &lt;rect&gt;))
+   ;;   ... other slots ...
+   ))
+</pre></td></tr></tbody></table>
+
+<p>With this definition, whenever you want to access the viewport’s
+width or height, you have to go through <code>&lt;rect&gt;</code> object, e.g.
+<code>(~ viewport'dimension'width)</code>.  This is not only cumbersome,
+but the users of viewport class have to know that how the
+viewport is composed (it’s not necessarily a bad thing,
+but sometimes you may want to hide it).
+</p>
+<p>Using <code>gauche.mop.propagate</code>, you can define slots
+<code>width</code> and <code>height</code> in <code>&lt;viewport&gt;</code> class
+that are proxies of <code>&lt;rect&gt;</code>’s slots.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.mop.propagate)
+
+(define-class &lt;rect&gt; ()
+  ((width  :init-keyword :width)
+   (height :init-keyword :height)))
+
+(define-class &lt;viewport&gt; (&lt;propagate-mixin&gt;)
+  ((dimension :init-form (make &lt;rect&gt;))
+   (width     :allocation :propagated :propagate 'dimension
+              :init-keyword :width)
+   (height    :allocation :propagated :propagate 'dimension
+              :init-keyword :height)))
+</pre></td></tr></tbody></table>
+
+<p>With <code>:propagated</code> allocation, the slots are not actually
+allocated in <code>&lt;viewport&gt;</code> instance, and accesses to the
+slots are redirected to the object in the slot specified by
+<code>:propagate</code> slot option?in this case, the <code>dimension</code> slot.
+It is somewhat similar to the virtual slots, but it’s more convenient
+for you don’t explicitly write procedures to redirect the access.
+</p>
+<p>Now you can treat <code>width</code> and <code>height</code> as if they
+are slots of <code>&lt;viewport&gt;</code>.   You can even make them
+initialize via <code>init-keyword</code> (but you can’t use
+<code>:init-form</code> or <code>:init-value</code>; if you want to specify
+default values, give the default values to the actual object).
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define vp (make &lt;viewport&gt; :width 640 :height 480))
+vp
+gosh&gt; (d vp)
+#&lt;&lt;viewport&gt; 0xc5a1e0&gt; is an instance of class &lt;viewport&gt;
+slots:
+  dimension : #&lt;&lt;rect&gt; 0xc5a130&gt;
+  width     : 640
+  height    : 480
+gosh&gt; (set! (~ vp'width) 800)
+#&lt;undef&gt;
+gosh&gt; (~ vp'width)
+800
+</pre></td></tr></tbody></table>
+
+<p>Here’s two classes that enables this feature.
+Usually all you have to do is to inherit <code>&lt;propagate-mixin&gt;</code> class.
+</p>
+<dl>
+<dt><a name="index-_003cpropagate_002dmeta_003e"></a><u>Class:</u> <b>&lt;propagate-meta&gt;</b></dt>
+<dd><a name="index-propagate_002dmeta"></a>
+<p>Adds <code>:propagated</code> slot allocation.
+The propagated slot has to have <code>:propagate</code> slot option
+which specifies the name of the slot that points to an object
+that actually holds the value of the slot.
+If a slot has <code>:propagated</code> slot allocation but
+does not have <code>:propagate</code> slot option, an error is signalled.
+</p>
+<p>The <code>:propagate</code> slot option should have a value
+of either a symbol, or a list of two symbols.
+</p>
+<p>If it is a symbol, it names the slot that contains an
+object, whose slot with the same name of the propagate slot
+holds the value.
+</p>
+<p>If it is a list of two symbols as <code>(X Y)</code>, then
+the access to this propagated slot actually works as
+<code>(slot-ref (slot-ref obj X) Y)</code>.
+</p>
+<p>If you want to make a propagated slot initializable by
+init-keywords, make sure the slot holding the actual object
+comes before the propagated slots.  Slot initialization proceeds
+in the order of appearance by default, and you want the
+actual object is created before setting values.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cpropagate_002dmixin_003e"></a><u>Class:</u> <b>&lt;propagate-mixin&gt;</b></dt>
+<dd><a name="index-propagate_002dmixin"></a>
+<p>This is a convenience mixin class.   Instead of giving
+<code>:metaclass &lt;propagate-meta&gt;</code>, you can just inherit
+this calss to make propagated slots available.
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_89.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0_00e3_0083_00ab_00e3_0083_0088_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

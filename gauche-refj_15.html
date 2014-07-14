@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>3.3 Schemeスクリプトを書く</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 3.3 Schemeスクリプトを書く">
+<meta name="keywords" content="Gauche ユーザリファレンス: 3.3 Schemeスクリプトを書く">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_15.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Scheme_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_14.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0081_00aa_00e9_0096_008b_00e7_0099_00ba" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_16.html#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Scheme_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f-1"></a>
+<h2 class="section">3.3 Schemeスクリプトを書く</h2>
+
+<p><code>gosh</code>のコマンドラインにSchemeプログラムのファイル名が渡された場合、
+<code>gosh</code>は<code>user</code>モジュールをカレントモジュールとし、
+それ以降のコマンドライン引数のリストをグローバル変数<code>*argv*</code>に束縛して、
+Schemeプログラムをロードします。もし<var>scheme-file</var>の最初の行が“<code>#!</code>”で始まって
+いたら、その行は無視されます。これにより、Unix系のシステムで実行可能なSchemeスクリプト
+を書くことが出来ます。
+</p>
+<p>典型的なGaucheスクリプトの最初の行は次のようなものです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">#!/usr/local/bin/gosh
+  <span class="roman">または,</span>
+#!/usr/bin/env gosh
+  <span class="roman">または,</span>
+#!/bin/sh
+:; exec gosh -- $0 "$@"
+</pre></td></tr></tbody></table>
+<p>後の2つは「シェルトランポリン」テクニックを用いて、<code>gosh</code>がPATHにあるディレクトリの
+どこかにあれば起動できるようにしています。3番目の方法は、
+<code>gosh</code>にいくつかコマンドラインオプションを渡したい時に便利です。
+</p>
+<p>ファイルが正常にロードされたら、<code>gosh</code>は
+userモジュールに ‘<code>main</code>’ という手続きが定義されているかどうか調べ、
+定義されていればそれを呼びます。<code>main</code>には、スクリプトへの引数のリストが
+唯一の引数として渡されます。リストの最初の要素はスクリプトファイル名です。
+</p>
+<p><code>main</code>が整数の値を返したら、<code>gosh</code>はその値を終了ステータスとして終了します。
+<code>main</code>が整数以外の値を返した場合は<code>gosh</code>は終了ステータス70
+(<code>EX_SOFTWARE</code>)で終了します。このふるまいはSRFI-22と互換です。
+</p>
+<p><code>main</code>が定義されていなければ<code>gosh</code>はロード後にそのままステータス0で
+終了します。
+</p>
+<p>シェルスクリプトやPerlスクリプトと同じように、スクリプトのボディに直接
+実行される式を書くこともできますが、なるべく ‘<code>main</code>’ を使った方法を
+使うことをお薦めします。そうすると、スクリプトをインタプリタにインタラクティブに
+ロードしてデバッグすることもできます。
+</p>
+<p><code>-m</code>コマンドラインオプションを使えば、<code>user</code>モジュール以外の
+モジュールで定義された<code>main</code>手続きをスクリプトのメイン関数として
+呼ぶことができます。Schemeモジュールを、Schemeスクリプトとしても使えるように
+したい場合に便利です。
+</p>
+<p>例えば、<code>foo</code>というSchemeモジュールを書いて、<em>その中で</em>
+<code>main</code>関数を定義しておきます。この<code>main</code>関数はexportしないでおきます。
+このファイルがモジュールとしてロードされた場合、この<code>main</code>関数は
+外からは見えないので何もしません。しかし、<code>gosh</code>に<code>-m foo</code>オプションを
+与えて、このファイルをスクリプトファイルとして指定すれば、ファイルをロードした後に
+<code>main</code>手続きが呼ばれます。その中には、
+テストだとかモジュールのサンプルアプリケーションを書いておくことができるでしょう。
+</p>
+<dl>
+<dt><a name="index-_002aargv_002a"></a><u>Variable:</u> <b>*argv*</b></dt>
+<dd><p>Schemeスクリプト以降のコマンドライン引数のリストは、スクリプトのロードの前に
+この変数に束縛されます。<code>gosh</code>がインタラクティブモードで起動された場合は
+この変数は<code>()</code>となります。
+</p>
+<p>この変数はSTkと互換性がありますが、他のScheme実装は違った方法を使ってコマンドライン
+引数を得ます。ポータブルなスクリプトを書くには、<code>main</code>手続きを使う方法を
+お薦めします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002aprogram_002dname_002a"></a><u>Variable:</u> <b>*program-name*</b></dt>
+<dd><p>この変数はスクリプトファイル名に束縛されます。インタラクティブモードでは
+この変数は<code>gosh</code>自身の名前を持っています。
+</p>
+<p>この変数はSTkと互換性がありますが、他の実装は違った方法を使います。
+</p></dd></dl>
+
+<p>いくつか簡単な例を示します。最初の例はUnixの<code>cat(1)</code>コマンドを模するものです。
+エラー処理やコマンドラインオプションの処理は行っていません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#!/usr/bin/env gosh
+
+(define (main args)   ;<span class="roman">entry point</span>
+  (if (null? (cdr args))
+      (copy-port (current-input-port) (current-output-port))
+      (for-each (lambda (file)
+                  (call-with-input-file file
+                    (lambda (in)
+                      (copy-port in (current-output-port)))))
+                (cdr args)))
+  0)
+</pre></td></tr></tbody></table>
+
+<p>次のスクリプトは簡単なgrepコマンドです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#!/usr/bin/env gosh
+
+(define (usage)
+  (format (current-error-port)
+          "Usage: ~a regexp file ...\n" *program-name*)
+  (exit 2))
+
+(define (grep rx port)
+  (with-input-from-port port
+    (lambda ()
+      (port-for-each
+       (lambda (line)
+         (when (rxmatch rx line)
+           (format #t "~a:~a: ~a\n"
+                   (port-name port)
+                   (- (port-current-line port) 1)
+                   line)))
+       read-line))))
+
+(define (main args)
+  (if (null? (cdr args))
+      (usage)
+      (let ((rx (string-&gt;regexp (cadr args))))
+        (if (null? (cddr args))
+            (grep rx (current-input-port))
+            (for-each (lambda (f)
+                        (call-with-input-file f
+                          (lambda (p) (grep rx p))))
+                      (cddr args)))))
+  0)
+</pre></td></tr></tbody></table>
+
+<p>また、<a indepth="true" href="gauche-refj_93.html#g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090"><code>gauche.parseopt</code> - コマンドライン引数の解析</a>を使うと手軽にコマンドラインオプション
+を処理することができます。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_14.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0081_00aa_00e9_0096_008b_00e7_0099_00ba" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_16.html#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

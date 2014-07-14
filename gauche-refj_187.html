@@ -1,0 +1,449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.61 www.cgi - CGIユーティリティ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.61 www.cgi - CGIユーティリティ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.61 www.cgi - CGIユーティリティ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="CGI_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_186.html#g_t_00e3_0083_0088_00e3_0083_009d_00e3_0083_00ad_00e3_0082_00b8_00e3_0082_00ab_00e3_0083_00ab_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_188.html#CGI_00e3_0081_00ae_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="www_002ecgi-_002d-CGI_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<h2 class="section">11.61 <code>www.cgi</code> - CGIユーティリティ</h2>
+
+<dl>
+<dt><a name="index-www_002ecgi"></a><u>Module:</u> <b>www.cgi</b></dt>
+<dd><a name="index-www_002ecgi-1"></a>
+<p>CGIスクリプトを書くのに便利ないくつかの基本的な手続きを提供します。
+</p>
+<p>CGIスクリプトを手軽に書くにはこのモジュールの他に、
+<code>rfc.uri</code> (<a indepth="true" href="gauche-refj_157.html#URI_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090_00e3_0081_00a8_00e4_00bd_009c_00e6_0088_0090"><code>rfc.uri</code> - URIの解析と作成</a>)、
+<code>text.html-lite</code> (<a indepth="true" href="gauche-refj_167.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089"><code>text.html-lite</code> - シンプルなHTMLドキュメントの構築</a>)、
+<code>text.tree</code> (<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089"><code>text.tree</code> - 怠惰なテキスト構築</a>) 等のモジュールを併せて
+使うとよいでしょう。
+</p>
+<p>注：現在有効な、CGIに関する「正式な」仕様というのはどうも無いようです。
+<a href="http://w3c.org/CGI/">http://w3c.org/CGI/</a>あたりを参照して下さい。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bf_00e5_00a4_0089_00e6_0095_00b0"></a>
+<h3 class="subheading">メタ変数</h3>
+
+<dl>
+<dt><a name="index-cgi_002dmetavariables"></a><u>Parameter:</u> <b>cgi-metavariables</b><i> :optional metavariables</i></dt>
+<dd><p>通常、httpdはcgiプログラムに様々な情報を環境変数経由で渡します。
+<code>www.cgi</code>中の多くの手続きはその情報(メタ変数)を参照します。
+しかし、cgiに関連するプログラムを開発中に環境変数にアクセスするのは
+不便な場合もあります。
+このパラメータを使うと、メタ変数をオーバライドすることができます。
+</p>
+<p><var>Metavariables</var>は2要素のリストのリストです。
+内側のリストは、最初の要素が変数名を、2つめの要素がその値を、それぞれ
+文字列で与えます。
+</p>
+<p>例えば次のコードは<code>REQUEST_METHOD</code>と
+<code>QUERY_STRING</code>のメタ変数を<code>my-cgi-procedure</code>の実行期間中に
+上書きします。(<code>parameterize</code>の詳細については
+<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>を参照して下さい)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(parameterize ((cgi-metavariables '(("REQUEST_METHOD" "GET")
+                                    ("QUERY_STRING" "x=foo"))))
+  (my-cgi-procedure))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-cgi_002dget_002dmetavariable"></a><u>Function:</u> <b>cgi-get-metavariable</b><i> name</i></dt>
+<dd><p><var>name</var>で指定されるCGIメタ変数の値を返します。
+この関数はまずパラメータ<code>cgi-metavariables</code>を探し、
+指定されたメタ変数が見つからなければ<code>sys-getenv</code>を呼びます。
+</p>
+<p>CGIスクリプトは、なるべく<code>sys-getenv</code>を直接呼ぶのではなく
+<code>cgi-get-metavariable</code>を使うのが良いでしょう。
+スクリプトの再利用もしやすくなります。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e5_008f_0096_00e5_00be_0097"></a>
+<h3 class="subheading">パラメータの取得</h3>
+
+<dl>
+<dt><a name="index-cgi_002dparse_002dparameters"></a><u>Function:</u> <b>cgi-parse-parameters</b><i> :key :query-string :merge-cookies :part-handlers</i></dt>
+<dd><p>CGIプログラムに渡されたquery stringをパーズして、パラメータの連想リストにして
+返します。文字列がキーワード引数<var>query-string</var>に与えられればそれがパーズすべき
+query stringとなります。その引数が渡されなければこの手続きは
+メタ変数<code>REQUEST_METHOD</code>を参照し、その値によって標準入力もしくは
+メタ変数<code>QUERY_STRING</code>からquery stringが取られます。
+そのようなメタ変数が定義されておらず、かつ現在の入力ポートが端末である場合、
+インタラクティブにデバッグをしているものと考えて、
+この手続きはプロンプトを出してユーザにパラメータの入力を促します。
+</p>
+<p><code>REQUEST_METHOD</code>が<code>POST</code>の場合、この手続きはenctypeとして
+<code>application/x-www-from-urlencoded</code>と<code>multipart/form-data</code>の
+両方を処理できます。後者は通常、ファイルアップロード機能を持つフォームに使われます。
+</p>
+<p>POSTデータが<code>multipart/form-data</code>で送られて来た場合、
+各パートの内容がパラメータの値となります。すなわち、アップロードされた
+ファイルはその内容がひとつの文字列として得られることになります。
+元のファイル名のようなその他の情報は捨てられます。これが望ましい動作で
+ない場合は、<var>part-handlers</var>引数によって動作をカスタマイズすることができます。
+詳しくは下の「ファイルアップロードの処理」で説明します。
+</p>
+<p>キーワード引数<var>merge-cookies</var>に真の値が与えられた場合は、
+メタ変数<code>HTTP_COOKIE</code>からクッキーの値が読まれ、解析されて
+結果に追加されます。
+</p>
+<p>パラメータは複数の値を取り得るため、結果のパラメータに対応する値は常にリストになります。
+パラメータに値が与えられていなければ、結果のパラメータに対する値には<code>#t</code>が置かれます。
+次の例を参照して下さい。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cgi-parse-parameters
+  :query-string "foo=123&amp;bar=%22%3f%3f%22&amp;bar=zz&amp;buzz")
+ ⇒ (("foo" "123") ("bar "\"??\"" "zz") ("buzz" #t))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-cgi_002dget_002dparameter"></a><u>Function:</u> <b>cgi-get-parameter</b><i> name params :key :default :list :convert</i></dt>
+<dd><p><code>cgi-parse-parameters</code>が返す、パーズされたQuery文字列<var>params</var>から、
+名前<var>name</var>を持つパラメータの値を簡単に取り出すための手続きです。
+<var>name</var>は文字列です。
+</p>
+<p>キーワード引数<var>list</var>に真の値が与えられていなければ、
+返される値はスカラー値です。パラメータ<var>name</var>に複数の値が与えられた場合でも、
+最初の値のみが返されます。<var>list</var>に真の値が与えられれば、返されるのは
+常に値のリストとなります。
+</p>
+<p>キーワード引数<var>convert</var>に手続きを与えると、対応する値が取り出された後でその
+手続きが値を引数として呼ばれます。これによって値を文字列から必要な型へと変換することが
+できます。<var>list</var>に真の値が与えられている場合、変換手続きは各値に対して呼ばれ、
+その結果のリストが<var>cgi-get-parameter</var>から返されます。
+</p>
+<p>パラメータ<var>name</var>がQuery中に現れなかった場合は、
+<var>default</var>に与えられた値がそのまま
+返されます。<var>default</var>が省略された場合、<var>list</var>が偽であれば<code>#f</code>が、
+真であれば<code>()</code>が返されます。
+</p></dd></dl>
+
+<a name="g_t_00e5_0087_00ba_00e5_008a_009b_00e3_0081_00ae_00e7_0094_009f_00e6_0088_0090"></a>
+<h3 class="subheading">出力の生成</h3>
+
+
+<dl>
+<dt><a name="index-cgi_002dheader"></a><u>Function:</u> <b>cgi-header</b><i> :key status content-type location cookies</i></dt>
+<dd><p>HTTPリプライメッセージのヘッダを、テキストツリー形式(<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089"><code>text.tree</code> - 怠惰なテキスト構築</a>参照)
+で作成して返します。最も簡単な呼び出しでは次のようになります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(tree-&gt;string (cgi-header))
+  ⇒ "Content-type: text/html\r\n\r\n"
+</pre></td></tr></tbody></table>
+
+<p>キーワード引数<var>content-type</var>によってContent typeを指定できます。
+また、<var>cookies</var>にクッキー文字列のリストを渡すことにより、
+クライアントにクッキーを設定できます。クッキー文字列を構築するには手続き
+<code>construct-cookie-string</code> (<a indepth="true" href="gauche-refj_146.html#HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc"><code>rfc.cookie</code> - HTTPクッキー</a>参照)
+が使えます。
+</p>
+<p>キーワード引数<var>location</var>は、<code>Location</code>ヘッダを作成して
+クライアントを別のURIに誘導するのに使えます。また、<code>Status</code>ヘッダを
+指定するために<var>status</var>キーワード引数が使えます。クライアントを
+別URIに転送するよくある方法は次のようなものです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cgi-header :status "302 Moved Temporarily"
+            :location target-uri)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-cgi_002doutput_002dcharacter_002dencoding"></a><u>Parameter:</u> <b>cgi-output-character-encoding</b><i> :optional encoding</i></dt>
+<dd><p>このパラメータの値は次に説明する<code>cgi-main</code>が出力するデータの
+文字符合化法(CES)を指定します。デフォルトの値はGaucheのネイティブエンコーディング
+です。それ以外の値がセットされている場合、<code>cgi-main</code>は
+<code>gauche.charconv</code>モジュールを用いて出力のエンコーディングの変換を
+行います。
+(<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>参照)。
+</p></dd></dl>
+
+
+<a name="g_t_00e4_00be_00bf_00e5_0088_00a9_00e3_0081_00aa_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<h3 class="subheading">便利な手続き</h3>
+
+<dl>
+<dt><a name="index-cgi_002dmain"></a><u>Function:</u> <b>cgi-main</b><i> proc :key on-error merge-cookies output-proc part-handlers</i></dt>
+<dd><p>CGIスクリプトのための便利なラッパー手続きです。
+この手続きは、まず<code>cgi-parse-parameters</code>を呼び出してCGIスクリプトに
+渡されたパラメータを解析し、続いてその結果を引数として<var>proc</var>を呼び出します。
+キーワード引数<var>merge-cookies</var>は、与えられればそのまま
+<code>cgi-parse-parameters</code>に渡されます。
+</p>
+<p>手続き<var>proc</var>はHTTPヘッダを含むドキュメントを
+テキストツリー構造(<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089"><code>text.tree</code> - 怠惰なテキスト構築</a>参照)で
+返さなければなりません。<code>cgi-main</code>はそれを<code>write-tree</code>を使って
+現在の出力ポートに書き出し、0を返します。
+</p>
+<p>もし<var>proc</var>内でエラーが起こった場合、そのエラーは捕捉されて、エラーを報告する
+HTMLページが作成されて出力されます。このエラーページは、<var>on-error</var>キーワード引数に
+手続きを渡すことでカスタマイズできます。<var>on-error</var>に渡された手続きは
+エラー発生時に<code>&lt;condition&gt;</code>オブジェクト(<a indepth="true" href="gauche-refj_58.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a>参照)
+を引数として呼ばれ、HTTPヘッダを含むドキュメントをテキストツリー構造で返さねばなりません。
+</p>
+<p><code>cgi-main</code>は最終的な結果を出力を書き出す時に
+パラメータ<code>cgi-output-character-encoding</code>を参照し、
+必要ならば出力の文字エンコーディングを変換します。
+</p>
+<p><code>cgi-main</code>の出力のふるまいはキーワード引数<var>output-proc</var>で
+カスタマイズできます。<var>output-proc</var>が渡された場合、それは
+<var>proc</var>の戻り値、あるいはエラーハンドラが作成したテキストツリー構造を
+受け取る手続きでなければなりません。その手続きはテキストツリーを
+フォーマットして現在の出力ポートに出力しなければなりません。
+必要ならば文字エンコーディングの変換もその手続き内で行います。
+</p>
+<p>キーワード引数<var>part-handlers</var>は、そのまま<code>cgi-parse-parameters</code>
+に渡されます。この引数によって、ファイルアップロードの際の動作をカスタマイズ
+できます。詳しくは下の「ファイルアップロードの処理」の項を参照して下さい。
+</p>
+<p>この引数で、一時ファイルを使うように指定した場合、<code>cgi-main</code>は
+<var>proc</var>から抜ける際に(エラーでも正常終了でも)一時ファイルを
+消去します。この機能を他でも利用するには<code>cgi-add-temporary-file</code>の項を
+参考にして下さい。
+</p>
+<p><var>proc</var>を呼ぶ前に、<code>cgi-main</code>はカレントエラーポートの
+バッファリングモードを<code>:line</code>に変更します。
+(バッファリングモードの詳細については<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>の
+<code>port-buffering</code>の項を参照してください)。
+これはwebサーバがcgiスクリプトのエラー出力を捕捉しやすくするためです。
+</p>
+<p>以下の例はCGIに渡されたパラメータ全てをテーブルにして表示します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#!/usr/local/bin/gosh
+
+(use text.html-lite)
+(use www.cgi)
+
+(define (main args)
+  (cgi-main
+    (lambda (params)
+      `(,(cgi-header)
+        ,(html-doctype)
+        ,(html:html
+          (html:head (html:title "Example"))
+          (html:body
+           (html:table
+            :border 1
+            (html:tr (html:th "Name") (html:th "Value"))
+            (map (lambda (p)
+                   (html:tr
+                    (html:td (html-escape-string (car p)))
+                    (html:td (html-escape-string (x-&gt;string (cdr p))))))
+                 params))))
+       ))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-cgi_002dadd_002dtemporary_002dfile"></a><u>Function:</u> <b>cgi-add-temporary-file</b><i> filename</i></dt>
+<dd><p>この手続きは<code>cgi-main</code>に渡される<var>proc</var>中で呼ばれることを
+想定しています。
+この手続きは、<var>filename</var>を一時ファイルとして登録し、<var>proc</var>が
+終了する際に消去されるようにします。cgiスクリプトがエラー終了した場合
+などでもごみを残さないようにする便利な方法です。
+この手続きを呼んだ後で、<var>proc</var>が<var>filename</var>を消去したり
+名前を変えたりしても構いません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-cgi_002dtemporary_002dfiles"></a><u>Parameter:</u> <b>cgi-temporary-files</b></dt>
+<dd><p><code>cgi-add-temporary-file</code>で登録された一時ファイルを保持するパラメータです。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0082_00a2_00e3_0083_0083_00e3_0083_0097_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086"></a>
+<h3 class="subheading">ファイルアップロードの処理</h3>
+
+<p><code>cgi-parse-parameters</code>の項で説明したように、ファイルアップロードは
+デフォルトでは透過的に扱われます。すなわち、アップロードされた
+ファイルの内容がパラメータの値となります。
+これは望みの動作ではないかもしれません。例えばアップロードされるファイルが
+巨大であることが予想されるなら、それを全てメモリに読み込んで持ち回りたくは
+ないかもしれません。<code>cgi-parse-parameters</code>や<code>cgi-main</code>の
+<var>part-handlers</var>引数によって、ファイルアップロードの
+処理をカスタマイズすることが可能です。
+(この引数は、フォームデータが<code>multipart/form-data</code> enctypeで
+送られた場合にのみ意味を持ちます)。
+</p>
+<p><var>part-handlers</var>引数が与えられている場合、それはリストのリストで、
+内部のリストは<code>(<var>name-pattern</var> <var>action</var> <var>kv-list</var> …)</code> の形式で
+なければなりません。
+アップロードされたファイルは、そのパラメータ名が<var>name-pattern</var>に
+マッチした場合に<var>action</var>で指示されるように処理されます。
+(ここで、パラメータ名とはsubmitされたフォームの<code>input</code>要素に与えられた
+’name’属性のことです。アップロードされたファイルの名前ではありません)。
+</p>
+<p><var>name-pattern</var>は文字列のリストか、正規表現か、<code>#t</code>です。
+文字列のリストの場合はそれのいずれかとパラメータ名が等しければマッチと
+みなされます。<code>#t</code>は全てのものにマッチします。
+</p>
+<p><code>action</code>は次のいずれかの値でなければなりません。
+</p><dl compact="compact">
+<dt> <code>#f</code></dt>
+<dd><p>デフォルトのアクションです。すなわち、アップロードされたファイルの内容が
+文字列として読み込まれ、パラメータの値となります。
+</p></dd>
+<dt> <code>ignore</code></dt>
+<dd><p>アップロードされたファイルの内容を無視します。
+</p></dd>
+<dt> <code>file</code></dt>
+<dd><p>アップロードされたファイルの内容は一時ファイルへと格納されます。
+パラメータの値は、一時ファイルの名前となります。
+</p>
+<p>このアクションを使う場合は、エントリを
+<code>(<var>name-pattern</var> file <var>prefix</var>)</code> のように書くことも
+でき、その場合は<var>prefix</var>が一時ファイルのパス名のプリフィクスとして
+使われます。例えば<code>("image" file "/var/mycgi/incoming/img")</code>
+のようにしておくと、<code>"image"</code>パラメータとしてアップロードされた
+ファイルが‘<tt>/var/mycgi/incoming/img49g2Ua</tt>’のような一時ファイルに
+格納されることになります。
+</p>
+<p>アプリケーションは、この一時ファイルを(必要ならば)適切な場所に
+移動しなければなりません。<code>cgi-main</code>を用いている場合は、
+一時ファイルは<code>cgi-main</code>を抜ける際に(まだあれば)unlinkされます。
+</p>
+</dd>
+<dt> <code>file+name</code></dt>
+<dd><p><code>file</code>と同様ですが、パラメータの値が一時ファイル名と
+クライアントが送ってきたファイル名からなるリストになります。
+クライアントが送信したファイル名を利用したい場合に便利です
+(ただ、クライアントが常に正しいファイル名を送って来ると仮定しては
+いけません。例えば、アップロードされたファイルを
+チェック無しにクライアントが送ってきた名前にrenameするというような
+ことは避けてください)。
+</p>
+
+</dd>
+<dt> <code><var>procedure</var></code></dt>
+<dd><p>この場合、アップロードされた内容を処理するために、手続き<var>procedure</var>が
+呼ばれます。手続きは4つの引数を伴って呼ばれます：
+<code>(procedure <var>name</var> <var>filename</var> <var>part-info</var> <var>iport</var>)</code>.
+</p>
+<p><var>name</var>はパラメータの名前、<var>filename</var>はオリジナルファイルの名前
+(クライアント側でのパス名)です。<var>part-info</var>は<code>&lt;mime-part&gt;</code>オブジェクトで、
+このMIMEパートの情報を保持しており、そして<var>iport</var>は内容を読むための入力ポートです。
+これらの引数の詳しい意味については<a indepth="true" href="gauche-refj_154.html#MIME_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_0087_00a6_00e7_0090_0086"><code>rfc.mime</code> - MIMEメッセージ処理</a>を
+参照して下さい。独自の<var>procedure</var>を書く際に、<code>rfc.mime</code>の
+<code>mime-retrieve-body</code>のような手続きが使えるかもしれません。
+</p>
+<p><var>procedure</var>内で一時ファイルを作る場合は、それを
+<code>cgi-add-temporary-file</code>で登録しておけば、cgi処理中に
+エラーが起きた場合でも一時ファイルが消去されるようにすることができます。
+</p></dd>
+</dl>
+
+<p><var>action</var>の後ろに<var>kv-list</var>が与えられた場合、それは
+キーワード-値リストでなければなりません。次のキーワードがサポートされています。
+</p>
+<dl compact="compact">
+<dt> <code>:prefix</code></dt>
+<dd><p><var>action</var>が<code>file</code>か<code>file+name</code>の時のみ有効です。
+一時ファイルのプリフィクスを指定します。例えば<code>:prefix "/tmp/foo"</code>を
+与えると、ファイルは‘<tt>/tmp/fooxAgjeQ</tt>’のような名前でセーブされます。
+</p></dd>
+<dt> <code>:mode</code></dt>
+<dd><p><var>action</var>が<code>file</code>か<code>file+name</code>の時のみ有効です。
+一時ファイルのモードをunix式の整数で指定します。デフォルトは<code>#o600</code>です。
+</p></dd>
+</dl>
+
+
+<p>ファイルアップロード以外のパラメータは<var>part-handlers</var>の対象外である
+ことに注意して下さい。それらのパラメータの値は常に文字列へと変換されます。
+</p>
+
+<p>簡単な例を示します。例えば次のようなフォームがあったとします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;form enctype="multipart/form-data" method="POST" action="mycgi.cgi"&gt;
+&lt;input type="file" name="imagefile" /&gt;
+&lt;input type="text" name="description" /&gt;
+&lt;input type="hidden" name="mode" value="normal" /&gt;
+&lt;/form&gt;
+</pre></td></tr></tbody></table>
+
+<p>‘<tt>mycgi.cgi</tt>’内で、<code>cgi-parse-parameters</code>を
+<var>part-handlers</var>引数なしで使った場合は、
+例えば次のようなリストがパラメータパージングの結果として得られるでしょう。
+(実際の値は、webクライアントがどのようにフォームを埋めたかに依存します)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(("imagefile" #*".....(image file content as a string)....")
+ ("description" "my image")
+ ("mode" "normal"))
+</pre></td></tr></tbody></table>
+
+<p>ここでもし、<code>'(("imagefile" file :prefix "/tmp/mycgi"))</code>を
+<var>part-handlers</var>に
+渡したなら、替わりに次のような結果が得られるでしょう。
+ここで、アップロードされたファイルは‘<tt>/tmp/mycgi7gq0B</tt>’にセーブ
+されていることになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(("imagefile" "/tmp/mycgi7gq0B")
+ ("description" "my image")
+ ("mode" "normal"))
+</pre></td></tr></tbody></table>
+
+<p>上の例でシンボル<code>file</code>のかわりに<code>file+name</code>を使えば、
+例えば<code>"imagefile"</code>の値として<code>("/tmp/mycgi7gq0B" "logo.jpg")</code>
+のようなものが得られるでしょう。ここで<code>"logo.jpg"</code>は
+アップロードされたファイルのクライアント側でのパス名です。
+(注意：クライアントは任意の文字列をファイル名として送信することが
+できるため、その文字列が有効なパス名であることを仮定してはなりません。)
+</p>
+
+
+
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_186.html#g_t_00e3_0083_0088_00e3_0083_009d_00e3_0083_00ad_00e3_0082_00b8_00e3_0082_00ab_00e3_0083_00ab_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_188.html#CGI_00e3_0081_00ae_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

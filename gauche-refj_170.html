@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.44 text.sql - SQLのパーズと構築</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.44 text.sql - SQLのパーズと構築">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.44 text.sql - SQLのパーズと構築">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_169.html#text_002eprogress-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e7_00ab_00af_00e6_009c_00ab_00e4_00b8_008a_00e3_0081_00a7_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_0092_00e8_00a1_00a8_00e7_00a4_00ba_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_171.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089-1"></a>
+<h2 class="section">11.44 <code>text.sql</code> - SQLのパーズと構築</h2>
+
+<dl>
+<dt><a name="index-text_002esql"></a><u>Module:</u> <b>text.sql</b></dt>
+<dd><a name="index-text_002esql-1"></a>
+<p>このモジュールはSQL文のパーズと構築のためのユーティリティを提供します。
+</p>
+<p>このモジュールは現在まだ開発途上にあります。まだトークン列を生成するルー
+チンしかありません。SQLのS式構文を定義して、SQLとその構文との間の変換
+ルーチンを提供する計画です。
+</p>
+<p>註: SQLに安全に渡せるように文字列をエスケープするルーチンをお探しなら、
+<a indepth="true" href="gauche-refj_133.html#DBI_00e3_0081_00ae_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6API">DBIのユーザAPI</a>の<code>dbi-escape-sql</code>を見てください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sql_002dtokenize"></a><u>Function:</u> <b>sql-tokenize</b><i> sql-string</i></dt>
+<dd><p>SQL文<var>sql-string</var>をトークン列に分解します。返り値はトークンのリス
+トで、各トークンは以下の形式のひとつで表現されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;symbol&gt;              特殊区切り子、以下のどれか
+                      + - * / &lt; = &gt; &lt;&gt; &lt;= &gt;= ||
+&lt;character&gt;           特殊区切り子、以下のどれか
+                      #\, #\. #\( #\) #\;
+&lt;string&gt;              通常の識別子
+(delimited &lt;string&gt;)  区切られた識別子
+(parameter &lt;num&gt;)     位置パラメータ (?)
+(parameter &lt;string&gt;)  名前つきパラメータ (:foo)
+(string    &lt;string&gt;)  文字列リテラル
+(number    &lt;string&gt;)  数値リテラル
+(bitstring &lt;string&gt;)  バイナリ文字列  &lt;string&gt; は "01101" な感じ
+(hexstring &lt;string&gt;)  Binary string.  &lt;string&gt; は "3AD20" な感じ
+</pre></td></tr></tbody></table>
+
+<p>トークンに分解できない文字列がくると<code>&lt;sql-parse-error&gt;</code>コンディショ
+ンがあがります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csql_002dparse_002derror_003e"></a><u>Condition Type:</u> <b>&lt;sql-parse-error&gt;</b></dt>
+<dd><p>SQLパーズエラーを示すコンディション。<code>&lt;error&gt;</code>を継承。
+</p><dl>
+<dt><a name="index-sql_002dstring"></a><u>Instance Variable of &lt;sql-parse-error&gt;:</u> <b>sql-string</b></dt>
+<dd><p>元のSQL文字列を保持。
+</p></dd></dl>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_169.html#text_002eprogress-_002d-_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e7_00ab_00af_00e6_009c_00ab_00e4_00b8_008a_00e3_0081_00a7_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_0092_00e8_00a1_00a8_00e7_00a4_00ba_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_171.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.22 rfc.hmac - HMAC鍵付きハッシング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.22 rfc.hmac - HMAC鍵付きハッシング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.22 rfc.hmac - HMAC鍵付きハッシング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="HMAC_00e9_008d_00b5_00e4_00bb_0098_00e3_0081_008d_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_147.html#FTP_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00a2_00e3_0083_00b3_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_149.html#HTTP" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002ehmac-_002d-HMAC_00e9_008d_00b5_00e4_00bb_0098_00e3_0081_008d_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">11.22 <code>rfc.hmac</code> - HMAC鍵付きハッシング</h2>
+
+<dl>
+<dt><a name="index-rfc_002ehmac"></a><u>Module:</u> <b>rfc.hmac</b></dt>
+<dd><a name="index-rfc_002ehmac-1"></a>
+<p>このモジュールは、RFC 2104で定義されている、メッセージ認証のための
+鍵付きハッシングのHMACアルゴリズムを実装しています。
+</p>
+<p>シンプルなバッチ処理での鍵付きハッシングでは、高レベルなAPIである
+<code>hmac-digest</code>と<code>hmac-digest-string</code>が使えます。
+あるいは、<code>&lt;hmac&gt;</code>オブジェクトを作成して、入力となるデータで
+その状態を更新することもできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003chmac_003e"></a><u>Class:</u> <b>&lt;hmac&gt;</b></dt>
+<dd><a name="index-hmac"></a>
+<p>HMACアルゴリズムの状態情報を保持します。
+鍵とハッシングアルゴリズムは、キーワード引数<code>:key</code>と<code>:hasher</code>を
+それぞれ使って、生成時に与えます。
+<code>&lt;md5&gt;</code> (<a indepth="true" href="gauche-refj_153.html#MD5_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088"><code>rfc.md5</code> - MD5メッセージダイジェスト</a>参照)や
+<code>&lt;sha256&gt;</code> (<a indepth="true" href="gauche-refj_156.html#SHA_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088"><code>rfc.sha</code> - SHAメッセージダイジェスト</a>参照)などのような
+ダイジェストインタフェース(<a indepth="true" href="gauche-refj_175.html#g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.digest</code> - メッセージダイジェストフレームワーク</a>参照)を
+実装するいかなるクラスオブジェクトを渡すこともできます。
+</p>
+<p>例:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make &lt;hmac&gt; :key (make-byte-string 16 #x0b) :hasher &lt;md5&gt;)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-hmac_002dupdate_0021"></a><u>Method:</u> <b>hmac-update!</b><i> (hmac &lt;hmac&gt;) data</i></dt>
+<dd><p>(不完全かもしれない)文字列で表現される<var>data</var>により、
+<var>hmac</var>の内部状態を更新します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hmac_002dfinal_0021"></a><u>Method:</u> <b>hmac-final!</b><i> (hmac &lt;hmac&gt;)</i></dt>
+<dd><p><var>hmac</var>の内部状態を終了させ、不完全文字列でハッシュされた文字列を
+返します。
+“hexified”(16進化)された結果を得るために、<code>digest-hexify</code>
+(<a indepth="true" href="gauche-refj_175.html#g_t_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>util.digest</code> - メッセージダイジェストフレームワーク</a>参照)を使うことが
+できます。
+一旦終了されると、<var>hmac</var>に対しては<code>hmac-update!</code>や
+<code>hmac-final!</code>を呼ぶことはできません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hmac_002ddigest"></a><u>Method:</u> <b>hmac-digest</b><i> :key key hasher</i></dt>
+<dd><p><code>&lt;hmac&gt;</code>オブジェクトを作り、現在の入力ポートからの
+データストリームをハッシュし、不完全文字列でそのハッシュされた
+結果を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hmac_002ddigest_002dstring"></a><u>Method:</u> <b>hmac-digest-string</b><i> string :key key hasher</i></dt>
+<dd><p><code>&lt;hmac&gt;</code>オブジェクトを作り、<var>string</var>にあるデータをハッシュし、
+不完全文字列でそのハッシュされた結果を返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_147.html#FTP_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00a2_00e3_0083_00b3_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_149.html#HTTP" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

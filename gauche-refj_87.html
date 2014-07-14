@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.13 gauche.logger - ユーザレベルのロギング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.13 gauche.logger - ユーザレベルのロギング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.13 gauche.logger - ユーザレベルのロギング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_86.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_88.html#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e4_00bc_009d_00e6_0092_00ad" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002elogger-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">9.13 <code>gauche.logger</code> - ユーザレベルのロギング</h2>
+
+<dl>
+<dt><a name="index-gauche_002elogger"></a><u>Module:</u> <b>gauche.logger</b></dt>
+<dd><a name="index-gauche_002elogger-1"></a>
+<p>プログラムからログを書き出す簡単なインタフェースを提供します。
+情報は指定されたファイルへ書き出されるか、もしくは<code>syslog(3)</code>を
+使ってシステムログへと送られます。
+ファイルに書き出される場合は、
+syslogに似たプレフィクスが各メッセージの前に追加されます。
+プレフィクスはカスタマイズすることもできます。
+また、ログファイルの排他制御も行われます (下の<code>lock-policy</code>の説明を
+参照して下さい)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003clog_002ddrain_003e"></a><u>Class:</u> <b>&lt;log-drain&gt;</b></dt>
+<dd><a name="index-log_002ddrain"></a>
+<p>ログメッセージの行き先を表現するオブジェクトです。
+デフォルトのログの行き先として、グローバルな<code>&lt;log-drain&gt;</code>のインスタンスが
+ひとつ作られます。
+ログをいくつかにわけて出力する場合などは<code>make</code>メソッドを使って
+いくつでも<code>&lt;log-drain&gt;</code>のインスタンスを作ることができます。
+</p>
+<dl>
+<dt><a name="index-path"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>path</b></dt>
+<dd><p>ログファイルのパス名か、<code>#t</code>、<code>#f</code>、あるいはシンボル<code>syslog</code>
+の値を取ります。このスロットが<code>#t</code>の場合、ログメッセージは現在のエラーポートに
+書き出されます。<code>#f</code>の場合は<code>log-format</code>は
+ログを書き出すかわりにフォーマットされたログメッセージを文字列として返します。
+シンボル<code>syslog</code>の場合はメッセージがシステムログへと送られます。
+</p>
+<p>このスロットの初期値は<code>#f</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-prefix"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>prefix</b></dt>
+<dd><p>各メッセージの前に追加されるプレフィクス文字列を指定します。
+メッセージが複数行に渡る場合、プレフィクスは各行の頭に追加されます。
+またこのスロットには手続きをセットすることもできます。
+その場合、プレフィクス文字列が必要とされる度にその手続きが<code>&lt;log-drain&gt;</code>
+を引数として呼び出され、戻り値の文字列がプレフィクスとして使われます。
+</p>
+<p><code>path</code>スロットの値がシンボル<code>syslog</code>の場合は、
+このスロットの値は無視されます。システムのログ機構が適切なプレフィクスを付けるからです。
+</p>
+<p>prefixスロットの値が文字列の場合、以下に挙げる文字シーケンスは特別な意味を持ち、
+<code>log-format</code>によって置換されます。
+</p>
+<dl compact="compact">
+<dt> <code>~T</code></dt>
+<dd><p>現在の時刻を"Mmm DD hh:mm:ss"という形式で表したもの。
+ここで"Mmm" は英語の月名の省略形、"DD" は日、"hh"、"mm"、
+"ss" は時間(24時間制)、分、秒です。
+このフォーマットはシステムログと同じです。
+</p>
+</dd>
+<dt> <code>~Y</code></dt>
+<dd><p>4桁で表した現在の西暦。
+</p>
+</dd>
+<dt> <code>~P</code></dt>
+<dd><p>プログラム名。初期値は<code>*program-name*</code>の値のbasenameが使われます
+(<a indepth="true" href="gauche-refj_15.html#Scheme_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088_00e3_0082_0092_00e6_009b_00b8_00e3_0081_008f">Schemeスクリプトを書く</a>参照)。
+下に述べる<code>program-name</code>スロットの値を変えれば
+ここに現れる文字列を変えることができます。
+</p>
+</dd>
+<dt> <code>~$</code></dt>
+<dd><p>このプログラムのプロセスID。
+</p>
+</dd>
+<dt> <code>~U</code></dt>
+<dd><p>このプロセスの実行ユーザ名。
+</p>
+</dd>
+<dt> <code>~H</code></dt>
+<dd><p>このプロセスが走っているホスト名。
+</p></dd>
+</dl>
+
+<p>このスロットの初期値は"<code>~T ~P[~$]: </code>"です。例えば
+"this is a log message.\nline 2\nline 3"というメッセージが
+与えられると、次のようなログが書き出されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">Sep  1 17:30:23 myprogram[441]: this is a log message
+Sep  1 17:30:23 myprogram[441]: line 2
+Sep  1 17:30:23 myprogram[441]: line 3
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-program_002dname"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>program-name</b></dt>
+<dd><p>プレフィクス文字列の<code>~P</code>が置換されるプログラム名を指定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lock_002dpolicy"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>lock-policy</b></dt>
+<dd><p>ログファイルのロックの方法を指定します。
+このスロットの値がシンボル<code>fcntl</code>だった場合は、
+fcntl()によるファイルロックが使われます
+(<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"><code>gauche.fcntl</code> - 低レベルファイル操作</a>参照)。
+このスロットの値がシンボル<code>file</code>だった場合は、
+ログファイルのパス名に ".lock" を追加したロックファイルを作成することによる
+排他制御が行われます。この場合、ログを行うプロセスはログファイルの
+置かれるディレクトリに書き込み権限が必要です。
+また、プロセスがログファイル書き込み中に強制的に終了させられた場合、
+ロックファイルが残ってしまう恐れがあります。
+<code>Log-format</code>はロックファイルが十分に古い場合(現在は10分をリミットとしています)
+ロックファイルを自動的に削除します。
+このスロットの値が<code>#f</code>だった場合は、排他制御は行われません。
+</p>
+<p>デフォルトの値は<code>fcntl</code>です。但しMacOSXではfcntlスタイルのロックが
+サポートされていないため、<code>file</code>がデフォルト値となります。
+</p>
+<p>ログの行き先がファイルでない場合は排他制御は行われません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-syslog_002doption"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>syslog-option</b></dt>
+<dt><a name="index-syslog_002dfacility"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>syslog-facility</b></dt>
+<dt><a name="index-syslog_002dpriority"></a><u>Instance Variable of &lt;log-drain&gt;:</u> <b>syslog-priority</b></dt>
+<dd><p>これらのスロットの値は、ログの行き先がシステムログの場合にのみ使われます。
+これらの値に関する説明は<a indepth="true" href="gauche-refj_100.html#Syslog"><code>gauche.syslog</code> - Syslog</a>を参照して下さい。
+デフォルトの値はそれぞれ<code>LOG_PID</code>、<code>LOG_USER</code>、<code>LOG_INFO</code>です。
+</p></dd></dl>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-log_002dopen"></a><u>Function:</u> <b>log-open</b><i> path :key prefix program-name</i></dt>
+<dd><p>デフォルトのログの行き先を<var>path</var>に指定します。
+<var>path</var>は文字列かboolean値あるいはシンボル<code>syslog</code>で、
+上の<code>path</code>スロットで述べたものと
+おなじ意味を持ちます。またプレフィクスとプログラム名をキーワード引数で
+指定することもできます。
+</p>
+<p>名前に"open"とありますが、この手続きは指定されたファイルをオープンしません。
+ファイルは<code>log-format</code>が呼ばれるたびにオープンされクローズされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-log_002ddefault_002ddrain"></a><u>Parameter:</u> <b>log-default-drain</b></dt>
+<dd><p>引数無しで呼ばれると、<code>log-format</code>が使う、
+現在のデフォルトのログの行き先が返されます。
+まだデフォルトのログの行き先が<code>log-open</code>で指定されていない場合は
+<code>#f</code>が返ります。
+</p>
+<p>新たな<code>&lt;log-drain&gt;</code>オブジェクトか<code>#f</code>を引数にして呼び出すと、
+デフォルトのログの行き先がそれに変更されます。
+<code>parameterize</code> (<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>) を使えば、一時的にデフォルトの
+ログの行き先を変更できます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-log_002dformat"></a><u>Method:</u> <b>log-format</b><i> (format &lt;string&gt;) arg …</i></dt>
+<dt><a name="index-log_002dformat-1"></a><u>Method:</u> <b>log-format</b><i> (drain &lt;log-drain&gt;) (format &lt;string&gt;) arg …</i></dt>
+<dd><p>ログメッセージを<code>format</code>手続きでフォーマットし(<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照)、
+指定された行き先に書き出します。最初の形式ではデフォルトの行き先が使われます。
+</p>
+<p>ファイルはこの手続きが呼ばれるたびにオープンされクローズされます。
+したがって、ログファイルに書き出すプログラムが走っている最中でも
+ログファイルをmoveすることができます。
+また、<code>log-format</code>は<code>sys-fcntl</code> (<a indepth="true" href="gauche-refj_81.html#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e6_0093_008d_00e4_00bd_009c"><code>gauche.fcntl</code> - 低レベルファイル操作</a>参照)
+を使ってファイルロックを獲得します。
+</p>
+<p><code>log-open</code>が呼ばれる前に<code>log-format</code>が最初の形式で呼ばれた場合、
+<code>log-format</code>は何もしません。したがって、<code>log-format</code>をデバッグに
+活用し、必要なくなったら<code>log-open</code>だけをコメントアウトする、というような
+使用法も可能です。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_86.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_88.html#g_t_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00ae_00e4_00bc_009d_00e6_0092_00ad" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

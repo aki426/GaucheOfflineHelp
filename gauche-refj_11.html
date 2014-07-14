@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.7 コンパイル</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.7 コンパイル">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.7 コンパイル">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_11.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0091_00e3_0082_00a4_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_10.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0091_00e3_0082_00a4_00e3_0083_00ab-1"></a>
+<h2 class="section">2.7 コンパイル</h2>
+
+<p>Gaucheは、Schemeフォームをひとつづつ読み込んでは評価するという意味では
+インタプリタです。しかし内部では、Gaucheはひとつひとつのフォームを中間形式に
+コンパイルして仮想マシンで実行しています。
+</p>
+<p>組み込みの構文とマクロはコンパイル時に認識されて展開されます。
+よく使われる組み込み関数は、コンパイル時にグローバルな束縛が置き換わっていない場合に、
+インライン展開されます。
+</p>
+<p>プログラマは通常、コンパイラの動作を気にする必要はほとんどありませんが、
+いくつかの点に注意する必要があります。
+</p>
+<dl compact="compact">
+<dt> <em>loadは実行時に評価される</em></dt>
+<dd><p><code>load</code>はGaucheでは一般の関数なので、実行時に評価されます。
+ロードされるファイル中でマクロを定義している場合、そのマクロは
+その<code>load</code>の呼び出しを含むトップレベルフォームが評価された後で
+有効になります。例えば、<code>foo.scm</code>がマクロ<code>foo</code>を定義しているとして、
+次のような用法を考えてみてください。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; <span class="roman">in ``foo.scm''</span>
+(define-syntax foo
+  (syntax-rules () ((_ arg) (quote arg))))
+
+;; <span class="roman">in your program</span>
+(begin (load "foo") (foo (1 2 3)))
+  ⇒ <span class="roman">error, bad procedure: `1'</span>
+
+(load "foo")
+(foo (1 2 3)) ⇒ '(1 2 3)
+</pre></td></tr></tbody></table>
+<p><code>begin</code>で<code>load</code>と<code>foo</code>の呼び出しを囲んだ場合、
+コンパイラはまず<code>begin</code>全体をコンパイルします。その時点でマクロ
+<code>foo</code>は定義されていませんから、これは評価時にエラーになります。
+一方、後者では<code>load</code>が評価されてから<code>foo</code>がコンパイルされるので、
+問題は起きません。
+</p>
+<p>このような混乱を避けるために、別のプログラムファイルを読み込む必要がある時は
+<code>require</code>か<code>use</code>を使うことを勧めます。これらは構文であり、
+コンパイラに認識されます。
+</p>
+</dd>
+<dt> <em>require はコンパイル時に評価される</em></dt>
+<dd><p>上記の裏返しですが、<code>require</code>と<code>use</code>はコンパイル時に
+解釈されます。したがって、<code>if</code>などの条件文のボディにこれらのフォームを
+置いておいても、指定されたファイルは条件にかかわらず読み込まれてしまいます。
+どうしてももし条件によって読み込むかどうかを変えたい場合は、<code>load</code>を使うか、
+条件判断自体をマクロで行うようにしてください。
+</p></dd>
+</dl>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_10.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

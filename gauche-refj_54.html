@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.16 ツリーマップ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.16 ツリーマップ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.16 ツリーマップ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0084_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_55.html#Weak-_00e3_0083_009d_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0084_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097-1"></a>
+<h2 class="section">6.16 ツリーマップ</h2>
+
+<dl>
+<dt><a name="index-_003ctree_002dmap_003e"></a><u>Builtin Class:</u> <b>&lt;tree-map&gt;</b></dt>
+<dd><a name="index-tree_002dmap"></a>
+<p>ツリーマップクラス。ツリーマップはキーオブジェクトから値オブジェクトへ
+の写像をあらわすデータ構造です。ツリーマップでは平衡木を使うということ
+以外はハッシュテーブルと同じです。ツリーマップでは挿入と検索の手間は
+O(log n)です。
+</p>
+<p>ハッシュテーブルとはちがい、キーの順序は保存されます。したがってキーの
+順序どおりにトラバースするのは簡単で、キーの最小値/最大値を見つけたり、
+指定したキーにもっとも近いキーを探すのも簡単です。
+</p>
+<p><code>&lt;tree-map&gt;</code>クラスは<code>&lt;sequence&gt;</code>および
+<code>&lt;ordered-dictionary&gt;</code>を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dtree_002dmap"></a><u>Function:</u> <b>make-tree-map</b><i> key=? key&lt;?</i></dt>
+<dd><p><code>&lt;tree-map&gt;</code>オブジェクトを作成して返します。
+<var>key=?</var>、<var>key&lt;?</var>はそれぞれ引
+数を2つ受け取り真偽値を返す手続きであり、要素のキーが渡されます。
+<var>key=?</var>は、2つの引数a, b が同値の場合に真を、それ以外の場合に<code>#f</code>を
+返す手続きです。<var>key&lt;?</var>は、<code>a &lt; b</code>が成り立つ場合に真を、それ以外の
+場合に<code>#f</code>を返す手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dcopy"></a><u>Function:</u> <b>tree-map-copy</b><i> tree-map</i></dt>
+<dd><p><var>tree-map</var>のコピーを作り、それを返します。返された木に対す
+る破壊的操作は、元の木に影響を与えません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dempty_003f"></a><u>Function:</u> <b>tree-map-empty?</b><i> tree-map</i></dt>
+<dd><p><var>tree-map</var>が要素を持たないなら<code>#t</code>を、そうでなければ<code>#f</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dnum_002dentries"></a><u>Function:</u> <b>tree-map-num-entries</b><i> tree-map</i></dt>
+<dd><p><var>tree-map</var>内の要素の個数を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dexists_003f"></a><u>Function:</u> <b>tree-map-exists?</b><i> tree-map key</i></dt>
+<dd><p><var>tree-map</var>にキー<var>key</var>を持つエントリがあれば<code>#t</code>を、
+そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dget"></a><u>Function:</u> <b>tree-map-get</b><i> tree-map key :optional fallback</i></dt>
+<dd><p>キー<var>key</var>を<var>tree-map</var>から探します。見つかれば<var>key</var>に対応する値を返
+します。キーが見つからなかった場合、<var>fallback</var>が与えられていればそれ
+を返し、そうでなければエラーを報告します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dput_0021"></a><u>Function:</u> <b>tree-map-put!</b><i> tree-map key value</i></dt>
+<dd><p>キー<var>key</var>と対応する値<var>value</var>を<var>tree-map</var>に挿入します。もし、<var>key</var>と、
+<var>key=?</var>における意味で同じキーがすでに存在する場合、キーに対応する値
+は新たな値に置き換えられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002ddelete_0021"></a><u>Function:</u> <b>tree-map-delete!</b><i> tree-map key</i></dt>
+<dd><p><var>tree-map</var>からキー<var>key</var>を持つエントリを削除します。<var>key</var>を持つエン
+トリが実際に存在して削除された場合は<code>#t</code>を、エントリが存在しなかっ
+た場合は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dclear_0021"></a><u>Function:</u> <b>tree-map-clear!</b><i> tree-map</i></dt>
+<dd><p><var>tree-map</var>内の全てのエントリを削除します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dupdate_0021"></a><u>Function:</u> <b>tree-map-update!</b><i> tree-map key proc :optional fallback</i></dt>
+<dd><p><code>tree-map-push!</code>等のより一般的なバージョンです。木の探索が一度
+しか行われないことを除いては、基本的に次のように動作します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((tmp (proc (tree-map-get <var>tree-map</var> <var>key</var> <var>fallback</var>))))
+  (tree-map-put! <var>tree-map</var> <var>key</var> tmp)
+  tmp)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dpush_0021"></a><u>Function:</u> <b>tree-map-push!</b><i> tree-map key value</i></dt>
+<dd><p><var>tree-map</var>中の、キー<var>key</var>に対応する値に<var>value</var>をコンスし、
+それを<var>key</var>
+に対する新たな値とします。もし<var>key</var>に対応する値がまだ無ければ、新た
+なエントリが作成され、<code>(list <var>value</var>)</code>がその値となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dpop_0021"></a><u>Function:</u> <b>tree-map-pop!</b><i> tree-map key :optional fallback</i></dt>
+<dd><p><var>tree-map</var>中のキー<var>key</var>に対応する値が存在し、かつペアであった場合
+に、そのエントリの値を元の値のcdrで置き換え、元の値のcarを返します。
+<var>key</var>に対応する値が存在しないかペアではなかった場合、<var>tree-map</var>は
+変更されず、<var>fallback</var>が与えられていればそれが返され、与えられていな
+ければエラーが報告されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dmin"></a><u>Function:</u> <b>tree-map-min</b><i> tree-map</i></dt>
+<dt><a name="index-tree_002dmap_002dmax"></a><u>Function:</u> <b>tree-map-max</b><i> tree-map</i></dt>
+<dd><p>それぞれ、<var>tree-map</var>に含まれる最小および最大のキーを探索し、その
+キーと値のペアを返します。<var>tree-map</var>が空だった場合は<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dpop_002dmin_0021"></a><u>Function:</u> <b>tree-map-pop-min!</b><i> tree-map</i></dt>
+<dt><a name="index-tree_002dmap_002dpop_002dmax_0021"></a><u>Function:</u> <b>tree-map-pop-max!</b><i> tree-map</i></dt>
+<dd><p>それぞれ、<var>tree-map</var>に含まれる最小および最大のキーを探索し、そ
+のエントリを<var>tree-map</var>から削除したうえで、そのキーと値のペアを
+返します。<var>tree-map</var>が空だった場合は<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dfold"></a><u>Function:</u> <b>tree-map-fold</b><i> tree-map proc seed</i></dt>
+<dt><a name="index-tree_002dmap_002dfold_002dright"></a><u>Function:</u> <b>tree-map-fold-right</b><i> tree-map proc seed</i></dt>
+<dd><p><var>tree-map</var>の各要素に対し、<code>(key, value, seed) -&gt; seed</code> の型を持つ
+<var>proc</var>を適用してゆきます。
+<code>tree-map-fold</code>と<code>tree-map-fold-right</code>の違いは
+<code>fold</code>の<code>fold-right</code>違いと同じ、すなわち
+結合の方向にあります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">tree-map-fold:
+  (proc Kn Vn (proc Kn-1 Vn-1 ... (proc K0 V0 seed)))
+
+tree-map-fold-right
+  (proc K0 V0 (proc K1 V1 ... (proc Kn Vn seed)))
+</pre></td></tr></tbody></table>
+
+<p>例:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define tree (alist-&gt;tree-map '((3 . a) (7 . b) (5 . c)) = &lt;))
+
+(tree-map-fold tree list* '())
+   ⇒ (7 b 5 c 3 a)
+(tree-map-fold-right tree list* '())
+   ⇒ (3 a 5 c 7 b)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dmap"></a><u>Function:</u> <b>tree-map-map</b><i> tree-map proc</i></dt>
+<dd><p>Applies <var>proc</var> with each key/value pair in <var>tree-map</var>,
+and collect the results into a list and returns it.  The order
+of results corresponds to the order of keys?that is, the first element
+of the result list is what <var>proc</var> returns with minimum key and its value,
+and the last element of the result list is what <var>proc</var> returns
+with the maximum key and its value.
+(Note: Like <code>map</code>, the order that <var>proc</var> is actually called
+is unspecified; <var>proc</var> is better to be side-effect free.)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dfor_002deach"></a><u>Function:</u> <b>tree-map-for-each</b><i> tree-map proc</i></dt>
+<dd><p>Applies <var>proc</var> with each key/value pair in <var>tree-map</var>,
+in the increasing order of the keys.  <var>proc</var> is called purely
+for side effects; the returned values are discarded.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dfloor"></a><u>Function:</u> <b>tree-map-floor</b><i> tree-map probe :optional fallback-key fallback-value</i></dt>
+<dt><a name="index-tree_002dmap_002dceiling"></a><u>Function:</u> <b>tree-map-ceiling</b><i> tree-map probe :optional fallback-key fallback-value</i></dt>
+<dt><a name="index-tree_002dmap_002dpredecessor"></a><u>Function:</u> <b>tree-map-predecessor</b><i> tree-map probe :optional fallback-key fallback-value</i></dt>
+<dt><a name="index-tree_002dmap_002dsuccessor"></a><u>Function:</u> <b>tree-map-successor</b><i> tree-map probe :optional fallback-key fallback-value</i></dt>
+<dd><p>These procedures search the entry which has the closest key
+to the given <var>probe</var>.  If such an entry is found, returns
+two values, its key and its value.  Otherwise, returns two values,
+<var>fallback-key</var> and <var>fallback-value</var>, both defaulted to <code>#f</code>.
+</p>
+<p>The criteria of “closest” differ slightly among these procedures;
+<code>tree-map-floor</code> finds the maximum key which is no greater than
+<var>probe</var>; <code>tree-map-ceiling</code> finds the minimum key which is
+no less than <var>probe</var>; <code>tree-map-predecessor</code> finds the
+maximum key which is strictly less than <var>probe</var>;
+and <code>tree-map-successor</code> finds the minimum key which
+is strictly greater than <var>probe</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dfloor_002dkey"></a><u>Function:</u> <b>tree-map-floor-key</b><i> tree-map probe <var>optional</var> fallback-key</i></dt>
+<dt><a name="index-tree_002dmap_002dceiling_002dkey"></a><u>Function:</u> <b>tree-map-ceiling-key</b><i> tree-map probe <var>optional</var> fallback-key</i></dt>
+<dt><a name="index-tree_002dmap_002dpredecessor_002dkey"></a><u>Function:</u> <b>tree-map-predecessor-key</b><i> tree-map probe <var>optional</var> fallback-key</i></dt>
+<dt><a name="index-tree_002dmap_002dsuccessor_002dkey"></a><u>Function:</u> <b>tree-map-successor-key</b><i> tree-map probe <var>optional</var> fallback-key</i></dt>
+<dd><p>Like <code>tree-map-floor</code> etc., but only returns the key of
+the found entry (or <var>fallback-key</var> if there’s no entry which satisfies
+the criteria).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dfloor_002dvalue"></a><u>Function:</u> <b>tree-map-floor-value</b><i> tree-map probe <var>optional</var> fallback-value</i></dt>
+<dt><a name="index-tree_002dmap_002dceiling_002dvalue"></a><u>Function:</u> <b>tree-map-ceiling-value</b><i> tree-map probe <var>optional</var> fallback-value</i></dt>
+<dt><a name="index-tree_002dmap_002dpredecessor_002dvalue"></a><u>Function:</u> <b>tree-map-predecessor-value</b><i> tree-map probe <var>optional</var> fallback-value</i></dt>
+<dt><a name="index-tree_002dmap_002dsuccessor_002dvalue"></a><u>Function:</u> <b>tree-map-successor-value</b><i> tree-map probe <var>optional</var> fallback-value</i></dt>
+<dd><p>Like <code>tree-map-floor</code> etc., but only returns the value of
+the found entry (or <var>fallback-value</var> if there’s no entry which satisfies
+the criteria).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002dkeys"></a><u>Function:</u> <b>tree-map-keys</b><i> tree-map</i></dt>
+<dt><a name="index-tree_002dmap_002dvalues"></a><u>Function:</u> <b>tree-map-values</b><i> tree-map</i></dt>
+<dd><p>それぞれ、<var>tree-map</var>内の全てのキーまたは値をリストにして返しま
+す。返されるリストの要素はキーの昇順に並んでいます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tree_002dmap_002d_003ealist"></a><u>Function:</u> <b>tree-map-&gt;alist</b><i> tree-map</i></dt>
+<dd><p><var>tree-map</var>含まれる要素を連想リストにして返します。返される連
+想リストのキーは昇順に並んでいます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-alist_002d_003etree_002dmap"></a><u>Function:</u> <b>alist-&gt;tree-map</b><i> alist key=? key&lt;?</i></dt>
+<dd><p><var>key=?</var>, <var>key&lt;?</var> によって新たなtreemapを作成し、
+連想リスト<var>alist</var>に含まれる要素を追加した上で返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_53.html#g_t_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a5_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_55.html#Weak-_00e3_0083_009d_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

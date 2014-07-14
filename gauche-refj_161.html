@@ -1,0 +1,707 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.35 sxml.sxpath - SXMLクエリ言語</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.35 sxml.sxpath - SXMLクエリ言語">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.35 sxml.sxpath - SXMLクエリ言語">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_160.html#SSAX_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00b6-_002d-XML_00e3_0081_008b_00e3_0082_0089SXML_00e3_0081_00b8" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXPath_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00a8_00e3_0082_00a2_00e3_0083_0097_00e3_0083_00aa_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="sxml_002esxpath-_002d-SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e"></a>
+<h2 class="section">11.35 <code>sxml.sxpath</code> - SXMLクエリ言語</h2>
+
+<dl>
+<dt><a name="index-sxml_002esxpath"></a><u>Module:</u> <b>sxml.sxpath</b></dt>
+<dd><a name="index-sxml_002esxpath-1"></a>
+<p>SXPathは、XML Information set (Infoset)のインスタンスのS式フォームである
+SXMLのためのクエリ言語です。
+</p>
+<p>これは最初にOleg Kiselyovによって書かれ、Dmitry LizorkinとKirill Lisovsky
+によって改良されました。
+このモジュールにはまた、Dmitry LizorkinとKirill LisovskyによりSXPathのために
+書かれたたくさんの手続きが盛り込まれています。
+</p>
+<p>現在のバージョンは、sxpathlib.scm v3.915、sxpath.scm v1.1、sxpath-ext.scm v1.911を
+ベースにしています。
+</p></dd></dl>
+
+<p>このマニュアルは、そのほとんどがオリジナルのソースファイルのコメントより
+導出されています。
+</p>
+<p>このモジュールは3つのレイヤから構成されます。
+</p><ol>
+<li>
+SXMLツリーへのアクセスやその変換の手段を提供する基本的なコンバータや
+アプリケータ(適用子)。
+</li><li>
+省略形のSXPathを取り、与えられたノードセットから指定されたパスを満足する
+ノードセットを選択するScheme関数を返す、高レベルなクエリ言語コンパイラ。
+</li><li>
+W3CのXPathコア関数ライブラリのSXML版を実装する拡張ライブラリ。
+</li></ol>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#SXPath_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00a8_00e3_0082_00a2_00e3_0083_0097_00e3_0083_00aa_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00bf">11.35.1 SXPathの基本的なコンバータとアプリケータ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SXPath_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e">11.35.2 SXPathクエリ言語</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SXPath_00e3_0081_00ae_00e6_008b_00a1_00e5_00bc_00b5">11.35.3 SXPathの拡張</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="SXPath_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00a8_00e3_0082_00a2_00e3_0083_0097_00e3_0083_00aa_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00bf"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXPath_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXPath_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00a8_00e3_0082_00a2_00e3_0083_0097_00e3_0083_00aa_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00bf-1"></a>
+<h3 class="subsection">11.35.1 SXPathの基本的なコンバータとアプリケータ</h3>
+
+<p>コンバータは、以下を満たす関数です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  type Converter = Node|Nodeset -&gt; Nodeset
+</pre></td></tr></tbody></table>
+<p>コンバータは、述語としての役割を担うこともあります。
+その場合、コンバータが、ノードやノードセットに適用され、空ではないノードセットを
+返す場合、述語としてのコンバータは満足したものとみなされます。
+このファイルを通して、nilノードセットは失敗を表す<code>#f</code>と等価です。
+</p>
+<dl>
+<dt><a name="index-nodeset_003f"></a><u>Function:</u> <b>nodeset?</b><i> x</i></dt>
+<dd><p>与えられたオブジェクトがノードセットならば、<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-as_002dnodeset"></a><u>Function:</u> <b>as-nodeset</b><i> x</i></dt>
+<dd><p><var>x</var>がノードセットならば、それをそのまま返し、そうでなければそれを
+リストでラップして返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aelement_003f"></a><u>Function:</u> <b>sxml:element?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がSXMLの要素であれば<var>#t</var>を返し、そうでなければ<var>#f</var>を
+返す述語です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ntype_002dnames_003f_003f"></a><u>Function:</u> <b>ntype-names??</b><i> crit</i></dt>
+<dd><p>関数<code>ntype-names??</code>は、判定基準として受け付け可能なノード名のリストを取り、
+関数を返します。この関数は、ノードに適用された際、そのノード名が判定基準リストに
+含まれていれば<code>#t</code>を、含まれていなければ<code>#f</code>を返す関数です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> ntype-names?? :: ListOfNames -&gt; Node -&gt; Boolean
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ntype_003f_003f"></a><u>Function:</u> <b>ntype??</b><i> crit</i></dt>
+<dd><p>関数<code>ntype??</code>は、型に関する判定基準を取り、関数を返します。
+この関数は、ノードに適用された際、そのノードがそのテストを満足するかを
+返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ntype?? :: Crit -&gt; Node -&gt; Boolean
+</pre></td></tr></tbody></table>
+
+<p>判定基準<var>crit</var>は、以下のシンボルのうちの1つです。
+</p><dl compact="compact">
+<dt> <code>id</code></dt>
+<dd><p>そのノードが正しい名前(id)を持っているかをテストします。
+</p></dd>
+<dt> <code>@</code></dt>
+<dd><p>そのノードが<var>attributes-list</var>であるかをテストします。
+</p></dd>
+<dt> <code>*</code></dt>
+<dd><p>そのノードが<var>Element</var>であるかをテストします。
+</p></dd>
+<dt> <code>*text*</code></dt>
+<dd><p>そのノードがテキストノードであるかをテストします。
+</p></dd>
+<dt> <code>*data*</code></dt>
+<dd><p>そのノードがデータノード(テキスト、数値、真偽値などで、ペアではない)であるか
+をテストします。
+</p></dd>
+<dt> <code>*PI*</code></dt>
+<dd><p>そのノードが<code>PI</code>ノードであるかをテストします。
+</p></dd>
+<dt> <code>*COMMENT*</code></dt>
+<dd><p>そのノードが<code>COMMENT</code>ノードであるかをテストします。
+</p></dd>
+<dt> <code>*ENTITY*</code></dt>
+<dd><p>そのノードが<code>ENTITY</code>ノードであるかをテストします。
+</p></dd>
+<dt> <code>*any*</code></dt>
+<dd><p>どんなタイプのノードに対しても<code>#t</code>を返します。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-ntype_002dnamespace_002did_003f_003f"></a><u>Function:</u> <b>ntype-namespace-id??</b><i> ns-id</i></dt>
+<dd><p>この関数は、名前空間IDを取り、述語<code>Node -&gt; Boolean</code>を
+返します。この述語はまさにその名前空間IDを持つノードに対しては
+<code>#t</code>を返します。<var>ns-id</var>は文字列です。
+<code>(ntype-namespace-id?? #f)</code>は、完全修飾されていない名前を
+持つノードに対して<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ainvert"></a><u>Function:</u> <b>sxml:invert</b><i> pred</i></dt>
+<dd><p>この関数は、述語を取り、それを反対にして返します。
+与えられた述語が<code>#f</code>や’<code>()</code>を返す場合、反対にされたものは
+与えられたノード(<code>#t</code>)を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002deq_003f"></a><u>Function:</u> <b>node-eq?</b><i> other</i></dt>
+<dt><a name="index-node_002dequal_003f"></a><u>Function:</u> <b>node-equal?</b><i> other</i></dt>
+<dd><p>等価な述語としてのコンパータにカリー化します。すなわち、
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  ((node-eq? a) b)    ≡ (eq? a b)
+  ((node-equal? a) b) ≡ (equal? a b)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-node_002dpos"></a><u>Function:</u> <b>node-pos</b><i> n</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-pos:: N -&gt; Nodeset -&gt; Nodeset, or
+ node-pos:: N -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>ノードセットの<var>N</var>番目の要素を選択し、1つの要素を持つノードセットを返します。
+N番目の要素が存在しなければ、空のノードセットを返します。
+<code>((node-pos 1) Nodeset)</code>は、ノードセットの先頭ノードがあればそれを選択します。
+<code>((node-pos 2) Nodeset)</code>は、2番目のノードがあればそれを選択します。
+<var>N</var>は負の数でも構いません。その場合、ノードはリストの末尾から数えられます。
+<code>((node-pos -1) Nodeset)</code>は、空ではないノードセットの最後のノードを選択します。
+<code>((node-pos -2) Nodeset)</code>は、最後から2番目のノードがあればそれを選択します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003afilter"></a><u>Function:</u> <b>sxml:filter</b><i> pred?</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> filter:: Converter -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>フィルタリングを行う、フィルタアプリケータです。
+引数のコンバータは、<code>#f</code>あるいはnilとなることが失敗を意味する述語と
+みなされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-take_002duntil"></a><u>Function:</u> <b>take-until</b><i> pred?</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> take-until:: Converter -&gt; Converter, or
+ take-until:: Pred -&gt; Node|Nodeset -&gt; Nodeset
+</pre></td></tr></tbody></table>
+
+<p>述語としてのコンバータとノードセットが与えられると、
+ノードセットの各要素に述語を適用し、
+述語が<var>#f</var>あるいはnil以外を返すと、
+(その述語が失敗した)その時点までに処理された要素を返します。
+<code>take-until</code>は、上のフィルタのバリエーションの1つです。
+<code>take-until</code>は、その述語を満足する最初の要素(それ自体は含まない)まで、
+順序付けられた入力のセットの要素をパスします。
+<code>((take-until (not pred)) nset)</code>により返されるノードセットは、
+<code>((filter pred) nset)</code>により返されるノードセットのサブセット
+? 具体的には接頭辞 ?になります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-take_002dafter"></a><u>Function:</u> <b>take-after</b><i> pred?</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">take-after:: Converter -&gt; Converter, or
+take-after:: Pred -&gt; Node|Nodeset -&gt; Nodeset
+</pre></td></tr></tbody></table>
+
+<p>述語としてのコンバータとノードセットを与えると、
+述語をノードセットの各要素に適用し、
+述語が<code>#f</code>かnil以外を返すと、
+まだ述語が適用されていない要素を返します。
+つまり、述語を満足する最初の要素の後に続く要素を返します。
+<code>take-after</code>と<code>take-until</code>を一緒に使うと、
+入力のノードセットを3つのパート:
+述語を満足する最初の要素、その要素の前の部分、その要素の後の部分に
+分けます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-map_002dunion"></a><u>Function:</u> <b>map-union</b><i> proc lst</i></dt>
+<dd><p>procをlstの各要素に適用し、結果のリストを返します。
+procがノードセットを返す場合、それを結果につなぎ合わせます。
+</p>
+<p>別の観点から見ると、<code>map-union</code>はConverter-&gt;Converter関数で、
+結合を行いたいコンテキストでの引数としてのコンバータに
+位置します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002dreverse"></a><u>Function:</u> <b>node-reverse</b><i> node-or-nodeset</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">node-reverse :: Converter, or
+node-reverse:: Node|Nodeset -&gt; Nodeset
+</pre></td></tr></tbody></table>
+
+<p>ノードセットでのノードの順番を逆順にします。
+この基本的なコンバータは、逆順のドキュメントオーダーを実装するために
+必要です。(XPath勧告を参照して下さい。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002dtrace"></a><u>Function:</u> <b>node-trace</b><i> title</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-trace:: String -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p><code>(node-trace title)</code>は、それ自身を返すコンバータです。
+また、自身が適用されるノードやノードセットを、’title’という
+プリフィックスを付けてプリントします。
+このコンバータは、デバッグの際にとても便利です。
+</p></dd></dl>
+
+<p>コンバータの組み合わせに続くものは、コンバータを一変させる、
+あるいはコンバータのシーケンスを1つの強力なコンバータにつなぎ合わせる
+高階関数です。そのゴールは、XPathのロケーションパスに対応する
+コンバータとなることです。
+</p>
+<p>別の観点から見ると、コンバータは、コンバータ群の適用の固定され
+名前の付いた<em>パターン</em>とみなせます。
+以下に挙げるのは、XPathのロケーションパスの仕様を実装する
+そのようなパターンの完全なセットです。
+結局のところ、これら全てのコンビネータはいくつかの基本的なブロック、
+通常の関数的なコンポジション、map-unionとfilterアプリケータ、
+ノードセットユニオンなどから構築することができます
+</p>
+<dl>
+<dt><a name="index-select_002dkids"></a><u>Function:</u> <b>select-kids</b><i> test-pred?</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">select-kids:: Pred -&gt; Node -&gt; Nodeset
+</pre></td></tr></tbody></table>
+<p>ノードを与えると、述語(実際はコンバータ)を満足するその子要素の
+(順序付けられた)サブセットを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">select-kids:: Pred -&gt; Nodeset -&gt; Nodeset
+</pre></td></tr></tbody></table>
+<p>上と同じですが、ノードセットの全てのノードの子要素から選択します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002dself"></a><u>Function:</u> <b>node-self</b><i> pred</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-self:: Pred -&gt; Node -&gt; Nodeset, or
+ node-self:: Converter -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>select-kidsに似ていますが、自身をその子要素に適用するのでは
+なく、ノードそれ自身に適用します。
+結果のノードセットは、1つのコンポーネントを含むか、
+空(ノードが述語を満足しない場合)になります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002djoin"></a><u>Function:</u> <b>node-join</b><i> . selectors</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-join:: [LocPath] -&gt; Node|Nodeset -&gt; Nodeset, or
+ node-join:: [Converter] -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>上のタイトルコメントで説明されるようなロケーションステップ
+あるいはロケーションパスのシーケンスをつなぎ合わせます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002dreduce"></a><u>Function:</u> <b>node-reduce</b><i> . converters</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-reduce:: [LocPath] -&gt; Node|Nodeset -&gt; Nodeset, or
+ node-reduce:: [Converter] -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>コンバータの通常の関数的なコンポジションです。
+見方を変えると、<code>((apply node-reduce converters) nodeset)</code>は
+<code>(foldl apply nodeset converters)</code>と等価です。
+すなわち、コンバータのリストをノードセットをseedとして畳み込みや分解
+を行うようなものです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002dor"></a><u>Function:</u> <b>node-or</b><i> . converters</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-or:: [Converter] -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>このコンビネータは、全てのコンバータを与えられたノードに適用し、
+それらの結果のユニオンを作ります。
+このコンビネータは、XPathのロケーションパスでの’<code>|</code>’オペレーション
+であるユニオンに対応します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-node_002dclosure"></a><u>Function:</u> <b>node-closure</b><i> test-pred?</i></dt>
+<dd>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> node-closure:: Converter -&gt; Converter
+</pre></td></tr></tbody></table>
+
+<p>述語としてのコンバータを満足するノードの全ての<em>子孫</em>を選択します。
+このコンビネータは<code>select-kids</code>に似ていますが、孫要素やその
+子要素達にも適用を行います。
+このコンビネータは、XPathの軸である“<code>descendant::</code>”を実装します。
+概念的には、このコンビネータは以下のように表現することができます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> (define (node-closure f)
+      (node-or
+        (select-kids f)
+	 (node-reduce (select-kids (ntype?? '*)) (node-closure f))))
+</pre></td></tr></tbody></table>
+
+<p>この定義は、字面の通り、フィックスポイントのような何かで、
+永久に実行し続けます。しかし、いつかは<code>(select-kids (ntype?? '*))</code>
+が空のノードセットを返すことは明白です。その時点では、以降の
+イテレーションはその結果に影響を及ぼさず停止されることができます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SXPath_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXPath_00e3_0081_00ae_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0090_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00a8_00e3_0082_00a2_00e3_0083_0097_00e3_0083_00aa_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXPath_00e3_0081_00ae_00e6_008b_00a1_00e5_00bc_00b5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXPath_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e-1"></a>
+<h3 class="subsection">11.35.2 SXPathクエリ言語</h3>
+
+<dl>
+<dt><a name="index-sxpath"></a><u>Function:</u> <b>sxpath</b><i> abbrpath . ns-binding</i></dt>
+<dd><p>Evaluates an abbreviated SXPath
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"> sxpath:: AbbrPath -&gt; Converter, or
+ sxpath:: AbbrPath -&gt; Node|Nodeset -&gt; Nodeset
+</pre></td></tr></tbody></table>
+
+<p><var>AbbrPath</var>はリストです。これは、以下の書き換えルールに従って
+完全なSXPathに変換されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> (sxpath '()) -&gt; (node-join)
+ (sxpath '(path-component ...)) -&gt;
+                (node-join (sxpath1 path-component) (sxpath '(...)))
+ (sxpath1 '//) -&gt; (node-or
+                     (node-self (ntype?? '*any*))
+                     (node-closure (ntype?? '*any*)))
+ (sxpath1 '(equal? x)) -&gt; (select-kids (node-equal? x))
+ (sxpath1 '(eq? x))    -&gt; (select-kids (node-eq? x))
+ (sxpath1 '(or@ ...))  -&gt; (select-kids (ntype-names??
+                                          (cdr '(or@ ...))))
+ (sxpath1 '(not@ ...)) -&gt; (select-kids (sxml:invert
+                                         (ntype-names??
+                                          (cdr '(not@ ...)))))
+ (sxpath1 '(ns-id:* x)) -&gt; (select-kids
+                                      (ntype-namespace-id?? x))
+ (sxpath1 ?symbol)     -&gt; (select-kids (ntype?? ?symbol))
+ (sxpath1 ?string)     -&gt; (txpath ?string)
+ (sxpath1 procedure)   -&gt; procedure
+ (sxpath1 '(?symbol ...)) -&gt; (sxpath1 '((?symbol) ...))
+ (sxpath1 '(path reducer ...)) -&gt;
+                (node-reduce (sxpath path) (sxpathr reducer) ...)
+ (sxpathr number)      -&gt; (node-pos number)
+ (sxpathr path-filter) -&gt; (filter (sxpath path-filter))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p><code>sxpath</code>には、いくつかのラッパ関数があります。
+</p>
+<dl>
+<dt><a name="index-if_002dsxpath"></a><u>Function:</u> <b>if-sxpath</b><i> path</i></dt>
+<dd><p><code>sxpath</code>は、常にリストを返し、それはSchemeでは<code>#t</code>となります。
+<code>if-sxpath</code>は、空リストの代わりに<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-if_002dcar_002dsxpath"></a><u>Function:</u> <b>if-car-sxpath</b><i> path</i></dt>
+<dd><p>もし存在すれば、最初に見つかったノードを返します。
+そうでなければ、<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-car_002dsxpath"></a><u>Function:</u> <b>car-sxpath</b><i> path</i></dt>
+<dd><p>もし存在すれば、最初に見つかったノードを返します。
+そうでなければ、空リストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aid_002dalist"></a><u>Function:</u> <b>sxml:id-alist</b><i> node . lpaths</i></dt>
+<dd><p>与えられたノードについて、<code>(<var>ID_value</var> . <var>element</var>)</code>の
+ペアのリストをインデックスとして構築します。
+<var>lpaths</var>は、タイプIDの属性のロケーションパスです。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SXPath_00e3_0081_00ae_00e6_008b_00a1_00e5_00bc_00b5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXPath_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_162.html#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXPath_00e3_0081_00ae_00e6_008b_00a1_00e5_00bc_00b5-1"></a>
+<h3 class="subsection">11.35.3 SXPathの拡張</h3>
+
+<p>W3CのXPathコア関数ライブラリのSXML版です。
+</p>
+<dl>
+<dt><a name="index-sxml_003astring"></a><u>Function:</u> <b>sxml:string</b><i> object</i></dt>
+<dd><p>XPathの<code>string</code>関数(XPath勧告のセクション4.2)に対応するものです。
+与えられたオブジェクトを文字列に変換します。
+注意:
+</p><ol>
+<li>
+ノードセットを変換する時は、ドキュメントオーダーは保持されません。
+</li><li>
+<var>number-&gt;string</var>関数は、その結果をXPath勧告の仕様とは少し違った
+フォームで返します。
+</li></ol>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aboolean"></a><u>Function:</u> <b>sxml:boolean</b><i> object</i></dt>
+<dd><p>XPathの<code>boolean</code>関数(XPath勧告のセクション4.3)に対応するものです。
+引数を真偽値に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anumber"></a><u>Function:</u> <b>sxml:number</b><i> obj</i></dt>
+<dd><p>XPathの<code>number</code>関数(XPath勧告のセクション4.4)に対応するものです。
+引数を数値に変換します。
+注意:
+</p><ol>
+<li>
+引数は(まだ?)オプションではありません。
+</li><li>
+<code>string-&gt;number</code>の変換は、IEEE 754の四捨五入ではありません。
+</li><li>
+NaNは、0として表現されます。
+</li></ol>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003astring_002dvalue"></a><u>Function:</u> <b>sxml:string-value</b><i> node</i></dt>
+<dd><p>XPath勧告のセクション5.1 - 5.7にしたがって、与えられたノードの
+文字列値を返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-sxml_003anode_003f"></a><u>Function:</u> <b>sxml:node?</b><i> node</i></dt>
+<dd><p>XPathの仕様2.3にしたがい、このテストはいかなるXPathノードに
+対しても真を返します。
+SXMLの補助的なリストや属性のリストは除外されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr_002dlist"></a><u>Function:</u> <b>sxml:attr-list</b><i> obj</i></dt>
+<dd><p>与えられたSXMLノードの属性のリストを返します。
+与えられたノードが要素ではないか、属性のリストを持っていない場合は、
+空リストが返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aid"></a><u>Function:</u> <b>sxml:id</b><i> id-index</i></dt>
+<dd><p>SXML要素を、そのユニークなIDによって選択します(XPath勧告 4.1)。
+<var>object</var>を引数に取るコンバータを返します。
+この<var>object</var>は、ノードセットか、’<code>string</code>’関数により
+文字列に変換できるデータタイプです。
+</p>
+<p><var>id-index</var>は、<code>( (id-value . element) (id-value . element) ... )</code>です。
+</p>
+<p>このインデックスは、要素をそのユニークなIDによって選択するために使われます。
+</p></dd></dl>
+
+<p>XPathオブジェクトの比較子:
+</p>
+<dl>
+<dt><a name="index-sxml_003aequality_002dcmp"></a><u>Function:</u> <b>sxml:equality-cmp</b><i> bool-op number-op string-op</i></dt>
+<dd><p>XPathの等値比較: <code>=</code>、<code>!=</code>のためのヘルパです。
+<var>bool-op</var>、<var>number-op</var>、<var>’string-op</var>はそれぞれ、
+真偽値、数値、文字列のペアのための比較子です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aequal_003f"></a><u>Function:</u> <b>sxml:equal?</b><i> a b</i></dt>
+<dt><a name="index-sxml_003anot_002dequal_003f"></a><u>Function:</u> <b>sxml:not-equal?</b><i> a b</i></dt>
+<dd><p>XPathの等値比較: <code>=</code>、<code>!=</code>に対応するもので、
+デフォルトの等値テストを使います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003arelational_002dcmp"></a><u>Function:</u> <b>sxml:relational-cmp</b><i> op</i></dt>
+<dd><p>2つのXPathオブジェクトの関係比較( <code>&lt;</code>、<code>&gt;</code>、<code>&lt;=</code>、<code>&gt;=</code> )
+を作ります。
+<code>op</code>は、比較を行う手続き: <code>&lt;</code>、<code>&gt;</code>、<code>&lt;=</code>、<code>&gt;=</code>です。
+</p></dd></dl>
+
+<p>XPathの軸。
+結果のノードセットにおける順序は維持されます。
+</p>
+<dl>
+<dt><a name="index-sxml_003aattribute"></a><u>Function:</u> <b>sxml:attribute</b><i> test-pred?</i></dt>
+<dd><p>属性の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003achild"></a><u>Function:</u> <b>sxml:child</b><i> test-pred?</i></dt>
+<dd><p>子要素の軸です。
+この関数は、’<code>select-kids</code>’に似ていますが、処理命令やコメント、
+実体ノードについては、空の子リストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aparent"></a><u>Function:</u> <b>sxml:parent</b><i> test-pred?</i></dt>
+<dd><p>親の軸です。
+</p>
+<p>述語を与えると、<code>RootNode -&gt; Converter</code>関数を返します。
+この関数は、rootnodeに適用されると、<code>node -&gt; parent</code>と
+なります。
+</p>
+<p>このようなコンバータは、<code> ((sxml:parent test-pred) rootnode) </code>
+を使って構築され、それが適用されたノードの親を帰します。
+ノードセットに適用された場合、そのノードセットにあるノードの
+親のリストを返します。
+rootnodeはSXMLツリー全体のルートノードである必要はありません。
+興味の対象となるブランチ(枝)のルートノードでも構いません。
+<code>parent::</code>軸は、どんなSXMLノードにも使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aancestor"></a><u>Function:</u> <b>sxml:ancestor</b><i> test-pred?</i></dt>
+<dd><p>祖先の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aancestor_002dor_002dself"></a><u>Function:</u> <b>sxml:ancestor-or-self</b><i> test-pred?</i></dt>
+<dd><p>祖先と自分の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003adescendant"></a><u>Function:</u> <b>sxml:descendant</b><i> test-pred?</i></dt>
+<dd><p>子孫の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003adescendant_002dor_002dself"></a><u>Function:</u> <b>sxml:descendant-or-self</b><i> test-pred?</i></dt>
+<dd><p>子孫と自分の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003afollowing"></a><u>Function:</u> <b>sxml:following</b><i> test-pred?</i></dt>
+<dd><p>後続するものの軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003afollowing_002dsibling"></a><u>Function:</u> <b>sxml:following-sibling</b><i> test-pred?</i></dt>
+<dd><p>後続する兄弟の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anamespace"></a><u>Function:</u> <b>sxml:namespace</b><i> test-pred?</i></dt>
+<dd><p>名前空間の軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003apreceding"></a><u>Function:</u> <b>sxml:preceding</b><i> test-pred?</i></dt>
+<dd><p>先行するものの軸です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003apreceding_002dsibling"></a><u>Function:</u> <b>sxml:preceding-sibling</b><i> test-pred?</i></dt>
+<dd><p>先行する兄弟の軸です。
+</p></dd></dl>
+
+<p>ポピュラーなショートカット:
+</p>
+<dl>
+<dt><a name="index-sxml_003achild_002dnodes"></a><u>Function:</u> <b>sxml:child-nodes</b><i> nodeset</i></dt>
+<dd><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((sxml:child sxml:node?) nodeset)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003achild_002delements"></a><u>Function:</u> <b>sxml:child-elements</b><i> nodeset</i></dt>
+<dd><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((select-kids sxml:element?) nodeset)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXPath_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_162.html#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0082_00af_00e3_0082_00a8_00e3_0083_00aa_00e8_00a8_0080_00e8_00aa_009e" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

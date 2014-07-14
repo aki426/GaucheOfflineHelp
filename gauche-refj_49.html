@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.11 文字集合</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.11 文字集合">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.11 文字集合">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_49.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088-1"></a>
+<h2 class="section">6.11 文字集合</h2>
+
+<dl>
+<dt><a name="index-_003cchar_002dset_003e"></a><u>Builtin Class:</u> <b>&lt;char-set&gt;</b></dt>
+<dd><a name="index-char_002dset"></a>
+<p>文字の集合を取り扱う、文字集合(キャラクタセット)のクラスです。
+Gaucheは文字集合オブジェクトのサポートと、
+ある文字がその集合に属するかどうかを調べる手続きを言語組み込みで持っています。
+</p>
+<p>文字集合に関する他の操作、例えば集合演算などは、SRFI-14モジュール
+(<a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"><code>srfi-14</code> - 文字集合ライブラリ</a>参照) で提供されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_0023_005bchar_002dset_002dspec_005d"></a><u>Reader Syntax:</u> <b><code>#[<i>char-set-spec</i>]</code></b></dt>
+<dd><p>この構文で、リテラル文字集合を記述することができます。
+<i>char-set-spec</i>には集合に含める文字を列挙します。
+次の特殊なシーケンスを含めることができます。
+</p><dl compact="compact">
+<dt> <code><var>x</var>-<var>y</var></code></dt>
+<dd><p>文字<var>x</var>と文字<code>y</code>の間の文字全て。<var>x</var>と<var>y</var>も含みます。
+<var>x</var>は<var>y</var>よりも内部文字コードで比較して小さくなければなりません。
+</p></dd>
+<dt> <code>^</code></dt>
+<dd><p>カレットが<i>char-set-spec</i>の最初に来た場合、以降に示される文字集合の
+補集合がこの文字集合となります。
+</p></dd>
+<dt> <code>\x<var>NN</var></code></dt>
+<dd><p>内部文字コード<var>NN</var>(16進数表記)の文字。
+</p></dd>
+<dt> <code>\u<var>NNNN</var></code></dt>
+<dd><p>UnicodeのUCS-2で<var>NNNN</var>(16進数表記4桁)の文字。
+</p></dd>
+<dt> <code>\U<var>NNNNNNNN</var></code></dt>
+<dd><p>UnicodeのUCS-4で<var>NNNNNNNN</var>(16進数表記8桁)の文字。
+</p></dd>
+<dt> <code>\s</code></dt>
+<dd><p>空白文字。
+</p></dd>
+<dt> <code>\S</code></dt>
+<dd><p>空白でない文字。(<code>\s</code>の補集合)
+</p></dd>
+<dt> <code>\d</code></dt>
+<dd><p>10進数の数字
+</p></dd>
+<dt> <code>\D</code></dt>
+<dd><p><code>\d</code>の補集合
+</p></dd>
+<dt> <code>\w</code></dt>
+<dd><p>単語を構成する文字の集合(アルファベット、数字、アンダースコア)
+</p></dd>
+<dt> <code>\W</code></dt>
+<dd><p><code>\W</code>の補集合
+</p></dd>
+<dt> <code>\\</code></dt>
+<dd><p>バックスラッシュ文字
+</p></dd>
+<dt> <code>\-</code></dt>
+<dd><p>マイナス文字
+</p></dd>
+<dt> <code>\^</code></dt>
+<dd><p>カレット文字
+</p></dd>
+<dt> <code>[:alnum:] …</code></dt>
+<dd><p>POSIX流文字集合表記。以下の文字集合名が認識されます:
+<code>alnum</code>, <code>alpha</code>, <code>blank</code>, <code>cntrl</code>,
+<code>digit</code>, <code>graph</code>, <code>lower</code>, <code>print</code>, <code>punct</code>,
+<code>space</code>, <code>upper</code>, <code>xdigit</code>。
+</p></dd>
+</dl>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#[aeiou]     ; <span class="roman">母音文字'a', 'e', 'i', 'o', 'u'の集合</span>
+#[a-zA-Z]    ; <span class="roman">アルファベット</span>
+#[[:alpha:]] ; <span class="roman">アルファベット (POSIX表記)</span>
+#[\x0d\x0a]  ; <span class="roman">改行とリターン</span>
+#[\\\-]      ; <span class="roman">バックスラッシュとマイナス文字</span>
+#[]          ; <span class="roman">空の文字集合</span>
+#[ぁ-ん]     ; <span class="roman">平仮名の集合</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-char_002dset_003f"></a><u>Function:</u> <b>char-set?</b><i> obj</i></dt>
+<dd><p>[SRFI-14]
+<var>obj</var>が文字集合であれば真の値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002dset_002dcontains_003f"></a><u>Function:</u> <b>char-set-contains?</b><i> char-set char</i></dt>
+<dd><p>[SRFI-14]
+文字集合<var>char-set</var>が文字<var>char</var>を含んでいれば真の値を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(char-set-contains? #[a-z] #\y) ⇒ #t
+(char-set-contains? #[a-z] #\3) ⇒ #f
+
+(char-set-contains? #[^ABC] #\A) ⇒ #f
+(char-set-contains? #[^ABC] #\D) ⇒ #t
+
+(char-set-contains? #[あ-お] #\う) ⇒ #t
+(char-set-contains? #[あ-お] #\ぷ) ⇒ #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-char_002dset-1"></a><u>Function:</u> <b>char-set</b><i> char …</i></dt>
+<dd><p>[SRFI-14]
+文字<var>char</var> … からなる文字集合を作成して返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(char-set #\a #\b #\c)   ⇒ #[a-c]
+(char-set #\あ #\い #\う) ⇒ #[あいう]
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-char_002dset_002dcopy"></a><u>Function:</u> <b>char-set-copy</b><i> char-set</i></dt>
+<dd><p>[SRFI-14]
+<var>char-set</var>のコピーを作って返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002dset_002dcomplement"></a><u>Function:</u> <b>char-set-complement</b><i> char-set</i></dt>
+<dt><a name="index-char_002dset_002dcomplement_0021"></a><u>Function:</u> <b>char-set-complement!</b><i> char-set</i></dt>
+<dd><p>[SRFI-14]
+<var>char-set</var>の補集合を返します。上の手続きは常に新たな集合を作って返しますが、
+下の手続きは引数を変更して返す可能性があります。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

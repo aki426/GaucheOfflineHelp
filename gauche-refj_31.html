@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.10 定義</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.10 定義">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.10 定義">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_00ae_009a_00e7_00be_00a9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_30.html#g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00ae_009a_00e7_00be_00a9-1"></a>
+<h2 class="section">4.10 定義</h2>
+
+<dl>
+<dt><a name="index-define"></a><u>Special Form:</u> <b>define</b><i> variable expression</i></dt>
+<dt><a name="index-define-1"></a><u>Special Form:</u> <b>define</b><i> (variable . formals) body …</i></dt>
+<dd><p>[R5RS]
+この形式はトップレベル (ローカルな束縛が無い状態) とローカルスコープがある状態とで
+別の意味を持ちます。
+</p>
+<p>トップレベルでは、この形式は変数<var>variable</var>に対するグローバルな束縛を定義します。
+最初の形式では、<var>expression</var>が評価され、その結果が変数<var>variable</var>の値となります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define x (+ 1 2))
+x ⇒ 3
+(define y (lambda (a) (* a 2)))
+(y 8) ⇒ 16
+</pre></td></tr></tbody></table>
+
+<p>2番目の形式は手続きを定義するための構文的な修飾で、以下の形式と同じです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (<var>name</var> . <var>args</var>) <var>body</var> …)
+  ≡ (define <var>name</var> (lambda <var>args</var> <var>body</var> …))
+</pre></td></tr></tbody></table>
+
+<p>このフォームがローカルスコープの中に現われた場合、ローカル変数の束縛となります。
+</p>
+<p><code>begin</code>は新しいスコープを作らないことに注意してください(<a indepth="true" href="gauche-refj_28.html#g_t_00e9_00a0_0086_00e6_00ac_00a1_00e5_00ae_009f_00e8_00a1_008c">順次実行</a>参照)。
+<code>begin</code>の中に現われる<code>define</code>は、あたかも<code>begin</code>とそれを囲む
+括弧が無いかのように振舞います。すなわち、以下の2つの形式は等価です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((x 0))
+  (begin
+    (define (foo y) (+ x y)))
+  (foo 3))
+ ≡
+(let ((x 0))
+  (define (foo y) (+ x y))
+  (foo 3))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-define_002dvalues"></a><u>Macro:</u> <b>define-values</b><i> (var …) expr</i></dt>
+<dd><p>まず<var>expr</var>が評価されます。それは与えられた<var>var</var>と同数の値を
+返さなければなりません。続いて各値が<var>var</var>に順に束縛されます。
+<a indepth="true" href="gauche-refj_114.html#Let_002dvalues"><code>srfi-11</code> - Let-values</a>も参照してください。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-values (lo hi) (min&amp;max 3 -1 15 2))
+
+lo ⇒ -1
+hi ⇒ 15
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-define_002dconstant"></a><u>Special Form:</u> <b>define-constant</b><i> variable expression</i></dt>
+<dt><a name="index-define_002dconstant-1"></a><u>Special Form:</u> <b>define-constant</b><i> (variable . formals) body …</i></dt>
+<dd><p><code>define</code>と同じように動作しますが、
+コンパイラは<var>variable</var>の値が今後変更されないものとして
+最適化されたコードを生成します。
+</p>
+<p><var>variable</var>の値を<code>set!</code>で変更しようとするとエラーとなります。
+<var>variable</var>を再定義することは許されますが、警告が表示されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-define_002din_002dmodule"></a><u>Special Form:</u> <b>define-in-module</b><i> module variable expression</i></dt>
+<dt><a name="index-define_002din_002dmodule-1"></a><u>Special Form:</u> <b>define-in-module</b><i> module (variable . formals) body …</i></dt>
+<dd><p>この形式は<var>variable</var>のグローバルな束縛を<var>module</var>中に作成します。
+<var>module</var>はモジュール名を表すシンボルか、モジュールオブジェクトで
+なければなりません。<var>module</var>がシンボルの場合、その名前を持つ
+モジュールが既に存在している必要があります。
+</p>
+<p><var>expression</var>は現在のモジュール中で評価されます。
+</p>
+<p>2番目の形式は次の形式の構文的修飾です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-in-module module variable (lambda formals body …))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>註: シンボルが現在のモジュール中で定義されているか(グローバルな束縛を持つか)
+を調べるには、<code>global-variable-bound?</code>が使えます
+(<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">モジュールイントロスペクション</a>参照)。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_30.html#g_t_00e6_00ba_0096_00e3_0082_00af_00e3_0082_00aa_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

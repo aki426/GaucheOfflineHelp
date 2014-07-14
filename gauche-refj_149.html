@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.23 rfc.http - HTTP</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.23 rfc.http - HTTP">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.23 rfc.http - HTTP">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="HTTP"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_148.html#HMAC_00e9_008d_00b5_00e4_00bb_0098_00e3_0081_008d_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_150.html#IP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002ehttp-_002d-HTTP"></a>
+<h2 class="section">11.23 <code>rfc.http</code> - HTTP</h2>
+
+<dl>
+<dt><a name="index-rfc_002ehttp"></a><u>Module:</u> <b>rfc.http</b></dt>
+<dd><a name="index-rfc_002ehttp-1"></a>
+<p>このモジュールは、RFC2616 "Hypertext Transfer Protocol ? HTTP/1.1"
+で定義されているHTTP/1.1に対する簡単なクライアントAPIを提供します。
+(<a indepth="true" href="gauche-refj_189.html#rfc2616">RFC2616</a>).
+</p>
+<p>現在のAPIは、プロトコルの一部のみ実装されています。
+HTTP/1.0のサーバーとはうまく通信できません。
+また、HTTP/1.1の先進的機能、例えば永続的接続などはサポートしていません。
+これらの機能は、将来のバージョンで追加されるでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003chttp_002derror_003e"></a><u>Condition Type:</u> <b>&lt;http-error&gt;</b></dt>
+<dd><a name="index-http_002derror"></a>
+<p>サーバから接続が切られた場合や、サーバの返したHTTPレスポンスのフォーマットが
+正しくない場合に投げられるコンディションです。<code>&lt;error&gt;</code>を継承します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-http_002dget"></a><u>Function:</u> <b>http-get</b><i> server request-uri :key sink flusher redirect-handler secure …</i></dt>
+<dt><a name="index-http_002dhead"></a><u>Function:</u> <b>http-head</b><i> server request-uri :key redirect-handler secure …</i></dt>
+<dt><a name="index-http_002dpost"></a><u>Function:</u> <b>http-post</b><i> server request-uri body :key sink flusher redirect-handler secure …</i></dt>
+<dt><a name="index-http_002dput"></a><u>Function:</u> <b>http-put</b><i> server request-uri body :key sink flusher redirect-handler secure …</i></dt>
+<dt><a name="index-http_002ddelete"></a><u>Function:</u> <b>http-delete</b><i> server request-uri :key sink flusher redirect-handler secure …</i></dt>
+<dd>
+<p><var>server</var>に、それぞれHTTPのGET、HEAD、POST、PUT、DELETEリクエストを送り、
+サーバの応答を返します。
+</p>
+<p>デフォルトでは、
+サーバがステータスコード 300, 301, 302, 303, 305 の応答を返し、
+RFC2616による自動リダイレクトが許されている場合は、
+これらの手続きは自動的に応答のメッセージヘッダの "location" で返されるURIに対して
+リクエストを再送します。
+この動作は<var>redirect-handler</var>キーワード引数でカスタマイズしたり
+抑制したりできます。下の"キーワード引数"を参照してください。
+</p>
+<p><strong>必須の引数:</strong>
+<var>server</var>引数では、文字列でHTTPサーバ名を指定します。
+サーバ名は、オプションでコロンに続いてポート番号を付加できます。
+Examples: <code>"w3c.org"</code>, <code>"mycompany.com:8080"</code>.
+</p>
+<p><var>request-uri</var>引数は文字列かリストです。
+文字列の場合、RFC2616で規定されているリクエストURIと解釈されます。
+通常これはHTTP URLのパス部分です。
+文字列はそのままサーバに渡されるので、呼び出し側で必要な
+文字コード変換やurlエンコーディングを行う必要があります。
+</p>
+<p><var>request-uri</var>がリストの場合は、次の形式でなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>path</var> (<var>name</var> <var>value</var>) ...)
+</pre></td></tr></tbody></table>
+
+<p>ここで<var>path</var>はリクエストURIのパスコンポーネントまでを指定する
+文字列です。与えられた<var>name</var>と<var>value</var>のalistから、
+httpリクエスト手続きはHTML4で定められた
+<code>application/x-www-form-urlencoded</code>形式の
+クエリ文字列を構成し、<var>path</var>にアペンドします。
+例えば次のふたつのリクエストは同じ効果を持ちます。
+二番目の呼び出しではurlエスケープが自動的に行われることに注目してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(http-get "example.com" "/search?q=foo%20bar&amp;n=20")
+
+(http-get "example.com" '("/search" (q "foo bar") (n 20)))
+</pre></td></tr></tbody></table>
+
+<p><var>request-encoding</var>キーワード引数が与えられた場合、
+<var>name</var>と<var>value</var>はまずその文字エンコーディングに変換されたのちに
+urlエスケープされます。そうでない場合はgaucheの内部
+エンコーディングがそのまま使われます。
+</p>
+<p>いくつかの手続きは、リクエストメッセージのボディを指定する<var>body</var>を第3引数として
+取ります。<var>body</var>は文字列かリストで、文字列の場合はそのまま送られ、
+リストの場合は<code>multipart/form-data</code>形式にエンコードされて送られます。
+</p>
+<p><var>body</var>がリストの場合、それはパラメータ指定のリストです。
+各パラメータ指定は、<code>("submit" "OK")</code>のような名前と値のリスト、
+もしくは<code>("upload" :file "logo.png" :content-type "image/png")</code>
+のように名前の後にキーワード-値リストを付加したものです。
+</p>
+<p>最初の形式は使うのが簡単で、また<var>request-uri</var>のクエリパラメータリストと
+同じ形式なのでGETとPOSTでルーチンを共有したい場合にも便利でしょう。
+この形式では、各値はMIMEパーとに<code>text/plain</code>として置かれます。
+文字コードは下に述べる<code>request-encoding</code>キーワード引数により変換されます。
+</p>
+<p>二番目の形式では、MIMEパートの属性についてより細かな指定を行うことができます。
+以下のキーワードが特別に扱われます。
+</p>
+<dl compact="compact">
+<dt> <code>:value</code></dt>
+<dd><p>パラメータの値を指定します。簡潔な<code>(<var>name</var> <var>val</var>)</code>形式は
+<code>(<var>name</var> :value <var>val</var>)</code>の省略形です。
+</p></dd>
+<dt> <code>:file</code></dt>
+<dd><p>指定された名前のファイルの中身をパラメータの値として挿入します。
+ファイルのアップロードに便利です。このオプションは<code>:value</code>より
+優先されます。MIMEタイプは、指定が無ければ
+<code>application/octet-stream</code>となります。
+</p></dd>
+<dt> <code>:content-type</code></dt>
+<dd><p>MIMEタイプをオーバライドします。与えられた値にcharsetパラメータが
+ついていない場合は自動的に付加されます。
+</p></dd>
+<dt> <code>:content-transfer-encoding</code></dt>
+<dd><p>content-transfer-encodingを
+<code>7bit</code>、<code>binary</code>、<code>quoted-printable</code>、<code>base64</code>の
+いずれかで指定します。指定が無ければ<code>binary</code>が使われます。
+</p></dd>
+</dl>
+
+<p>残りのキーワードはMIMEパートのヘッダにそのまま使われます。
+</p>
+<p><strong>戻り値:</strong>
+全ての手続きは3つの値を返します。
+</p>
+<p>1つ目は、RFC2616で定義されているステータスコードの文字列値(例えば、成功時の
+200、"Not found"の404など)です。
+</p>
+<p>2つ目は、パーズされたヘッダのリストで、リストの要素は<code>(<var>header-name</var>
+<var>value</var> …)</code>です。<var>header-name</var>はヘッダの文字列名(例えば、
+"content-type"や"location"など)で、<var>value</var>は対応する値の文字列値です。
+ヘッダ名は小文字に変換されます。値は、RFC2822で定義されている無指定行区切
+(ソフト・ライン・ブレイク)が除かれる以外はそのままです。
+サーバが同じ名前のヘッダを1つ以上返した場合は、
+1つのリストに統合されます。それ以外では、2つ目の戻り値に
+おけるヘッダのリストの順番は、サーバの応答での順番と同じです。
+</p>
+<p>3つ目の戻り値は、サーバの応答におけるメッセージボディです。
+デフォルトでは、文字列で表現されたメッセージボディそのものです。
+サーバの応答がボディを持たない場合、3つ目の戻り値は<code>#f</code>です。
+キーワード引数によって、メッセージボディがどのように扱われるかを制御できます。
+例えば、中間的な文字列を作らずに、返されたメッセージボディを直接ファイルに
+格納することが出来ます。詳細は以下で説明しています。
+</p>
+<p><strong>キーワード引数:</strong>
+デフォルトで、これらの手続きはリクエストメッセージに<code>"Host"</code>ヘッダ・フィールドを
+追加するだけです。他のヘッダ・フィールドを追加するためにキーワード引数を
+与えることができます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(http-get "foo.bar.com" "/index.html"
+  :accept-language "ja"
+  :user-agent "My Scheme Program/1.0")
+</pre></td></tr></tbody></table>
+
+<p>以下のキーワード引数は手続きによって解釈され、リクエストヘッダには現れません。
+</p>
+<dl compact="compact">
+<dt> <var>request-encoding</var></dt>
+<dd><p><var>request-uri</var>や<var>body</var>がリストで与えられた場合、パラメータの
+名前や値はまずこの引数で指定される文字エンコーディングへと変換され、
+その後、<code>application/x-www-form-urlencoded</code>や
+<code>multipart/form-data</code> MIME形式にしたがったエンコーディングが行われます。
+この引数が省略された場合はGaucheの内部文字エンコーディングが使われます。
+</p>
+<p><code>multipart/form-data</code>については、パラメータに<code>content-type</code>ヘッダを
+与えることでパラメータごとに文字エンコーディングの設定をオーバライドできます。
+詳しくは上の<var>body</var>引数の説明を参照してください。
+</p>
+<p><var>request-uri</var>や<var>body</var>に文字列を与えた場合は、文字エンコーディング変換は
+行われません。呼び出し側で望みの文字コードにあらかじめ変換しておいてください。
+</p></dd>
+<dt> <var>proxy</var></dt>
+<dd><p>httpプロキシサーバを、<code>hostname</code>または<code>hostname:port</code>形式の
+文字列で指定します。省略された場合、パラメータ<code>http-proxy</code>の値が
+使われます。
+</p></dd>
+<dt> <var>redirect-handler</var></dt>
+<dd><p>サーバが3xxステータスコードを返した場合のリダイレクトの処理を指定します。
+<code>#f</code>, <code>#t</code>もしくは手続きを渡すことができます。省略時は<code>#t</code>となります。
+</p>
+<p><code>#f</code>が渡された場合は、リダイレクトは処理されません。3xxステータスコードを
+持つレスポンスもそのまま<code>http-*</code>から返されます。
+</p>
+<p>手続きが渡された場合は、サーバが3xxステータスコードを返すとその手続きが4つの引数で
+呼ばれます。最初の引数はリクエストメソッド(シンボル、例:<code>GET</code>)、
+次がレスポンスステータスコード(文字列、例:<code>"302"</code>)、
+次がパーズされたレスポンスヘッダ、そして最後がレスポンスボディです(レスポンスボディが
+あれば文字列、なければ<code>#f</code>)。
+</p>
+<p>この手続きは、ペアか<code>#f</code>を返さねばなりません。ペアの場合、それは
+<code>(method . url)</code>という形で、<var>method</var>がシンボルによるリクエストメソッド、
+<var>url</var>が文字列で次にリクエストすべきURLを表します。
+ペアが返されれば、<code>http-*</code>手続きはそのURLへ、指定されたメソッドでリクエストを
+再送します。(メソッドを返すことで、例えばPOSTリクエストのリダイレクトをGETリクエストに
+置き換えることが可能です)。
+手続きが<code>#f</code>を返した場合、リダイレクトは行われません。
+</p>
+<p><var>redirect-handler</var>が<code>#t</code>(デフォルト値)の場合、
+パラメータ<code>http-default-redirect-handler</code>の値が
+<var>redirect-handler</var>に渡されたかのように振る舞います。
+このパラメータの初期値は、標準的なリダイレクトの振る舞いをする手続きになっています。
+下の<code>http-default-redirect-handler</code>の項目を参照してください。
+</p>
+<p>リダイレクトのループは自動的に検出され、<code>&lt;http-error&gt;</code>が投げられます。
+</p></dd>
+<dt> <var>no-redirect</var></dt>
+<dd><p>これは互換性のためだけに残されている、古い引数です。真の値を与えると、
+<var>redirect-handler</var>に<code>#f</code>を渡したのと同じ効果を持ちます。
+</p></dd>
+<dt> <var>secure</var></dt>
+<dd><p>真の値が与えられた場合、セキュアな接続(https)を使います。
+セキュアな接続が実行中のプラットフォームで利用できない場合はエラーが投げられます。
+下の「セキュアな接続」の項も参照してください。
+</p></dd>
+<dt> <var>sink, flusher</var></dt>
+<dd><p>これらのキーワード引数によりリプライメッセージ・ボディがどのように扱われるかを
+カスタマイズできます。<var>sink</var>には出力ポートを、<var>flusher</var>には2引数を
+取る手続きを渡さなければなりません。
+</p>
+<p>手続きがメッセージ・ボディを受信し始めると、<var>sink</var>へ受け取った
+データ片をフィードします。手続きがメッセージ・ボディを受信し終わると、
+<var>flusher</var>に与えられた手続きが、<var>sink</var>と(手続きからの2つ目の
+戻り値と同じフォーマットの)メッセージ・ヘッダ・フィールドのリストとともに
+呼び出されます。<var>flusher</var>の戻り値が、手続きからの3つ目の戻り値と
+なります。
+</p>
+<p>したがって、<var>sink</var>のデフォルト値は、新しく開かれた文字列ポートで、
+<var>flusher</var>のデフォルト値は<code>(lambda (sink headers) (get-output-string sink))</code>
+とも言えます。
+</p>
+<p>以下のサンプルは、(とても大きい可能性のある)文字列バッファを作らずに、
+メッセージ・ボディを直接ファイルに保存します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-output-file "page.html"
+  (lambda (out)
+    (http-get "www.schemers.org" "/"
+       :sink out :flusher (lambda _ #t))))
+</pre></td></tr></tbody></table>
+
+</dd>
+</dl>
+
+</dd></dl>
+
+<p>The module also provides some utility procedures.
+</p>
+<dl>
+<dt><a name="index-http_002duser_002dagent"></a><u>Parameter:</u> <b>http-user-agent</b><i> :optional value</i></dt>
+<dd><p>user-agentヘッダに渡される値のデフォルト値を指定するパラメータです。
+デフォルトの値は<code>gauche.http/*</code> (<code>*</code>部分はGaucheのバージョン)
+になっています。
+各アプリケーションは適切な値を設定するようにしてください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-http_002dproxy"></a><u>Parameter:</u> <b>http-proxy</b><i> :optional value</i></dt>
+<dd><p>このパラメータの値が<code>http-get</code>等のhttpプロキシのデフォルトの値として
+使われます。デフォルトの値は<code>#f</code> (プロキシを使用しない) です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-http_002ddefault_002dredirect_002dhandler"></a><u>Parameter:</u> <b>http-default-redirect-handler</b><i> :optional value</i></dt>
+<dd><p><code>http-*</code>手続きに<code>redirect-handler</code>キーワード引数が与えられなかった
+場合のデフォルトの動作を指定します。この値を変える場合、それは
+<code>redirect-handler</code>引数のプロトコルに従う手続きでなければなりません。
+上の<code>http-*</code>手続きの項目を参照してください。
+</p>
+<p>デフォルトの動作は以下の通りです。
+</p>
+<dl compact="compact">
+<dt> <code>300, 301, 305, 307</code></dt>
+<dd><p>元のリクエストが<code>GET</code>か<code>HEAD</code>の場合に限り、同じリクエストを使って
+<code>location</code>ヘッダに与えられたURLにリダイレクトします。
+</p></dd>
+<dt> <code>302</code></dt>
+<dd><p><code>location</code>ヘッダに与えられたURLにリダイレクトします。
+元が<code>HEAD</code>リクエストなら<code>HEAD</code>を、それ以外なら<code>GET</code>リクエストを
+使います。
+</p>
+<p>厳密に言えばこれはRFC2616違反ですが、RFC2616の注記にもあるように、
+多くのユーザエージェントがこの振る舞いをするので、それに合わせてあります。
+(将来は変えるかもしれません。)
+</p></dd>
+<dt> <code>303</code></dt>
+<dd><p><code>location</code>ヘッダに与えられたURLにリダイレクトします。
+元が<code>HEAD</code>リクエストなら<code>HEAD</code>を、それ以外なら<code>GET</code>リクエストを
+使います。
+</p></dd>
+<dt> <code>other than above</code></dt>
+<dd><p>リダイレクトしません。
+</p></dd>
+</dl>
+
+<p>次のコードは、デフォルトの振る舞いを特定のリクエストでインターセプトする例です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(http-get server uri
+  :redirect-handler
+  (^[method status headers body]
+    (if (and (equal? status "302")
+             (not (member method '(GET HEAD))))
+        #f
+        ((http-default-request-handler) method status headers body))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-http_002dcompose_002dquery"></a><u>Function:</u> <b>http-compose-query</b><i> path params :optional encoding</i></dt>
+<dd><p>A helper procedure to create a request-uri from
+a list of query parameters.  <var>Encoding</var> specifies
+the character encodings to be used.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(http-compose-query "/search" '((q "$foo") (n 20)))
+ ⇒ "/search?q=%24foo&amp;n=20"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-http_002dcompose_002dform_002ddata"></a><u>Function:</u> <b>http-compose-form-data</b><i> params port :optional encoding</i></dt>
+<dd><p>A helper procedure to create <code>multipart/form-data</code>
+from a list of parameters.  The format of <var>params</var> argument
+is the same as the list format of <var>body</var> argument of
+http request procedures.  The result is written to an output
+port <var>port</var>, and the boundary string used to compose
+MIME message is returned.  Alternatively you can pass <code>#f</code>
+to the <var>port</var> to get the result in a string.
+In that case, two values are returned, the MIME message string
+and the boundary string.
+</p>
+<p><var>Encoding</var> specifies the character encodings to be used.
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00bb_00e3_0082_00ad_00e3_0083_00a5_00e3_0082_00a2_00e3_0081_00aa_00e6_008e_00a5_00e7_00b6_009a"></a>
+<h3 class="subheading">セキュアな接続</h3>
+
+<p>When you pass a true value to <code>secure</code> keyword argument,
+The request-making APIs such as <code>http-get</code> use a secure
+connection.  That is, it connects with <code>https</code> instead of
+<code>http</code>.
+</p>
+<p>The secure connection may not available on some platforms.
+Use the following procedure to check if you can use secure
+connections:
+</p>
+<dl>
+<dt><a name="index-http_002dsecure_002dconnection_002davailable_003f"></a><u>Function:</u> <b>http-secure-connection-available?</b></dt>
+<dd><p>Returns <code>#t</code> if running Gauche can use secure connection,
+<code>#f</code> otherwise.
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_148.html#HMAC_00e9_008d_00b5_00e4_00bb_0098_00e3_0081_008d_00e3_0083_008f_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_150.html#IP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

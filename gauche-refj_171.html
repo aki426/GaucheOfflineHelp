@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.45 text.tr - 文字変換</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.45 text.tr - 文字変換">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.45 text.tr - 文字変換">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_171.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_170.html#text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002etr-_002d-_00e6_0096_0087_00e5_00ad_0097_00e5_00a4_0089_00e6_008f_009b"></a>
+<h2 class="section">11.45 <code>text.tr</code> - 文字変換</h2>
+
+<dl>
+<dt><a name="index-text_002etr"></a><u>Module:</u> <b>text.tr</b></dt>
+<dd><a name="index-text_002etr-1"></a>
+<p>このモジュールは、入力ストリームから指定の文字を置き換えて出力する、
+文字変換(transliterate)機能を提供します。
+Unixの<code>tr(1)</code>コマンドで実装され、<code>sed</code>や<code>perl</code>にも
+採り入れられている機能です。
+</p>
+<p>Gaucheの<code>tr</code>はマルチバイト文字／文字列を正しく扱います。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tr"></a><u>Function:</u> <b>tr</b><i> from-list to-list :key :complement :delete :squeeze :table-size :input :output</i></dt>
+<dd><p><var>input</var>から文字を読み込み、その文字が<var>from-list</var>内にあれば
+対応する<var>to-list</var>内の文字に置き換えて、<var>output</var>へと書き出します。
+<var>from-list</var>に無い文字はそのまま<var>output</var>へと渡されます。
+</p>
+<p><var>input</var>と<var>output</var>の既定値はそれぞれ現在の入力ポートと
+出力ポートです。
+</p>
+<p><var>from-list</var>と<var>to-list</var>は文字列でなければなりません。
+その中には次のような表記を使うことができます。それ以外の文字はそのまま使われます。
+</p>
+<dl compact="compact">
+<dt> <code><b>x-y</b></code></dt>
+<dd><p>文字<code>x</code>から文字<code>y</code>までの文字の昇順の並びと解釈されます。
+<code>x</code>と<code>y</code>は含まれます。文字の並びはGaucheの内部文字エンコーディングに
+よって決定されるので、一般には<code>x</code>と<code>y</code>は同じキャラクタクラスの中に
+止めておいた方が安全でしょう。<code>x</code>は<code>y</code>より小さくなければなりません。
+</p>
+</dd>
+<dt> <code><b>x*n</b></code></dt>
+<dd><p>文字<code>x</code>の<code>n</code>個の並び。<code>n</code>は10進数で表記された数値です。
+これは<var>to-list</var>でのみ有効で、<var>from-list</var>で使うとエラーになります。
+<code>n</code>が省略されるか0の場合、<code>x</code>は<var>to-list</var>の長さが<var>from-list</var>
+の長さに達するまで繰り返されます(その場合、<var>to-list</var>の残りは無視されます)。
+</p>
+</dd>
+<dt> <code><b><code>\</code>x</b></code></dt>
+<dd><p>文字<code>x</code>それ自身。特殊文字そのものを埋め込みたい場合に使います。
+文字列のリーダも<code>\</code>を解釈するので、<code>\\</code>と書かねばならないことに注意
+して下さい。
+</p>
+<p>グラフィカルでない文字のための構文はありません。文字列リーダの構文を使って
+そのような文字を文字列に含めることができます。
+</p></dd>
+</dl>
+
+<p>いくつか例を挙げます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; <span class="roman">大文字と小文字を交換します</span>
+(tr "A-Za-z" "a-zA-Z")
+
+;; <span class="roman">ひらがなとかたかなを交換します</span>
+(tr "ぁ-んァ-ン" "ァ-ンぁ-ん")
+
+;; <span class="roman">7ビットのノングラフィカルな文字を`?'に変換します</span>
+(tr "\x00-\x19\x7f" "?*")
+</pre></td></tr></tbody></table>
+
+<p><var>to-list</var>が<var>from-list</var>より短い場合、動作はキーワード引数<var>delete</var>に
+依存します。もし真の値が<var>delete</var>に与えられれば、<var>from-list</var>に現われて
+<var>to-list</var>に対応するものがない文字は入力から取り除かれます。そうでなければ
+そのような文字はそのまま出力されます。
+</p>
+<p>真の値が<var>complement</var>に与えられた場合、<var>from-list</var>の文字の
+補集合が<var>from-list</var>として使われます。この文字集合は極めて大きくなる
+可能性があることに注意してください。従って、一般にこのオプションは
+<var>to-list</var>に‘*’を使ってそれらの文字を一文字にマッピングするか、
+<code>delete</code>オプションと併用するかしないとあまり意味がありません。
+</p>
+<p>真の値が<var>squeeze</var>に与えられた場合、同じ文字への置換が2つ以上並ぶ場合に
+2つめ以降の文字が削除されます。<var>to-list</var>が空の場合は、<var>from-list</var>
+に含まれる文字で同一文字が並んだ場合に2つめ以降の文字が削除されます。
+</p>
+<p>内部的に、<code>tr</code>はキャラクタのマッピングのためにテーブルを使用します。
+但し、Gaucheでは極めて大きな文字セットを扱うため、テーブルはキャラクタコードの
+小さい文字のみに対して使われます(デフォルトではコード255以下の文字)。
+もし、より大きな文字を頻繁に変換することが分かっていて、メモリを余分に使っても
+速度を上げたい場合は、このテーブルの大きさを<var>table-size</var>キーワード引数で
+指定することができます。例えばEUC-JPコードで大量の平仮名と片仮名を変換する場合は、
+<var>table-size</var>を42483以上にすると、全ての変換がテーブルルックアップで
+行われます。
+</p>
+<p><code>tr</code>が変換テーブルを計算するのにいくらかオーバーヘッドがあることに
+注意して下さい。内側のループで<code>tr</code>を繰り返し呼ぶような場合は
+下に示す<code>build-transliterator</code>を使った方が良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002dtr"></a><u>Function:</u> <b>string-tr</b><i> string from-list to-list :key :complement :delete :squeeze :table-size</i></dt>
+<dd><p>入力を<var>string</var>から取って変換結果を文字列で返す以外は<code>tr</code>と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-build_002dtransliterator"></a><u>Function:</u> <b>build-transliterator</b><i> from-list to-list :key :complement :delete :squeeze :table-size :input :output</i></dt>
+<dd><p>実際の変換動作をする手続きを作成して返します。内部データのセットアップを済ませるため、
+同じ文字変換セットに対して<code>tr</code>を繰り返し呼ぶような場合は、この手続きを用いることで
+初期化のオーバヘッドを軽減することができます。
+</p>
+<p>註記：<var>input</var>や<var>output</var>キーワード引数が省略された場合、
+作成される変換手続きは、それが使用された時点でのカレント入出力ポート
+を参照します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-input-from-file "huge-file.txt"
+  (lambda ()
+    (let loop ((line (read-line)))
+      (unless (eof-object? line) (tr "A-Za-z" "a-zA-Z")))))
+
+;; <span class="roman">以下の方が効率良く動作します...</span>
+
+(with-input-from-file "huge-file.txt"
+  (lambda ()
+    (let ((ptr (build-transliterator "A-Za-z" "a-zA-Z")))
+      (let loop ((line (read-line)))
+        (unless (eof-object? line) (ptr))))))
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_170.html#text_002esql-_002d-SQL_00e3_0081_00ae_00e3_0083_0091_00e3_0083_00bc_00e3_0082_00ba_00e3_0081_00a8_00e6_00a7_008b_00e7_00af_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.11 srfi-29 - 地域化</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.11 srfi-29 - 地域化">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.11 srfi-29 - 地域化">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_120.html#args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d29-_002d-_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096"></a>
+<h2 class="section">10.11 <code>srfi-29</code> - 地域化</h2>
+
+<dl>
+<dt><a name="index-srfi_002d29"></a><u>Module:</u> <b>srfi-29</b></dt>
+<dd><a name="index-srfi_002d29-1"></a>
+<a name="index-srfi_002d29_002ebundle"></a>
+<a name="index-srfi_002d29_002eformat"></a>
+<p>このモジュールは SRFI-29 で定義されたメッセージの地域化機構を実装したものです。
+</p>
+<p>実際には、このモジュールは2つのサブモジュール、<code>srfi-29.bundle</code>
+および <code>srfi-29.format</code> で構成されています。<code>srfi-29</code>モジュールは
+このふたつのモジュールをextendしています。このようにしているのは、
+SRFI-29 での <code>format</code> 手続きの定義が Gauche ネイティヴの(すなわち
+Common Lisp の) <code>format</code> とでは <code>~@*</code> 指令の扱い
+において互換性がないからです。
+</p>
+<p>そんなわけで、SRFI-29 の <code>format</code> を含む <code>srfi-29.format</code> と
+それ以外(「バンドル」API)を含む <code>srfi-29.bundle</code> に分離しました。
+プログラムを SRFI-29 と完全に互換性のあるものにしたければ、<code>srfi-29</code>
+モジュールを使って下さい。こうすると Gauche ネイティヴの
+<code>format</code> が上書きされます。SRFI-29 の「バンドル」API を使いたいだけで、
+Gauche の <code>format</code> をそのままにしておきたいなら、<code>srfi-29.bundle</code>
+を使って下さい。
+</p>
+<p>地域化機能は <code>text.gettext</code> モジュールによっても提供され
+(See section <a indepth="true" href="gauche-refj_166.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8"><code>text.gettext</code> - 地域化メッセージ</a>)、Gauche でメッセージの地域化をするのなら
+<code>text.gettext</code> を使うのが好ましい方法です。<code>srfi-29</code> モジュールは
+主として SRFI-29 の機能を使っているコードをポーティングするためにあります。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0090_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00ab_00e6_008c_0087_00e5_00ae_009a_00e5_00ad_0090"></a>
+<h3 class="subheading">バンドル指定子</h3>
+
+<p><em>バンドル指定子</em>はシンボルを要素とする任意のリストです。しかし
+典型的には以下のようなフォームになります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"><code>(<var>package</var> <var>language</var> <var>country</var> <var>details</var> …)</code>
+</pre></td></tr></tbody></table>
+<p>ここで、<var>package</var> はソフトウェアパッケージを指定し、
+<var>language</var> および <var>country</var> は言語と国コードを指定、そして、
+<var>details</var> はエンコーディングのようなそのほかの情報を指定します。
+</p>
+<p>デフォルトのバンドル指定子の値は以下のようなパラメータで取得可能です。
+</p>
+<dl>
+<dt><a name="index-current_002dlanguage"></a><u>Parameter:</u> <b>current-language</b></dt>
+<dt><a name="index-current_002dcountry"></a><u>Parameter:</u> <b>current-country</b></dt>
+<dt><a name="index-current_002dlocale_002ddetails"></a><u>Parameter:</u> <b>current-locale-details</b></dt>
+<dd><p>[SRFI-29]
+<code>current-language</code> および <code>current-country</code> パラメータは
+ISO 639-1 の言語コードと ISO 3166-1 の国コードをそれぞれシンボルで
+保持しています。<code>current-locale-details</code> はエンコーディングのような
+補助的な地域情報のリストを保持しています。
+</p>
+<p>これらのパラメータは、環境変数 <code>LANG</code> が <code>lang_country.encoding</code>
+フォーマットの形式で設定されていれば、初期化されます。たとえば、
+<code>LANG</code> が <code>ja_JP.eucJP</code> に設定されていれば、それらの
+パラメータはそれぞれ <code>ja</code>、<code>jp</code>、<code>(eucjp)</code> に設定されます。
+<code>LANG</code> が <code>C</code> であるかあるいは定義されていなければ、
+デフォルト値は、それぞれ <code>en</code>、<code>us</code>、<code>()</code> です。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0090_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00ab_00e6_00ba_0096_00e5_0082_0099"></a>
+<h3 class="subheading">バンドル準備</h3>
+
+<dl>
+<dt><a name="index-declare_002dbundle_0021"></a><u>Function:</u> <b>declare-bundle!</b><i> bundle-specifier association-list</i></dt>
+<dd><p>[SRFI-29]
+テンプレートキー(シンボル)と特定ロケールのメッセージ(文字列)の連想リストを
+<var>bundle-specifier</var> をキーとして、バンドルデータベースに入れます。
+</p></dd></dl>
+
+<p>Gauche は現在のところメモリ上のバンドルデータベースのみサポートしています。
+つまり、地域化されてメッセージを探しあてるには、そのアプリケーション内で
+<code>declare-bundle!</code> を呼ぶ必要があるということです。
+</p>
+<dl>
+<dt><a name="index-save_002dbundle_0021"></a><u>Function:</u> <b>save-bundle!</b><i> bundle-specifier</i></dt>
+<dt><a name="index-load_002dbundle_0021"></a><u>Function:</u> <b>load-bundle!</b><i> bundle-specifier</i></dt>
+<dd><p>[SRFI-29]
+Gauche は今のところ永続バンドルデータベースをサポートしていないので、
+これらの手続きはなにもせず <code>#f</code> を返します
+(これはいまのところ srfi-29 の振舞いと適合しています)。
+</p></dd></dl>
+
+<a name="g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0081_00ae_00e6_00a4_009c_00e7_00b4_00a2"></a>
+<h3 class="subheading">地域化されたメッセージの検索</h3>
+
+<dl>
+<dt><a name="index-localized_002dtemplate"></a><u>Function:</u> <b>localized-template</b><i> package-name message-template-name</i></dt>
+<dd><p>[SRFI-29]
+地域化されたメッセージを検索します。当該メッセージは
+<var>package-name</var> パッケージの中で、<var>message-template-name</var>
+シンボルと関連つけられています。
+</p></dd></dl>
+
+<a name="g_t_00e6_008b_00a1_00e5_00bc_00b5_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f-format-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<h3 class="subheading">拡張された format 手続き</h3>
+
+<dl>
+<dt><a name="index-format-2"></a><u>Function:</u> <b>format</b><i> format-string args</i></dt>
+<dd><p>[SRFI-29]
+SRFI-29 は SRFI-28 の <code>format</code> 手続きの仕様(これは <code>~a</code>、
+<code>~s</code>、<code>~%</code> および <code>~~</code> 指令をサポートしている)を
+引数再配置をサポートするために拡張しています。
+</p>
+<p><code>~N@*</code> 指令は <var>N</var>-番目のオプション引数から値を引き出す次の
+指令の契機となります。参照された値が消費されることはありません。また、
+参照された値がその後につづく指令の処理に影響を与えることはありません。
+</p>
+<p>SRFI-28 の仕様は Gauche ネイティヴの <code>format</code> (See section <a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>) と
+互換性がありますが、この SRFI-29 の拡張には互換性がありません。
+具体的には、Gauche ネイティヴの <code>format</code> の <code>~N@*</code> 指定は
+引数ポインタを <var>N</var>-番目のオプション引数を指すように変更します。
+それゆえ、そのあとに続くすべての引数に影響をあたえます。
+</p>
+<p>この非互換性があるために、この関数は、分離したモジュール
+<code>srfi-29.format</code> で定義されています。<code>srfi-29.bundle</code> と
+<code>srfi-29.format</code> を拡張する <code>srfi-29</code> を使うと、<code>format</code>
+手続きは SRFI-29 の <code>format</code> でそのモジュール内で上書きされます。
+Gauche ネイティヴの <code>format</code> を使いたければ、<code>srfi-29.bundle</code>
+だけを使うようにしてください。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_120.html#args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

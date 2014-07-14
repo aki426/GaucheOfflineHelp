@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.36 sxml.tools - SXML構造を操作する</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.36 sxml.tools - SXML構造を操作する">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.36 sxml.tools - SXML構造を操作する">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_161.html#SXPath_00e3_0081_00ae_00e6_008b_00a1_00e5_00bc_00b5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_00ae_00e8_00bf_00b0_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="sxml_002etools-_002d-SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b"></a>
+<h2 class="section">11.36 <code>sxml.tools</code> - SXML構造を操作する</h2>
+
+<dl>
+<dt><a name="index-sxml_002etools"></a><u>Module:</u> <b>sxml.tools</b></dt>
+<dd><a name="index-sxml_002etools-1"></a>
+
+<p>現在のバージョンは、sxml-toolsのCVSのリビジョン3.13から導出されています。
+</p>
+<p>マニュアルのエントリは主に、オリジナルのソースコードから導出されています。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#SXML_00e3_0081_00ae_00e8_00bf_00b0_00e8_00aa_009e">11.36.1 SXMLの述語</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SXML_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b5">11.36.2 SXMLへのアクセッサ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SXML_00e3_0081_00ae_00e3_0083_00a2_00e3_0083_0087_00e3_0082_00a3_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a4">11.36.3 SXMLのモディファイヤ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SXPath_00e3_0081_00ae_00e8_00a3_009c_00e5_008a_00a9_00e7_009a_0084_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3">11.36.4 SXPathの補助的ユーティリティ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SXML_00e3_0081_008b_00e3_0082_0089_00e3_0083_009e_00e3_0083_00bc_00e3_0082_00af_00e3_0082_00a2_00e3_0083_0083_00e3_0083_0097_00e3_0081_00b8_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">11.36.5 SXMLからマークアップへの変換</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="SXML_00e3_0081_00ae_00e8_00bf_00b0_00e8_00aa_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXML_00e3_0081_00ae_00e8_00bf_00b0_00e8_00aa_009e-1"></a>
+<h3 class="subsection">11.36.1 SXMLの述語</h3>
+
+<dl>
+<dt><a name="index-sxml_003aempty_002delement_003f"></a><u>Function:</u> <b>sxml:empty-element?</b><i> obj</i></dt>
+<dd><p>与えられた要素<var>obj</var>が空なら<var>#t</var>を返す述語です。
+空要素は、ネストした要素、テキストノード、<code>PI</code>、コメントや実体を
+持ちませんが、属性や名前空間IDは持つかもしれません。
+それは、XMLの<code>empty-element</code>のSXML版です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ashallow_002dnormalized_003f"></a><u>Function:</u> <b>sxml:shallow-normalized?</b><i> obj</i></dt>
+<dd><p>与えられた<var>obj</var>が浅く正規化されたSXML要素であれば<code>#t</code>を返します。
+要素それ自体は正規化されていなければなりませんが、ネストした要素は
+テストされません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anormalized_003f"></a><u>Function:</u> <b>sxml:normalized?</b><i> obj</i></dt>
+<dd><p>与えられた<var>obj</var>が正規化されたSXML要素であれば<code>#t</code>を返します。
+要素それ自体とその全てのネストした要素が正規化されていなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ashallow_002dminimized_003f"></a><u>Function:</u> <b>sxml:shallow-minimized?</b><i> obj</i></dt>
+<dd><p>与えられた<var>obj</var>が浅く最小化されたSXML要素であれば<code>#t</code>を返します。
+要素それ自体は最小化されていなければなりませんが、そのネストした要素は
+テストされません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aminimized_003f"></a><u>Function:</u> <b>sxml:minimized?</b><i> obj</i></dt>
+<dd><p>与えられた<var>obj</var>が最小化されたSXML要素であれば<code>#t</code>が返されます。
+要素それ自体とその全てのネストした要素が最小化されていなければなりません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SXML_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXML_00e3_0081_00ae_00e8_00bf_00b0_00e8_00aa_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_00ae_00e3_0083_00a2_00e3_0083_0087_00e3_0082_00a3_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXML_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b5-1"></a>
+<h3 class="subsection">11.36.2 SXMLへのアクセッサ</h3>
+
+<dl>
+<dt><a name="index-sxml_003aname"></a><u>Function:</u> <b>sxml:name</b><i> obj</i></dt>
+<dd><p>与えられたSXMLノードの名前を返します。
+これは単に<code>car</code>のエイリアスに過ぎませんが、カプセル化のために導入されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aelement_002dname"></a><u>Function:</u> <b>sxml:element-name</b><i> obj</i></dt>
+<dd><p><code>sxml:name</code>の、与えられた<var>obj</var>がSXML要素ではない場合は<code>#f</code>を返す
+バージョンです。<var>obj</var>がSXML要素であれば、その名前を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anode_002dname"></a><u>Function:</u> <b>sxml:node-name</b><i> obj</i></dt>
+<dd><p><code>sxml:name</code>の、与えられた<var>obj</var>がSXMLノードでない場合は<code>#f</code>を返す、
+安全なバージョンです。<var>obj</var>がSXMLノードであれば、その名前を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ancname"></a><u>Function:</u> <b>sxml:ncname</b><i> obj</i></dt>
+<dd><p>与えられたobjの完全修飾名(Namespaces in XML production [6])のローカルパート、
+つまりその完全修飾名を“<code>:</code>”で分割した後ろの部分を返します。
+与えられたノードの名前が<code>NCName</code>(Namespaces in XML production [4])であれば、
+それをそのまま返します。
+SXMLの名前はシンボルですが、この関数は文字列を返すことに注意して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aname_002d_003ens_002did"></a><u>Function:</u> <b>sxml:name-&gt;ns-id</b><i> sxml-name</i></dt>
+<dd><p>与えられた名前の名前空間ID部分を返します。与えられた名前がLocalNameの
+場合は<var>#f</var>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003acontent"></a><u>Function:</u> <b>sxml:content</b><i> obj</i></dt>
+<dd><p>与えられたSXML要素かノードセット(テキストノードと要素ノードのみ)の内容を、
+ドキュメントオーダーにしたがった文字列のリストとネストした要素として
+返します。このリストは、<var>obj</var>が空要素や空リストの場合は空です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003acontent_002draw"></a><u>Function:</u> <b>sxml:content-raw</b><i> obj</i></dt>
+<dd><p>正規化されたSXML要素の全ての内容を、<var>attr-list</var>と<var>aux-list</var>を除いて
+返します。
+したがってそれは、<code>PI</code>、<code>COMMENT</code>、<code>ENTITY</code>
+ノードとともに、<code>sxml:content</code>によって返される<code>TEXT</code>や<code>ELEMENT</code>も含みます。
+戻り値は、ドキュメントオーダーにしたがったノードのリストか、
+<var>obj</var>が空要素や空リストの場合は空リストになります。
+この関数は、<code>sxml:content</code>よりも高速です。
+</p></dd></dl>
+
+<p>SXMLの通常のフォームでは、1つの要素は次のようなリストで表現されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  (<var>name</var> <var>attr-list</var> <var>aux-list</var> <var>content</var> …)
+</pre></td></tr></tbody></table>
+<p><var>attr-list</var>は<code>@</code>で始まるリストで、<var>aux-list</var>は<code>@@</code>で
+始まるリストです。
+</p>
+<p>最小化されたフォームでは、<var>aux-list</var>は空であれば省略できます。
+<var>attr-list</var>は、それが空で<em>かつ</em><var>aux-list</var>がなければ省略できます。
+</p>
+<p>以下の手続きは、<var>attr-list</var>と<var>aux-list</var>を抽出するものです。
+</p>
+<dl>
+<dt><a name="index-sxml_003aattr_002dlist_002dnode"></a><u>Function:</u> <b>sxml:attr-list-node</b><i> obj</i></dt>
+<dd><p>与えられた<var>obj</var>の<var>attr-list</var>を返します。
+<var>attr-list</var>が存在しなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr_002das_002dlist"></a><u>Function:</u> <b>sxml:attr-as-list</b><i> obj</i></dt>
+<dd><p><var>attr-list</var>をリストにラップして返します。
+<var>attr-list</var>が存在せず<var>aun-list</var>がある場合は’<code>((@))</code>を返します。
+両方とも存在しない場合には’<code>()</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aaux_002dlist_002dnode"></a><u>Function:</u> <b>sxml:aux-list-node</b><i> obj</i></dt>
+<dd><p>与えられた<var>obj</var>の<var>aux-list</var>を返します。
+<var>attr-list</var>が存在しなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aaux_002das_002dlist"></a><u>Function:</u> <b>sxml:aux-as-list</b><i> obj</i></dt>
+<dd><p><var>aux-list</var>をリストにラップして返します。
+<var>aux-list</var>が存在しなければ’<code>()</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr_002dlist_002du"></a><u>Function:</u> <b>sxml:attr-list-u</b><i> obj</i></dt>
+<dd><p>与えられた要素かノードセットの属性のリストを返します。
+<code>((sxpath '(@ *)) <var>obj</var>)</code>と類似です。
+属性のリストがない場合は空リストが返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aaux_002dlist"></a><u>Function:</u> <b>sxml:aux-list</b><i> obj</i></dt>
+<dd><p>与えられた要素かノードセットの補助ノードのリストを返します。
+<code>((sxpath '(@@ *)) <var>obj</var>)</code>と類似です。
+補助ノードのリストがない場合は空リストが返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aaux_002dlist_002du"></a><u>Function:</u> <b>sxml:aux-list-u</b><i> obj</i></dt>
+<dd><p>与えられた要素かノードセットの補助ノードのリストを返します。
+<code>((sxpath '(@@ *)) <var>obj</var>)</code>と類似です。
+補助ノードのリストがない場合は空リストが返されます。
+</p>
+<p><code>-u</code>が付くものは、正規化されていないSXMLノードに対しても
+使えるということを示しています。(’u’は’universal’の意味です。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aaux_002dnode"></a><u>Function:</u> <b>sxml:aux-node</b><i> obj aux-name</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>で<var>aux-name</var>という名前の付いている最初の
+補助ノードを返します。そのようなノードがない場合は<code>#f</code>を返します。
+注意: 複数のノードがあっても<em>最初に</em>見つかったノードのみを
+返します。したがって、ユニークな名前を持っているノード群に対して
+使われることを意図しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aaux_002dnodes"></a><u>Function:</u> <b>sxml:aux-nodes</b><i> obj aux-name</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>で<var>aux-name</var>とうい名前の付いている補助ノードの
+リストを返します。そのようなノードがなければ’<code>()</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr"></a><u>Function:</u> <b>sxml:attr</b><i> obj attr-name</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>の<var>attr-name</var>という属性へのアクセッサです。
+戻り値は、その属性が存在すればその属性の値、与えられた要素に
+そのような属性がなければ<var>#f</var>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anum_002dattr"></a><u>Function:</u> <b>sxml:num-attr</b><i> obj attr-name</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>の<var>attr-name</var>という数値の属性への
+アクセッサです。
+戻り値は、その属性が存在してその値が<code>string-&gt;number</code>により数値へ
+変換できる場合はその属性を数値としてその属性の値、
+与えられた要素にそのような属性がないかその値が数値へ変換できない場合は
+<code>#f</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr_002du"></a><u>Function:</u> <b>sxml:attr-u</b><i> obj attr-name</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>の<var>attr-name</var>という名前の属性への
+アクセッサです。<var>obj</var>は、(通常はSXML要素の内容である)
+属性リストやノードセットでも構いません。
+</p>
+<p>戻り値は、その属性が存在すればその属性の値、与えられた要素に
+そのような属性がない場合は<code>#f</code>です。
+</p>
+<p><code>-u</code>が付くものは、正規化されていないSXMLノードに対しても
+使えるということを示しています。(’u’は’universal’の意味です。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002dlist"></a><u>Function:</u> <b>sxml:ns-list</b><i> obj</i></dt>
+<dd><p>与えられた要素の名前空間のリストを返します。
+<code>((sxpath '(@@ *NAMESPACES* *)) <var>obj</var>)</code>と類似です。
+名前空間のリストがない場合は空リストが返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002did_002d_003enodes"></a><u>Function:</u> <b>sxml:ns-id-&gt;nodes</b><i> obj namespace-id</i></dt>
+<dd><p>SXML要素<var>obj</var>で、与えられた<var>namespace-id</var>に対応する名前空間の
+連想リストのリストを返します。
+<code>((sxpath '(@@ *NAMESPACES* namespace-id)) <var>obj</var>)</code>と類似です。
+与えられた<var>namespace-id</var>に対応する名前空間の連想リストがない場合は
+空リストが返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002did_002d_003euri"></a><u>Function:</u> <b>sxml:ns-id-&gt;uri</b><i> obj namespace-id</i></dt>
+<dd><p>与えられた<var>namespace-id</var>に対応するURIを返します。
+与えられた<var>namespace-id</var>に対応する名前空間の連想リストがない場合は
+<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002duri_002d_003eid"></a><u>Function:</u> <b>sxml:ns-uri-&gt;id</b><i> obj uri</i></dt>
+<dd><p>与えられた名前空間URIに対応する名前空間IDを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002did"></a><u>Function:</u> <b>sxml:ns-id</b><i> ns-assoc</i></dt>
+<dd><p>与えられた名前空間連想リストに対応する名前空間IDを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002duri"></a><u>Function:</u> <b>sxml:ns-uri</b><i> ns-assoc</i></dt>
+<dd><p>与えられた名前空間連想リストに対応するURIを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003ans_002dprefix"></a><u>Function:</u> <b>sxml:ns-prefix</b><i> ns-assoc</i></dt>
+<dd><p>与えられた名前空間連想リストに対応する名前空間接頭辞を返します。
+与えられた名前空間IDの(XML文書における)オリジナルの接頭辞は、
+それが名前空間IDと異なる場合は、名前空間連想リストの3番目の要素として
+格納されなければなりません。
+名前空間連想リストでオリジナルの接頭辞が省略されている場合は、
+代わりに名前空間IDが使われます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SXML_00e3_0081_00ae_00e3_0083_00a2_00e3_0083_0087_00e3_0082_00a3_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXML_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXPath_00e3_0081_00ae_00e8_00a3_009c_00e5_008a_00a9_00e7_009a_0084_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXML_00e3_0081_00ae_00e3_0083_00a2_00e3_0083_0087_00e3_0082_00a3_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a4-1"></a>
+<h3 class="subsection">11.36.3 SXMLのモディファイヤ</h3>
+
+<p>正規化されたSXMLデータのコンストラクタやミューテータです。
+これらの関数は、正規化されたSXMLデータに最適化されています。
+任意の正規化されていないSXMLデータには適用できません。
+</p>
+<p>ほとんどの関数には2つのバージョンがあります。
+</p><ol>
+<li>
+与えられた要素のその場での更新のために副作用が意図された関数。
+これらの名前はエクスクラメーションマークで終わっています。
+このバージョンの戻り値は、特に断りのない限り未定義です。
+例としては、<code>sxml:change-content!</code>が挙げられます。
+</li><li>
+変更された要素を返す、副作用のない純粋な関数。
+例としては、<code>sxml:change-content</code>が挙げられます。
+</li></ol>
+
+<dl>
+<dt><a name="index-sxml_003achange_002dcontent"></a><u>Function:</u> <b>sxml:change-content</b><i> obj new-content</i></dt>
+<dt><a name="index-sxml_003achange_002dcontent_0021"></a><u>Function:</u> <b>sxml:change-content!</b><i> obj new-content</i></dt>
+<dd><p>与えられたSXML要素の内容を、<var>new-content</var>に変更します。
+<var>new-content</var>が空リストの場合は、<var>obj</var>は空要素に変更されます。
+結果のSXML要素は正規化されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003achange_002dattrlist"></a><u>Function:</u> <b>sxml:change-attrlist</b><i> obj new-attrlist</i></dt>
+<dt><a name="index-sxml_003achange_002dattrlist_0021"></a><u>Function:</u> <b>sxml:change-attrlist!</b><i> obj new-attrlist</i></dt>
+<dd><p>結果のSXML要素は正規化されています。
+<var>new-attrlist</var>が空の場合は、<var>obj</var>のcadrは<code>(@)</code>になります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003achange_002dname"></a><u>Function:</u> <b>sxml:change-name</b><i> obj new-name</i></dt>
+<dt><a name="index-sxml_003achange_002dname_0021"></a><u>Function:</u> <b>sxml:change-name!</b><i> obj new-name</i></dt>
+<dd><p>SXML要素の名前を破壊的に変更します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aadd_002dattr"></a><u>Function:</u> <b>sxml:add-attr</b><i> obj attr</i></dt>
+<dd><p>属性<var>attr</var>が追加されたSXML要素<var>obj</var>を返します。
+与えられた名前の属性がすでに存在する場合は<code>#f</code>を返します。
+<var>attr</var>は<code>(<var>attr-name</var> <var>attr-value</var>)</code>です。
+<code>sxml:add-attr!</code>に対応する純粋関数的な関数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aadd_002dattr_0021"></a><u>Function:</u> <b>sxml:add-attr!</b><i> obj attr</i></dt>
+<dd><p>要素<var>obj</var>に属性<var>attr</var>を追加します。
+与えられた名前の属性がすでに存在する場合は<code>#f</code>を返します。
+結果のSXMLノードは正規化されています。
+<code>sxml:add-attr</code>に対応するその場で更新する関数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003achange_002dattr"></a><u>Function:</u> <b>sxml:change-attr</b><i> obj attr</i></dt>
+<dd><p>属性<var>attr</var>の値が変更されたSXML要素<var>obj</var>を返します。
+与えられた名前の属性がない場合は<code>#f</code>を返します。
+<var>attr</var>は<code>(<var>attr-name</var> <var>attr-value</var>)</code>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003achange_002dattr_0021"></a><u>Function:</u> <b>sxml:change-attr!</b><i> obj attr</i></dt>
+<dd><p>要素<var>obj</var>の属性の値を変更します。
+<var>attr</var>は<code>(<var>attr-name</var> <var>attr-value</var>)</code>です。
+そのような属性がない場合は<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aset_002dattr"></a><u>Function:</u> <b>sxml:set-attr</b><i> obj attr</i></dt>
+<dt><a name="index-sxml_003aset_002dattr_0021"></a><u>Function:</u> <b>sxml:set-attr!</b><i> obj attr</i></dt>
+<dd><p>要素<var>obj</var>の属性<var>attr</var>をセットします。
+そのような属性がない場合は新しい属性として追加されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aadd_002daux"></a><u>Function:</u> <b>sxml:add-aux</b><i> obj aux-node</i></dt>
+<dd><p>補助ノード<var>aux-node</var>が追加されたSXML要素<var>obj</var>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aadd_002daux_0021"></a><u>Function:</u> <b>sxml:add-aux!</b><i> obj aux-node</i></dt>
+<dd><p>要素<var>obj</var>に補助ノード<var>aux-node</var>を追加します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003asqueeze"></a><u>Function:</u> <b>sxml:squeeze</b><i> obj</i></dt>
+<dt><a name="index-sxml_003asqueeze_0021"></a><u>Function:</u> <b>sxml:squeeze!</b><i> obj</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>とその子孫について、空のリストである属性
+および補助リストを排除します(最小化)。
+最小化され、正規化されたSXML要素が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aclean"></a><u>Function:</u> <b>sxml:clean</b><i> obj</i></dt>
+<dd><p>与えられたSXML要素<var>obj</var>とその子孫について、空リストである属性と、
+全ての補助リストを削除します。
+最小化され、正規化されたSXML要素が返されます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SXPath_00e3_0081_00ae_00e8_00a3_009c_00e5_008a_00a9_00e7_009a_0084_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXML_00e3_0081_00ae_00e3_0083_00a2_00e3_0083_0087_00e3_0082_00a3_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_008b_00e3_0082_0089_00e3_0083_009e_00e3_0083_00bc_00e3_0082_00af_00e3_0082_00a2_00e3_0083_0083_00e3_0083_0097_00e3_0081_00b8_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXPath_00e3_0081_00ae_00e8_00a3_009c_00e5_008a_00a9_00e7_009a_0084_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3-1"></a>
+<h3 class="subsection">11.36.4 SXPathの補助的ユーティリティ</h3>
+
+<p>これらは、SXPathの機能を拡張する便利なユーティリティです。
+</p>
+<dl>
+<dt><a name="index-sxml_003aadd_002dparents"></a><u>Function:</u> <b>sxml:add-parents</b><i> obj . top-ptr</i></dt>
+<dd><p>SXMLノードセットに’親へのポインタ’を追加したものを返します。
+親へのポインタは、<code>(*PARENT* <var>thunk</var>)</code>というフォームを持つ
+補助ノードです。<var>thunk</var>は親要素を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anode_002dparent"></a><u>Function:</u> <b>sxml:node-parent</b><i> rootnode</i></dt>
+<dd><p>高速な’node-parent’関数を返します。
+すなわち、SXML要素を1引数として取り、補助リストで
+<code>*PARENT*</code>ポインタを使ってその親ノードを返す関数を返します。
+’<code>*TOP-PTR*</code>はルートノードへのポインタとして使われます。
+ルートノードに対して適用されると空リストを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003alookup"></a><u>Function:</u> <b>sxml:lookup</b><i> id index</i></dt>
+<dd><p>要素をそのIDを使って探します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="SXML_00e3_0081_008b_00e3_0082_0089_00e3_0083_009e_00e3_0083_00bc_00e3_0082_00af_00e3_0082_00a2_00e3_0083_0083_00e3_0083_0097_00e3_0081_00b8_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXPath_00e3_0081_00ae_00e8_00a3_009c_00e5_008a_00a9_00e7_009a_0084_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_163.html#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="SXML_00e3_0081_008b_00e3_0082_0089_00e3_0083_009e_00e3_0083_00bc_00e3_0082_00af_00e3_0082_00a2_00e3_0083_0083_00e3_0083_0097_00e3_0081_00b8_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b-1"></a>
+<h3 class="subsection">11.36.5 SXMLからマークアップへの変換</h3>
+
+<p>SXMLからXMLやHTMLなどのマークアップされたテキストを生成する手続き。
+もっと高尚な変換器を得たいだけならば、
+<a indepth="true" href="gauche-refj_163.html#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"><code>sxml.serializer</code> - SXMLからXMLとXHTMLのシリアライゼーション</a>をチェックして下さい。
+</p>
+<dl>
+<dt><a name="index-sxml_003aclean_002dfeed"></a><u>Function:</u> <b>sxml:clean-feed</b><i> . fragments</i></dt>
+<dd><p>’fragments’をフィルタします。
+fragmentsは、文字列、文字、数値、手続き、<code>#f</code>、他のフラグメントの
+リストです。
+この関数はツリーを深さ優先でトラバースし、
+文字列、文字、実行された手続きのリストを返し、
+<code>#f</code>と’<code>()</code>を無視します。
+</p>
+<p>全ての意味のあるフラグメントは文字列で、
+この関数の結果に<var>(apply string-append ... )</var>を
+適用すると、そのstring-valueを返します。
+</p>
+<p>これは、Oleg Kiselyovの<code>SRV:send-reply</code>の変種であるとみなすことが
+できるでしょう。
+<code>SRV:send-reply</code>はフラグメントを印字(display)しますが、
+この関数は意味のあるフラグメントのリストを返し、ごみをふるい落とします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr_002d_003exml"></a><u>Function:</u> <b>sxml:attr-&gt;xml</b><i> attr</i></dt>
+<dd><p>属性のXMLマークアップを作ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003astring_002d_003exml"></a><u>Function:</u> <b>sxml:string-&gt;xml</b><i> string</i></dt>
+<dd><p>与えられた文字列中の全ての<code>&lt;</code>、<code>&gt;</code>、<code>&amp;</code>、<code>``</code>、
+<code>'</code>を対応する文字実体参照に置き換えた、文字列あるいは
+文字列のリストを返します。
+<code>sxml:string-&gt;html</code>も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003asxml_002d_003exml"></a><u>Function:</u> <b>sxml:sxml-&gt;xml</b><i> tree</i></dt>
+<dd><p>SXML-&gt;XML変換に特化され最適化されたバージョンのノードディスパッチです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003aattr_002d_003ehtml"></a><u>Function:</u> <b>sxml:attr-&gt;html</b><i> attr</i></dt>
+<dd><p>属性のHTMLマークアップを作ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003astring_002d_003ehtml"></a><u>Function:</u> <b>sxml:string-&gt;html</b><i> string</i></dt>
+<dd><p>与えられた文字列で、それがエンコーディングを必要とする文字、
+<var>&lt;</var>、<var>&gt;</var>、<var>&amp;</var>、<var>“</var>を含まないことをチェックします。
+<a indepth="true" href="gauche-refj_167.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_0097_00e3_0083_00ab_00e3_0081_00aaHTML_00e3_0083_0089_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00a1_00e3_0083_00b3_00e3_0083_0088_00e3_0081_00ae_00e6_00a7_008b_00e7_00af_0089"><code>text.html-lite</code> - シンプルなHTMLドキュメントの構築</a>の
+<code>html-escape-string</code>も参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003anon_002dterminated_002dhtml_002dtag_003f"></a><u>Function:</u> <b>sxml:non-terminated-html-tag?</b><i> tag</i></dt>
+<dd><p>この述語は、“終了タグのない”HTML 4.0のタグに対して<code>#t</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sxml_003asxml_002d_003ehtml"></a><u>Function:</u> <b>sxml:sxml-&gt;html</b><i> tree</i></dt>
+<dd><p>SXML-&gt;HTML変換に対して特化され最適化されたバージョンのノードディスパッチ
+です。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXPath_00e3_0081_00ae_00e8_00a3_009c_00e5_008a_00a9_00e7_009a_0084_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_163.html#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e6_00a7_008b_00e9_0080_00a0_00e3_0082_0092_00e6_0093_008d_00e4_00bd_009c_00e3_0081_0099_00e3_0082_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

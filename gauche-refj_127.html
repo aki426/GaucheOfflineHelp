@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.1 binary.io - バイナリI/O</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.1 binary.io - バイナリI/O">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.1 binary.io - バイナリI/O">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="binary_002eio-_002d-_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO"></a>
+<h2 class="section">11.1 <code>binary.io</code> - バイナリI/O</h2>
+
+<dl>
+<dt><a name="index-binary_002eio"></a><u>Module:</u> <b>binary.io</b></dt>
+<dd><a name="index-binary_002eio-1"></a>
+<p>このモジュールは数値データを読み書きするバイナリ入出力用の基本手続きを提
+供します。各データはポートあるいはユニフォームベクタ
+(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照)から読み込み、あるいはそれらへ書き出すことが
+できます。
+構造をもつバイナリデータの入出力については、便利な
+<code>pack</code>ユーティリティがこのモジュールを使って実装されています
+(<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"><code>binary.pack</code> - バイナリデータのパック</a>を参照してください)。
+スピードあるいはエンディアンの柔軟な制御などをやりたいときにこのモジュー
+ルが使えます。
+</p>
+<p>バイナリのブロック入出力については<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>を参照してくだ
+さい。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3-2"></a>
+<h3 class="subheading">エンディアン</h3>
+<p>このモジュールのほとんどの手続はオプション引数として<var>endian</var>引数を
+とります。これは<code>big-endian</code>、<code>little-endian</code>、
+<code>arm-little-endian</code>のいずれかのシンボルでなければなりません。
+エンディアン引数が省略された場合には、組込みパラメータ<code>default-endian</code>
+の現在値が使われます (<a indepth="true" href="gauche-refj_41.html#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3">エンディアン</a>参照)。
+(<code>read-u8</code>の ような
+8ビット入出力手続ではエンディアン引数は意味がありませんが、
+一貫性のため受け入れるようにしてあります。)
+</p>
+<a name="g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e3_0082_0092_00e7_0094_00a8_00e3_0081_0084_00e3_0081_009fI_002fO"></a>
+<h3 class="subheading">ポートを用いたI/O</h3>
+
+<dl>
+<dt><a name="index-read_002du8"></a><u>Function:</u> <b>read-u8</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002du16"></a><u>Function:</u> <b>read-u16</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002du32"></a><u>Function:</u> <b>read-u32</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002du64"></a><u>Function:</u> <b>read-u64</b><i> :optional port endian</i></dt>
+<dd><p>それぞれ指定したエンディアンで<var>port</var>から8、16、32、64ビット符号無
+整数を読み込みます。<var>port</var>が省略された場合は、現在の入力ポートが使
+われます。<var>port</var>が整数の読み込みが完了する前にEOFに到達してしまっ
+た場合にはEOFが返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002ds8"></a><u>Function:</u> <b>read-s8</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002ds16"></a><u>Function:</u> <b>read-s16</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002ds32"></a><u>Function:</u> <b>read-s32</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002ds64"></a><u>Function:</u> <b>read-s64</b><i> :optional port endian</i></dt>
+<dd><p>それぞれ指定したエンディアンで<var>port</var>から8、16、32、64ビット、2の補
+数符号付き整数を読み込みます。<var>port</var>が省略された場合は、現在の入力
+ポートが使われます。<var>port</var>が整数の読み込みが完了する前にEOFに到
+達してしまった場合にはEOFが返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002duint"></a><u>Function:</u> <b>read-uint</b><i> size :optional port endian</i></dt>
+<dt><a name="index-read_002dsint"></a><u>Function:</u> <b>read-sint</b><i> size :optional port endian</i></dt>
+<dd><p>さらに柔軟性が高く、<var>size</var>オクテットの符号無しあるいは符号付き整数
+を<var>port</var>から指定のエンディアンで読み込みます。
+<var>port</var>が整数の読み込みが完了する前にEOFに到
+達してしまった場合にはEOFが返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002dber_002dinteger"></a><u>Function:</u> <b>read-ber-integer</b><i> :optional port</i></dt>
+<dd><p>X.209のBER圧縮形式整数を読み込みます。BER圧縮形式整数は128進符号無し整
+数です。最上位桁が最初にきます。最下位桁のバイトをのぞき、すべてのバイ
+トの最上位ビットはオンになっています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002du8"></a><u>Function:</u> <b>write-u8</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002du16"></a><u>Function:</u> <b>write-u16</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002du32"></a><u>Function:</u> <b>write-u32</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002du64"></a><u>Function:</u> <b>write-u64</b><i> val :optional port endian</i></dt>
+<dd><p>それぞれ指定したエンディアンで<var>port</var>へ 8、16、32、64ビット、符号無
+し整数として表現されている非負整数<var>val</var>を書き出します。
+<var>val</var>はそれぞれ指定したビット数の範囲で表現できる値でなければなり
+ません。<var>port</var>が省略された場合は、現在の出力ポートが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002ds8"></a><u>Function:</u> <b>write-s8</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002ds16"></a><u>Function:</u> <b>write-s16</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002ds32"></a><u>Function:</u> <b>write-s32</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002ds64"></a><u>Function:</u> <b>write-s64</b><i> val :optional port endian</i></dt>
+<dd><p>それぞれ指定したエンディアンで<var>port</var>へ 8、16、32、64ビット、2の補
+数符号付き整数として表現されている整数<var>val</var>を書き出します。
+<var>val</var>はそれぞれ指定したビット数の範囲で表現できる値でなければなり
+ません。<var>port</var>が省略された場合は、現在の出力ポートが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002duint"></a><u>Function:</u> <b>write-uint</b><i> size val :optional port endian</i></dt>
+<dt><a name="index-write_002dsint"></a><u>Function:</u> <b>write-sint</b><i> size val :optional port endian</i></dt>
+<dd><p>さらに柔軟性が高く、<var>size</var>オクテットの符号無しあるいは符号付き整数
+<var>val</var>を<var>port</var>へ、指定のエンディアンで書き出します。
+<var>port</var>が省略された場合は、現在の出力ポートが使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002dber_002dinteger"></a><u>Function:</u> <b>write-ber-integer</b><i> val :optional port</i></dt>
+<dd><p>BER圧縮形式の非負整数<var>val</var>を<var>port</var>へ書き出します。
+BER圧縮形式については前述の<code>read-ber-integer</code>を見てください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-read_002df16"></a><u>Function:</u> <b>read-f16</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002df32"></a><u>Function:</u> <b>read-f32</b><i> :optional port endian</i></dt>
+<dt><a name="index-read_002df64"></a><u>Function:</u> <b>read-f64</b><i> :optional port endian</i></dt>
+<dd><p>それぞれ、16、32、64ビットの浮動小数点数を読み込みます。
+32ビットはIEEE754単精度、64ビットは倍精度の浮動小数点数です。
+16ビット浮動小数点数は、1ビットの符号、5ビットの指数、10ビットの仮数からなる、
+HDRイメージフォーマット等に使われている形式です。
+</p>
+<p><var>port</var>が省略された場合には、
+現在の入力ポートが使われます。<var>port</var>が数値の読み込みが完了する前に
+EOFに到達してしまった場合にはEOFが返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-write_002df16"></a><u>Function:</u> <b>write-f16</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002df32"></a><u>Function:</u> <b>write-f32</b><i> val :optional port endian</i></dt>
+<dt><a name="index-write_002df64"></a><u>Function:</u> <b>write-f64</b><i> val :optional port endian</i></dt>
+<dd><p>実数値<var>val</var>を、それぞれ16、32、64ビットの浮動小数点数として
+書き出します。
+<var>port</var>が省略された場合には、現在の出力ポートが使われます。
+</p></dd></dl>
+
+
+<a name="g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0082_0092_00e7_0094_00a8_00e3_0081_0084_00e3_0081_009fI_002fO"></a>
+<h3 class="subheading">ユニフォームベクタを用いたI/O</h3>
+
+<p>以下のルーチンでは、引数 <var>uv</var> は任意の型のユニフォームベクタをとり
+えます。<code>u8vector</code> ではない場合には <code>(uvector-alias
+&lt;u8vector&gt; <var>uv</var>)</code> が呼ばれたのと同様の扱いになります。すなわち、
+uvectorの内容を保持するメモリイメージから直接読み込まれます。<var>pos</var>
+引数は当該のメモリ領域の最初からのバイト位置を指定するのに使います(こ
+れはユニフォームベクタの要素のサイズにかかわらず、つねにバイト位置です)。
+</p>
+<dl>
+<dt><a name="index-get_002du8"></a><u>Function:</u> <b>get-u8</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002du16"></a><u>Function:</u> <b>get-u16</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002du32"></a><u>Function:</u> <b>get-u32</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002du64"></a><u>Function:</u> <b>get-u64</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002ds8"></a><u>Function:</u> <b>get-s8</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002ds16"></a><u>Function:</u> <b>get-s16</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002ds32"></a><u>Function:</u> <b>get-s32</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002ds64"></a><u>Function:</u> <b>get-s64</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002df16"></a><u>Function:</u> <b>get-f16</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002df32"></a><u>Function:</u> <b>get-f32</b><i> uv pos :optional endian</i></dt>
+<dt><a name="index-get_002df64"></a><u>Function:</u> <b>get-f64</b><i> uv pos :optional endian</i></dt>
+<dd><p>ユニフォームベクタ <var>uv</var> のバイト位置 <var>pos</var> から指定したフォー
+マットで数値を読み込み、その数値を返します。指定した位置が当該ユニフォー
+ムベクタの内容のある範囲外を参照するものであった場合、エラーを示すシグ
+ナルがあがります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-get_002du16be"></a><u>Function:</u> <b>get-u16be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002du16le"></a><u>Function:</u> <b>get-u16le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002du32be"></a><u>Function:</u> <b>get-u32be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002du32le"></a><u>Function:</u> <b>get-u32le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002du64be"></a><u>Function:</u> <b>get-u64be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002du64le"></a><u>Function:</u> <b>get-u64le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002ds16be"></a><u>Function:</u> <b>get-s16be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002ds16le"></a><u>Function:</u> <b>get-s16le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002ds32be"></a><u>Function:</u> <b>get-s32be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002ds32le"></a><u>Function:</u> <b>get-s32le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002ds64be"></a><u>Function:</u> <b>get-s64be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002ds64le"></a><u>Function:</u> <b>get-s64le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002df16be"></a><u>Function:</u> <b>get-f16be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002df16le"></a><u>Function:</u> <b>get-f16le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002df32be"></a><u>Function:</u> <b>get-f32be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002df32le"></a><u>Function:</u> <b>get-f32le</b><i> uv pos</i></dt>
+<dt><a name="index-get_002df64be"></a><u>Function:</u> <b>get-f64be</b><i> uv pos</i></dt>
+<dt><a name="index-get_002df64le"></a><u>Function:</u> <b>get-f64le</b><i> uv pos</i></dt>
+<dd><p>これらは、<code>get-*</code> 手続のエンディアン(ビッグエンディアン <code>be</code>
+あるいはリトルエンディアン <code>le</code>)を指定した版です。スピードを要求
+されるコードではオプション引数処理のオーバーヘッドを避けるためこちらを
+使うのがいいでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-put_002du8_0021"></a><u>Function:</u> <b>put-u8!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002du16_0021"></a><u>Function:</u> <b>put-u16!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002du32_0021"></a><u>Function:</u> <b>put-u32!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002du64_0021"></a><u>Function:</u> <b>put-u64!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002ds8_0021"></a><u>Function:</u> <b>put-s8!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002ds16_0021"></a><u>Function:</u> <b>put-s16!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002ds32_0021"></a><u>Function:</u> <b>put-s32!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002ds64_0021"></a><u>Function:</u> <b>put-s64!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002df16_0021"></a><u>Function:</u> <b>put-f16!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002df32_0021"></a><u>Function:</u> <b>put-f32!</b><i> uv pos val :optional endian</i></dt>
+<dt><a name="index-put_002df64_0021"></a><u>Function:</u> <b>put-f64!</b><i> uv pos val :optional endian</i></dt>
+<dd><p>数値 <var>val</var> をユニフォームベクタ <var>uv</var> のバイト位置 <var>pos</var> か
+ら指定されたフォーマットで書き出します。指定した位置が当該ユニフォーム
+ベクタの内容のある範囲外を参照するものであった場合、エラーを示すシグナ
+ルがあがります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-put_002du16be_0021"></a><u>Function:</u> <b>put-u16be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002du16le_0021"></a><u>Function:</u> <b>put-u16le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002du32be_0021"></a><u>Function:</u> <b>put-u32be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002du32le_0021"></a><u>Function:</u> <b>put-u32le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002du64be_0021"></a><u>Function:</u> <b>put-u64be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002du64le_0021"></a><u>Function:</u> <b>put-u64le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002ds16be_0021"></a><u>Function:</u> <b>put-s16be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002ds16le_0021"></a><u>Function:</u> <b>put-s16le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002ds32be_0021"></a><u>Function:</u> <b>put-s32be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002ds32le_0021"></a><u>Function:</u> <b>put-s32le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002ds64be_0021"></a><u>Function:</u> <b>put-s64be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002ds64le_0021"></a><u>Function:</u> <b>put-s64le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002df16be_0021"></a><u>Function:</u> <b>put-f16be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002df16le_0021"></a><u>Function:</u> <b>put-f16le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002df32be_0021"></a><u>Function:</u> <b>put-f32be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002df32le_0021"></a><u>Function:</u> <b>put-f32le!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002df64be_0021"></a><u>Function:</u> <b>put-f64be!</b><i> uv pos val</i></dt>
+<dt><a name="index-put_002df64le_0021"></a><u>Function:</u> <b>put-f64le!</b><i> uv pos val</i></dt>
+<dd><p>これらは、<code>put-*</code> 手続のエンディアン(ビッグエンディアン <code>be</code>
+あるいはリトルエンディアン <code>le</code>)を指定した版です。スピードを要求
+されるコードではオプション引数処理のオーバーヘッドを避けるためこちらを
+使うのがいいでしょう。
+</p></dd></dl>
+
+<a name="g_t_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00b8_00e3_0081_00ae_00e6_00b3_00a8"></a>
+<h3 class="subheading">互換性への注</h3>
+
+<p><code>read-u8</code> などは <code>read-binary-uint8</code> と呼ばれていたもので、
+<code>read-f32</code> や <code>read-f64</code> はそれぞれ <code>read-binary-float</code>、
+<code>read-binary-double</code> と呼ばれていたものです。
+これらの古い名前は後方互換のためいまのところサポートされていますが、使
+用については非推奨とします。この変更は名前の短縮とユニフォームベクタと
+の一貫性維持のために行われました。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

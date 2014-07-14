@@ -1,0 +1,802 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.4 gauche.collection - コレクションフレームワーク</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.4 gauche.collection - コレクションフレームワーク">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.4 gauche.collection - コレクションフレームワーク">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_78.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_77.html#C-in-S-expression" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002ecollection-_002d-_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<h2 class="section">9.4 <code>gauche.collection</code> - コレクションフレームワーク</h2>
+
+<dl>
+<dt><a name="index-gauche_002ecollection"></a><u>Module:</u> <b>gauche.collection</b></dt>
+<dd><a name="index-gauche_002ecollection-1"></a>
+<p>このモジュールは、様々なコレクションに対して繰り返し処理を行う総称関数を提供します。
+Schemeの規格は<code>map</code>や<code>for-each</code>などの繰り返し手続きを定義しており、
+またSRFI-1(<a indepth="true" href="gauche-refj_110.html#List-library"><code>srfi-1</code> - List library</a>参照)は更に数多くの繰り返し手続きを提供しますが、
+それらはリストに対してしか動作しません。
+</p>
+<p>このモジュールはオブジェクトシステムのメソッドディスパッチを利用して、
+これらの手続きをベクタやハッシュテーブルのような一般のコレクションタイプに対しても
+効率良く動作するように拡張します。また、ユーザ定義のクラスにこれらの操作を実装するための
+簡単な方法も提供します。今のところ、次のような総称関数が提供されています。
+</p>
+<dl compact="compact">
+<dt> マッピング</dt>
+<dd><p><code>fold</code>, <code>fold2</code>, <code>fold3</code>,
+<code>map</code>, <code>map-to</code>, <code>map-accum</code>, <code>for-each</code>
+</p></dd>
+<dt> 選択と探索</dt>
+<dd><p><code>find</code>, <code>find-min</code>, <code>find-max</code>, <code>find-min&amp;max</code>,
+<code>filter</code>, <code>filter-to</code>,
+<code>remove</code>, <code>remove-to</code>, <code>partition</code>, <code>partition-to</code>
+<code>group-collection</code>
+</p></dd>
+<dt> 変換</dt>
+<dd><p><code>coerce-to</code>
+</p></dd>
+<dt> その他</dt>
+<dd><p><code>size-of</code>, <code>lazy-size-of</code>
+</p></dd>
+<dt> 基礎的なイテレータ構築メソッド</dt>
+<dd><p><code>call-with-iterator</code>, <code>call-with-builder</code>,
+<code>with-iterator</code>, <code>with-builder</code>, <code>call-with-iterators</code>.
+</p></dd>
+</dl>
+
+<p>これらの操作は、<em>コレクション</em>とそのサブクラスである
+<em>シーケンス</em>に対して動作します。コレクションは、その要素を全て
+訪れる方法が用意されているようなオブジェクトの集合です。
+シーケンスは、要素間に全順序関係が定義されておりインデックスで要素を取り出すことが
+できるようなコレクションです。
+</p>
+<p>次にあげるGaucheの組み込みオブジェクトはシーケンスあるいはコレクションとして動作します。
+</p><dl compact="compact">
+<dt> <code>&lt;list&gt;</code></dt>
+<dd><p>シーケンス
+</p></dd>
+<dt> <code>&lt;vector&gt;</code></dt>
+<dd><p>シーケンス
+</p></dd>
+<dt> <code>&lt;string&gt;</code></dt>
+<dd><p>文字のシーケンス
+</p></dd>
+<dt> <code>&lt;hash-table&gt;</code></dt>
+<dd><p>コレクション。各要素はキーと値のペア。
+</p></dd>
+<dt> <code>&lt;s8vector&gt;, &lt;u8vector&gt;, … &lt;f64vector&gt;</code></dt>
+<dd><p>シーケンス。メソッドは<code>srfi-4</code>モジュール内で定義されます。
+<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>srfi-4</code> - 単一型のベクタ</a>参照。
+</p></dd>
+</dl>
+
+<p><a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>も参照してください。シーケンス特有のメソッドが
+追加されます。
+</p>
+<p>オブジェクトの集合を返すようなメソッド、すなわち
+<code>map</code>、<code>filter</code>、<code>remove</code>および<code>partition</code>は、
+リストを返します。対応する“-to”がつくメソッド
+(<code>map-to</code>、<code>filter-to</code>、<code>remove-to</code>、<code>partition-to</code>)
+はコレクションクラスも引数に取り、そのクラスのコレクションを返します。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0">9.4.1 コレクションに対するマッピング</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2">9.4.2 コレクションからの選択と探索</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e6_00a7_0098_00e3_0080_0085_00e3_0081_00aa_00e6_0093_008d_00e4_00bd_009c">9.4.3 コレクションに対する様々な操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089">9.4.4 基礎的なイテレータ構築メソッド</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ae_00e5_00ae_009f_00e8_00a3_0085">9.4.5 コレクションの実装</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0-1"></a>
+<h3 class="subsection">9.4.1 コレクションに対するマッピング</h3>
+
+<p>これらのジェネリックファンクションは標準のマッピング手続きを拡張します。
+要素だけでなくそのインデックスも必要な場合は<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097">シーケンス上のマップ</a>を
+参照して下さい。
+</p>
+<dl>
+<dt><a name="index-fold-1"></a><u>Generic function:</u> <b>fold</b><i> proc knil coll coll2 …</i></dt>
+<dd><p><var>fold</var> (<a indepth="true" href="gauche-refj_44.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">他のリスト手続き</a>参照) の自然な拡張です。
+</p>
+<p>コレクション<var>coll</var>の各要素<var>Ei</var>に対して、手続き<var>proc</var>が
+(<var>proc</var> <var>Ei</var> <var>Ri-1</var>) のように呼ばれます。ここで、
+<var>Ri-1</var> は <var>i</var> &gt; 0 に対しては (<var>i</var>-1)番目の<var>proc</var>の呼び出しの
+結果であり、<var>R0</var>は<var>knil</var>です。最後の<var>proc</var>の戻り値を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(fold + 0 '#(1 2 3 4)) ⇒ 10
+(fold cons '() "abc")  ⇒ (#\c #\b #\a)
+</pre></td></tr></tbody></table>
+
+<p><var>coll</var>がシーケンスでもある場合、要素はシーケンスの順に<var>proc</var>に渡されます。
+そうでなければ繰り返しの順序は未定義です。
+</p>
+<p>註：コレクションに対する<code>fold-right</code>は提供されません。コレクションでは
+要素の順序は定義されないため、意味のあるトラバースをするのには
+<code>fold</code>だけあれば十分だからです。
+しかし、シーケンスに対しては<code>fold-right</code>が定義されます。
+<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097">シーケンス上のマップ</a>を参照して下さい。
+</p>
+<p>複数のコレクションを<code>fold</code>に渡すこともできます (但し、その全てがシーケンスで
+なければあまり意味のある操作では無いでしょう)。
+<var>k</var>番目のコレクションの<var>i</var>番目の要素を<var>E(k, i)</var>とするとき、
+<var>proc</var>は以下のように呼ばれます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>proc</var> <var>E(0,i)</var> <var>E(1,i)</var> … <var>E(K-1,i)</var> <var>Ri-1</var>)
+</pre></td></tr></tbody></table>
+
+<p>異なる型のコレクションを混ぜて扱うことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(fold acons '() "abc" '#(1 2 3))
+  ⇒ ((#\c 3) (#\b 2) (#\a 1))
+
+;; <span class="roman">二つのベクタの内積を計算</span>
+(fold (lambda (a b r) (+ (* a b) r)) 0
+      '#(3 5 7) '#(2 4 6))
+  ⇒ 68
+</pre></td></tr></tbody></table>
+
+<p>複数のコレクションが与えられた場合、<code>fold</code>は少なくともひとつのコレクションが
+終了した時点で終了します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-fold2"></a><u>Generic function:</u> <b>fold2</b><i> proc knil1 knil2 coll coll2 …</i></dt>
+<dt><a name="index-fold3"></a><u>Generic function:</u> <b>fold3</b><i> proc knil1 knil2 knil3 coll coll2 …</i></dt>
+<dd><p><code>fold</code>と似ていますが、1つではなくそれぞれ2, 3個の状態値を
+持ち回ります。状態値は<var>knilN</var>によって初期化されます。
+手続き<var>proc</var>はコレクション<var>collN</var>の各要素値と状態値を
+引数として取り、<code>fold2</code>の場合は2個、<code>fold3</code>の場合は3個の
+値を返さねばなりません。返された値が次の繰り返しでの状態値として
+使われます。最後に返された値が<code>fold2</code>, <code>fold3</code>の戻り値と
+なります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(fold2 (lambda (elt a b) (values (min elt a) (max elt b)))
+       256 0 '#u8(33 12 142 1 74 98 12 5 99))
+ ⇒ 1 and 142  ;; find minimum and maximum values
+</pre></td></tr></tbody></table>
+
+<p>下の<code>map-accum</code>も参照。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-map-1"></a><u>Generic function:</u> <b>map</b><i> proc coll coll2 …</i></dt>
+<dd><p>組み込み手続き<code>map</code> (<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0082_0092_00e3_0081_009f_00e3_0081_00a9_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">リストをたどる手続き</a>参照) を拡張します。
+コレクション<var>coll</var>の各要素に手続き<var>proc</var>を適用し、その結果をリストにして
+返します。
+</p>
+<p><var>coll</var>がシーケンスでもある場合、要素はシーケンスの順に<var>proc</var>に渡されます。
+そうでなければ繰り返しの順序は未定義です。
+</p>
+<p>複数のコレクションが与えられた場合、<var>proc</var>は各コレクションからの要素を引数として
+呼び出されます。<code>map</code>はひとつでもコレクションの最後に到達したら終了します。
+複数のコレクションを渡すのは、コレクションの全てがシーケンスでないとあまり意味がないでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map (lambda (x) (* x 2)) '#(1 2 3))
+  ⇒ #(2 4 6)
+
+(map char-upcase "abc")
+  ⇒ (#\A #\B #\C)
+
+(map + '#(1 2 3) '#(4 5 6))
+  ⇒ (5 7 9)
+</pre></td></tr></tbody></table>
+
+<p><code>map</code>は常にリストを返します。別のコレクション型で結果を得たい場合は、
+次に示す<code>map-to</code>を使って下さい。何故<code>(map char-upcase "abc")</code>が
+<code>"ABC"</code>を返さないのか疑問なら、この最後にあるディスカッションを参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-map_002dto"></a><u>Generic function:</u> <b>map-to</b><i> class proc coll coll2 …</i></dt>
+<dd><p><code>map</code>と同じように動作しますが、結果はクラス<var>class</var>のインスタンスとして返されます。
+<var>class</var>はコレクションクラスでなければなりません。
+また、ビルダーインタフェースを持っている必要があります
+(<a href="#g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089">基礎的なイテレータ構築メソッド</a>参照).
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map-to &lt;vector&gt; + '#(1 2 3) '#(4 5 6))
+  ⇒ #(5 7 9)
+
+(map-to &lt;string&gt; char-upcase "def")
+  ⇒ "DEF"
+
+(map-to &lt;vector&gt; char=? "bed" "pet")
+  ⇒ #(#f #t #f)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-map_002daccum"></a><u>Generic function:</u> <b>map-accum</b><i> proc seed coll1 coll2 …</i></dt>
+<dd><p>状態値を持ち回りながら<var>proc</var>のコレクションの各要素への呼び出しを集めます。
+<var>proc</var>は次のように呼ばれます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>proc</var> <var>elt1</var> <var>elt2</var> … <var>seed</var>)
+</pre></td></tr></tbody></table>
+<p>ここで<var>elt1</var> <var>elt2</var> …は
+<var>coll1</var> <var>coll2</var> …の各要素です。
+<var>proc</var>は2つの値を返さねばなりません。最初の値が<code>map</code>のように
+リストへと集められます。2つ目の値は次の<var>proc</var>の呼び出しの<var>seed</var>
+として使われます。
+</p>
+<p>いずれかのコレクションの要素を使い切った時点で、<code>map-accum</code>は
+2つの値を返します。最初の値は<var>proc</var>の最初の戻り値をリストにしたもの、
+2番目の値は<var>proc</var>の最後の呼び出しの2番目の戻り値です。
+</p>
+<p>もし与えられたコレクションがシーケンスであった場合は、
+<var>proc</var>はシーケンスの順序通りに適用されます。
+</p>
+<p>この手続きはHaskellの<code>mapAccumL</code>と似ています。但し、
+<code>proc</code>の引数と戻り値の順が逆転していることに注意して下さい。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-for_002deach-1"></a><u>Generic function:</u> <b>for-each</b><i> proc coll coll2 …</i></dt>
+<dd><p>組み込み手続き<code>for-each</code> (<a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0082_0092_00e3_0081_009f_00e3_0081_00a9_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">リストをたどる手続き</a>参照) を拡張します。
+コレクション<var>coll</var>の各要素に手続き<var>proc</var>を適用します。
+<var>proc</var>の結果は捨てられます。<code>for-each</code>の結果は未定義です。
+</p>
+<p><var>coll</var>がシーケンスでもある場合、要素はシーケンスの順に<var>proc</var>に渡されます。
+そうでなければ繰り返しの順序は未定義です。
+</p>
+<p>複数のコレクションが与えられた場合、<var>proc</var>は各コレクションからの要素を引数として
+呼び出されます。<code>for-each</code>はひとつでもコレクションの最後に到達したら終了します。
+複数のコレクションを渡すのは、コレクションの全てがシーケンスでないとあまり意味がないでしょう。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-fold_0024-1"></a><u>Generic Function:</u> <b>fold$</b><i> proc</i></dt>
+<dt><a name="index-fold_0024-2"></a><u>Generic Function:</u> <b>fold$</b><i> proc knil</i></dt>
+<dt><a name="index-map_0024-1"></a><u>Generic Function:</u> <b>map$</b><i> proc</i></dt>
+<dt><a name="index-for_002deach_0024-1"></a><u>Generic Function:</u> <b>for-each$</b><i> proc</i></dt>
+<dd><p><code>fold</code>、<code>map</code>、<code>for-each</code>の部分評価版です。
+</p></dd></dl>
+
+
+<p><em>Discussion:</em>  <code>map</code>がリスト以外に対して適用されたとき、どういう
+コレクション型を返すべきでしょう。
+<code>(map * '#(1 2) '#(3 4))</code> がベクタを返し、
+<code>(map char-upcase "abc")</code> が文字列を返すようにするほうが「自然」でしょうか。
+</p>
+<p>そのようなインタフェースは単純な場合には動作するように思えますが、
+一般的な拡張は困難です。文字列とベクタが同時に渡されたらどうします?
+更に、コレクションクラスによっては繰り返しインタフェースは持っていても
+ビルダーインタフェースを持っていない場合があり、結果をそのコレクションクラスとして
+返せない場合もあります (データベースレコードのコレクションに対してマップする、
+といった用法を考えてみて下さい)。また、Schemeプログラマは<code>map</code>が
+リストを返すという事実に慣れ親しんでおり、既存のコードも<var>map</var>の戻り値を
+リストを受け取る手続きに渡すことがよく行われています。
+</p>
+<p>そこで、結果の型を明示的に指定する<code>map-to</code>という別のメソッドを定義しました。
+結果の型を渡すのは、CommonLispの<code>map</code>関数にならっていますが、
+Gaucheではクラスメタオブジェクトを渡すようにしたため、メソッドディスパッチを使って
+拡張することが容易です。“-to” のつくメソッドは結果のコレクションのクラスを
+取るというインタフェースはコレクションフレームワーク中で統一的に使われています。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e6_00a7_0098_00e3_0080_0085_00e3_0081_00aa_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2-1"></a>
+<h3 class="subsection">9.4.2 コレクションからの選択と探索</h3>
+
+<dl>
+<dt><a name="index-find-1"></a><u>Generic function:</u> <b>find</b><i> pred coll</i></dt>
+<dd><p><var>pred</var>をコレクション<var>coll</var>の要素に適用してゆきます。<var>pred</var>が
+真の値を返したらそこで打ち切り、その要素を返します。<var>pred</var>が真の値を返す
+要素が無かった場合は<code>#f</code>を返します。
+</p>
+<p><var>coll</var>がシーケンスでもある場合、要素はシーケンスの順に<var>proc</var>に渡されます。
+そうでなければ繰り返しの順序は未定義です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(find char-upper-case? "abcDe") ⇒ #\D
+(find even? '#(1 3 4 6)) ⇒ 4
+(find even? '(1 3 5 7))  ⇒ #F
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-find_002dmin"></a><u>Generic function:</u> <b>find-min</b><i> coll :key key compare default</i></dt>
+<dt><a name="index-find_002dmax"></a><u>Generic function:</u> <b>find-max</b><i> coll :key key compare default</i></dt>
+<dd><p>コレクション<var>coll</var>から最小もしくは最大の要素を探して返します。
+</p>
+<p>コレクションの各要素に対し、1引数の手続き<var>key</var>が適用され、
+その戻り値が比較対象となります。<var>key</var>のデフォルトは<code>identity</code>です。
+比較対象の値は2引数の手続き<var>compare</var>で比較されます。
+<var>compare</var>のデフォルトは<code>&lt;</code>です。コレクション中の要素数が
+1つ以下の場合は<var>compare</var>は呼ばれません。
+</p>
+<p>コレクションが空の場合は、<var>default</var>で指定した値が返されます。
+<var>default</var>のデフォルト値は<code>#f</code>です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(find-min '((a . 3) (b . 9) (c . -1) (d . 7)) :key cdr) ⇒ (c . -1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-find_002dmin_0026max"></a><u>Generic function:</u> <b>find-min&amp;max</b><i> coll :key key compare default default-min default-max</i></dt>
+<dd><p><code>find-min</code>と<code>find-max</code>の動作を同時に行い、
+最小と最大の要素をふたつの値として返します。
+キーワード引数<var>key</var>、<var>compare</var>、<var>default</var>の意味は
+<code>find-min</code>、<code>find-max</code>と同じです。
+また、<var>default-min</var>と<var>default-max</var>を使って
+最小要素と最大要素のデフォルト値を別々に指定することもできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-filter-1"></a><u>Generic function:</u> <b>filter</b><i> pred coll</i></dt>
+<dd><p>コレクション<var>coll</var>中の要素のうち、述語手続き<var>pred</var>が真の値を返したものの
+リストを返します。コレクションがシーケンスであれば、結果の要素の順序は元のシーケンスの
+順序と同じになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(filter char-upper-case? "Hello, World")
+  ⇒ (#\H #\W)
+(filter even? '#(1 2 3 4)) ⇒ (2 4)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-filter_002dto"></a><u>Generic function:</u> <b>filter-to</b><i> class pred coll</i></dt>
+<dd><p><code>filter</code>と同じですが、結果のコレクションが<var>class</var>のインスタンスで
+返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(filter-to &lt;vector&gt; even? '#(1 2 3 4)) ⇒ #(2 4)
+(filter-to &lt;string&gt; char-upper-case? "Hello, World")
+  ⇒ "HW"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-remove-1"></a><u>Generic function:</u> <b>remove</b><i> pred coll</i></dt>
+<dd><p>コレクション<var>coll</var>中の要素のうち、述語手続き<var>pred</var>が偽の値を返したものの
+リストを返します。コレクションがシーケンスであれば、結果の要素の順序は元のシーケンスの
+順序と同じになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(remove char-upper-case? "Hello, World")
+  ⇒ (#\e #\l #\l #\o #\, #\space #\o #\r #\l #\d)
+(remove even? '#(1 2 3 4)) ⇒ (1 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-remove_002dto"></a><u>Generic function:</u> <b>remove-to</b><i> class pred coll</i></dt>
+<dd><p><code>remove</code>と同じですが、結果のコレクションが<var>class</var>のインスタンスで
+返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(remove-to &lt;vector&gt; even? '#(1 2 3 4)) ⇒ #(1 3)
+(remove-to &lt;string&gt; char-upper-case? "Hello, World")
+  ⇒ "ello, orld"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-partition"></a><u>Generic function:</u> <b>partition</b><i> pred coll</i></dt>
+<dd><p><code>filter</code>と<code>remove</code>を同時に行います。
+二つのリストを返します。最初のリストはコレクション<var>coll</var>の要素のうち
+述語手続き<var>pred</var>が真の値を返したものから構成され、二つ目のリストは
+そうでない要素から構成されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(partition char-upper-case? "PuPu")
+  ⇒ (#\P #\P) <span class="roman">and</span> (#\u #\u)
+(partition even? '#(1 2 3 4))
+  ⇒ (2 4) <span class="roman">and</span> (1 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-partition_002dto"></a><u>Generic function:</u> <b>partition-to</b><i> class pred coll</i></dt>
+<dd><p><code>partition</code>と同じですが、結果がクラス<var>class</var>のコレクションとして
+返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(partition-to &lt;string&gt; char-upper-case? "PuPu")
+  ⇒ "PP" <span class="roman">and</span> "uu"
+(partition-to &lt;vector&gt; even? '#(1 2 3 4))
+  ⇒ #(2 4) <span class="roman">and</span> #(1 3)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-group_002dcollection"></a><u>Generic function:</u> <b>group-collection</b><i> coll :key key test</i></dt>
+<dd><p><code>partition</code>を汎化したものです。<var>coll</var>内の要素を同じキーを
+持つ値同士でグループ化し、リストのリストにして返します。
+キーの値は要素に手続き<var>key</var>を適用することで得られます。<var>key</var>の
+デフォルト値は<code>identity</code>です。<var>coll</var>の各要素に対して、
+<var>key</var>は正確に一回だけ呼ばれます。
+キーの等価性判定には手続き<var>test</var>が使われます。デフォルト値は<code>eqv?</code>です。
+</p>
+<p><var>coll</var>がシーケンスである場合、結果の各グループに含まれる要素の順は
+もとのシーケンス内での順と同じになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(group-collection '(1 2 3 2 3 1 2 1 2 3 2 3))
+  ⇒ ((1 1 1) (2 2 2 2 2) (3 3 3 3))
+
+(group-collection '(1 2 3 2 3 1 2 1 2 3 2 3) :key odd?)
+  ⇒ ((1 3 3 1 1 3 3) (2 2 2 2 2))
+
+(group-collection '(("a" 2) ("b" 5) ("c" 1) ("b" 3) ("a" 6))
+  :key car :test string=?)
+  ⇒ ((("a" 2) ("a" 6)) (("b" 5) ("b" 3)) (("c" 1)))
+</pre></td></tr></tbody></table>
+
+<p><code>gauche.sequence</code>の<code>group-sequence</code>も参照して下さい
+(<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">その他のシーケンス上の操作</a>参照)。
+隣り合う要素同士でグループ化するものです。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e6_00a7_0098_00e3_0080_0085_00e3_0081_00aa_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e6_00a7_0098_00e3_0080_0085_00e3_0081_00aa_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h3 class="subsection">9.4.3 コレクションに対する様々な操作</h3>
+
+<dl>
+<dt><a name="index-size_002dof"></a><u>Generic function:</u> <b>size-of</b><i> coll</i></dt>
+<dd><p>コレクションの要素数を返します。
+デフォルトのメソッドは、コレクション中の要素をすべて数え上げるものですが、
+あまり効率は良くないでしょう。また、無限個の要素を持つコレクションでは
+帰ってきません。多くのコレクションクラスはより効率の良い方法でこのメソッドを定義しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lazy_002dsize_002dof"></a><u>Generic function:</u> <b>lazy-size-of</b><i> coll</i></dt>
+<dd><p>コレクションの要素数か、もしくはそれを計算するプロミスを返します。
+このメソッドの目的は、要素数の計算が高価な場合にそれを避けることにあります。
+しばしば、呼び出し側では最適化のための参考値として要素数が欲しい場合があり、
+そういった場合は要素数を計算するために時間を費すのは望ましくありません。
+このメソッドを代わりに呼び出して、結果がプロミスであればそれを使わない、
+という選択ができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-coerce_002dto"></a><u>Generic function:</u> <b>coerce-to</b><i> class coll</i></dt>
+<dd><p>コレクション<var>coll</var>を、クラス<var>class</var>のインスタンスである
+別のコレクションへと変換します。<var>coll</var>がシーケンスであり、
+<var>class</var>がシーケンスクラスであれば、元のシーケンスの順序は保存されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(coerce-to &lt;vector&gt; '(1 2 3 4))
+  ⇒ #(1 2 3 4)
+
+(coerce-to &lt;string&gt; '#(#\a #\b #\c))
+  ⇒ "abc"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e6_00a7_0098_00e3_0080_0085_00e3_0081_00aa_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ae_00e5_00ae_009f_00e8_00a3_0085" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089-1"></a>
+<h3 class="subsection">9.4.4 基礎的なイテレータ構築メソッド</h3>
+
+<p>ここに挙げるメソッドは、他のコレクションメソッドの基礎となるものです。
+メソッドのインタフェースは一般のコードで使われることよりも、
+効率良く他の繰り返しメソッドを記述するのに便利なように設計されています。
+何故このインタフェースを基礎のメソッドとして選んだかについてはこの章の最後に説明します。
+</p>
+<dl>
+<dt><a name="index-call_002dwith_002diterator"></a><u>Generic function:</u> <b>call-with-iterator</b><i> collection proc :key start</i></dt>
+<dd><p>基礎となるイテレータ構築メソッドです。このメソッドはコレクション<var>collection</var>
+から繰り返しのための二つの手続きを作成し、それらを引数として手続き<var>proc</var>を
+呼びます。作られる最初の手続きは終了判定手続きで、引数無しで呼び出され、繰り返しが
+終了していれば<code>#t</code>を、まだ要素が残っていれば<code>#f</code>を返します。
+作られる二番目の手続きはインクリメント手続きで、呼ばれる度に現在の要素を返し、
+内部のポインタを次の要素へと進めます。終了判定手続きが<code>#t</code>を返した後に
+インクリメント手続きを呼んだ場合の動作は未定義です。
+</p>
+<p>コレクションがシーケンスでもある場合、インクリメント手続きはシーケンスの順番に要素を取り出します。
+キーワード引数<var>start</var>が与えられていればイテレーションの範囲は
+<var>start</var>番目の要素から最後の要素までとなります。シーケンスでないコレクションに
+対しては<var>start</var>引数は意味を持ちません。
+</p>
+<p><var>call-with-iterator</var>のメソッド実装は、イテレータのエクステントを
+そのメソッドのダイナミックスコープ内に限ることを許されます。例えば、
+メソッドは<var>proc</var>を呼ぶ前に何らかのリソースを確保し(データベースへのコネクションなど)、
+<var>proc</var>から戻った後でそれを解放するということができます。
+</p>
+<p>このメソッドは <var>proc</var> が返した値をそのまま返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-iterator '(1 2 3 4 5)
+  (lambda (end? next)
+    (do ((odd-nums 0))
+        ((end?) odd-nums)
+      (when (odd? (next)) (inc! odd-nums)))))
+ ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p>下に示す<code>with-iterator</code>マクロも参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002diterator"></a><u>Macro:</u> <b>with-iterator</b><i> (collection end? next args …) body …</i></dt>
+<dd><p><code>call-with-iterator</code>を簡潔に呼び出すマクロです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-iterator (coll end? next args …) body …)
+ ≡
+(call-with-iterator coll
+  (lambda (end? next) body …)
+   args …)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002diterators"></a><u>Function:</u> <b>call-with-iterators</b><i> collections proc</i></dt>
+<dd><p>N-aryのイテレータメソッドを書くのに便利な手続きです。
+この手続きはコレクションのリスト<var>collections</var>の各コレクションに対して
+<code>call-with-iterator</code>を呼び、二つのリストを作ります。最初のリストには
+終了判定手続きが順に集められており、二つ目のリストにはインクリメント手続きが
+順に集められています。そして、これらのリストを引数として<var>proc</var>を呼び出します。
+<var>proc</var>が返した値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dbuilder"></a><u>Generic function:</u> <b>call-with-builder</b><i> collection-class proc :key size</i></dt>
+<dd><p>基礎的なビルダー構築メソッドです。ビルダーはコレクションをインクリメンタルに
+作成する方法です。コレクションクラスによってはこの手続きを提供しないものもあります。
+</p>
+<p><var>Collection-class</var>は作成されるコレクションのクラスです。
+このメソッドは、追加手続きと結果手続きの二つの手続きを作成し、それらを
+引数として<var>proc</var>を呼びます。追加手続きは一つ引数を取り、それを作成中の
+コレクションに追加します。結果手続きは引数を取らず、作成されたコレクションを返します。
+結果手続きが呼ばれた後で追加手続きを呼んだ場合の動作は未定義です。
+</p>
+<p>作られるコレクションのサイズが分かっている場合、キーワード引数<var>size</var>を与える
+ことができます。コレクションクラスによってはその情報を使って効率的にコレクションを
+作成することができます。その情報を単に無視するコレクションクラスもあります。
+<var>size</var>個より多くの要素が追加されたり、<var>size</var>個の要素が追加される前に
+結果手続きが呼ばれたりした場合の動作は未定義です。
+</p>
+<p>コレクションクラスがシーケンスクラスであった場合、追加手続きは要素を
+シーケンスの順に追加してゆきます。
+</p>
+<p>コレクションクラスによっては、コレクションオブジェクトの初期化のために
+他のキーワード引数を取るかもしれません。
+</p>
+<p>このメソッドは<var>proc</var>が返す値を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-builder &lt;list&gt;
+  (lambda (add! get)
+    (add! 'a) (add! 'b) (add! 'c) (get)))
+ ⇒ (a b c)
+
+(call-with-builder &lt;vector&gt;
+  (lambda (add! get)
+    (add! 'a) (add! 'b) (add! 'c) (get)))
+ ⇒ #(a b c)
+</pre></td></tr></tbody></table>
+
+<p>下に示す<code>with-builder</code>マクロも参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dbuilder"></a><u>Macro:</u> <b>with-builder</b><i> (collection add! get args …) body …</i></dt>
+<dd><p><code>call-with-builder</code>を簡潔に呼び出すマクロです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-builder (coll add! get args …) body …)
+ ≡
+(call-with-builder coll
+  (lambda (add! get) body …)
+  args …)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p><em>Discussion</em>:
+他のイテレータメソッドは全てこのcall-with-iteratorとcall-with-builderの上に構築可能です。
+最低限これらのメソッドを定義すれば、そのクラスはコレクションとして振舞うことができます。
+もちろん最適化のために他のイテレータメソッドを定義しても構いませんが。
+</p>
+<p>どの操作を基礎的なメソッドとするかには議論の余地があります。
+Gaucheでは、作者がよく見るパターンで最も効率が良くなるように考えて現在のスタイルを
+選びました。以下に、他の基礎的なメソッドの可能性を検討します。
+</p>
+<dl compact="compact">
+<dt> <code>fold</code></dt>
+<dd><p><code>fold</code>を最も基礎的なメソッドとして、他のイテレータメソッドをその上に
+構築することも可能です。繰り返しの状態はスタックに置かれるので効率良く走ります。
+<code>fold</code>を基礎とした繰り返し関数を最適化する方法は良く知られています。
+しかし、<code>fold</code>を元にしてジェネレータスタイルのインタフェースを
+作成するのは複雑です。また、複数のコレクションに対しての繰り返しを書くのも
+面倒です。
+</p>
+</dd>
+<dt> CPS</dt>
+<dd><p>繰り返しの中身の手続きに対し、繰り返しを続けるための継続手続きを渡す方法です。
+繰り返しを続けたくなければ、手続きは継続を呼ばすにそのまま戻ります。
+Oleg Kiselyovの記事(<a indepth="true" href="gauche-refj_189.html#oleg2">OLEG2</a>)に指摘されているような、
+リソース管理の問題があります。
+</p>
+</dd>
+<dt> Iterator object</dt>
+<dd><p>C++のイテレータやCommon Lispのジェネレータのようなオブジェクトを使う方法です。
+ループを書くのは容易ですが、終了判定や要素取り出しの度にメソッドディスパッチが
+起こってしまいます。
+</p>
+</dd>
+<dt> Series</dt>
+<dd><p>Common Lispのシリーズはコンパイラがシリーズの使われかたを追跡できれば
+非常に効率の良いコードに変換できます。Gaucheのコンパイラはそこまでのデータフロー解析を
+行っていません。また、それをやったとしても、コレクションクラスを拡張するための方法が
+Gaucheのオブジェクトシステムとはうまく調和しません。
+</p>
+</dd>
+<dt> Macros</dt>
+<dd><p>効率を気にするなら、イテレータをマクロで書いてしまう方法もあります
+(例えばScheme48の<code>iterator</code>マクロなど)。
+効率は良いのですが、拡張するにはマクロを書くことが必要となり、
+Gaucheのオブジェクトシステムとうまく調和しません。
+</p></dd>
+</dl>
+
+<p>現在の実装はイテレータオブジェクトアプローチに近いですが、イテレータオブジェクトを
+作る代わりにクロージャを使うことで内部のループでのメソッドディスパッチを
+避けています。また、現在のインタフェースはリソース管理の問題を解決しています。
+</p>
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ae_00e5_00ae_009f_00e8_00a3_0085"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_79.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0095_00e3_0082_00a3_00e3_0082_00b0_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e6_0083_0085_00e5_00a0_00b1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ae_00e5_00ae_009f_00e8_00a3_0085-1"></a>
+<h3 class="subsection">9.4.5 コレクションの実装</h3>
+
+<p>コレクションクラスの実装に最低限要求されるものには、以下のものがあります。
+</p><ul>
+<li>
+抽象クラス<code>&lt;collection&gt;</code>を継承している。
+</li><li>
+メソッド<code>call-with-iterator</code>が実装されている。
+</li></ul>
+
+<p>これにより、<code>map</code>、<code>for-each</code>、<code>find</code>、<code>filter</code>などの
+イテレータメソッドが動作するようになります。
+</p>
+<p>建設的なメソッド(例えば、コレクションを作るための<code>map-to</code>など)を
+作るためには、メソッド<code>call-with-builder</code>も実装しなければなりません。
+メソッド<code>call-with-builder</code>は、クラスによりディスパッチされるクラスメソッドの
+一種で、インスタンスによりディスパッチされる通常のメソッドとは異なります。
+Gaucheでは、これはメタクラスを使うことによって実装できます。
+最小限のコードは次のようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;your-collection-meta&gt; (&lt;class&gt;) ())
+
+(define-class &lt;your-collection&gt; (&lt;collection&gt;)
+ (...) ;; <span class="roman">slots</span>
+ :metaclass &lt;your-collection-meta&gt;)
+
+(define-method call-with-iterator
+    ((coll &lt;your-collection&gt;) proc . options)
+  …
+  )
+
+(define-method call-with-builder
+     ((coll &lt;your-collection-meta&gt;) proc . options)
+  …
+  )
+</pre></td></tr></tbody></table>
+
+<p>パフォーマンスの最適化のために、他のジェネリック関数をオーバロードすることも
+できます。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_009f_00ba_00e7_00a4_008e_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00a4_00e3_0083_0086_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00bf_00e6_00a7_008b_00e7_00af_0089_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_79.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0095_00e3_0082_00a3_00e3_0082_00b0_00e3_0083_00ac_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e6_0083_0085_00e5_00a0_00b1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

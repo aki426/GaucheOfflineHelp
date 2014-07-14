@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.7 シンボル</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.7 シンボル">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.7 シンボル">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_45.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_44.html#g_t_00e9_0080_00a3_00e6_0083_00b3_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_46.html#g_t_00e3_0082_00ad_00e3_0083_00bc_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab-1"></a>
+<h2 class="section">6.7 シンボル</h2>
+
+<dl>
+<dt><a name="index-_003csymbol_003e"></a><u>Builtin Class:</u> <b>&lt;symbol&gt;</b></dt>
+<dd><a name="index-symbol"></a>
+<p>シンボルを表すクラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_007cname_007c"></a><u>Reader Syntax:</u> <b><code>|<i>name</i>|</code></b></dt>
+<dd><p>R5RSのシンボルの定義では許されていない文字を使った妙な名前のシンボルを表記するのに
+使う構文です。インタプリタが大文字小文字を区別しないモードで走っている場合は、
+大文字を含むシンボルを表記するときにも使えます (<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5">大文字小文字の区別</a>参照)。
+</p>
+<p>この表記はCommonLispから取られました。いくつかのSchemeでも同様の表記を採用しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_0023_003aname"></a><u>Reader Syntax:</u> <b><code>#:<i>name</i></code></b></dt>
+<dd><p>「インターンされていない」シンボルを表記します。インターンされていないシンボルは
+<code>gensym</code>か<code>string-&gt;uninterned-symbol</code>で作ることができます。
+</p>
+<p>インターンされていないシンボルは、良く伝統的なマクロで
+変数衝突を避けるために使われます。インターンされていないシンボルは
+内部のシンボルのテーブルに登録されないため、同じ名前のシンボルでも
+<code>eq?</code>になりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(eq? '#:foo '#:foo) ⇒ #f
+(eq? '#:foo 'foo) ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>インターンされていないシンボルが含まれるS式を、シンボルの同一性を保って
+表記するには、<code>srfi-38</code>記法が使えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let1 s '#:foo) (list s s))
+  ⇒ <span class="roman">prints</span> (#0=#:foo #0#)
+
+(let ((s '#:foo) (t '#:foo)) (list s t s t))
+  ⇒ <span class="roman">prints</span> (#0=#:foo #1=#:foo #0# #1#)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-symbol_003f"></a><u>Function:</u> <b>symbol?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>がシンボルなら<code>#t</code>を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(symbol? 'abc)     ⇒ #t
+(symbol? 0)        ⇒ #f
+(symbol? 'i)       ⇒ #t
+(symbol? '-i)      ⇒ #f
+(symbol? '|-i|)    ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-symbol_002dinterned_003f"></a><u>Function:</u> <b>symbol-interned?</b><i> symbol</i></dt>
+<dd><p>シンボル<var>symbol</var>がインターンされていらば<code>#t</code>を、
+そうでなければ<code>#f</code>を返します。シンボルでないものが渡された場合はエラーとなります。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-symbol_002d_003estring"></a><u>Function:</u> <b>symbol-&gt;string</b><i> symbol</i></dt>
+<dd><p>[R5RS]
+<var>symbol</var>の名前を文字列で返します。返される文字列は変更不可です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(symbol-&gt;string 'foo) ⇒ foo
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003esymbol"></a><u>Function:</u> <b>string-&gt;symbol</b><i> string</i></dt>
+<dd><p>[R5RS]
+文字列<var>string</var>を名前に持つシンボルを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-&gt;symbol "a") ⇒ a
+(string-&gt;symbol "A") ⇒ A
+(string-&gt;symbol "weird symbol name") ⇒ |weird symbol name|
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003euninterned_002dsymbol"></a><u>Function:</u> <b>string-&gt;uninterned-symbol</b><i> string</i></dt>
+<dd><p><code>string-&gt;symbol</code>と似ていますが、作られたシンボルはインターンされません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-&gt;uninterned-symbol "a") ⇒ #:a
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-gensym"></a><u>Function:</u> <b>gensym</b><i> :optional prefix</i></dt>
+<dd><p>インターンされてない、新しいシンボルを作って返します。
+返されるシンボルは、他のシンボルとは決して<code>eq?</code>にならないことが保証されます。
+<var>prefix</var>が与えられた場合は、それは文字列でなければならず、
+それが作られるシンボルのプレフィクスに使われます。これは主としてデバッグを
+容易にするためのものです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-symbol_002dsans_002dprefix"></a><u>Function:</u> <b>symbol-sans-prefix</b><i> symbol prefix</i></dt>
+<dd><p><var>symbol</var>と<var>prefix</var>は共にシンボルでなければなりません。
+<var>prefix</var>が<var>symbol</var>の先頭部分にマッチした場合、
+<var>symbol</var>からマッチ部分を取り除いた名前を持つシンボルを返します。
+マッチしない場合は<code>#f</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(symbol-sans-prefix 'foo:bar 'foo:) ⇒ bar
+(symbol-sans-prefix 'foo:bar 'baz:) ⇒ #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_44.html#g_t_00e9_0080_00a3_00e6_0083_00b3_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_46.html#g_t_00e3_0082_00ad_00e3_0083_00bc_00e3_0083_00af_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

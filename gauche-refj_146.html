@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.20 rfc.cookie - HTTPクッキー</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.20 rfc.cookie - HTTPクッキー">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.20 rfc.cookie - HTTPクッキー">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_145.html#Base64_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_147.html#FTP_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00a2_00e3_0083_00b3_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002ecookie-_002d-HTTP_00e3_0082_00af_00e3_0083_0083_00e3_0082_00ad_00e3_0083_00bc"></a>
+<h2 class="section">11.20 <code>rfc.cookie</code> - HTTPクッキー</h2>
+
+<dl>
+<dt><a name="index-rfc_002ecookie"></a><u>Module:</u> <b>rfc.cookie</b></dt>
+<dd><a name="index-rfc_002ecookie-1"></a>
+<p>RFC 6265で定義されている「クッキー」情報を
+パースしたり構築したりするための手続きを定義しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-parse_002dcookie_002dstring"></a><u>Function:</u> <b>parse-cookie-string</b><i> string :optional version</i></dt>
+<dd><p>リクエスト・ヘッダの Cookie の値のクッキー文字列 <var>string</var> を
+パースします。通常、CGI プログラムでは、同じ情報は環境変数
+<var>HTTP_COOKIE</var> を通して利用できます。
+</p>
+<p>リクエスト・ヘッダ Cookie2 を通してクッキーのバージョンが分かる
+場合は、<var>version</var> へ整数のバージョンとして渡されなければなりません。
+そうでなければ、<code>parse-cookie</code> は <var>string</var> からバージョンを
+取り出します。
+</p>
+<p>結果は以下のフォーマットを持ちます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((&lt;name&gt; &lt;value&gt; [:path &lt;path&gt;] [:domain &lt;domain&gt;] [:port &lt;port&gt;])
+ …)
+</pre></td></tr></tbody></table>
+<p><var>&lt;name&gt;</var> は属性名で、<var>&lt;value&gt;</var> は対応する値です。
+属性が値を持たない場合、<var>&lt;value&gt;</var> は <code>#f</code> になります。
+(属性が NULL 値を持つ場合は、<code>""</code> となることに注意。)
+属性がパスやドメイン、ポート番号のオプションを持つ場合は、
+キーワード-値のペアの形式で与えられます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-construct_002dcookie_002dstring"></a><u>Function:</u> <b>construct-cookie-string</b><i> specs :optional version</i></dt>
+<dd><p>与えられたクッキーの仕様のリストから、<code>Set-cookie2</code> か
+<code>Set-cookie</code> ヘッダに適切なクッキー文字列を作ります。
+</p>
+<p>オプションの <var>version</var> 引数は、クッキー・プロトコルのバージョンを
+指定するものです。0 は古い Netscape スタイルのフォーマットで、1 は
+RFC2965 スタイルのフォーマットです。省略された場合、1 が指定されたものと
+されます。
+</p>
+<p>クッキーの仕様は以下のフォーマットを持ちます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(&lt;name&gt; &lt;value&gt; [:comment &lt;comment&gt;] [:comment-url &lt;url&gt;]
+                [:discard &lt;bool&gt;] [:domain &lt;domain&gt;]
+                [:max-age &lt;age&gt;] [:path &lt;path&gt;]
+                [:port &lt;port-list&gt;] [:secure &lt;bool&gt;] [:http-only &lt;bool&gt;]
+                [:version &lt;version&gt;] [:expires &lt;date&gt;])
+</pre></td></tr></tbody></table>
+<dl compact="compact">
+<dt> <code>&lt;name&gt;</code></dt>
+<dd><p>文字列。クッキーの名前。
+</p></dd>
+<dt> <code>&lt;value&gt;</code></dt>
+<dd><p>クッキーの値。文字列か、値が必要なければ <code>#f</code> 。
+</p></dd>
+<dt> <code>&lt;comment&gt; &lt;url&gt; &lt;domain&gt; &lt;path&gt; &lt;port-list&gt;</code></dt>
+<dd><p>文字列。
+</p></dd>
+<dt> <code>&lt;bool&gt;</code></dt>
+<dd><p>真偽値。
+</p></dd>
+<dt> <code>&lt;age&gt; &lt;version&gt;</code></dt>
+<dd><p>整数。
+</p></dd>
+<dt> <code>&lt;date&gt;</code></dt>
+<dd><p>整数(エポックからの秒数)か、Netscape のクッキー仕様に従うフォーマットされた
+日付文字列。
+</p></dd>
+</dl>
+
+<p>属性値は適切にクォートされます。指定された属性が <var>version</var> に不適切な
+場合は無視されます。古いスタイルと新しいスタイルの両方のクッキー文字列を
+作るために同じ仕様を渡すことができます。
+</p>
+<p>戻り値はそれぞれのクッキー文字列のリストです。(<code>Set-cookie</code> を使う)
+古いスタイルのプロトコルでは、それぞれを独立したヘッダとして送らなければ
+なりません。(<code>Set-cookie2</code> ヘッダを使う)新しいプロトコルでは、
+それらをカンマで繋ぎ、一度に送ることができます。詳細は RFC6265 を見て下さい。
+</p>
+<p>いくつかの例を示します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(construct-cookie-string
+   `(("name" "foo" :domain "foo.com" :path "/"
+                   :expires ,(+ (sys-time) 86400) :max-age 86400)))
+ ⇒ ("name=foo;Domain=foo.com;Path=/;Max-age=86400")
+
+(construct-cookie-string
+   `(("name" "foo" :domain "foo.com" :path "/"
+                   :expires ,(+ (sys-time) 86400) :max-age 86400))
+   0)
+ ⇒
+ ("name=foo;Domain=foo.com;Path=/;Expires=Sun, 09-Sep-2001 01:46:40 GMT")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_145.html#Base64_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_147.html#FTP_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00a2_00e3_0083_00b3_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.16 math.mt-random - Mersenne Twister乱数発生器</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.16 math.mt-random - Mersenne Twister乱数発生器">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.16 math.mt-random - Mersenne Twister乱数発生器">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Mersenne-Twister_00e4_00b9_00b1_00e6_0095_00b0_00e7_0099_00ba_00e7_0094_009f_00e5_0099_00a8"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_141.html#g_t_00e5_00ae_009a_00e6_0095_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_143.html#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="math_002emt_002drandom-_002d-Mersenne-Twister_00e4_00b9_00b1_00e6_0095_00b0_00e7_0099_00ba_00e7_0094_009f_00e5_0099_00a8"></a>
+<h2 class="section">11.16 <code>math.mt-random</code> - Mersenne Twister乱数発生器</h2>
+
+<dl>
+<dt><a name="index-math_002emt_002drandom"></a><u>Module:</u> <b>math.mt-random</b></dt>
+<dd><a name="index-math_002emt_002drandom-1"></a>
+<p>Makoto MatsumotoとTakuji Nishimuraにより開発された、
+“Mersenne Twister”アルゴリズムに基づく、
+仮想的な乱数発生器(RNG)を提供します。
+高速で、2^19937-1という極めて長大な周期を持ちます。
+アルゴリズムの詳細については、<a indepth="true" href="gauche-refj_189.html#MT">MT</a>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cmersenne_002dtwister_003e"></a><u>Class:</u> <b>&lt;mersenne-twister&gt;</b></dt>
+<dd><a name="index-mersenne_002dtwister"></a>
+<p>Mersenne Twister RNGの状態をカプセル化するクラスです。
+このクラスのそれぞれのインスタンスは独自の状態を持ち、
+個別のシードで初期化されていれば、それぞれがランダムビットの
+独立したソースになり得ます。
+</p>
+<p>ランダムシードの値は初期化引数<code>:seed</code>により初期化時に与えるか、
+以下で説明する<code>mt-random-set-seed!</code>を使います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define m (make &lt;mersenne-twister&gt; :seed (sys-time)))
+
+(mt-random-real m) ⇒ 0.10284287848537865
+(mt-random-real m) ⇒ 0.463227748348805
+(mt-random-real m) ⇒ 0.8628500643709712
+…
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-mt_002drandom_002dset_002dseed_0021"></a><u>Function:</u> <b>mt-random-set-seed!</b><i> mt seed</i></dt>
+<dd><p>Mersenne Twister RNG <var>mt</var>にランダムシードの値<var>seed</var>をセットします。
+<var>seed</var>は任意の正の正確整数か、任意長のu32vector
+(<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>srfi-4</code> - 単一型のベクタ</a>参照)が使えます。
+整数の場合は、初期化のために低位の32ビットが使われます。
+u32vectorの場合は、初期化のために624までの要素が使われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mt_002drandom_002dget_002dstate"></a><u>Function:</u> <b>mt-random-get-state</b><i> mt</i></dt>
+<dt><a name="index-mt_002drandom_002dset_002dstate_0021"></a><u>Function:</u> <b>mt-random-set-state!</b><i> mt state</i></dt>
+<dd><p>Mersenne Twister RNG <var>mt</var>を取り出して再インストールします。
+状態は、625要素のu32vectorで表現されます。
+状態はどこにでも保存することができ、仮想的なランダムシーケンスの
+生成を続行するために、<code>&lt;mersenne-twister&gt;</code>のインスタンスとして
+リストアできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mt_002drandom_002dreal"></a><u>Function:</u> <b>mt-random-real</b><i> mt</i></dt>
+<dt><a name="index-mt_002drandom_002dreal0"></a><u>Function:</u> <b>mt-random-real0</b><i> mt</i></dt>
+<dd><p>0.0と1.0の間のランダムな実数を返します。
+1.0は範囲に含まれません。
+<code>mt-random-real</code>は、0.0も範囲に含みませんが、
+<code>mt-random-real0</code>は含みます。
+0.0を含まないのは、SRFI-27ドラフトに依拠しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mt_002drandom_002dinteger"></a><u>Function:</u> <b>mt-random-integer</b><i> mt range</i></dt>
+<dd><p>0から<var>range</var>-1までの正の正確整数をランダムに返します。
+<var>range</var>はいかなる正の正確整数でも構いません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mt_002drandom_002dfill_002du32vector_0021"></a><u>Function:</u> <b>mt-random-fill-u32vector!</b><i> mt u32vector</i></dt>
+<dt><a name="index-mt_002drandom_002dfill_002df32vector_0021"></a><u>Function:</u> <b>mt-random-fill-f32vector!</b><i> mt f32vector</i></dt>
+<dt><a name="index-mt_002drandom_002dfill_002df64vector_0021"></a><u>Function:</u> <b>mt-random-fill-f64vector!</b><i> mt f64vector</i></dt>
+<dd><p>与えられたユニフォームベクタをランダムな数値で埋めます。
+<code>mt-random-fill-u32vector!</code>では、要素は0と2^32-1の間の
+正の正確整数で埋められます。
+<code>mt-random-fill-f32vector!</code>と<code>mt-random-fill-f64vector!</code>
+では、0.0と1.0(含まれない)の間の不正確実数で埋められます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_141.html#g_t_00e5_00ae_009a_00e6_0095_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_143.html#Windows_00e3_0081_00ae_00e3_0082_00b5_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

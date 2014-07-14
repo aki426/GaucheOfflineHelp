@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.2 等価</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.2 等価">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.2 等価">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e7_00ad_0089_00e4_00be_00a1"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_39.html#g_t_00e5_009e_008b_00e3_0081_00a8_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00ad_0089_00e4_00be_00a1-1"></a>
+<h2 class="section">6.2 等価</h2>
+
+<p>Schemeには等価性を判定する汎用的な述語が3つあります。
+また、これらの他に、いくつかの型はその型同士で使える比較手続きを持っています。
+</p>
+<dl>
+<dt><a name="index-eq_003f"></a><u>Function:</u> <b>eq?</b><i> obj1 obj2</i></dt>
+<dd><p>[R5RS]
+最も高速で、細かい区別ができる述語です。
+<var>obj1</var>と<var>obj2</var>がアロケートされる同じ型のオブジェクトで、
+かつ両者がメモリ上の全く同じ場所を占めるオブジェクトを指している場合に
+<code>#t</code>を返します。また、<var>obj1</var>と<var>obj2</var>がともに
+<code>#f</code>, <code>#t</code>あるいは<code>()</code>である場合も<code>#t</code>を返します。
+ポインタ比較と考えても良いでしょう。
+<var>obj1</var>と<var>obj2</var>がともに文字、あるいは数値であった場合の振るまいは
+Schemeの標準では定められていません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(eq? #t #t)               ⇒ #t
+(eq? #t #f)               ⇒ #f
+(eq? 'a 'a)               ⇒ #t
+(eq? 'a 'b)               ⇒ #f
+(eq? (list 'a) (list 'a)) ⇒ #f
+(let ((x (list 'a)))
+  (eq? x x))              ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-eqv_003f"></a><u>Function:</u> <b>eqv?</b><i> obj1 obj2</i></dt>
+<dd><p>[R5RS]
+<var>obj1</var>と<var>obj2</var>がともに正確な数値、もしくはともに(NaN以外の)不正確な数値である場合、
+<code>(= <var>obj1</var> <var>obj2</var>)</code>が真であれば<code>#t</code>が、偽であれば<code>#f</code>が
+返されます。
+<var>obj1</var>と<var>obj2</var>がともに文字である場合、
+<code>(char=? <var>obj1</var> <var>obj2</var>)</code>が真であれば<code>#t</code>が、偽であれば<code>#f</code>が
+返されます。
+それ以外の場合は、Gaucheでは<code>eqv?</code>は<code>eq?</code>と同じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(eqv? #\a #\a)             ⇒ #t
+(eqv? #\a #\b)             ⇒ #f
+(eqv? 1.0 1.0)             ⇒ #t
+(eqv? 1 1)                 ⇒ #t
+(eqv? 1 1.0)               ⇒ #f
+(eqv? (list 'a) (list 'a)) ⇒ #f
+(let ((x (list 'a)))
+  (eqv? x x))              ⇒ #t
+</pre></td></tr></tbody></table>
+
+<p>NaNの比較には少々奇妙なところがあります。数値比較は、引数に一つでもNaNが
+含まれていれば失敗します。したがって<code>(= +nan.0 +nan.0)</code>は常に<code>#f</code>と
+なります。けれども、<code>(eq? +nan.0 +nan.0)</code> や
+<code>(eqv? +nan.0 +nan.0)</code>は<code>#t</code>を返すことがあるかもしれません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-equal_003f"></a><u>Function:</u> <b>equal?</b><i> obj1 obj2</i></dt>
+<dd><p>[R5RS+]
+<var>obj1</var>と<var>obj2</var>がリストやベクタなどの複合型である場合、
+<code>equal?</code>は再帰的に対応する要素同士を<code>equal?</code>で比較してゆきます。
+そうでなければ、<code>equal?</code>は<code>eqv?</code>と同じようにふるまいます。
+</p>
+<p>もし<code>obj1</code>と<var>obj2</var>が論理値、数値、文字、ペア、文字列、
+ベクタのいずれでもなく、かつ両者のクラスが等しい場合、<code>equal?</code>は
+ジェネリックファンクション<code>object-equal?</code>を呼びます。
+<code>object-equal?</code>にメソッドを定義することにより、
+ユーザ定義のデータ型に対する<code>equal?</code>の振るまいを拡張することができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(equal? (list 1 2) (list 1 2)) ⇒ #t
+(equal? "abc" "abc")           ⇒ #t
+(equal? 100 100)               ⇒ #t
+(equal? 100 100.0)             ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>註: <var>obj1</var>と<var>obj2</var>がともに循環構造を持っている場合、
+<code>equal?</code>は発散する可能性があります。
+かわりに<code>isomorph?</code> (<a indepth="true" href="gauche-refj_176.html#g_t_00e5_0090_008c_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a"><code>util.isomorph</code> - 同型判定</a>参照) が使える
+かもしれません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-object_002dequal_003f"></a><u>Generic Function:</u> <b>object-equal?</b><i> obj1 obj2</i></dt>
+<dd><p><code>equal?</code>が未知のオブジェクトに対して呼ばれた場合、
+このジェネリックファンクションが呼ばれます。自分で定義したクラスに対して
+このメソッドを定義することにより、<code>equal?</code>で等価判定が行えるように
+なります。メソッドは、<var>obj1</var>と<var>obj2</var>が等価ならば<code>#t</code>を、
+そうでなければ<code>#f</code>を返さねばなりません。
+オブジェクトの各要素に対して再帰的に等価判定を行いたい場合は、
+<code>object-equal?</code>を直接呼ぶのではなく、<code>equal?</code>を各要素に対して
+呼ぶようにして下さい。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-class &lt;foo&gt; ()
+  ((x :init-keyword :x)
+   (y :init-keyword :y)))
+
+(define-method object-equal? ((a &lt;foo&gt;) (b &lt;foo&gt;))
+  (and (equal? (slot-ref a 'x) (slot-ref b 'x))
+       (equal? (slot-ref a 'y) (slot-ref b 'y))))
+
+(equal? (make &lt;foo&gt; :x 1 :y (list 'a 'b))
+        (make &lt;foo&gt; :x 1 :y (list 'a 'b)))
+  ⇒ #t
+
+(equal? (make &lt;foo&gt; :x 1 :y (make &lt;foo&gt; :x 3 :y 4))
+        (make &lt;foo&gt; :x 1 :y (make &lt;foo&gt; :x 3 :y 4)))
+  ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<p>しばしば、ふたつの複合型オブジェクトに関して、両者がトポロジー的に等しいこと、
+すなわち一方が共有する部分構造を持っている場合にもう一方も同じように部分構造を
+共有しているかどうかを調べたいことがあります。<code>equal?</code>はその目的には
+使えません。モジュール<code>util.isomorph</code>の提供する<code>isomorphic?</code>が
+その目的に使えます。(<a indepth="true" href="gauche-refj_176.html#g_t_00e5_0090_008c_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a"><code>util.isomorph</code> - 同型判定</a>参照)。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_39.html#g_t_00e5_009e_008b_00e3_0081_00a8_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_41.html#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

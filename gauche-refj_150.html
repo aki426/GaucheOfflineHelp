@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.24 rfc.ip - IPパケット</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.24 rfc.ip - IPパケット">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.24 rfc.ip - IPパケット">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="IP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_149.html#HTTP" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_151.html#ICMP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002eip-_002d-IP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088"></a>
+<h2 class="section">11.24 <code>rfc.ip</code> - IPパケット</h2>
+
+<dl>
+<dt><a name="index-rfc_002eip"></a><u>Module:</u> <b>rfc.ip</b></dt>
+<dd><a name="index-rfc_002eip-1"></a>
+<p>このモジュールは生のIPパケットを解析する基本的なユーティリティを提供し
+ます。
+</p></dd></dl>
+
+<p>次からの関数における<var>packet</var>引数はユニフォームベクタ
+(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照)型でなければなりません。これにはIPヘッダを
+含む生のIPパケットが入ります。以下の関数はIPv4およびIPv6パケットの両方
+で動きます。しかしながら、生のIPv6ソケットから読むときは、IPv6ヘッダを
+含まないパケットが返ります。とうわけで、通常これらの関数が必要になるこ
+とはないでしょう。
+</p>
+
+<dl>
+<dt><a name="index-ip_002dversion"></a><u>Function:</u> <b>ip-version</b><i> packet offset</i></dt>
+<dd><p>与えられたIPパケットのIPバージョン番号(4または6)が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ip_002dheader_002dlength"></a><u>Function:</u> <b>ip-header-length</b><i> packet offset</i></dt>
+<dd><p>与えられたパケットのIPヘッダ(IPヘッダオプションもすべて含む)のオクテッ
+トで数えたサイズを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ip_002dprotocol"></a><u>Function:</u> <b>ip-protocol</b><i> packet offset</i></dt>
+<dd><p>与えられたパケットのIPプロトコル番号を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ip_002dsource_002daddress"></a><u>Function:</u> <b>ip-source-address</b><i> packet offset</i></dt>
+<dt><a name="index-ip_002ddestination_002daddress"></a><u>Function:</u> <b>ip-destination-address</b><i> packet offset</i></dt>
+<dd><p>与えられたパケットの送信元アドレスと送信先アドレスをそれぞれ整数で返し
+ます。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_149.html#HTTP" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_151.html#ICMP_00e3_0083_0091_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

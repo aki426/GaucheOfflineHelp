@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.4 代入</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.4 代入">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.4 代入">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_25.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e4_00bb_00a3_00e5_0085_00a5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00bb_00a3_00e5_0085_00a5-1"></a>
+<h2 class="section">4.4 代入</h2>
+
+<dl>
+<dt><a name="index-set_0021"></a><u>Special Form:</u> <b>set!</b><i> symbol expression</i></dt>
+<dt><a name="index-set_0021-1"></a><u>Special Form:</u> <b>set!</b><i> (proc arg …) expression</i></dt>
+<dd><p>[R5RS][SRFI-17]
+まず<var>expression</var>が評価されます。最初の形式では、<var>symbol</var>への束縛が
+<var>expression</var>の結果を指すように変更されます。
+もし<var>symbol</var>がローカルに束縛されていない場合は、グローバルな変数<var>symbol</var>が
+存在していなければなりません。そうでなければエラーが報告されます。
+</p>
+<p>2番目の形式はSRFI-17に定義されている「一般化されたset!」です。
+これは構文的な装飾であり、実際は以下のように解釈されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((setter <var>proc</var>) <var>arg</var> … <var>expression</var>)
+</pre></td></tr></tbody></table>
+<p>CommonLispの<code>setf</code>とは、setter手続きに渡される引数の順序が異なることに注意して下さい。
+</p>
+<p>例：
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define x 3)
+(set! x (list 1 2))  ⇒ <span class="roman">undefined</span>
+x                    ⇒ (1 2)
+
+(set! (car x) 5)     ⇒ <span class="roman">undefined</span>
+x                    ⇒ (5 2)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-set_0021_002dvalues"></a><u>Macro:</u> <b>set!-values</b><i> (var …) expr</i></dt>
+<dd><p>複数の変数を同時に更新します。<var>Expr</var>は与えられた変数と同じ
+数だけの値を生成しなけばなりません。各値が対応する<var>var</var>に
+セットされます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a 0)
+(define b 1)
+(set!-values (a b) (values 3 4)) ⇒ <span class="roman">undefined</span>
+a ⇒ 3
+b ⇒ 4
+(set!-values (a b) (values b a)) ⇒ <span class="roman">undefined</span>
+a ⇒ 4
+b ⇒ 3
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-setter"></a><u>Function:</u> <b>setter</b><i> proc</i></dt>
+<dd><p>[SRFI-17]
+手続き<var>proc</var>のsetter手続きを返します。
+<var>proc</var>がsetter手続きを持たない場合の動作は未定義です。
+</p>
+<p>ある関数<var>f</var>のsetter手続き<var>g</var>とは、もし<code>(g a b … v)</code>のように
+呼ばれた場合、次の<code>(f a b …)</code>が<var>v</var>を返すようになる手続きのことです。
+</p>
+<p>ある手続きにsetter手続きを関連付けるには、<code>setter</code>自身のsetter手続きを使うことが
+できます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(set! (setter <var>f</var>) <var>g</var>)
+</pre></td></tr></tbody></table>
+
+<p>特定の手続きにsetter手続きを「ロック」することができます。システム既定のsetter手続き、
+例えば<code>car</code>に対する<code>set-car!</code>等はロックされていて、上記のような方法で
+変更することは出来ません。ユーザ定義手続きにsetter手続きをロックするには下記の
+<code>getter-with-setter</code>を使います。
+</p>
+<p><var>proc</var>が手続きでない場合は、<code>object-apply</code>ジェネリックファンクションの
+setterが返されます。これにより、適用可能オブジェクトが一般化された<code>set!</code>
+でもうまく動作します。詳しくは<a indepth="true" href="gauche-refj_56.html#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">適用可能なオブジェクト</a>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-has_002dsetter_003f"></a><u>Function:</u> <b>has-setter?</b><i> proc</i></dt>
+<dd><p><var>proc</var>がsetter手続きを持っている場合は<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-getter_002dwith_002dsetter"></a><u>Function:</u> <b>getter-with-setter</b><i> get set</i></dt>
+<dd><p>[SRFI-17]
+2つの手続き、<var>get</var>と<var>set</var>を取り、新しい手続きを返します。
+新しい手続きは<var>get</var>と同じ動作をし、そのsetter手続きは<var>set</var>にロックされて
+います。
+</p>
+<p>この手続きは、SRFI-17によれば、setter手続きのインライン展開を可能にするための
+ものですが、Gaucheではまだそのような最適化は実装されていません。
+</p></dd></dl>
+
+<p>Gaucheでは、一般化された<code>set!</code>と同じセマンティクスを持ついくつかのマクロが定義
+されています。これらは<var>set!</var>を使った形に展開されます。
+</p>
+<dl>
+<dt><a name="index-push_0021"></a><u>Macro:</u> <b>push!</b><i> place item</i></dt>
+<dd><p><var>item</var>と<var>place</var>の値をコンスし、その結果を再び<var>place</var>にセットします。
+<var>place</var>は<code>set!</code>と同様に、
+変数か<var>(proc arg …)</var>という形式でなければなりません。このマクロの戻り値は
+未定義です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define x (list 2))
+(push! x 3) ⇒ <span class="roman">undefined</span>
+x ⇒ (3 2)
+
+(push! (cdr x) 4) ⇒ <span class="roman">undefined</span>
+x ⇒ (3 4 2)
+</pre></td></tr></tbody></table>
+
+<p><var>place</var>がリストの場合、だいたいこんなふうに展開されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(push! (foo x y) item)
+ ≡
+ (let ((tfoo foo)
+       (tx x)
+       (ty y))
+   ((setter tfoo) tx ty (cons item (tfoo tx ty))))
+</pre></td></tr></tbody></table>
+
+<p>註：Common Lispの<code>push</code>マクロは引数を逆の順番で取ります。
+<code>push!</code>は他の副作用を持つ形式との互換性を考えてこの順番としました。
+Perlの<code>push</code>関数は<code>push!</code>マクロと同じ引数順ですが、
+<var>item</var>はシーケンスの末尾に追加されます (Perlの<code>unshift</code>の方が
+<code>push!</code>の動作に近いです)。
+Perlのpushオペレータの動作が必要ならQueueが使えます (<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc"><code>util.queue</code> - キュー</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-pop_0021"></a><u>Macro:</u> <b>pop!</b><i> place</i></dt>
+<dd><p><var>place</var>の値を取り出し、その<code>cdr</code>を<var>place</var>にセットします。
+元の値の<code>car</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define x (list 1 2 3))
+(pop! x) ⇒ 1
+x ⇒ (2 3)
+
+(define x (vector (list 1 2 3)))
+x ⇒ #((1 2 3))
+(pop! (vector-ref x 0)) ⇒ 1
+x ⇒ #((2 3))
+</pre></td></tr></tbody></table>
+
+<p>註：この動作はCommon Lispの<code>pop</code>と同じです。
+Perlの<code>pop</code>はシーケンスの末尾から値を取ります。
+Perlなら<code>shift</code>が<code>pop!</code>の動作に近いです。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-inc_0021"></a><u>Macro:</u> <b>inc!</b><i> place :optional delta</i></dt>
+<dt><a name="index-dec_0021"></a><u>Macro:</u> <b>dec!</b><i> place :optional delta</i></dt>
+<dd><p><var>place</var>の値を評価します。それは数値にならなければなりません。
+その値に<var>delta</var>が加算(<code>inc!</code>)もしくは減算(<code>dec!</code>)され、
+結果が<var>place</var>に格納されます。<var>delta</var>の既定値は1です。
+</p>
+<p>Common Lispの<code>incf</code>と<code>decf</code>に似ていますが、
+戻り値を使うことは出来ません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-update_0021"></a><u>Macro:</u> <b>update!</b><i> place proc</i></dt>
+<dd><p><code>push!</code>等のマクロの一般化された形式です。
+<var>proc</var>は一つの引数を取り、一つの値を返す手続きでなければなりません。
+<var>place</var>の値が<var>proc</var>に渡され、<var>proc</var>の結果が<var>place</var>に格納されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define a (cons 2 3))
+(update! (car a) (lambda (v) (* v 3))) ⇒ <span class="roman">undefined</span>
+a ⇒ (6 . 3)
+
+(update! (cdr a) (cut - &lt;&gt; 3))
+a ⇒ (6 . 0)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_26.html#g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

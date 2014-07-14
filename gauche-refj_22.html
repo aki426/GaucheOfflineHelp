@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.1 字句構造</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.1 字句構造">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.1 字句構造">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_00ad_0097_00e5_008f_00a5_00e6_00a7_008b_00e9_0080_00a0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_23.html#g_t_00e3_0083_00aa_00e3_0083_0086_00e3_0083_00a9_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_00ad_0097_00e5_008f_00a5_00e6_00a7_008b_00e9_0080_00a0-1"></a>
+<h2 class="section">4.1 字句構造</h2>
+
+<p>GaucheはR5RS Schemeのパーザをいくつかの点で拡張しています。
+</p>
+<dl compact="compact">
+<dt> <em>ネスト可能なブロックコメント (SRFI-30)</em></dt>
+<dd><p>’<code>#|</code>’ と ’<code>|#</code>’ で囲まれたテキストはコメントになります。
+ネスト可能です。
+</p>
+</dd>
+<dt> <em>数値リテラル</em></dt>
+<dd><p>不正確な実数の整数部または小数部のいずれかが0の場合、それを省略することが
+できます。例：<code>30.</code>, <code>.25</code>, <code>-.4</code>。
+数値のリーダは、パディングの’<code>#</code>’を認識します。
+複素数表記は直交座標形 (例：<code>1+0.3i</code>) でも極座標形 (例：3.0@1.57) でも
+認識されます。
+非正確な実数は、正の無限大、負の無限大、非数(NaN)を含み、
+それらはそれぞれ<code>+inf.0</code>、<code>-inf.0</code>、および<code>+nan.0</code>と
+表記されます。(<code>-nan.0</code>も非数(NaN)として読まれます)。
+</p>
+</dd>
+<dt> <em>シンボル名</em></dt>
+<dd><p>シンボル名はデフォルトで大文字小文字を区別します (<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5">大文字小文字の区別</a>参照)。
+数字や’<code>+</code>’, ’<code>-</code>’ で始まるシンボル名も、
+トークンが有効な数値リテラルを構成しない限り許されます。
+また、他の変な文字も ’|’ でシンボルを囲むことによってシンボル名に含めることが
+できます (例：’<code>|this is a symbol|</code>’)。
+<a indepth="true" href="gauche-refj_45.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab">シンボル</a>も参照して下さい。
+</p>
+</dd>
+<dt> <em>文字コードによる文字リテラル</em></dt>
+<dd><p>文字リテラルを文字コードにより表記することができます。
+Gauche内部コードを使う <code>#\x<var>NN</var></code> と、
+Unicodeを使う <code>#\u<var>NN</var></code>という表記があります。
+<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a>を参照して下さい。
+</p>
+</dd>
+<dt> <em>拡張された#構文</em></dt>
+<dd><p>’<code>#</code>’ で始まる特殊構文がたくさん定義されています。
+下の表を参照して下さい。
+</p></dd>
+</dl>
+
+<p>以下の表はシャープ構文のリストです。
+</p>
+<table>
+<tbody><tr><td><code>#!</code></td><td>[R6RS][SRFI-22] これは、スクリプトのインタプリタ指定行(shebang)の
+      開始を示すか、リーダのモードに影響を与える特別なトークンとして読まれます。
+      下の‘hash-bang token’の節を参照してください。</td></tr>
+<tr><td><code>#"</code>, <code>##</code>, <code>#$</code>, <code>#%</code>, <code>#&amp;</code>, <code>#'</code></td><td>未使用。</td></tr>
+<tr><td><code>#(</code></td><td>[R5RS] リテラルベクタ表記の開始です。</td></tr>
+<tr><td><code>#)</code></td><td>未使用。</td></tr>
+<tr><td><code>#*</code></td><td>二重引用符がこれに続くときは、不完全な文字列を表します。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097">文字列</a>参照。</td></tr>
+<tr><td><code>#+</code></td><td>未使用。</td></tr>
+<tr><td><code>#,</code></td><td>[SRFI-10] リーダ構築子構文を開始します。</td></tr>
+<tr><td><code>#-</code>, <code>#.</code></td><td>未使用。</td></tr>
+<tr><td><code>#/</code></td><td>リテラルの正規表現を先導します。<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>参照。</td></tr>
+<tr><td><code>#0</code> … <code>#9</code></td><td>[SRFI-38] 共有サブストラクチャの定義と参照。</td></tr>
+<tr><td><code>#:</code></td><td>インターンされていないシンボル。<a indepth="true" href="gauche-refj_45.html#g_t_00e3_0082_00b7_00e3_0083_00b3_00e3_0083_009c_00e3_0083_00ab">シンボル</a>参照。</td></tr>
+<tr><td><code>#;</code></td><td>[SRFI-62] S式コメント。続くS式をひとつ読んで捨てます。</td></tr>
+<tr><td><code>#&lt;</code></td><td>読み取り不可能オブジェクトを先導します。</td></tr>
+<tr><td><code>#=</code>, <code>#&gt;</code></td><td>未使用。</td></tr>
+<tr><td><code>#?</code></td><td>デバッグマクロを先導します。<a indepth="true" href="gauche-refj_16.html#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0">デバッグ</a>参照。</td></tr>
+<tr><td><code>#@</code></td><td>未使用。</td></tr>
+<tr><td><code>#a</code></td><td>未使用。</td></tr>
+<tr><td><code>#b</code></td><td>[R5RS] 2進数接頭辞。</td></tr>
+<tr><td><code>#c</code></td><td>未使用。</td></tr>
+<tr><td><code>#d</code></td><td>[R5RS] 10進数接頭辞。</td></tr>
+<tr><td><code>#e</code></td><td>[R5RS] 正確数接頭辞。</td></tr>
+<tr><td><code>#f</code></td><td>[R5RS] 真理値の偽、あるいは
+      SRFI-4 のユニフォームベクタを先導します。<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照</td></tr>
+<tr><td><code>#g</code>, <code>#h</code></td><td>未使用。</td></tr>
+<tr><td><code>#i</code></td><td>[R5RS] 不正確数接頭辞。</td></tr>
+<tr><td><code>#j</code>, <code>#k</code>, <code>#l</code>, <code>#m</code>, <code>#n</code></td><td>未使用。</td></tr>
+<tr><td><code>#o</code></td><td>[R5RS] 8進数接頭辞。</td></tr>
+<tr><td><code>#p</code>, <code>#q</code>, <code>#r</code></td><td>未使用。</td></tr>
+<tr><td><code>#s</code></td><td>[SRFI-4] SRFI-4 のユニフォームベクタを先導します。<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照。</td></tr>
+<tr><td><code>#t</code></td><td>[R5RS] 真理値の真。</td></tr>
+<tr><td><code>#u</code></td><td>[SRFI-4] SRFI-4 のユニフォームベクタを先導します。<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照。</td></tr>
+<tr><td><code>#v</code>, <code>#w</code></td><td>未使用。</td></tr>
+<tr><td><code>#x</code></td><td>[R5RS] 16進数接頭辞</td></tr>
+<tr><td><code>#y</code>, <code>#z</code></td><td>未使用。</td></tr>
+<tr><td><code>#[</code></td><td>リテラルの文字集合を先導します。<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>参照</td></tr>
+<tr><td><code>#\</code></td><td>[R5RS] リテラルの文字を先導します。<a indepth="true" href="gauche-refj_48.html#g_t_00e6_0096_0087_00e5_00ad_0097">文字</a>参照。</td></tr>
+<tr><td><code>#]</code>, <code>#^</code>, <code>#_</code></td><td>未使用。</td></tr>
+<tr><td><code>#`</code></td><td>補間された文字列を先導します。<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e8_00a3_009c_00e9_0096_0093">文字列の補間</a>参照。</td></tr>
+<tr><td><code>#{</code></td><td>未使用。</td></tr>
+<tr><td><code>#|</code></td><td>[SRFI-30] ブロックコメントを先導します。コメントは対応する ’<code>|#</code>’ で終ります。</td></tr>
+<tr><td><code>#}</code>, <code>#~</code></td><td>未使用。</td></tr>
+</tbody></table>
+
+<a name="Hash_002dbang-token"></a>
+<h3 class="subheading">Hash-bang token</h3>
+
+<p>文字シーケンス<code>#!</code>は、どこでどのように現れるかによって2つの全く異なる
+意味を持ちます。
+</p>
+<p>ファイルが<code>#!/</code>もしくは<code>#! </code> (ハッシュ、バング、空白) から始
+まっている場合、読み込みルーチンはそれをスクリプトのインタプリタ指定行
+(shebang) とみなし、最初の行末までを無視します。
+(実際は、ソースはファイルでなくても構いません。リーダはポートの先頭かどうかで
+判断します。)
+</p>
+<p>その場合以外では、<code>#!<var>identifier</var></code>がひとつのトークンとして読ま
+れ、特別な意味を持ちます。この種のトークンはデータとして読まれるのでは
+なく、リーダに対して特別な指定を与えることもあります。
+</p>
+<p>デフォルトでは、このような3つのトークンが認識されます。
+<code>#!fold-case</code>と<code>#!no-fold-case</code>はリーダが大文字小文字を区別す
+るかどうかを切り替えます。<code>#!fold-case</code>に出会うとリーダは大文字小
+文字を区別しないモードになり、<code>#!no-fold-case</code>に出会うとその逆にな
+ります。(<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5">大文字小文字の区別</a>も参照してください。)
+</p>
+<p>トークン<code>#!r6rs</code>はR6RSで導入され、プログラムがR6RSに準拠しているこ
+とを示します。GaucheはR6RSをサポートしていませんが、今のところこのトー
+クンに出会っても警告を出すだけで読み込みは継続します。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_23.html#g_t_00e3_0083_00aa_00e3_0083_0086_00e3_0083_00a9_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

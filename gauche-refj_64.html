@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.26 開発補助API</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.26 開発補助API">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.26 開発補助API">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_00ab" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0_00e8_00a3_009c_00e5_008a_00a9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API-1"></a>
+<h2 class="section">6.26 開発補助API</h2>
+
+<p>Gauche には開発者がプログラムを解析するための基本的な組込みAPIがあります。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0_00e8_00a3_009c_00e5_008a_00a9">6.26.1 デバッグ補助</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9API">6.26.2 プロファイラAPI</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0_00e8_00a3_009c_00e5_008a_00a9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9API" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0_00e8_00a3_009c_00e5_008a_00a9-1"></a>
+<h3 class="subsection">6.26.1 デバッグ補助</h3>
+
+<dl>
+<dt><a name="index-debug_002dprint"></a><u>Macro:</u> <b>debug-print</b><i> expr</i></dt>
+<dd><p>このマクロは<var>expr</var>をそのフォームのまま印字してから、その式を評価し、
+評価の結果を印字し、その値を返します。
+</p>
+<p>特殊リーダー構文 <code>#?=<var>expr</var></code> は
+<code>(debug-print <var>expr</var>)</code> に展開されます。
+詳細については <a indepth="true" href="gauche-refj_16.html#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0">デバッグ</a> を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-debug_002dprint_002dwidth"></a><u>Parameter:</u> <b>debug-print-width</b></dt>
+<dd><p>このパラメータは<code>debug-print</code>が印字する情報の最大幅を指定するもの
+です。このパラメータが保持する値よりも大きいカラム数の情報は丸められま
+す。
+</p>
+<p>すべての情報を表示したければ、このパラメータに<code>#f</code>を設定してくだ
+さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-debug_002dsource_002dinfo"></a><u>Function:</u> <b>debug-source-info</b><i> obj</i></dt>
+<dd><p><var>obj</var>に付加されているソースコード情報を検索します。ソースコード情
+報とはソースコードファイル名と行番号のリストです。<var>obj</var>にソースコー
+ド情報が付加されていなければ、<code>#f</code>が返されます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-disasm"></a><u>Function:</u> <b>disasm</b><i> closure</i></dt>
+<dd><p>コンパイル済の<var>closure</var>の本体部分をディスアセンブルして印字します。
+これはコンパイラのバグをなんとかしようという場合か、限界まで
+チューンしようとしないかぎりは役には立たないでしょう。
+</p>
+<p>このディスアセンブラの出力結果を読む場合には、コンパイルされたコードに
+はデッドコードが含まれている可能性があることを心してください。デッドコー
+ドはジャンプ最適化によって生成されるのですが、コンパイラはこれをわざわ
+ざ除去することはしていません。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9API"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0_00e8_00a3_009c_00e5_008a_00a9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9API-1"></a>
+<h3 class="subsection">6.26.2 プロファイラAPI</h3>
+
+<p>ここに挙げている関数は、Gauche の組込みプロファイラを制御するためのも
+のです。プロファイラの説明については <a indepth="true" href="gauche-refj_18.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00a9_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086">プロファイラを使う</a> を参照してく
+ださい。
+</p>
+<p>注意：現時点ではプロファイラはマルチスレッドプログラムでは正しく動作し
+ません。
+</p>
+<dl>
+<dt><a name="index-profiler_002dstart"></a><u>Function:</u> <b>profiler-start</b></dt>
+<dd><p>標本化プロファイラを始動します。プロファイラが既に始動しいる場合
+には何もしません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-profiler_002dstop"></a><u>Function:</u> <b>profiler-stop</b></dt>
+<dd><p>標本化プロファイラを停止し、標本データを内部データ構
+造に保存します。既に標本データが保存されていた場合には、新
+しく収集された標本データがその後に追加されます。もしプロファイラが動いてい
+なかった場合には何もしません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-profiler_002dreset"></a><u>Function:</u> <b>profiler-reset</b></dt>
+<dd><p>もしプロファイラが動いていればそれを停止し、保存されていた標本データ
+を破棄します。
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-profiler_002dshow"></a><u>Function:</u> <b>profiler-show</b><i> :key sort-by max-rows</i></dt>
+<dd><p>格納されている標本データを表示します。
+</p>
+<p>キーワード引数 <var>sort-by</var> は指定する場合は、<code>time</code>、
+<code>count</code> または <code>time-per-call</code> のどれかひとつです。
+これで結果の整列順を指定します。デフォルトでは <code>time</code>です。
+</p>
+<p>キーワード引数 <var>max-rows</var> では結果を表示する最大行数を指定します。
+この値が <code>#f</code> であればすべてのデータが表示されます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0_00e8_00a3_009c_00e5_008a_00a9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_0096_008b_00e7_0099_00ba_00e8_00a3_009c_00e5_008a_00a9API" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

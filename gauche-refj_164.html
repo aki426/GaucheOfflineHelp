@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.38 text.csv - CSVテーブル</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.38 text.csv - CSVテーブル">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.38 text.csv - CSVテーブル">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_163.html#g_t_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00a0SXML_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_165.html#g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002ecsv-_002d-CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab"></a>
+<h2 class="section">11.38 <code>text.csv</code> - CSVテーブル</h2>
+
+<dl>
+<dt><a name="index-text_002ecsv"></a><u>Module:</u> <b>text.csv</b></dt>
+<dd><a name="index-text_002ecsv-1"></a>
+<p>RFC4180に定義されたフォーマットを含む、
+CSV (カンマ区切りの値) の表をパーズ/生成するための手続きを提供します。
+区切り文字やクオート文字をカスタマイズすることで、CVSに似たフォーマットを
+広くカバーすることができます。
+</p>
+<p>CSV の表は、改行で区切られた <var>record</var> の連続で構成されます。
+それぞれのレコードは、区切り文字(デフォルトではカンマ)で区切られた
+複数の <var>field</var> を含みます。フィールドは、クォートされている
+(二重引用符で囲まれている)場合は、カンマや改行を含むことができます。
+クォートされたフィールドに二重引用符を含めるには、2つの連続する
+二重引用符を使います。通常、フィールドの前後の空白は無視されます。
+</p>
+</dd></dl>
+
+<p>現時点では、以下の2つの低レベルな手続きが提供されています。
+フィールドにラベル付けをしたり、自動的に変換するなどの
+より高レベルな機能の提供を計画しています。
+</p>
+<dl>
+<dt><a name="index-make_002dcsv_002dreader"></a><u>Function:</u> <b>make-csv-reader</b><i> separator :optional (quote-char #\")</i></dt>
+<dd><p>入力ポートを唯一の引数として取る手続きを返します。
+手続きが呼ばれると、ポートからレコードを1つ読み込み、フィールドの
+リストを返します。入力ポートが EOF に達すると、EOF を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dcsv_002dwriter"></a><u>Function:</u> <b>make-csv-writer</b><i> separator :optional newline (quote-char #\")</i></dt>
+<dd><p>出力ポートとフィールドのリストの2つの引数を取る手続きを返します。
+手続きが呼ばれると、<var>separator</var> で区切られたフィールドを
+正しくエスケープして出力ポートに出力します。レコードの区切り文字列を
+<var>newline</var> で指定することもできます。例えば、ファイルが Windows の
+プログラムでも読めるように、<code>"\r\n"</code> を渡すことができます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_163.html#g_t_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00a0SXML_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_165.html#g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.10 文字</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.10 文字">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.10 文字">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_48.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_47.html#Identifier" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0096_0087_00e5_00ad_0097-1"></a>
+<h2 class="section">6.10 文字</h2>
+
+<dl>
+<dt><a name="index-_003cchar_003e"></a><u>Builtin Class:</u> <b>&lt;char&gt;</b></dt>
+<dd><a name="index-char"></a>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_0023_005ccharname"></a><u>Reader Syntax:</u> <b><code>#\<i>charname</i></code></b></dt>
+<dd><p>[R5RS]
+リテラルの文字オブジェクトを表現します。
+</p>
+<p>リーダーは<code>#\</code>に出会うと、まず次の文字を読み込みます。それが文字
+<code>()[]{}" \|;#</code> のいずれかならば、その文字自身となります。
+そうでなければ、単語を構成しない文字に出会うまで文字が続けて読み込まれます。
+もし一文字しか読まれなければ、その文字自身となります。そうでなければ
+その単語が文字の名前として解釈されます。
+それが有効な文字の名前でなければエラーとなります。
+</p>
+<p>以下の文字の名前が認識されます。これらの文字の名前は大文字小文字を区別しません。
+</p><dl compact="compact">
+<dt> <code>space</code></dt>
+<dd><p>スペース (ASCII #x20)
+</p></dd>
+<dt> <code>newline, nl, lf</code></dt>
+<dd><p>改行文字 (ASCII #x0a)
+</p></dd>
+<dt> <code>return, cr</code></dt>
+<dd><p>復帰文字 (ASCII #x0d)
+</p></dd>
+<dt> <code>tab, ht</code></dt>
+<dd><p>水平タブ (ASCII #x09)
+</p></dd>
+<dt> <code>page</code></dt>
+<dd><p>フォームフィード、改ページ (ASCII #x0c)
+</p></dd>
+<dt> <code>escape, esc</code></dt>
+<dd><p>エスケープ (ASCII #x1b)
+</p></dd>
+<dt> <code>delete, del</code></dt>
+<dd><p>デリート (ASCII #x7f)
+</p></dd>
+<dt> <code>null</code></dt>
+<dd><p>NUL文字 (ASCII #x00)
+</p></dd>
+<dt> <code>x<var>N</var></code></dt>
+<dd><p><var>N</var> が16進表記の整数であるとき、内部エンコーディングが整数<var>N</var>
+であるような文字。この表記はASCII文字の範囲の外では、内部エンコーディングが異なる
+処理系間で互換性が無いことに注意して下さい。
+</p></dd>
+<dt> <code>u<var>N</var></code></dt>
+<dd><p><var>N</var>が4桁または8桁の16進数整数であるとき、UCSコード<var>N</var>であるような文字。
+Gaucheの内部エンコーディングがUTF-8以外でコンパイルされている場合には、
+リーダーは<code>gauche.charconv</code>モジュールを使ってUnicodeを内部エンコーディングへと
+変換します。Unicodeの該当する文字が内部エンコーディングで定義されていない場合、
+代替文字に置換されるか、エラーとなります。
+</p></dd>
+</dl>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#\newline ⇒ #\newline ; <span class="roman">改行文字</span>
+#\x0a     ⇒ #\newline ; <span class="roman">改行文字</span>
+#\x41     ⇒ #\A       ; <span class="roman">ASCII文字 'A'</span>
+#\u0041   ⇒ #\A       ; <span class="roman">ASCII文字 'A', UCSコード</span>
+#\u3042   ⇒ #\あ      ; <span class="roman">平仮名「あ」, UCSコード</span>
+#\u0002a6b2 ⇒ ; <span class="roman">JISX0213 2-94-86 UCS4コード</span>
+</pre></td></tr></tbody></table>
+
+<p>プログラムテキストがGaucheの内部エンコーディングと同じエンコーディングで
+書かれていれば、マルチバイト文字を直接表記することもできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">#\あ ⇒ ; <span class="roman">文字「あ」</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-char_003f"></a><u>Function:</u> <b>char?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>が文字なら<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_003d_003f"></a><u>Function:</u> <b>char=?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_003c_003f"></a><u>Function:</u> <b>char&lt;?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_003c_003d_003f"></a><u>Function:</u> <b>char&lt;=?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_003e_003f"></a><u>Function:</u> <b>char&gt;?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_003e_003d_003f"></a><u>Function:</u> <b>char&gt;=?</b><i> char1 char2 char3 …</i></dt>
+<dd><p>[R5RS,R6RS]
+文字を比較します。比較は内部の文字エンコーディングで行われます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002dci_003d_003f"></a><u>Function:</u> <b>char-ci=?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_002dci_003c_003f"></a><u>Function:</u> <b>char-ci&lt;?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_002dci_003c_003d_003f"></a><u>Function:</u> <b>char-ci&lt;=?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_002dci_003e_003f"></a><u>Function:</u> <b>char-ci&gt;?</b><i> char1 char2 char3 …</i></dt>
+<dt><a name="index-char_002dci_003e_003d_003f"></a><u>Function:</u> <b>char-ci&gt;=?</b><i> char1 char2 char3 …</i></dt>
+<dd><p>[R5RS,R6RS]
+文字を、大文字小文字を区別せずに比較します。
+比較はそれぞれの文字のfoldcaseの内部文字エンコーディングに基づいて行われます。
+foldcaseについては下の<code>char-foldcase</code>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002dalphabetic_003f"></a><u>Function:</u> <b>char-alphabetic?</b><i> char</i></dt>
+<dt><a name="index-char_002dnumeric_003f"></a><u>Function:</u> <b>char-numeric?</b><i> char</i></dt>
+<dt><a name="index-char_002dwhitespace_003f"></a><u>Function:</u> <b>char-whitespace?</b><i> char</i></dt>
+<dt><a name="index-char_002dupper_002dcase_003f"></a><u>Function:</u> <b>char-upper-case?</b><i> char</i></dt>
+<dt><a name="index-char_002dlower_002dcase_003f"></a><u>Function:</u> <b>char-lower-case?</b><i> char</i></dt>
+<dd><p>[R5RS]
+文字<var>char</var>がそれぞれ英字(<code>[A-Za-z]</code>)、数字(<code>[0-9]</code>)、
+空白文字、大文字および小文字の時に真の値を返します。
+今のところ、これらの手続きはASCII文字のみで動作します。
+それ以外の文字に対しては<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002d_003einteger"></a><u>Function:</u> <b>char-&gt;integer</b><i> char</i></dt>
+<dt><a name="index-integer_002d_003echar"></a><u>Function:</u> <b>integer-&gt;char</b><i> n</i></dt>
+<dd><p>[R5RS]
+<code>char-&gt;integer</code>は文字<var>char</var>の内部エンコーディングに対応する
+整数値を返します。<code>integer-&gt;char</code>は数値<var>n</var>と内部エンコーディングが
+同じ文字を返します。有効な文字<var>char</var>に対して以下の式は常に真となります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(eq? char (integer-&gt;char (char-&gt;integer char)))
+</pre></td></tr></tbody></table>
+
+<p>対応する内部エンコーディングを持つ文字が無い数値を<code>integer-&gt;char</code>に渡した
+場合の結果は不定です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002d_003eucs"></a><u>Function:</u> <b>char-&gt;ucs</b><i> char</i></dt>
+<dt><a name="index-ucs_002d_003echar"></a><u>Function:</u> <b>ucs-&gt;char</b><i> n</i></dt>
+<dd><p>それぞれ、文字<var>char</var>をUCSコードポイントを表す整数へ変換し、
+またUCSコードポイントを表す整数<var>n</var>を文字へと変換する手続きです。
+</p>
+<p>Gaucheの内部文字エンコーディングがUTF-8でコンパイルされている場合は、
+これらの手続きはそれぞれ<code>char-&gt;integer</code>および<code>integer-&gt;char</code>
+と等価です。
+</p>
+<p>Gaucheの内部文字エンコーディングがUTF-8でない場合、
+これらの手続きは<code>gauche.charconv</code>モジュールを使って
+内部文字コードとUCSとの変換を行います (<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>参照)。
+<var>char</var>が対応するUCSコードを持っていない場合、<code>char-&gt;ucs</code>は<code>#f</code>を
+返します。UCSコード<code>n</code>に対応する文字が内部エンコーディングで定義されていない
+場合、変換ルーチンが代替文字を提供していればそれを、そうでなければ<code>#f</code>
+が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-char_002dupcase"></a><u>Function:</u> <b>char-upcase</b><i> char</i></dt>
+<dt><a name="index-char_002ddowncase"></a><u>Function:</u> <b>char-downcase</b><i> char</i></dt>
+<dt><a name="index-char_002dtitlecase"></a><u>Function:</u> <b>char-titlecase</b><i> char</i></dt>
+<dt><a name="index-char_002dfoldcase"></a><u>Function:</u> <b>char-foldcase</b><i> char</i></dt>
+<dd><p>[R5RS+]
+<var>char</var>の大文字、小文字、titlecase、foldcaseを
+それぞれ返します。foldcaseは最初に大文字にしてそれから小文字にするのと同じ操作です。
+</p>
+<p>変換は原則としてUnicodeで定義された文字対文字のマッピングに従います。
+Unicodeに従って変換する先の文字が内部エンコーディングでサポートされていない
+場合は、変換は行いません。内部エンコーディングが’none’の場合は、
+文字をLatin-1 (ISO-8859-1) であるとみなします。Latin-1の
+small y with diaresis (U+00ff) をupcaseすると、
+内部エンコーディングがutf-8の場合はcapital y with diaresis (U+039c)にマップされますが、
+内部エンコーディングがnoneであれば元の文字がそのまま返されます。
+</p>
+<p>文字対文字のマッピングでは、一文字が複数文字に展開されるようなケースマッピングは
+扱いません。有名な例はeszett (latin small letter sharp S, U+00df)で、
+文字列のコンテキストでは二つの大文字のSへとマップされますが、
+<code>char-upcase #\s</code> は単に #\s を返します。
+完全なマッピングが必要なら、<code>text.unicode</code>モジュールの
+<code>string-upcase</code>等が利用できます
+(<a indepth="true" href="gauche-refj_173.html#Full-string-case-conversion">Full string case conversion</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-digit_002d_003einteger"></a><u>Function:</u> <b>digit-&gt;integer</b><i> char :optional (radix 10)</i></dt>
+<dd><p>文字<var>char</var>が <var>radix</var>進数の数字を構成するのに有効な文字であれば、
+対応する整数が、そうでなければ<code>#f</code>が返されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(digit-&gt;integer #\4) ⇒ 4
+(digit-&gt;integer #\e 16) ⇒ 14
+(digit-&gt;integer #\9 8) ⇒ #f
+</pre></td></tr></tbody></table>
+<p>Common Lispには同様の手続きが<code>digit-char-p</code>というやや曖昧な名で定義されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-integer_002d_003edigit"></a><u>Function:</u> <b>integer-&gt;digit</b><i> integer :optional (radix 10)</i></dt>
+<dd><p><code>digit-&gt;integer</code>の逆です。整数<var>integer</var>を <var>radix</var>進数 ひと桁で
+表現するのに使われる文字を返します。<var>integer</var>がひと桁で表現できない数値の場合は
+<code>#f</code>が返されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(integer-&gt;digit 13 16) ⇒ #\d
+(integer-&gt;digit 10) ⇒ #f
+</pre></td></tr></tbody></table>
+<p>Common Lispの<code>digit-char</code>に当たります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gauche_002dcharacter_002dencoding"></a><u>Function:</u> <b>gauche-character-encoding</b></dt>
+<dd><p>コンパイル時に選択された内部文字エンコーディングを表すシンボルを返します。
+返される値は以下のいずれかです。
+</p><dl compact="compact">
+<dt> <code>euc-jp</code></dt>
+<dd><p>EUC-JP
+</p></dd>
+<dt> <code>utf-8</code></dt>
+<dd><p>UTF-8
+</p></dd>
+<dt> <code>sjis</code></dt>
+<dd><p>Shift JIS
+</p></dd>
+<dt> <code>none</code></dt>
+<dd><p>マルチバイトキャラクタをサポートしない(8ビット固定長文字)。
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-supported_002dcharacter_002dencodings"></a><u>Function:</u> <b>supported-character-encodings</b></dt>
+<dd><p>ネイティブなマルチバイトエンコーディングスキームでサポートされている
+文字エンコーディングスキームの名前を表す文字列のリストを返します。
+</p></dd></dl>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_47.html#Identifier" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

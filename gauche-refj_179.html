@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.53 util.queue - キュー</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.53 util.queue - キュー">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.53 util.queue - キュー">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_178.html#g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_180.html#g_t_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002equeue-_002d-_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc"></a>
+<h2 class="section">11.53 <code>util.queue</code> - キュー</h2>
+
+<dl>
+<dt><a name="index-util_002equeue"></a><u>Module:</u> <b>util.queue</b></dt>
+<dd><a name="index-util_002equeue-1"></a>
+<p>キュー(FIFO)機能を提供します。
+極めて軽量ですがスレッドセーフでないシンプルなキューと、
+スレッドセーフなmtqueueがあります。基本的なキュー操作手続きは
+どちらのキューに対しても使うことができます。本節で説明されている
+手続きをmtqueueに適用した場合、特に断りが無い限り、操作は
+アトミックに行われます。
+</p>
+<p>また、スレッド間同期に使えるmtqueue用の手続きも用意されています。
+例えばキューが空の時に読み出しスレッドをブロックさせたり
+キューの長さが指定値に達した場合に書き込みスレッドをブロックさせることができ、
+いわゆる「チャネル」としてキューを使うことができます。
+</p>
+<p>シンプルキューのAPIはSLIBのキュー実装の上位互換になっています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cqueue_003e"></a><u>Class:</u> <b>&lt;queue&gt;</b></dt>
+<dd><a name="index-queue"></a>
+<p>シンプルなキューのクラスです。
+</p>
+<dl>
+<dt><a name="index-length-1"></a><u>Instance Variable of &lt;queue&gt;:</u> <b>length</b></dt>
+<dd><p>キュー中の要素の数を返す、読み取り専用のスロットです。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cmtqueue_003e"></a><u>Class:</u> <b>&lt;mtqueue&gt;</b></dt>
+<dd><a name="index-mtqueue"></a>
+<p>mtqueueのクラスです。<code>&lt;queue&gt;</code>を継承しています。
+</p>
+<dl>
+<dt><a name="index-max_002dlength"></a><u>Instance Variable of &lt;mtqueue&gt;:</u> <b>max-length</b></dt>
+<dd><p>キュー中の要素数の上限を示します。
+</p>
+<p>このスロットが0の場合、キューは要素を中に持つことはできませんが、同期デバイスとして動作します。
+書き込みスレッドは、その要素を受け取る読み出しスレッドが現れるまでブロックし、
+読み出しスレッドは、要素を渡してくれる書き込みスレッドが現れるまでブロックします。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dqueue"></a><u>Function:</u> <b>make-queue</b></dt>
+<dd><p>空のシンプルなキューを作って返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dmtqueue"></a><u>Function:</u> <b>make-mtqueue</b><i> &amp;key max-length</i></dt>
+<dd><p>空のmtqueueを作って返します。整数が<var>max-length</var>に与えられた場合は、
+それが<code>max-length</code>スロットの値となります (ゼロは無制限を意味します)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-queue_003f"></a><u>Function:</u> <b>queue?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がキューであれば(シンプルなキューでもmtqueueでも)<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mtqueue_003f"></a><u>Function:</u> <b>mtqueue?</b><i> obj</i></dt>
+<dd><p><var>obj</var>がmtqueueであれば<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-queue_002dempty_003f"></a><u>Function:</u> <b>queue-empty?</b><i> queue</i></dt>
+<dd><p><var>obj</var>が空のキューであれば<code>#t</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-queue_002dlength"></a><u>Function:</u> <b>queue-length</b><i> queue</i></dt>
+<dd><p>キューの中にある要素の数を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mtqueue_002dmax_002dlength"></a><u>Function:</u> <b>mtqueue-max-length</b><i> mtqueue</i></dt>
+<dd><p>キューが保持できる要素の最大数を返します。限度がない場合はゼロが返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mtqueue_002droom"></a><u>Function:</u> <b>mtqueue-room</b><i> mtqueue</i></dt>
+<dd><p>保持できる最大容量に達するまであといくつ要素を受け入れることができるかを
+示す整数を返します。例えば、既にキューがいっぱいであれば0が返ります。
+キューに最大容量が設定されていなければ<code>+inf.0</code>が返ります。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-copy_002dqueue"></a><u>Function:</u> <b>copy-queue</b><i> queue</i></dt>
+<dd><p>キューqueueのコピーを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-enqueue_0021"></a><u>Function:</u> <b>enqueue!</b><i> queue obj :optional more-objs …</i></dt>
+<dd><p><var>obj</var>をキュー<var>queue</var>の末尾に追加します。
+一つ以上の<var>obj</var>を与えることができ、その場合はそれらが順にenqueueされます。
+</p>
+<p><var>queue</var>がmtqueueの場合、渡されたオブジェクト全ての追加は
+アトミックに行われます。すなわち、途中に別スレッドが要素を挿入する
+ことはありません。さらに、<code>max-length</code>スロットが正の値を
+持っており、この<code>enqueue!</code>の実行によってキューの要素数が
+<code>max-length</code>を越えることになる場合は、<var>queue</var>は
+変更されずエラーとなります。
+(<code>max-length</code>がゼロの場合、この手続きは常にエラーとなります。
+下に説明する<code>enqueue/wait!</code>を使ってください。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-queue_002dpush_0021"></a><u>Function:</u> <b>queue-push!</b><i> queue obj :optional more-objs …</i></dt>
+<dd><p><var>obj</var>をキュー<var>queue</var>の先頭に追加します。
+一つ以上の<var>obj</var>を与えることができ、その場合はそれらが順にpushされます。
+</p>
+<p><code>enqueue!</code>と同様に、<var>queue</var>がmtqueueの場合は
+全てのオブジェクトはアトミックに追加され、また<code>max-length</code>の値も
+チェックされます。詳しくは上の<code>enqueue!</code>の説明を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-enqueue_002dunique_0021"></a><u>Function:</u> <b>enqueue-unique!</b><i> queue eq-proc obj :optional more-objs …</i></dt>
+<dt><a name="index-queue_002dpush_002dunique_0021"></a><u>Function:</u> <b>queue-push-unique!</b><i> queue eq-proc obj :optional more-objs …</i></dt>
+<dd><p><var>obj</var>が既に<var>queue</var>の中に含まれている場合には<var>queue</var>を
+変更しないことを以外には、<code>enqueue!</code>および<code>queue-push!</code>と同じ
+動作をします。<var>obj</var>が含まれているかどうかの検査は
+2引数の関数<var>eq-proc</var>で行います。
+</p>
+<p><var>queue</var>がmtqueueの場合は
+全てのオブジェクトはアトミックに追加され、また<code>max-length</code>の値も
+チェックされます。詳しくは上の<code>enqueue!</code>の説明を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dequeue_0021"></a><u>Function:</u> <b>dequeue!</b><i> queue :optional fallback</i></dt>
+<dt><a name="index-queue_002dpop_0021"></a><u>Function:</u> <b>queue-pop!</b><i> queue :optional fallback</i></dt>
+<dd><p>キュー<var>queue</var>の先頭からひとつ要素を取って返します。
+二つの手続きは全く同じ動作をします。<code>queue-pop!</code>は<code>queue-push!</code>と
+ペアで使われていることを強調したいときに使うと良いでしょう。
+</p>
+<p>キューが空の場合は、<var>fallback</var>が与えられていればそれが返され、
+そうでなければエラーが報告されます。
+</p>
+<p>キューがmtqueueでその<code>max-length</code>がゼロの場合、
+キューは常に空であるとみなされます。ゼロ長のキューを同期デバイスとして
+使う場合は<code>dequeue/wait!</code>を使ってください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dequeue_002dall_0021"></a><u>Function:</u> <b>dequeue-all!</b><i> queue</i></dt>
+<dd><p>キューの全ての内容をリストにして返します。キューそのものは空になります。
+キューが既に空の場合は空リストが返されます。
+下の<code>queue-&gt;list</code>も参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-queue_002dfront"></a><u>Function:</u> <b>queue-front</b><i> queue :optional fallback</i></dt>
+<dt><a name="index-queue_002drear"></a><u>Function:</u> <b>queue-rear</b><i> queue :optional fallback</i></dt>
+<dd><p>キュー<var>queue</var>の先頭もしくは末尾の要素を返します。キューそのものは変更されません。
+キューが空の場合、<var>fallback</var>が与えられていればその値を返し、
+そうでなければエラーを報告します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-list_002d_003equeue"></a><u>Function:</u> <b>list-&gt;queue</b><i> list :optional class :rest initargs</i></dt>
+<dd><p>与えられたリスト<var>list</var>の各要素をその順で持つようなキューを作成して返します。
+</p>
+<p>デフォルトではシンプルキューが作られますが、<var>class</var>に<code>&lt;class&gt;</code>の
+サブクラスを渡すことで他のキュークラスのインスタンスを作ることができます。
+<var>initargs</var>は<var>class</var>のコンストラクタに渡されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-queue_002d_003elist"></a><u>Function:</u> <b>queue-&gt;list</b><i> queue</i></dt>
+<dd><p>キュー<var>queue</var>の内容をリストにして返します。
+<code>dequeue-all!</code>と異なり、キューそのものの内容は変化しません。
+</p>
+<p>Gaucheでは<code>queue-&gt;list</code>は新しいリストをアロケートしてキューの
+内容をコピーします (<code>dequeue-all!</code>はコピーをせずにキューの内部の
+リストをそのまま返します)。組込みで<code>queue-&gt;list</code>を持っているScheme
+実装がいくつかありますが、その中には<code>queue-&gt;list</code>がキューの
+内容をコピーすることを保証していないものがあるので、それらの処理系と
+共有するコードでは<code>queue-&gt;list</code>がリストをコピーすることを
+あてにしない方が良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-find_002din_002dqueue"></a><u>Function:</u> <b>find-in-queue</b><i> pred queue</i></dt>
+<dd><p>キュー内の要素のうち述語<var>pred</var>を満たす最初の要素を返します。
+引数の順序は<code>find</code>に揃えました (<a indepth="true" href="gauche-refj_44.html#g_t_00e4_00bb_0096_00e3_0081_00ae_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">他のリスト手続き</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-any_002din_002dqueue"></a><u>Function:</u> <b>any-in-queue</b><i> pred queue</i></dt>
+<dd><p>SRFI-1の<code>any</code>のように、<var>queue</var>中の各要素に
+順に<var>pred</var>を適用し、それが真の値 (<code>#t</code>である必要はありません) に
+評価されたらその値を返します。<var>pred</var>を満たす要素が無ければ<code>#f</code>が
+返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-every_002din_002dqueue"></a><u>Function:</u> <b>every-in-queue</b><i> pred queue</i></dt>
+<dd><p>SRFI-1の<code>every</code>のように、<var>queue</var>中の各要素に
+順に<var>pred</var>を適用し、それが<code>#f</code>を返したらすぐ<code>#f</code>を返します。
+<var>pred</var>に対し<code>#f</code>を返す要素が無ければ、最後の要素に<var>pred</var>を
+適用した結果が返ります。キューが空なら<code>#f</code>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-remove_002dfrom_002dqueue_0021"></a><u>Function:</u> <b>remove-from-queue!</b><i> pred queue</i></dt>
+<dd><p>キューから、述語<var>pred</var>を満たす要素を全て取り除きます。
+要素が削除された場合は<code>#t</code>が、そうでなければ<code>#f</code>が返されます。
+引数の順序はSRFI-1の<code>remove</code>に揃えました (<a indepth="true" href="gauche-refj_110.html#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0">SRFI-1 リスト操作関数</a>参照)。
+</p></dd></dl>
+
+<p>移植性に関する註：Scheme48には、述語ではなく削除するオブジェクトそのものを取る
+<code>delete-from-queue!</code>がありますが、引数の順序が逆(キューが先)になっています。
+まぎらわしい衝突を避けるため、敢えて<code>delete-from-queue!</code>は
+提供しませんでした。<code>remove-from-queue!</code>を使えば、Scheme48互換の方法でも、
+あるいはSRFI-1と一貫性のある方法でも<code>delete-from-queue!</code>を簡単に書けるでしょう。
+</p>
+<dl>
+<dt><a name="index-enqueue_002fwait_0021"></a><u>Function:</u> <b>enqueue/wait!</b><i> mtqueue obj :optional timeout timeout-val</i></dt>
+<dt><a name="index-queue_002dpush_002fwait_0021"></a><u>Function:</u> <b>queue-push/wait!</b><i> mtqueue obj :optional timeout timeout-val</i></dt>
+<dt><a name="index-dequeue_002fwait_0021"></a><u>Function:</u> <b>dequeue/wait!</b><i> mtqueue :optional timeout timeout-val</i></dt>
+<dt><a name="index-queue_002dpop_002fwait_0021"></a><u>Function:</u> <b>queue-pop/wait!</b><i> mtqueue :optional timeout timeout-val</i></dt>
+<dd><p>これらの手続きは<var>mtqueue</var>に対して使うことができ、
+スレッド間同期を実現できます。
+<code>enqueue/wait!</code>と<code>queue-push/wait!</code>は、
+キューの要素数が<var>max-length</var>を越える場合に、キューに空きができるまで、
+<code>dequeue/wait!</code>と<code>queue-pop/wait!</code>は、
+キューが空の場合に、キューに要素が追加されるまで、
+呼び出しスレッドをブロックします。
+</p>
+<p><var>timeout</var>引数で、ブロックされたスレッドのタイムアウトを指定することができます。
+<code>#f</code>は指定しなかった場合と同じで、キューの状態が変化するまで
+無期限に待ちます。実数が渡された場合はそれが秒数と解釈され、最低限
+その時間経過するまでは待ちます。渡されたのが<code>&lt;time&gt;</code>オブジェクト
+(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)である場合は、そのオブジェクトが指定する絶対時刻を
+経過するまで待ちます。
+</p>
+<p>タイムアウトによりブロックが解かれた場合は、<var>timeout-val</var>で
+指定した値が返されます。<var>timeout-val</var>の省略時値は<code>#f</code>です。
+</p>
+<p><code>enqueue/wait!</code>と<code>queue-push/wait!</code>は、
+タイムアウトせずに操作が成功した場合は<code>#t</code>を返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_178.html#g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_180.html#g_t_00e8_00b5_00a4_00e9_00bb_0092_00e6_009c_00a8" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

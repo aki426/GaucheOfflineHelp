@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.12 srfi-37 - args-fold プログラム引数処理</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.12 srfi-37 - args-fold プログラム引数処理">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.12 srfi-37 - args-fold プログラム引数処理">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_121.html#Eager-comprehensions" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d37-_002d-args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086"></a>
+<h2 class="section">10.12 <code>srfi-37</code> - args-fold プログラム引数処理</h2>
+
+<dl>
+<dt><a name="index-srfi_002d37"></a><u>Module:</u> <b>srfi-37</b></dt>
+<dd><a name="index-srfi_002d37-1"></a>
+<p>このモジュールは、<code>args-fold</code> を実装しています。
+これは、SRFI-37 (<a indepth="true" href="gauche-refj_189.html#srfi_002d37">SRFI-37</a>) で定義されている
+コマンドライン引数の処理をするもうひとつの手続きです。
+</p>
+<p><code>gauche.parseopt</code> (<a indepth="true" href="gauche-refj_93.html#g_t_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_00b3_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ae_00e8_00a7_00a3_00e6_009e_0090"><code>gauche.parseopt</code> - コマンドライン引数の解析</a>
+参照) とは違って、<code>args-fold</code> は関数的なインタフェースです。すなわち、
+利用者側の状態は、パーザの引数を通じて明示的に渡され、値が返ります。
+また、ロングオプションを含む、POSIX および GNU の getopt のガイドラインに
+準拠しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-args_002dfold"></a><u>Function:</u> <b>args-fold</b><i> args options unrecognized-proc operand-proc :rest seeds</i></dt>
+<dd><p>与えられたオプション仕様 <var>options</var> および、ふたつの手続き
+<var>unrecognized-proc</var> と <var>operand-proc</var> とにしたがって、プログラム
+引数 <var>args</var> を左から右へ処理します。
+</p>
+<p><var>options</var> はオプションオブジェクトのリストで以下のようなものです。
+各オプションオブジェクトはオプションの名前、そのオプションが引数を
+とるかどうかを指定するフラグ、そのオプションを処理する手続き
+(今後これを <em>オプション手続き</em>とよびます)を保持しています。
+</p>
+<p><code>args-fold</code> は単一文字のオプション(ショートオプション)と
+ロングオプションの両方を認識します。ショートオプションは単一の
+ハイフンで始まって(たとえば、<code>-a</code>)いなければなりません。一方、
+ロングオプションは二つのハイフンで始まって(たとえば、<code>--help</code>)
+いなければなりません。ショートオプションは連結することが可能で、
+たとえば、<code>-abc</code> あるいは <code>-a -b -c</code> と書くことができます。
+ショートオプション、ロングオプションはともに、必須引数あるいはオプショナル
+引数を取ることができます。ショートオプションの必須引数は当該オプション
+あとに空白なしあるいは空白をいれて指定することができます。たとえば、
+<code>-afoo</code> あるいは <code>-a foo</code> が可能です。ロングオプションの
+引数は’<code>=</code>’文字あるいは空白をはさみます。たとえば、
+<code>--long=foo</code> または <code>--long foo</code> です。
+</p>
+<p><code>args-fold</code> はオプションの引数ではなく、ハイフンで始まっていない
+コマンドライン引数を<em>オペランド</em>としてとりあつかいます。
+<code>args-fold</code> はオペランドとオプションが交互に出現するのを許します。
+しかし、’<code>--</code>’ に出逢うと、のこりは、ハイフンで始まっていようと
+なかろうと、オペランドとして扱われます。
+</p>
+<p>与えられたオプションが <var>options</var> 内のオプションオブジェクトのひとつ
+にマッチすれば、オプション手続きが以下のように呼出されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>option-proc</var> <var>option</var> <var>name</var> <var>arg</var> <var>seed</var> …)
+</pre></td></tr></tbody></table>
+
+<p>ここで、<var>option</var> はマッチしたオプションオブジェクトで、<var>name</var>
+は実際にオプションを指定するのに使われた文字列、<var>arg</var> はそのオプション
+の引数(あるいは存在しなければ、<code>#f</code>)、そして <var>seed</var> … は
+利用者側の状態情報です。<var>option-proc</var> は <var>seed</var> と同じ数だけ
+値を返さなければなりません。
+</p>
+<p><code>args-fold</code> がオペランドを見つけたら、<var>operand-proc</var> が
+以下のように呼出されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>operand-proc</var> <var>operand</var> <var>seed</var> …)
+</pre></td></tr></tbody></table>
+
+<p><var>operand-proc</var> は <var>seed</var> と同じ数だけ
+値を返さなければなりません。
+</p>
+<p>呼出し側の状態は明示的にシード引数で渡され、戻されます。初期のシード値は
+<code>args-fold</code> に与えた <var>seed</var> です。この値は、オプション手続き
+<var>unrecognized-proc</var> と <var>operand-proc</var> によって戻され、
+次にこれらのオプション手続きの呼出し時にシード引数として使われます。
+これらの手続きの最後の呼出しから返されたこの値は <code>args-fold</code> によって
+返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-option"></a><u>Function:</u> <b>option</b><i> names require-arg? optional-arg? processor</i></dt>
+<dd><p>渡されたプロパティでオプションオブジェクトを作成します。
+</p>
+<p><var>names</var> は文字と(あるいは)文字列のリストです。文字はショートオプションに
+使い、文字列はロングオプションに使います。
+</p>
+<p>ふたつのフラグ <var>require-arg?</var> と <var>optional-arg?</var> はオプションが
+必須引数をとるか、あるいは、オプショナル引数をとるかを示します。
+</p>
+<p><var>processor</var> はそのオプションの処理をする手続きです。
+</p>
+<p>オプションの引数が ’<code>=</code>’ つきで渡された場合には、
+たとえ <var>require-arg?</var>、<var>optional-arg?</var> がともに <code>#f</code>
+であっても、そのオプションの引数はオプション処理手続きに渡されることに
+注意してください。オプション手続きにその引数を処理させようとします。
+</p>
+<p>ショートオプションに対するオプショナルなオプションの引数は、オプションに
+つづいてスペースなしで指定されたときにだけ認識されることにも
+注意してください。たとえば、ショートオプション <code>d</code> がオプショナル
+引数をもつことになっているとき、’<code>-dfoo</code>’ は ’<code>-d</code>’ が引数
+’<code>foo</code>’ をもつと解釈されますが、’<code>-d foo</code>’ は引数なしの
+’<code>-d</code>’ とオペランド ’<code>foo</code>’ と解釈されてしまいます。もし、
+’<code>-d</code>’ が必須引数をもつと設定されているなら、両方ともに
+’<code>-dfoo</code>’ は ’<code>-d</code>’ が引数 ’<code>foo</code>’ をもつと解釈されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-option_003f"></a><u>Function:</u> <b>option?</b><i> obj</i></dt>
+<dd><p><var>obj</var> がオプションオブジェクトなら <code>#t</code> を返し、
+そうでなければ、<code>#f</code> を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-option_002dnames"></a><u>Function:</u> <b>option-names</b><i> option</i></dt>
+<dt><a name="index-option_002drequired_002darg_003f"></a><u>Function:</u> <b>option-required-arg?</b><i> option</i></dt>
+<dt><a name="index-option_002doptional_002darg_003f"></a><u>Function:</u> <b>option-optional-arg?</b><i> option</i></dt>
+<dt><a name="index-option_002dprocessor"></a><u>Function:</u> <b>option-processor</b></dt>
+<dd><p>オプションオブジェクト <var>option</var> のプロパティを返します。
+</p></dd></dl>
+
+<p>簡単な例:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use srfi-37)
+
+(define options
+ (list (option '(#\d "debug") #f #t
+               (lambda (option name arg debug batch paths files)
+                 (values (or arg "2") batch paths files)))
+       (option '(#\b "batch") #f #f
+               (lambda (option name arg debug batch paths files)
+                 (values debug #t paths files)))
+       (option '(#\I "include") #t #f
+               (lambda (option name arg debug batch paths files)
+                 (values debug batch (cons arg paths) files)))))
+
+(define (main args)
+  (receive (debug-level batch-mode include-paths files)
+    (args-fold (cdr args)
+               options
+               (lambda (option name arg . seeds)         ; unrecognized
+                 (error "Unrecognized option:" name))
+               (lambda (operand debug batch paths files) ; operand
+                 (values debug batch paths (cons operand files)))
+               0      ; default value of debug level
+               #f     ; default value of batch mode
+               '()    ; initial value of include paths
+               '()    ; initial value of files
+               )
+     (print "debug level = " debug-level)
+     (print "batch mode = " batch-mode)
+     (print "include paths = " (reverse include-paths))
+     (print "files = " (reverse files))
+     0))
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_121.html#Eager-comprehensions" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>4.5 条件式</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 4.5 条件式">
+<meta name="keywords" content="Gauche ユーザリファレンス: 4.5 条件式">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_26.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f-1"></a>
+<h2 class="section">4.5 条件式</h2>
+
+<dl>
+<dt><a name="index-if"></a><u>Special Form:</u> <b>if</b><i> test consequent alternative</i></dt>
+<dt><a name="index-if-1"></a><u>Special Form:</u> <b>if</b><i> test consequent</i></dt>
+<dd><p>[R5RS]
+まず<code>test</code>を評価し、それが真の値を返したら<var>consequent</var>を評価します。
+そうでなければ<var>alternative</var>を評価します。もし<var>alternative</var>が与えられて
+いなければ未定義の値を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(if (number? 3) 'yes 'no) ⇒ yes
+(if (number? #f) 'yes 'no) ⇒ no
+
+(let ((x '(1 . 2)))
+  (if (pair? x)
+      (values (car x) (cdr x))
+      (values #f #f)))
+  ⇒ 1 <span class="roman">and</span> 2
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-cond"></a><u>Special Form:</u> <b>cond</b><i> clause1 clause2 …</i></dt>
+<dd><p>[R5RS][SRFI-61]
+各<code>clause</code>節は次のいずれかの形式でなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>test</var> <var>expr</var> …)
+(<var>test</var> =&gt; <var>expr</var>)
+(<var>test</var> <var>guard</var> =&gt; <var>expr</var>)
+(else <var>expr</var> <var>expr2</var> …)
+</pre></td></tr></tbody></table>
+<p>最後の形式は最後の節のみに許されます。
+</p>
+<p>最初の節から順に<var>test</var>が評価され、それが真の値を返すまで次の節の<var>test</var>が
+評価されます。<var>test</var>が真の値を返したら、それが最初の形式であれば
+その節の<var>expr</var>が順に評価され、最後の評価値が戻り値となります。
+それが2番目の形式であれば、<var>expr</var>がまず評価されます。
+<var>expr</var>は引数をひとつ取る手続きを返さねばなりません。
+続いて、<var>test</var>の結果がその手続きに渡され、その手続きの戻り値が<code>cond</code>形式の
+評価値となります。
+</p>
+<p>3番目の形式はSRFI-61で定義されています。この形式では、<var>test</var>は
+任意の数の値に評価されることができます。それらの値がまず
+<var>guard</var>に渡され、もし<var>guard</var>が真の値を返したら、同じ引数が<var>expr</var>に
+適用されて、その戻り値が<code>cond</code>形式の評価値となります。
+<var>guard</var>が<code>#f</code>を返した場合は次の節へと評価が進みます。
+<var>guard</var>と<var>expr</var>
+は、<var>test</var>が返すのと同数の引数を取れなければいけません。
+</p>
+<p>もし全てのテストが偽の値を返し、最後の節が4番目の形式(else節)でなければ、未定義の値が返されます。
+</p>
+<p>最後の節が<code>else</code>節で、他の全てのテストが失敗した場合、<code>else</code>節の<var>expr</var>
+が順に評価され、その最後の値が<code>cond</code>形式の値となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond ((&gt; 3 2) 'greater)
+      ((&lt; 3 2) 'less)) ⇒ greater
+(cond ((&gt; 3 3) 'greater)
+      ((&lt; 3 3) 'less)
+      (else 'equal)) ⇒ equal
+(cond ((assv 'b '((a 1) (b 2))) =&gt; cadr)
+      (else #f)) ⇒ 2
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-case"></a><u>Special Form:</u> <b>case</b><i> key clause1 clause2 …</i></dt>
+<dd><p>[R5RS][SRFI-87]
+<var>key</var>は任意の式です。<var>clause</var>は以下の形式でなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((<var>datum</var> ...) <var>expr</var> <var>expr2</var> …)
+((<var>datum</var> ...) =&gt; <var>proc</var>)
+</pre></td></tr></tbody></table>
+<p>ここで、各<var>datum</var>はSchemeオブジェクトの外部表現であり、全ての<var>datum</var>は
+異なっていなければなりません。最後の<var>clause</var>には次の形式を持つelse節が許されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(else <var>expr</var> <var>expr2</var> …)
+(else =&gt; <var>proc</var>)
+</pre></td></tr></tbody></table>
+
+<p>まず<var>key</var>が評価され、その結果がそれぞれの<var>datum</var>と比較されます。
+<var>key</var>の値と<code>eqv?</code>(<a indepth="true" href="gauche-refj_40.html#g_t_00e7_00ad_0089_00e4_00be_00a1">等価</a>参照)を使って一致する<var>datum</var>
+が見つかれば、対応する<var>expr</var>が順に評価され、その最後の値が<code>case</code>の
+値となります。<code>=&gt;</code>を含む節はSRFI-87で定義されています。これらの節では、
+<var>key</var>の結果が<var>proc</var>に渡され、その結果が<code>case</code>の値となります。
+</p>
+<p>もし一致する<var>datum</var>が見つからない場合、else節が与えられていれば
+その<var>expr</var>が順に評価され、最後の値が返されます。else節がなければ<code>case</code>節
+の値は未定義です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(case (* 2 3)
+  ((2 3 5 7) 'prime)
+  ((1 4 6 8 9) 'composite)) ⇒ composite
+
+(case (car '(c d))
+  ((a) 'a)
+  ((b) 'b)) ⇒ <span class="roman">undefined</span>
+
+(case (car '(c d))
+  ((a e i o u) 'vowel)
+  ((w y) 'semivowel)
+  (else 'consonant)) ⇒ consonant
+
+(case 6
+  ((2 4 6 8) =&gt; (cut + &lt;&gt; 1))
+  (else =&gt; (cut - &lt;&gt; 1))) ⇒ 7
+
+(case 5
+  ((2 4 6 8) =&gt; (cut + &lt;&gt; 1))
+  (else =&gt; (cut - &lt;&gt; 1))) ⇒ 4
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-ecase"></a><u>Macro:</u> <b>ecase</b><i> key clause1 clause2 …</i></dt>
+<dd><p>このフォームはほぼ<code>case</code>と同等ですが、<code>else</code>節が与えられず、
+<var>key</var>の値が<var>clause</var>中のどの<var>datum</var>とも一致しなかった場合の
+動作だけが異なります。<code>case</code>ではそのような場合は未定義値が返されますが、
+<code>ecase</code>はエラーを報告します。
+</p>
+<p>このマクロはCommon Lispから採られました。想定外の値が渡されることを
+念のために検出したい、という場合に便利です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">(ecase 5 ((1) 'a) ((2 3) 'b) ((4) 'c))
+ ⇒ ERROR: ecase test fell through: got 5, expecting one of (1 2 3 4)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-and"></a><u>Special Form:</u> <b>and</b><i> test …</i></dt>
+<dd><p>[R5RS]
+<var>test</var>式が順に評価されます。最初に偽の値を返したところで評価が止まり、
+偽の値が返されます。残りの式は評価されません。
+もし全ての式が真の値を返した場合は、最後の式の値が返されます。
+式が与えれない場合は<code>#t</code>が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(and (= 2 2) (&gt; 2 1)) ⇒ #t
+(and (= 2 2) (&lt; 2 1)) ⇒ #f
+(and 1 2 'c '(f g))   ⇒ (f g)
+(and)                 ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-or"></a><u>Special Form:</u> <b>or</b><i> test …</i></dt>
+<dd><p>[R5RS]
+<var>test</var>式が順に評価されます。最初に真の値を返したところで評価が止まり、
+その値が返されます。残りの式は評価されません。
+もし全ての式が偽の値を返した場合は、偽の値が返されます。
+式が与えれない場合は<code>#f</code>が返されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(or (= 2 2) (&gt; 2 1)) ⇒ #t
+(or (= 2 2) (&lt; 2 1)) ⇒ #t
+(or #f #f #f)        ⇒ #f
+(or (memq 'b '(a b c))
+    (/ 3 0)) ⇒ (b c)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-when"></a><u>Special Form:</u> <b>when</b><i> test body …</i></dt>
+<dt><a name="index-unless"></a><u>Special Form:</u> <b>unless</b><i> test body …</i></dt>
+<dd><p>まず<var>test</var>が評価されます。それが真の値(<code>unless</code>の場合は偽の値)を返した場合、
+引続き<var>body</var>が順に評価され、最後の<var>body</var>の評価値が返されます。
+そうでなければ、未定義の値が返されます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_25.html#g_t_00e4_00bb_00a3_00e5_0085_00a5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_27.html#g_t_00e5_00a4_0089_00e6_0095_00b0_00e6_009d_009f_00e7_00b8_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_33.html#g_t_00e3_0083_009e_00e3_0082_00af_00e3_0083_00ad" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

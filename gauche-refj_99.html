@@ -1,0 +1,482 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.25 gauche.sequence - シーケンスフレームワーク</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.25 gauche.sequence - シーケンスフレームワーク">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.25 gauche.sequence - シーケンスフレームワーク">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_98.html#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002esequence-_002d-_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"></a>
+<h2 class="section">9.25 <code>gauche.sequence</code> - シーケンスフレームワーク</h2>
+
+<dl>
+<dt><a name="index-gauche_002esequence"></a><u>Module:</u> <b>gauche.sequence</b></dt>
+<dd><a name="index-gauche_002esequence-1"></a>
+<p><em>シーケンス</em>に関するジェネリックな操作を提供するモジュールです。
+シーケンスとは、コレクションのうち要素の順序が規定されているものです。
+コレクションの操作全てに加え、シーケンスに対しては、
+各要素に整数のインデックスを関連づけること、
+それから要素の順序が影響する操作を適用することができます。
+</p>
+<p>このモジュールは<code>gauche.collection</code>を継承しています
+(<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a>参照)。
+コレクションに使えるジェネリックな操作は全てシーケンスに対しても適用可能です。
+</p>
+<p>Gauche組み込みクラスのうち、リスト、ベクター、そして文字列は
+シーケンスであり、このモジュールでメソッドが定義されます。
+また<code>gauche.uvector</code>のユニフォームベクタ等、
+いくつかの拡張データタイプはシーケンスとなっています。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5">9.25.1 基本的なシーケンスのアクセサ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00b9_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00b9">9.25.2 シーケンスのスライス</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097">9.25.3 シーケンス上のマップ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">9.25.4 その他のシーケンス上の操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_0092_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008b">9.25.5 シーケンスを実装する</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00b9_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5-1"></a>
+<h3 class="subsection">9.25.1 基本的なシーケンスのアクセサ</h3>
+
+<dl>
+<dt><a name="index-ref-3"></a><u>Method:</u> <b>ref</b><i> (seq &lt;sequence&gt;) index :optional fallback</i></dt>
+<dd><p>シーケンス<var>seq</var>の<var>index</var>番目の要素を返します。
+このメソッドによって、全てのシーケンスが統一的にアクセスできます。
+</p>
+<p><var>index</var>が負値だったりシーケンスのサイズ以上だった場合は、
+<var>fallback</var>が与えられていればそれが返され、
+そうでなければエラーとなります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(ref '(a b c) 1)  ⇒ b
+(ref '#(a b c) 1) ⇒ b
+(ref "abc" 1)     ⇒ #\b
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_0028setter-ref_0029-3"></a><u>Method:</u> <b>(setter ref)</b><i> (seq &lt;sequence&gt;) index value</i></dt>
+<dd><p>統一的なシーケンスの変更メソッドです。
+シーケンス<var>seq</var>の<var>index</var>番目の要素に<var>value</var>をセットします。
+</p>
+<p>註: シーケンスによってはインデックスによる変更をサポートしていない
+場合があります。例えば「ソートされた整数」を表すシーケンスがあった場合、
+<code>i</code>番目の要素を適当な整数で置き換えることはできないでしょう。
+そのようなシーケンスでも、要素の挿入や削除など、別の方法でシーケンスを
+変更する手段が与えられるかもしれません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((x (list 'a 'b 'c)))
+  (set! (ref x 1) 'z)
+  x) ⇒ (a z c)
+
+(let ((x (vector 'a 'b 'c)))
+  (set! (ref x 1) 'z)
+  x) ⇒ #(a z c)
+
+(let ((x (string #\a #\b #\c)))
+  (set! (ref x 1) #\z)
+  x) ⇒ "azc"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-referencer"></a><u>Method:</u> <b>referencer</b><i> (seq &lt;sequence&gt;)</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-modifier"></a><u>Method:</u> <b>modifier</b><i> (seq &lt;sequence&gt;)</i></dt>
+</dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00b9_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00b9_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00b9-1"></a>
+<h3 class="subsection">9.25.2 シーケンスのスライス</h3>
+
+<dl>
+<dt><a name="index-subseq"></a><u>Method:</u> <b>subseq</b><i> (seq &lt;sequence&gt;) :optional start end</i></dt>
+<dd><p>シーケンス<var>seq</var>の、<var>start</var>番目の要素から<var>end</var>番目の要素の直前
+までの部分シーケンスを返します。<var>end</var>が省略された場合はシーケンスの
+最後までが取られます。返されるシーケンスの型は<var>seq</var>と同じになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(subseq '(a b c d e) 1 4)   ⇒ (b c d)
+(subseq '#(a b c d e) 1 4)  ⇒ #(b c d)
+(subseq "abcde" 1 4)        ⇒ "bcd"
+
+(subseq '(a b c d e) 3)     ⇒ (d e)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_0028setter-subseq_0029"></a><u>Method:</u> <b>(setter subseq)</b><i> (seq &lt;sequence&gt;) start end value-seq</i></dt>
+<dt><a name="index-_0028setter-subseq_0029-1"></a><u>Method:</u> <b>(setter subseq)</b><i> (seq &lt;sequence&gt;) start value-seq</i></dt>
+<dd><p><var>value-seq</var>の各要素を、シーケンス<var>seq</var>の<var>start</var>番目から
+<var>end</var>番目の直前まで順にセットします。
+<var>value-seq</var>はどんなシーケンスでも構いませんが、
+(<var>end</var> - <var>start</var>) よりは長くなくてはなりません。
+</p>
+<p>2番目の形式では、<var>end</var>が<var>value-seq</var>の長さから算出されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define s (vector 'a 'b 'c 'd 'e))
+(set! (subseq s 1 4) '(4 5 6))
+s ⇒ #(a 4 5 6 e)
+(set! (subseq s 0)   "ab")
+s ⇒ #(#\a #\b 5 6 e)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0081_00ae_00e3_0082_00b9_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097-1"></a>
+<h3 class="subsection">9.25.3 シーケンス上のマップ</h3>
+
+<p>シーケンスはまたコレクションでもあるので、シーケンスについて
+<code>fold</code>、<code>map</code>、<code>for-each</code>や他のジェネリック関数を
+拡張することができます。しかし、時にはイテレーション中に要素そのものと
+そのインデックスを知りたいことでしょう。そのためのジェネリック関数が
+いくつかあります。
+</p>
+<dl>
+<dt><a name="index-fold_002dwith_002dindex"></a><u>Method:</u> <b>fold-with-index</b><i> kons knil (seq &lt;sequence&gt;) …</i></dt>
+<dd><p>ジェネリックな<code>fold</code>と似ていますが、<var>kons</var>には<var>seq</var>の
+インデックス内から、第1引数として<var>seq</var>の要素と増加する値が渡る
+点が異なります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(fold-with-index acons '() '(a b c))
+  ⇒ ((2 . c) (1 . b) (0 . a))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-map_002dwith_002dindex"></a><u>Method:</u> <b>map-with-index</b><i> proc (seq &lt;sequence&gt;) …</i></dt>
+<dt><a name="index-map_002dto_002dwith_002dindex"></a><u>Method:</u> <b>map-to-with-index</b><i> class proc (seq &lt;sequence&gt;) …</i></dt>
+<dt><a name="index-for_002deach_002dwith_002dindex"></a><u>Method:</u> <b>for-each-with-index</b><i> proc (seq &lt;sequence&gt;) …</i></dt>
+<dd><p><code>map</code>、<code>map-to</code>、<code>for-each</code>と似ていますが、<var>proc</var>が
+第1引数としてインデックスを受け取る点が違います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map-with-index list '(a b c d) '(e f g h))
+  ⇒ ((0 a e) (1 b f) (2 c g) (3 d h))
+
+(map-to-with-index &lt;vector&gt; cons '(a b c d))
+  ⇒ #((0 . a) (1 . b) (2 . c) (3 . d))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-find_002dwith_002dindex"></a><u>Method:</u> <b>find-with-index</b><i> pred (seq &lt;sequence&gt;)</i></dt>
+<dd><p><code>find</code>のように、<var>seq</var>の中で<var>pred</var>を満足する最初の要素を
+探しますが、2つの値、要素のインデックスと要素自身を返します。
+<var>pred</var>を満足する要素がなかったら、2つの<code>#f</code>が返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(find-with-index char-upper-case? "abraCadabra")
+  ⇒ 4 and #\C
+
+(find-with-index char-numeric? "abraCadabra")
+  ⇒ #f and #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-find_002dindex"></a><u>Method:</u> <b>find-index</b><i> pred (seq &lt;sequence&gt;)</i></dt>
+<dd><p><code>find</code>に似ていますが、<var>seq</var>の中で<var>pred</var>を満足する最初の、
+要素自身ではなくインデックスを返す点が異なります。
+<var>seq</var>の中に<var>pred</var>を満足する要素がなかったら、<code>#f</code>が返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(find-index char-upper-case? "abraCadabra")
+  ⇒ 4
+
+(find-index char-numeric? "abraCadabra")
+  ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>SRFI-1 (<a indepth="true" href="gauche-refj_110.html#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0">SRFI-1 リスト操作関数</a>参照)の<code>list-index</code>も見て下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-fold_002dright-1"></a><u>Method:</u> <b>fold-right</b><i> kons knil (seq &lt;sequence&gt;) …</i></dt>
+<dd><p>リストに対する<code>fold-right</code>の総称関数版です。
+<code>fold</code>と同じように、このメソッドは種となる値 (初期値は<var>knil</var>)
+を受渡しながら、高階関数<var>kons</var>を与えられたシーケンスの各要素に
+適用してゆきます。<code>fold</code>と<code>fold-right</code>の違いは
+要素間の結合の順序にあります。
+</p>
+<p>ひとつだけのシーケンス<code>[E0, E1, ..., En]</code>に適用する場合、
+<code>fold</code>と<code>fold-right</code>はそれぞれ以下のように動作します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">fold:
+  (kons En (kons En-1 (kons ... (kons E1 (kons E1 knil)) ...)))
+
+fold-right
+  (kons E0 (kons E1 (kons ... (kons En-1 (kons En knil)) ...)))
+</pre></td></tr></tbody></table>
+
+<p>このメソッドは<code>&lt;collection&gt;</code>に対しては提供されていません。
+コレクションは要素の順序を規定しないからです。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e3_0083_009e_00e3_0083_0083_00e3_0083_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_0092_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h3 class="subsection">9.25.4 その他のシーケンス上の操作</h3>
+
+<a name="Selection-and-searching"></a>
+<h4 class="subsubheading">Selection and searching</h4>
+
+<p>コレクションに対する選択と探索はシーケンスにも使えます。
+<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2">コレクションからの選択と探索</a>を参照して下さい。
+</p>
+<a name="Grouping"></a>
+<h4 class="subsubheading">Grouping</h4>
+
+<dl>
+<dt><a name="index-group_002dsequence"></a><u>Generic function:</u> <b>group-sequence</b><i> seq :key key test</i></dt>
+<dd><p>シーケンス<var>seq</var>の連続する要素で、同じキー値を持つもの同士を
+グループ化します。
+キーの値は要素に手続き<var>key</var>を適用することで得られます。<var>key</var>の
+デフォルト値は<code>identity</code>です。<var>sedq</var>の各要素に対して、
+<var>key</var>は正確に一回だけ呼ばれます。
+キーの等価性判定には手続き<var>test</var>が使われます。デフォルト値は<code>eqv?</code>です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(group-sequence '(1 1 1 2 3 4 4 2 2 3 1 1 3))
+  ⇒ ((1 1 1) (2) (3) (4 4) (2 2) (3) (1 1) (3))
+
+(group-sequence '(1 1 1 2 3 4 4 2 2 3 1 1 3)
+                :key (cut modulo &lt;&gt; 2)))
+  ⇒ ((1 1 1) (2) (3) (4 4 2 2) (3 1 1 3))
+
+(group-sequence '#("a" "a" "b" "b" "c" "d" "d")
+                :test string=?)
+  ⇒ (("a" "a") ("b" "b") ("c") ("d" "d"))
+
+(group-sequence "aabbcdd"
+                :test char=?)
+  ⇒ ((#\a #\a) (#\b #\b) (#\c) (#\d #\d))
+</pre></td></tr></tbody></table>
+
+<p>このメソッドはHaskellの<code>group</code>と似ています。
+隣り合っていない要素もグループ化したい場合は、
+<code>group-collection</code>
+(<a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_008b_00e3_0082_0089_00e3_0081_00ae_00e9_0081_00b8_00e6_008a_009e_00e3_0081_00a8_00e6_008e_00a2_00e7_00b4_00a2">コレクションからの選択と探索</a>参照)を使って下さい。
+</p></dd></dl>
+
+
+<a name="Permutation-and-shuffling"></a>
+<h4 class="subsubheading">Permutation and shuffling</h4>
+
+<dl>
+<dt><a name="index-permute"></a><u>Generic function:</u> <b>permute</b><i> (src &lt;sequence&gt;) (permuter &lt;sequence&gt;) :optional fallback</i></dt>
+<dd><p>Returns a newly created sequence of the same type as <var>src</var>, in which
+the elements are permuted from <var>src</var> according to <var>permuter</var>.
+</p>
+<p><var>Permuter</var> is a sequence of exact integers.  When the <var>k</var>-th element
+of <var>permuter</var> is <var>i</var>, the <var>k</var>-th element of the result
+is <code>(ref <var>src</var> <var>i</var>)</code>.   Therefore, the size of the result
+sequence is the same as the size of <var>permuter</var>.  <var>Permuter</var>
+can be any kind of sequence, unrelated to the type of <var>src</var>.
+</p>
+<p>It is allowed that the same index <var>i</var> can appear more than once
+in <var>permuter</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(permute '(a b c d) '(3 2 0 1))     ⇒ (d c a b)
+(permute '(a b c d) '(0 2))         ⇒ (a c)
+(permute '(a b c d) '(0 0 1 1 2 2)) ⇒ (a a b b c c)
+</pre></td></tr></tbody></table>
+
+<p>If an integer in <var>permuter</var> is out of the valid range as the index
+of <var>src</var>, then an error is signalled unless <var>fallback</var> is given.
+If <var>fallback</var> is given, what value is used depends on the result of
+<code>(ref <var>src</var> <var>i</var> <var>fallback</var>)</code>?which usually returns
+<var>fallback</var> for the out-of-range index <var>i</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(permute '#(a b c) '(3 2 1 0) 'foo) ⇒ #(foo c b a)
+
+(permute "!,HWdelor" #(2 5 6 6 7 1 -1 3 7 8 6 4 0) #\space)
+  ⇒ "Hello, World!"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-permute_002dto"></a><u>Generic function:</u> <b>permute-to</b><i> (class &lt;class&gt;) (src &lt;sequence&gt;) (permuter &lt;sequence&gt;) :optional fallback</i></dt>
+<dd><p>Like <code>permute</code>, but the result will be an instance of the given <var>class</var>
+instead of the class of <var>src</var>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(permute-to &lt;string&gt; '(#\a #\b #\c #\d #\r)
+            '(0 1 4 0 2 0 3 0 1 4 0))
+  ⇒ "abracadabra"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-permute_0021"></a><u>Generic function:</u> <b>permute!</b><i> (src &lt;sequence&gt;) (permuter &lt;sequence&gt;) :optional fallback</i></dt>
+<dd><p>Also like <code>permute</code>, but the result is stored back to <var>src</var>.
+<var>Src</var> must be a mutable sequence, and the length of <var>src</var> and
+<var>permuter</var> must be the same.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shuffle"></a><u>Generic function:</u> <b>shuffle</b><i> (src &lt;sequence&gt;) :optional random-source</i></dt>
+<dd><p>Returns a new sequence of the same type and size as <var>src</var>,
+in which elements are randomly permuted.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(shuffle '(a b c d e))  ⇒ (e b d c a)
+(shuffle "abcde")       ⇒ "bacde"
+</pre></td></tr></tbody></table>
+
+<p>This generic function uses <code>srfi-27</code> (See section <a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9"><code>srfi-27</code> - ランダムビットのソース</a>).
+By default it uses <code>default-random-source</code>, but you can pass
+an alternative random source by the optional argument.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shuffle_002dto"></a><u>Generic function:</u> <b>shuffle-to</b><i> (class &lt;class&gt;) (src &lt;sequence&gt;) :optional random-source</i></dt>
+<dd><p>Like <code>shuffle</code>, except that the result will be an instance of
+<var>class</var> instead of the class of <var>src</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-shuffle_0021"></a><u>Generic function:</u> <b>shuffle!</b><i> (src &lt;sequence&gt;) :optional random-source</i></dt>
+<dd><p>Like <code>shuffle</code>, but the result is stored back to <var>src</var>.
+<var>Src</var> must be a mutable sequence.
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_0092_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_100.html#Syslog" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_0092_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008b-1"></a>
+<h3 class="subsection">9.25.5 シーケンスを実装する</h3>
+
+
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e4_00b8_008a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_100.html#Syslog" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

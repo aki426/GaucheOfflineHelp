@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.5 統合されたオブジェクトシステム</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.5 統合されたオブジェクトシステム">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.5 統合されたオブジェクトシステム">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_9.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e7_00b5_00b1_00e5_0090_0088_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_10.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00b5_00b1_00e5_0090_0088_00e3_0081_0095_00e3_0082_008c_00e3_0081_009f_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0-1"></a>
+<h2 class="section">2.5 統合されたオブジェクトシステム</h2>
+
+<p>GaucheはCLOSに類似した、STklosスタイルのオブジェクトシステムを持っています。
+あなたが何らかのオブジェクト指向(OO)言語を使ったことがあれば、
+基本的な使い方は簡単にわかるでしょう。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; <span class="roman">x, y座標を持つpointクラスを定義</span>
+(define-class point ()
+  ((x :init-value 0)
+   (y :init-value 0))
+  )
+
+(define-method move ((p point) dx dy)
+  (inc! (slot-ref p 'x) dx)
+  (inc! (slot-ref p 'y) dy))
+
+(define-method write-object ((p point) port)
+  (format port "[point ~a ~a]"
+          (slot-ref p 'x)
+          (slot-ref p 'y)))
+</pre></td></tr></tbody></table>
+
+<p>しかし、主流のオブジェクト指向言語に慣れてはいるがCLOSスタイルのオブジェクトシステムに
+慣れていないプログラマは、Gaucheのオブジェクトシステムの詳細を見てゆくと
+奇妙に感じることがあるのではないかと思います。
+ここではGaucheのオブジェクトシステムの代表的な性質を簡単に述べておきます。
+詳しくは<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">オブジェクトシステム</a>の章を参照して下さい。
+</p>
+<dl compact="compact">
+<dt> <em>全てはオブジェクトである (それが気になる人には)</em></dt>
+<dd><p>このような主張は他のOO言語でも見たことがあるでしょう。
+Gaucheもその例にもれず、実行時にクラスを得たりメソッドを呼び出したりといった
+操作が任意のオブジェクトに対して出来るという意味で、全てはオブジェクトです。
+また組込みクラスを含めたどんなクラスに対しても新しいメソッドを定義することができます。
+</p>
+<p>しかし、CLOS系のパラダイムでは、全てがオブジェクトかどうかという議論はあまり
+問題ではありません。というのは次のような性質があるからです。
+</p>
+</dd>
+<dt> <em>メソッドは全ての引数によってディスパッチされる</em></dt>
+<dd><p>C++、Objective C、Python、RubyなどのOO言語では、メソッドは特定のクラスに
+所属しています。Gaucheではメソッドはクラスに従属しません。
+</p>
+<p>例えば、数値だけを要素に持つベクタークラス<code>&lt;num-vector&gt;</code>と
+行列クラス<code>&lt;num-matrix&gt;</code>を定義したとします。
+プログラマは、以下のようなあらゆる場合についてメソッド<code>product</code>を
+別々に定義することができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  (product &lt;num-vector&gt; &lt;num-matrix&gt;)
+  (product &lt;num-matrix&gt; &lt;num-vector&gt;)
+  (product &lt;num-vector&gt; &lt;num-vector&gt;)
+  (product &lt;num-matrix&gt; &lt;num-matrix&gt;)
+  (product &lt;number&gt;     &lt;num-vector&gt;)
+  (product &lt;number&gt;     &lt;num-matrix&gt;)
+  (product &lt;number&gt;     &lt;number&gt;)
+</pre></td></tr></tbody></table>
+
+<p>これらの各メソッドは、<code>&lt;num-vector&gt;</code>クラスや<code>&lt;num-matrix&gt;</code>
+クラスに所属するわけではありません。
+</p>
+<p>メソッドがクラスに所有されているわけではないので、既に存在するクラスに対していつでも
+独自のメソッドを定義することができます(但し、いくつかの組込みクラスの既定のメソッドには
+変更できないものがあります)。上の例で既にこれは示されています。プログラマは
+メソッド<code>product</code>を組込みクラス<code>&lt;number&gt;</code>に対して定義することが
+できます。これが、全てはオブジェクトであるかどうかはCLOSスタイルのオブジェクトシステム
+では問題にならないと言った理由です。
+</p>
+<p>少し詳しいことを言えば、メソッドは<em>ジェネリック関数</em>に属しており、
+ジェネリック関数が適切なメソッドを選ぶ役割を果たします。
+</p>
+</dd>
+<dt> <em>クラスはインスタンスでもある</em></dt>
+<dd><p>デフォルトでは、クラスは<code>&lt;class&gt;</code>というクラスのインスタンスであり、
+ジェネリック関数は<code>&lt;generic&gt;</code>というクラスのインスタンスです。
+しかし、<code>&lt;class&gt;</code>を継承したクラスを定義することにより、
+オブジェクトの初期化がどのように行われるかとか、スロットがどのように
+アクセスされるかといった動作をカスタマイズすることができます。
+また、<code>&lt;generic&gt;</code>を継承したクラスを定義することにより、
+適用可能なメソッドがどのように選択されて、どのような順序で適用されるか
+といったことがカスタマイズ可能です。このメカニズムは<em>メタオブジェクトプロトコル</em>
+と呼ばれています。メタオブジェクトプロトコルは、言語をその言語そのもので拡張する方法と
+言えるでしょう。
+</p>
+<p>例として、ディストリビューションに含まれる<code>lib/gauche/mop/singleton.scm</code>や
+<code>lib/gauche/mop/validator</code>等があります。<code>src/libobj.scm</code>を
+読めば、クラス自身がGaucheでどのように定義されているかがわかります。
+メタオブジェクトプロトコルの更に詳しいことについては、
+<a indepth="true" href="gauche-refj_189.html#mop">MOP</a>が参考になります。
+</p>
+</dd>
+<dt> <em>クラスは名前空間を作らない</em></dt>
+<dd><p>メインストリームのOO言語ではクラスが名前空間を作ることがよくあります。
+CLOSスタイルのオブジェクトシステムはそうではありません。
+Gaucheでは、名前空間はオブジェクトシステムとは直交する、
+モジュールシステムによって管理されます。
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_8.html#g_t_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_00e3_0081_00ae_00e5_008c_00ba_00e5_0088_00a5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_10.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

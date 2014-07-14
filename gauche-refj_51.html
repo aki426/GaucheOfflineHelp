@@ -1,0 +1,962 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.13 正規表現</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.13 正規表現">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.13 正規表現">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_51.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_50.html#g_t_00e4_00b8_008d_00e5_00ae_008c_00e5_0085_00a8_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e6_00a7_008b_00e6_0096_0087" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be-1"></a>
+<h2 class="section">6.13 正規表現</h2>
+
+<p>GaucheはPOSIXの拡張正規表現にほぼ上位互換で、さらに
+Perl 5の正規表現から拡張機能を採り入れた正規表現エンジンを持っています。
+Gaucheはまた、リテラル正規表現用の構文を備えています。
+</p>
+<p>正規表現用のリテラル構文が用意されており、
+また、正規表現オブジェクトは適用可能、つまり文字列に対して
+手続きのように振る舞い、自分自身にマッチするかどうかを判定できるようになっています。
+この二つの機能によって、文字列のマッチをスキャンするようなイディオムを
+簡潔に書けるようになっています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(find #/pattern/ list-of-strings)
+  ⇒ <i>match object</i> or #f
+</pre></td></tr></tbody></table>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e6_00a7_008b_00e6_0096_0087">6.13.1 正規表現の構文</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086">6.13.2 正規表現を使う</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e8_00aa_00bf_00e6_009f_00bb_00e3_0081_00a8_00e5_0090_0088_00e6_0088_0090">6.13.3 正規表現の調査と合成</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e6_00a7_008b_00e6_0096_0087"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e6_00a7_008b_00e6_0096_0087-1"></a>
+<h3 class="subsection">6.13.1 正規表現の構文</h3>
+
+<dl>
+<dt><a name="index-_0023_002fregexp_002dspec_002f"></a><u>Reader Syntax:</u> <b><code>#/<i>regexp-spec</i>/</code></b></dt>
+<dt><a name="index-_0023_002fregexp_002dspec_002fi"></a><u>Reader Syntax:</u> <b><code>#/<i>regexp-spec</i>/i</code></b></dt>
+<dd><p>リテラルの正規表現オブジェクトを表記します。読まれた際に<code>&lt;regexp&gt;</code>の
+インスタンスとなります。
+</p>
+<p>末尾に文字<code>i</code>が与えられた場合は、マッチ時に大文字小文字を区別しない
+正規表現オブジェクトとなります。
+</p>
+<p><code>string-&gt;regexp</code>に対してこの構文を使う利点は、
+正規表現のコンパイルが一度しか行われない点です。この構文は、
+内部ループの中でも、正規表現のコンパイルのオーバヘッドを気にせずに
+使うことができます。動的に正規表現を作成したい場合のみ<code>string-&gt;regexp</code>を
+使って下さい。
+</p></dd></dl>
+
+<p>Gaucheの組み込み正規表現構文はPOSIX拡張正規表現に準じたものに、
+Perlの拡張の一部を採り入れたものです。
+</p>
+<p>ここに示す構文は表面的な構文にすぎないことに注意して下さい。
+Gaucheの正規表現コンパイラは抽象構文木を扱うようになっており、
+将来はSREのような別の構文もサポートされる予定です。
+</p>
+<dl compact="compact">
+<dt> <code><i>re</i>*</code></dt>
+<dd><p><i>re</i>の0回以上の繰り返しにマッチします。
+</p>
+</dd>
+<dt> <code><i>re</i>+</code></dt>
+<dd><p><i>re</i>の1回以上の繰り返しにマッチします。
+</p>
+</dd>
+<dt> <code><i>re</i>?</code></dt>
+<dd><p><i>re</i>の0回または1回の出現にマッチします。
+</p>
+</dd>
+<dt> <code><i>re</i>{<i>n</i>}</code></dt>
+<dt> <code><i>re</i>{<i>n</i>,<i>m</i>}</code></dt>
+<dd><p>回数に範囲のある繰り返しです。
+<code><i>re</i>{<i>n</i>}</code>は<i>re</i>の<i>n</i>回の繰り返しにマッチします。
+<code><i>re</i>{<i>n</i>,<i>m</i>}</code>は<i>re</i>の<i>n</i>回以上、<i>m</i>回以下の
+繰り返しにマッチします。但し<var>n</var> &lt;= <var>m</var>とします。
+2番目の形式では<var>n</var>か<var>m</var>のどちらかを省略することが
+できます。<var>n</var>が省略された場合は0とみなされます。
+<var>m</var>が省略された場合は無限大とみなされます。
+</p>
+</dd>
+<dt> <code><i>re</i>*?</code></dt>
+<dt> <code><i>re</i>+?</code></dt>
+<dt> <code><i>re</i>??</code></dt>
+<dt> <code><i>re</i>{<i>n</i>,<i>m</i>}?</code></dt>
+<dd><p>上記の繰り返し構造とほぼ同じですが、これらの構文は「non-greedy」または
+「lazy」と呼ばれるマッチ戦略を用います。すなわち、まず<i>re</i>がマッチする
+最小の回数を試し、それが失敗したら順に繰り返しの回数を増やしてゆきます。
+最後の形式では<var>n</var>か<var>m</var>のどちらかは省略できます。
+次の例を比べてみてください：
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rxmatch-substring (#/&lt;.*&gt;/ "&lt;tag1&gt;&lt;tag2&gt;&lt;tag3&gt;") 0)
+  ⇒ "&lt;tag1&gt;&lt;tag2&gt;&lt;tag3&gt;"
+
+(rxmatch-substring (#/&lt;.*?&gt;/ "&lt;tag1&gt;&lt;tag2&gt;&lt;tag3&gt;") 0)
+  ⇒ "&lt;tag1&gt;"
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <code>(<i>re</i>…)</code></dt>
+<dd><p>捕捉クラスタリング。括弧でくくられた正規表現の列がグループとして
+扱われ、またそれにマッチした文字列はサブマッチとして保存されます。
+</p>
+</dd>
+<dt> <code>(?:<i>re</i>…)</code></dt>
+<dd><p>捕捉無しクラスタリング。<code><i>re</i> …</code>はグループとして
+扱われますが、サブマッチとして保存されません。
+</p>
+</dd>
+<dt> <code>(?&lt;<i>name</i>&gt;<i>re</i>…)</code></dt>
+<dd><p>名前つきの捕捉とクラスタリング。<code>(<i>re</i>…)</code>と同様ですが、
+マッチした文字列に名前<i>name</i>がつけられます。マッチした文字列には
+インデックスの数字と名前のどちらでも参照できます。
+</p>
+<p>同じ名前が複数回正規表現内に出現した場合、どの名前付き捕捉にマッチした
+部分文字列が返されるかは不定です。
+</p>
+</dd>
+<dt> <code>(?i:<i>re</i>…)</code></dt>
+<dt> <code>(?-i:<i>re</i>…)</code></dt>
+<dd><p>大文字小文字の区別の制御。
+<code>(?i:<i>re</i>…)</code>は<i>re</i>…が大文字小文字にかかわらず
+マッチするようにします。
+<code>(?-i:<i>re</i>…)</code>はその逆です。
+</p>
+<p>Perlの正規表現では’?’と’:’の間に他のいくつかのフラグを使うことが
+できますが、Gaucheでは今のところこのフラグのみをサポートしています。
+</p>
+</dd>
+<dt> <code><i>pattern1</i>|<i>pattern2</i>|…</code></dt>
+<dd><p>パターンのいずれかにマッチします。
+</p>
+</dd>
+<dt> <code>\<i>n</i></code></dt>
+<dd><p>バックリファレンス。<i>n</i>は整数です。
+<i>n</i>番目(1から数える)の捕捉カッコに捕捉された文字列と一致する場合に、\<i>n</i>が
+マッチします。補足カッコがネストしている場合、開きカッコの順番で数えます。
+<i>n</i>番目のカッコが繰り返しの中にあり、複数回マッチ
+している場合は、最後にマッチした文字列との比較が行われます。
+</p>
+</dd>
+<dt> <code>\k&lt;<i>name</i>&gt;</code></dt>
+<dd><p>名前によるバックリファレンス。
+名前<i>name</i>を持つ捕捉カッコで捕捉された文字列と一致する場合に、
+\k&lt;<i>name</i>&gt;がマッチします。参照しているカッコが繰り返しの中にあり、
+複数回マッチしている場合は、最後にマッチした文字列との比較が行わ
+れます。同じ名前<i>name</i>を持つ捕捉カッコが複数ある場合には、
+それらのカッコの最後にマッチした文字列のいずれかと一致する場合、
+マッチが成功します。
+</p>
+</dd>
+<dt> <code>.</code></dt>
+<dd><p>任意の1文字にマッチします。改行文字にもマッチします。
+</p>
+</dd>
+<dt> <code>[<i>char-set-spec</i>]</code></dt>
+<dd><p><i>char-set-spec</i>で指定される文字セット内の文字にマッチします。
+<i>char-set-spec</i>については<a indepth="true" href="gauche-refj_49.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088">文字集合</a>を参照して下さい。
+</p>
+</dd>
+<dt> <code>\s, \d, \w</code></dt>
+<dd><p>それぞれ空白文字(<code>#[[:space:]]</code>)、
+数字(<code>#[[:digit:]]</code>)、
+単語を構成する文字(<code>#[[:alpha:][:digit:]_]</code>)にマッチします。
+</p>
+<p>文字セット内でも、その外でも使えます。
+</p>
+</dd>
+<dt> <code>\S, \D, \W</code></dt>
+<dd><p>それぞれ<code>\s</code>、<code>\d</code>、<code>\w</code>で指定される文字セットの補集合の
+文字にマッチします。
+</p>
+</dd>
+<dt> <code>^, $</code></dt>
+<dd><p>それぞれ、パターンの最初または最後に指定された場合、
+文字列の最初か最後にマッチします。
+</p>
+<p>これらの文字は、パターンの最初(<code>^</code>の場合)か最後(<code>$</code>の場合)に
+現れた時のみ特別な意味を持ち、それ以外の場所ではこれらの文字自身にマッチします。
+これらの文字を特殊文字と認識する段階では、肯定および否定の先読み
+(<code>(?=...)</code>, <code>(?!...)</code>, <code>(?&lt;=...)</code>, <code>(?&lt;!...)</code>)と
+アトミックなクラスタリング(<code>(?&gt;...)</code>)はあたかもそれが独立した
+パターンであるかのように扱われます。つまり、<code>^</code>がこれらの構造の先頭に現れた
+場合は、これらの構造が全体の正規表現中のどこにあるかには関わらず、文字列先頭への
+マッチとみなされます。<code>$</code>がこれらの構造の末尾に現れたば場合も同様です。
+</p>
+</dd>
+<dt> <code>\b, \B</code></dt>
+<dd><p><code>\b</code>は単語の境界の空文字列にマッチします。
+<code>\B</code>はその逆です。
+</p>
+</dd>
+<dt> <code>\;</code></dt>
+<dt> <code>\"</code></dt>
+<dt> <code>\#</code></dt>
+<dd><p>これらはそれぞれ<code>;</code>、<code>"</code>、および<code>#</code>と同じです。
+Emacs等、Scheme構文を理解するエディタを混乱させないために使うことができます。
+</p>
+</dd>
+<dt> <code>(?=<i>pattern</i>)</code></dt>
+<dt> <code>(?!<i>pattern</i>)</code></dt>
+<dd><p>肯定および否定の先読み。
+<i>pattern</i>が文字列の現在の位置にマッチする(あるいはマッチ
+しない)ときにマッチが成功しますが、現在の位置は変更しない
+ので、後に続く正規表現は現在と同じ位置から適用されます。
+</p>
+<p>例えば、次の表現は、電話番号のうち日本の番号("81"から始まるもの)
+を除く文字列にマッチします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">\+(?!81)\d{9,}
+</pre></td></tr></tbody></table>
+
+</dd>
+<dt> <code>(?&lt;=<i>pattern</i>)</code></dt>
+<dt> <code>(?&lt;!<i>pattern</i>)</code></dt>
+<dd><p>肯定および否定の後読み。
+現在の位置の左側に<var>pattern</var>にマッチする文字列がある場合に
+マッチが成功(あるいは失敗)します。先読みと同様、現在の位置は
+変更しません。
+</p>
+<p>内部的にこの表現は、<i>pattern</i>を逆転させたうえで、現在の位置
+から左に向かってマッチを進めることで実現されています。したがって、
+<i>pattern</i>には任意のものにマッチする表現を含めることができますが、
+マッチの順番や長さが重要な場合(例えば2通りにマッチしうる捕捉の
+カッコ)などは、左から右に現在位置が進むときとは異なる場所に
+マッチするかもしれません。
+</p>
+</dd>
+<dt> <code>(?&gt;<i>pattern</i>)</code></dt>
+<dd><p>アトミックなクラスタリング。<i>pattern</i>がいったんマッチすると、
+そのマッチは確定します。後続のパターンが失敗した場合でも、
+<i>pattern</i>内にバックトラックして他のマッチが試みられることはありません。
+</p>
+</dd>
+<dt> <code><i>re</i>*+</code></dt>
+<dt> <code><i>re</i>++</code></dt>
+<dt> <code><i>re</i>?+</code></dt>
+<dd><p>それぞれ(?&gt;<i>re</i>*)、(?&gt;<i>re</i>+)、(?&gt;<i>re</i>?)と同じです。
+</p>
+</dd>
+<dt> <code>(?<i>test-pattern</i> <i>then-pattern</i>)</code></dt>
+<dt> <code>(?<i>test-pattern</i> <i>then-pattern</i>|<i>else-pattern</i>)</code></dt>
+<dd><p>条件つきマッチング。<var>test-pattern</var>が成功すれば
+<var>then-pattern</var>へと、そうでなければ
+<var>else-pattern</var>へと(もしあれば)マッチを進めます。
+</p>
+<p><var>test-pattern</var>には以下の形式が書けます。
+</p>
+<dl compact="compact">
+<dt> <code>(<i>integer</i>)</code></dt>
+<dd><p>バックリファレンス。<var>integer</var>番目の捕捉クラスタリングのマッチに
+成功していた場合に成功となります。
+</p>
+</dd>
+<dt> <code>(?=<i>pattern</i>)</code></dt>
+<dt> <code>(?!<i>pattern</i>)</code></dt>
+<dd><p>肯定および否定の先読み。入力の現在位置から、入力を消費することなく
+<var>pattern</var>のマッチを試み、それがそれぞれ成功もしくは失敗した
+場合に、この<var>test-pattern</var>を成功とみなします。
+</p>
+</dd>
+<dt> <code>(?&lt;=<i>pattern</i>)</code></dt>
+<dt> <code>(?&lt;!<i>pattern</i>)</code></dt>
+<dd><p>肯定および否定の後読み。入力の現在位置から左側に向かって、
+<var>pattern</var>の逆向きにマッチを試みます、
+それがそれぞれ成功もしくは失敗した場合に、
+この<var>test-pattern</var>を成功とみなします。
+</p></dd>
+</dl>
+</dd>
+</dl>
+
+<hr size="6">
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e6_00a7_008b_00e6_0096_0087" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e8_00aa_00bf_00e6_009f_00bb_00e3_0081_00a8_00e5_0090_0088_00e6_0088_0090" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086-1"></a>
+<h3 class="subsection">6.13.2 正規表現を使う</h3>
+
+<dl>
+<dt><a name="index-_003cregexp_003e"></a><u>Builtin Class:</u> <b>&lt;regexp&gt;</b></dt>
+<dd><a name="index-regexp"></a>
+<p>正規表現オブジェクトのクラスです。<code>string-&gt;regexp</code>を使って実行時に
+作成できます。また、Gaucheはリテラルの正規表現を表す構文を持っており、
+ロード時に作成することもできます。
+</p>
+<p>Gaucheの正規表現エンジンはマルチバイト文字列に対応しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cregmatch_003e"></a><u>Builtin Class:</u> <b>&lt;regmatch&gt;</b></dt>
+<dd><a name="index-regmatch"></a>
+<p>正規表現マッチオブジェクトのクラスです。正規表現エンジン<code>rxmatch</code>は、
+一致した場合にこのオブジェクトを返します。部分一致の情報を含めた
+全てのマッチに関する情報がこのオブジェクトに含まれています。
+</p>
+<p>一致した部分文字列やそのインデックスのリストではなく
+マッチオブジェクトを返すことの利点は効率です。
+regmatchオブジェクトはマッチの内部状態を保持しており、
+要求された時にはじめて該当する部分文字列やインデックスを計算します。
+これは特にマルチバイト文字列に有効です。マルチバイト文字列
+へのインデックスアクセスは遅いからです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003eregexp"></a><u>Function:</u> <b>string-&gt;regexp</b><i> string :key case-fold</i></dt>
+<dd><p>文字列<var>string</var>を正規表現とみなして、<code>&lt;regexp&gt;</code>のインスタンスを
+作成して返します。
+</p>
+<p>キーワード引数<var>case-fold</var>に真の値が与えられた場合、作成される正規表現は
+大文字小文字を区別しないものとなります。
+(大文字小文字を区別しない正規表現に関しては上の説明を参照して下さい)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_003f"></a><u>Function:</u> <b>regexp?</b><i> <var>obj</var></i></dt>
+<dd><p><var>obj</var>が正規表現オブジェクトなら真の値を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002d_003estring"></a><u>Function:</u> <b>regexp-&gt;string</b><i> <var>regexp</var></i></dt>
+<dd><p>正規表現<var>regexp</var>を記述する元になった文字列を返します。
+返される文字列は変更不可な文字列です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch"></a><u>Function:</u> <b>rxmatch</b><i> regexp string</i></dt>
+<dd><p>正規表現オブジェクト<var>regexp</var>に一致するものを文字列<var>string</var>から
+探します。一致が見付かった場合は<code>&lt;regmatch&gt;</code>オブジェクトを返し、
+見付からなかった場合は<code>#f</code>を返します。
+</p>
+<p>他のScheme処理系ではこれは
+<code>match</code>、<code>regexp-search</code>、<code>string-match</code>など
+様々な名で呼ばれています。
+</p>
+<p>入力から複数のマッチを取り出したり、あるいはストリーム入力 (ポートから読み出すデータなど)
+にマッチをかけたい場合は、<code>gauche.generator</code>モジュールの<code>grxmatch</code>
+も使えるかもしれません (<a indepth="true" href="gauche-refj_82.html#Generator-operations">Generator operations</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp-1"></a><u>Generic application:</u> <b><var>regexp</var></b><i> <var>string</var></i></dt>
+<dd><p>正規表現オブジェクトは直接文字列に対して適用することもできます。
+これは<code>(rxmatch <var>regexp</var> <var>string</var>)</code>と同じ動作をしますが、
+表記が短くて済みます。この機能は<a indepth="true" href="gauche-refj_56.html#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">適用可能なオブジェクト</a> で述べているメカニズムを
+使って実装されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002dstart"></a><u>Function:</u> <b>rxmatch-start</b><i> match :optional (i 0)</i></dt>
+<dt><a name="index-rxmatch_002dend"></a><u>Function:</u> <b>rxmatch-end</b><i> match :optional (i 0)</i></dt>
+<dt><a name="index-rxmatch_002dsubstring"></a><u>Function:</u> <b>rxmatch-substring</b><i> match :optional (i 0)</i></dt>
+<dd><p><code>rxmatch</code>が返すマッチオブジェクト<var>match</var>から情報を取り出します。
+<var>i</var>が省略されるか0の場合、これらの手続きはそれぞれ一致した
+文字列の開始インデックス、終了インデックス、および一致した部分文字列を
+返します。<var>i</var>に正の整数が与えられた場合は、<var>i</var>番目のサブマッチ
+に関する情報を返します。<var>i</var>にシンボルが与えられた場合は、名前
+<var>i</var>を持つサブマッチの情報を返します。同じ名前<var>i</var>を持つ複数の
+サブマッチがある場合には、成功したサブマッチの情報を返します。
+<var>i</var>にそれ以外の値を与えるのはエラーです。
+</p>
+<p>簡便のために、<var>match</var>に<code>#f</code>を渡すことも許されています。
+その場合、これらの手続きは<code>#f</code>を返します。
+</p>
+<p>これらの手続きはScshで<code>match:start</code>、<code>match:end</code>、
+<code>match:substring</code>と呼ばれているものと等価です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002dnum_002dmatches"></a><u>Function:</u> <b>rxmatch-num-matches</b><i> match</i></dt>
+<dd><p><var>match</var>の持つマッチの数を返します。この数には
+「マッチ全体」も含まれるので、<code>&lt;regmatch&gt;</code>オブジェクトに対しては
+常に正の整数が返ることになります。また、値を持たないマッチもカウントされます
+(下の例を参照)。
+</p>
+<p>簡便のために、<var>match</var>に<code>#f</code>を渡すこともできます。
+その場合は0が返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rxmatch-num-matches (rxmatch #/abc/ "abc"))
+  ⇒ 1
+
+(rxmatch-num-matches (rxmatch #/(a(.))|(b(.))/ "ba"))
+  ⇒ 5
+
+(rxmatch-num-matches #f)
+  ⇒ 0
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002dafter"></a><u>Function:</u> <b>rxmatch-after</b><i> match :optional (i 0)</i></dt>
+<dt><a name="index-rxmatch_002dbefore"></a><u>Function:</u> <b>rxmatch-before</b><i> match :optional (i 0)</i></dt>
+<dd><p>マッチオブジェクト<var>match</var>の前および後の文字列を返します。
+正の整数が<var>i</var>に与えられた場合はi番目のサブマッチの前および後の
+文字列を返します。シンボルが与えられた場合は、その名前を持つ
+サブマッチの前後の文字列を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define match (rxmatch #/(\d+)\.(\d+)/ "pi=3.14..."))
+
+(rxmatch-after match) ⇒ "..."
+(rxmatch-after match 1) ⇒ ".14..."
+
+(rxmatch-before match) ⇒ "pi="
+(rxmatch-before match 2) ⇒ "pi=3."
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002d_003estring"></a><u>Function:</u> <b>rxmatch-&gt;string</b><i> regexp string :optional selector …</i></dt>
+<dd><p>文字列に正規表現でマッチをかけ、マッチした文字列を得る、便利な関数です。
+マッチしなかった場合は<code>#f</code>が帰ります。
+</p>
+<p><var>selector</var>が与えられなかった場合、この手続きは次の式と同じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rxmatch-substring (rxmatch <var>regexp</var> <var>string</var>))
+</pre></td></tr></tbody></table>
+
+<p><var>selector</var>に整数が与えられた場合は、
+それで指定されるサブマッチの文字列が返されます。
+</p>
+<p><var>selector</var>にはシンボル<code>after</code>か<code>before</code>を与えることも出来ます。
+その場合は、マッチした文字列の前や後の文字列が返されます。これらのシンボルの後に
+さらにサブマッチを指定する整数を与えることもできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (rxmatch-&gt;string #/\d+/ "foo314bar")
+"314"
+gosh&gt; (rxmatch-&gt;string #/(\w+)@([\w.]+)/ "foo@example.com" 2)
+"example.com"
+gosh&gt; (rxmatch-&gt;string #/(\w+)@([\w.]+)/ "foo@example.com" 'before 2)
+"foo@"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-regmatch-1"></a><u>Generic application:</u> <b><var>regmatch</var></b><i> :optional <var>index</var></i></dt>
+<dt><a name="index-regmatch-2"></a><u>Generic application:</u> <b><var>regmatch</var></b><i> <code>'before</code> :optional <var>index</var></i></dt>
+<dt><a name="index-regmatch-3"></a><u>Generic application:</u> <b><var>regmatch</var></b><i> <code>'after</code> :optional <var>index</var></i></dt>
+<dd><p>マッチオブジェクトは直接整数のインデックスもしくはシンボルに対して適用することが
+できます。整数に適用したときは<code>(rxmatch-substring <var>regmatch</var> <var>index</var>)</code>、
+シンボル<code>before</code>のときは<code>(rxmatch-before <var>regmatch</var>)</code>、シンボル
+<code>after</code>のときは<code>(rxmatch-after <var>regmatch</var>)</code>、そのほかのシンボルのときは
+<code>(rxmatch-substring <var>regmatch</var> <var>symbol</var>)</code>と同じ動作をします。
+</p>
+<p>表記が短くて済みます。
+この機能は<a indepth="true" href="gauche-refj_56.html#g_t_00e9_0081_00a9_00e7_0094_00a8_00e5_008f_00af_00e8_0083_00bd_00e3_0081_00aa_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088">適用可能なオブジェクト</a> で述べているメカニズムを使って実装されています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define match (#/(\d+)\.(\d+)/ "pi=3.14..."))
+
+  (match)           ⇒ "3.14"
+  (match 1)         ⇒ "3"
+  (match 2)         ⇒ "14"
+
+  (match 'after)    ⇒ "..."
+  (match 'after 1)  ⇒ ".14..."
+
+  (match 'before)   ⇒ "pi="
+  (match 'before 2) ⇒ "pi=3."
+
+(define match (#/(?&lt;integer&gt;\d+)\.(?&lt;fraction&gt;\d+)/ "pi=3.14..."))
+
+  (match 1)         ⇒ "3"
+  (match 2)         ⇒ "14"
+
+  (match 'integer)  ⇒ "3"
+  (match 'fraction) ⇒ "14"
+
+  (match 'after 'integer)   ⇒ ".14..."
+  (match 'before 'fraction) ⇒ "pi=3."
+
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dreplace"></a><u>Function:</u> <b>regexp-replace</b><i> regexp string substitution</i></dt>
+<dt><a name="index-regexp_002dreplace_002dall"></a><u>Function:</u> <b>regexp-replace-all</b><i> regexp string substitution</i></dt>
+<dd><p><var>string</var>中で<code>regexp</code>にマッチした部分を<var>substitution</var>で
+置き換えます。<code>regexp-replace</code>は最初にマッチした部分のみを置き換え、
+<code>regexp-replace-all</code>は全てのマッチを置き換えます。
+</p>
+<p><var>substitution</var>は文字列か手続きです。
+文字列の場合、バックスラッシュに続く数値、もしくは
+<code>\k&lt;<var>name</var>&gt;</code>という形式でサブマッチ文字列を参照できます
+<code>\0</code>はマッチ文字列全体を参照します。文字列リテラルにバックスラッシュを
+埋め込む場合は二つのバックスラッシュが必要であることに注意して下さい。
+バックスラッシュそのものを<var>substitution</var>中で使いたい場合は
+二つのバックスラッシュを重ねます; 文字列リテラルの場合は4つのバックスラッシュが
+必要になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(regexp-replace #/def|DEF/ "abcdefghi" "...")
+  ⇒ "abc...ghi"
+(regexp-replace #/def|DEF/ "abcdefghi" "|\\0|")
+  ⇒ "abc|def|ghi"
+(regexp-replace #/def|DEF/ "abcdefghi" "|\\\\0|")
+  ⇒ "abc|\\0|ghi"
+(regexp-replace #/c(.*)g/ "abcdefghi" "|\\1|")
+  ⇒ "ab|def|hi"
+(regexp-replace #/c(?&lt;match&gt;.*)g/ "abcdefghi" "|\\k&lt;match&gt;|")
+  ⇒ "ab|def|hi"
+</pre></td></tr></tbody></table>
+
+<p><var>substitution</var>が手続きである場合、<var>string</var>中の各マッチについて、
+マッチオブジェクトを引数としてその手続きが呼ばれます。その手続きが返す
+値を<code>display</code>で表現したものが置換文字列として使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(regexp-replace #/c(.*)g/ "abcdefghi"
+                (lambda (m)
+                  (list-&gt;string
+                   (reverse
+                    (string-&gt;list (rxmatch-substring m 1))))))
+ ⇒ "abfedhi"
+</pre></td></tr></tbody></table>
+
+<p>註: <code>regexp-replace-all</code> は文字列でマッチした部分の後ろの部分に
+ついて再帰的に自分自身を適用します。従って、<var>regexp</var>が
+文字列先頭のアサーション (<code>^</code>) を含んでいても、それは<var>string</var>の
+先頭だけにマッチするとは限りません。
+</p>
+<p>註: 文字列中の、正規表現にマッチする部分すべてに対して何か操作をしたいが、
+置き換えた文字列が欲しいわけではない、という場合は、
+<code>gauche.lazy</code>モジュールの<code>lrxmatch</code>や、
+<code>gauche.generator</code>モジュールの<code>grxmatch</code>が使えるでしょう。
+これらは文字列に対して繰り返し正規表現でのマッチを、必要に応じて適用し、
+前者はマッチオブジェクトの遅延シーケンスを、後者はマッチオブジェクトを生成する
+ジェネレータを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map rxmatch-substring (lrxmatch #/\w+/ "a quick brown fox!?"))
+ ⇒ ("a" "quick" "brown" "fox")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dreplace_002a"></a><u>Function:</u> <b>regexp-replace*</b><i> string rx1 sub1 rx2 sub2 …</i></dt>
+<dt><a name="index-regexp_002dreplace_002dall_002a"></a><u>Function:</u> <b>regexp-replace-all*</b><i> string rx1 sub1 rx2 sub2 …</i></dt>
+<dd><p>まず、<code>regexp-replace</code> あるいは <code>regexp-replace-all</code> を
+正規表現 <var>rx1</var>、置換 <var>sub1</var> で <var>string</var> に適用し、
+その結果にさらに <code>regexp-replace</code> あるいは
+<code>regexp-replace-all</code> を正規表現 <var>rx2</var>、置換 <var>sub2</var> で
+適用し、以下同様です。これらの関数はひとつの文字列上で複数回置換を行う
+ときに便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dquote"></a><u>Function:</u> <b>regexp-quote</b><i> string</i></dt>
+<dd><p><var>string</var>中で、正規表現において特別な意味を持つ文字を全てエスケープした
+文字列を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(regexp-quote "[2002/10/12] touched foo.h and *.c")
+ ⇒ "\\[2002/10/12\\] touched foo\\.h and \\*\\.c"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dnum_002dgroups"></a><u>Function:</u> <b>regexp-num-groups</b><i> regexp</i></dt>
+<dt><a name="index-regexp_002dnamed_002dgroups"></a><u>Function:</u> <b>regexp-named-groups</b><i> regexp</i></dt>
+<dd><p>正規表現<var>regexp</var>中の、捕捉グループ(サブマッチに使われるグループ)の総数、
+及び名前つき捕捉グループのalistをそれぞれ返します。
+</p>
+<p>捕捉グループの総数は、この正規表現でマッチした場合のマッチオブジェクトの
+<code>rxmatch-num-matches</code>と同じになります。正規表現全体もひとつのグループだと
+みなされるので、総数は常に1以上です。
+</p>
+<p><code>regexp-named-groups</code>から返されるalistは
+<code>car</code>に名前(シンボル)、<code>cdr</code>にそのサブマッチ番号を持つペアを
+要素とします。alist内でのグループの順番は不定です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(regexp-num-groups #/abc(?&lt;foo&gt;def)(ghi(?&lt;bar&gt;jkl)(mno))/)
+  ⇒ 5
+(regexp-named-groups #/abc(?&lt;foo&gt;def)(ghi(?&lt;bar&gt;jkl)(mno))/)
+  ⇒ ((bar . 3) (foo . 1))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<p>以下のマクロにおいて、<var>match-expr</var>はマッチオブジェクトか
+<code>#f</code>を生成する式でなければなりません。通常それは
+<code>rxmatch</code>を呼ぶ式になりますが、それだけに限られるわけではありません。
+</p>
+<dl>
+<dt><a name="index-rxmatch_002dlet"></a><u>Macro:</u> <b>rxmatch-let</b><i> match-expr (var …) form …</i></dt>
+<dd>
+<p><var>match-expr</var>を評価し、それがマッチオブジェクトを返したら、
+マッチした文字列を<var>var …</var>に束縛し、<var>form</var>を評価します。
+最初の<var>var</var>はマッチした文字列全体に束縛され、
+以降の変数はサブマッチ文字列に束縛されます。実際のサブマッチ文字列が
+与えられた変数より少なかった場合は、余った変数は<code>#f</code>に束縛されます。
+</p>
+<p>特定のマッチ文字列を受け取る必要が無いときは、その場所の
+変数の変わりに<code>#f</code>を置いておくこともできます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rxmatch-let (rxmatch #/(\d+):(\d+):(\d+)/
+                      "Jan  1 23:59:58, 2001")
+   (time hh mm ss)
+  (list time hh mm ss))
+ ⇒ ("23:59:58" "23" "59" "58")
+
+(rxmatch-let (rxmatch #/(\d+):(\d+):(\d+)/
+                      "Jan  1 23:59:58, 2001")
+   (#f hh mm)
+  (list hh mm))
+ ⇒ ("23" "59")
+</pre></td></tr></tbody></table>
+
+<p>このマクロはscshの<code>let-match</code>に相当します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002dif"></a><u>Macro:</u> <b>rxmatch-if</b><i> match-expr (var …) then-form else-form</i></dt>
+<dd><p><var>match-expr</var>を評価し、それがマッチオブジェクトを返したら
+マッチした文字列を変数<var>var</var> …に束縛して<var>then-form</var>を
+評価します。マッチオブジェクトが返されなければ束縛は行われず、
+<var>else-form</var>が評価されます。変数<var>var</var>をマッチ文字列に
+束縛するルールは<code>rxmatch-let</code>と同じです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(rxmatch-if (rxmatch #/(\d+:\d+)/ "Jan 1 11:22:33")
+    (time)
+  (format #f "time is ~a" time)
+  "unknown time")
+ ⇒ "time is 11:22"
+
+(rxmatch-if (rxmatch #/(\d+:\d+)/ "Jan 1 11-22-33")
+    (time)
+  (format #f "time is ~a" time)
+  "unknown time")
+ ⇒ "unknown time"
+</pre></td></tr></tbody></table>
+
+<p>このマクロはscshの<code>if-match</code>に相当します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002dcond"></a><u>Macro:</u> <b>rxmatch-cond</b><i> clause …</i></dt>
+<dd><p><var>clause</var>の条件を順に評価してゆき、条件を満たすものが現れたら
+その<var>clause</var>の残りのフォームを評価し、最後のフォームの値を
+<code>rxmatch-cond</code>の値とします。<var>clause</var>は以下のいずれかの
+形式でなければなりません。
+</p>
+<dl compact="compact">
+<dt> <code>(<var>match-expr</var> (<var>var</var> …) <var>form</var> …)</code></dt>
+<dd><p><var>match-expr</var>を評価し、それがマッチオブジェクトを返した場合は
+マッチ文字列を変数<var>var</var> …に束縛した上で
+<var>form</var> …を評価します。
+</p>
+</dd>
+<dt> <code>(test <var>expr</var> <var>form</var> …)</code></dt>
+<dd><p><var>expr</var>を評価し、それが真の値を返した場合は<var>form</var> …を評価します。
+</p>
+</dd>
+<dt> <code>(test <var>expr</var> =&gt; <var>proc</var>)</code></dt>
+<dd><p><var>expr</var>を評価し、それが真の値を返した場合は
+それを唯一の引数として手続き<var>proc</var>を呼びます。
+</p>
+</dd>
+<dt> <code>(else <var>form</var> …)</code></dt>
+<dd><p>この<var>clause</var>は、もし与えられたとすれば最後の<var>clause</var>でなければ
+なりません。全ての<var>clause</var>が失敗した場合に、<var>form</var> …が
+評価されます。
+</p></dd>
+</dl>
+
+<p><code>else</code> <var>clause</var>が与えられず、かつ全ての<var>clause</var>が
+失敗した場合の戻り値は未定義です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; <span class="roman">何通りかの日付のフォーマットをパーズする</span>
+(define (parse-date str)
+  (rxmatch-cond
+    ((rxmatch #/^(\d\d?)\/(\d\d?)\/(\d\d\d\d)$/ str)
+        (#f mm dd yyyy)
+      (map string-&gt;number (list yyyy mm dd)))
+    ((rxmatch #/^(\d\d\d\d)\/(\d\d?)\/(\d\d?)$/ str)
+        (#f yyyy mm dd)
+      (map string-&gt;number (list yyyy mm dd)))
+    ((rxmatch #/^\d+\/\d+\/\d+$/ str)
+        (#f)
+     (errorf "ambiguous: ~s" str))
+    (else (errorf "bogus: ~s" str))))
+
+(parse-date "2001/2/3") ⇒ (2001 2 3)
+(parse-date "12/25/1999") ⇒ (1999 12 25)
+</pre></td></tr></tbody></table>
+
+<p>このマクロはscshの<code>match-cond</code>に相当します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rxmatch_002dcase"></a><u>Macro:</u> <b>rxmatch-case</b><i> string-expr clause …</i></dt>
+<dd><p><var>string-expr</var>がまず評価され、続いて<var>clause</var>が順に検査されます。
+<var>clause</var>は以下のいずれかの形式でなければなりません。
+</p>
+<dl compact="compact">
+<dt> <code>(<var>re</var> (<var>var</var> …) <var>form</var> …)</code></dt>
+<dd><p><var>re</var>はリテラル正規表現オブジェクトでなければなりません
+(<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>参照)。<var>string-expr</var>の結果が文字列であり
+<var>re</var>にマッチした場合は、マッチ文字列が変数<var>var</var> …に
+束縛され、<var>form</var>が評価されます。最後の<var>form</var>の値が<code>rxmatch-case</code>
+の値となります。
+</p>
+<p><var>string-expr</var>の結果の文字列が<var>re</var>にマッチしないか、
+<var>string-expr</var>の結果が文字列以外であった場合は次の<var>clause</var>へと
+処理が進みます。
+</p>
+</dd>
+<dt> <code>(test <var>proc</var> <var>form</var> …)</code></dt>
+<dd><p>手続き<var>proc</var>が<var>string-expr</var>の結果を引数として呼ばれます。
+それが真の値を返した場合は<var>form</var>が順に評価され、最後の<var>form</var>の
+値が<code>rxmatch-case</code>の値として返されます。
+</p>
+<p><var>proc</var>が<code>#f</code>を返した場合は次の<var>clause</var>へと
+処理が進みます。
+</p>
+</dd>
+<dt> <code>(test <var>proc</var> =&gt; <var>proc2</var>)</code></dt>
+<dd><p>手続き<var>proc</var>が<var>string-expr</var>の結果を引数として呼ばれます。
+それが真の値を返した場合は、その値を引数として<var>proc2</var>が呼ばれ、
+その返り値が<code>rxmatch-case</code>の値として返されます。
+</p>
+<p><var>proc</var>が<code>#f</code>を返した場合は次の<var>clause</var>へと
+処理が進みます。
+</p>
+</dd>
+<dt> <code>(else <var>form</var> …)</code></dt>
+<dd><p>このフォームは、与えられる場合は最後の<var>clause</var>でなければなりません。
+他の全ての<var>clause</var>が失敗した場合に、<var>form</var>が順に評価され、最後の<var>form</var>の
+値が<code>rxmatch-case</code>の値として返されます。
+</p>
+</dd>
+<dt> <code>(else =&gt; <var>proc</var>)</code></dt>
+<dd><p>このフォームは、与えられる場合は最後の<var>clause</var>でなければなりません。
+他の全ての<var>clause</var>が失敗した場合に、<var>proc</var>が評価されます。
+その値は一引数の手続きにならなければなりません。
+その手続きが、<var>string-expr</var>の値を引数として呼ばれます。
+<var>proc</var>の結果が<code>rxmatch-case</code>の値となります。
+</p></dd>
+</dl>
+
+<p><code>else</code> <var>clause</var>が与えられず、かつ全ての<var>clause</var>が
+失敗した場合の戻り値は未定義です。
+</p>
+<p>上の<code>parse-date</code>の例は<code>rxmatch-case</code>を使うとより単純になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (parse-date2 str)
+  (rxmatch-case str
+    (test (lambda (s) (not (string? s))) #f)
+    (#/^(\d\d?)\/(\d\d?)\/(\d\d\d\d)$/ (#f mm dd yyyy)
+     (map string-&gt;number (list yyyy mm dd)))
+    (#/^(\d\d\d\d)\/(\d\d?)\/(\d\d?)$/ (#f yyyy mm dd)
+     (map string-&gt;number (list yyyy mm dd)))
+    (#/^\d+\/\d+\/\d+$/                (#f)
+     (errorf "ambiguous: ~s" str))
+    (else (errorf "bogus: ~s" str))))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e8_00aa_00bf_00e6_009f_00bb_00e3_0081_00a8_00e5_0090_0088_00e6_0088_0090"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_52.html#g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0081_00ae_00e8_00aa_00bf_00e6_009f_00bb_00e3_0081_00a8_00e5_0090_0088_00e6_0088_0090-1"></a>
+<h3 class="subsection">6.13.3 正規表現の調査と合成</h3>
+
+<p>When Gauche reads regexp from string, first it parses
+string representation and construct an abstract
+syntax tree (AST), perform some optimizations on it,
+then compiles into an instruction sequence to be
+executed by the regexp engine.
+</p>
+<p>The following procedures expose this process to
+user programs.  It may be easier for programs to
+manipulate AST than string representation.
+</p>
+<dl>
+<dt><a name="index-regexp_002dparse"></a><u>Function:</u> <b>regexp-parse</b><i> string :key case-fold</i></dt>
+<dd><p>Parses a string specification of regexp in <var>string</var>
+and returns its AST, represented in S-expression.
+See below for the spec of AST.
+</p>
+<p>When a true value is given to the keyword argument <var>case-fold</var>,
+returned AST will match case-insensitively.
+(Case insensitive regexp is handled in parser level,
+not by the engine).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002doptimize"></a><u>Function:</u> <b>regexp-optimize</b><i> ast</i></dt>
+<dd><p>Performs some rudimental optimization on the regexp AST,
+returning regexp AST.
+</p>
+<p>Currently it only optimizes some obvious cases.  The plan is
+to make it cleverer in future.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dcompile"></a><u>Function:</u> <b>regexp-compile</b><i> ast</i></dt>
+<dd><p>Takes an regexp AST and returns a regexp object.
+Currently the outermost form of <var>ast</var> must be
+a zero-th capturing group.  It is always added
+by <code>regexp-parse</code> to capture the entire regexp.
+</p>
+<p>Note: The function does some basic check to see the given AST
+is valid, but it may not reject invalid ASTs.  In such case,
+the returned regexp object doesn’t work properly.  It is
+caller’s responsibility to provide a properly constructed AST.
+(Even if it rejects an AST, error messages are often
+incomprehensible.)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dast"></a><u>Function:</u> <b>regexp-ast</b><i> regexp</i></dt>
+<dd><p>Returns AST used for the regexp object <var>regexp</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-regexp_002dunparse"></a><u>Function:</u> <b>regexp-unparse</b><i> ast :key (on-error :error)</i></dt>
+<dd><p>From the regexp’s <var>ast</var>, reconstruct the string representation
+of the regexp.  The keyword argument <var>on-error</var> can be
+a keyword <code>:error</code> (default) or <code>#f</code>.  If its the former,
+an error is signalled when <var>ast</var> isn’t valid regexp AST.
+If it’s the latter, <code>regexp-unparse</code> just returns <code>#f</code>.
+</p></dd></dl>
+
+<p>This is the structure of AST.  Note that this is originally
+developed only for internal use, and not very convenient to manipulate
+from the code (e.g. if you insert or delete a subtree, you have to
+renumber capturing groups to make them consitent.)  There’s a plan
+to provide a better representation, such as SRE, and a tool
+to convert it to this AST back and forth.   Contributions are welcome.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="smallexample">&lt;ast&gt; : &lt;clause&gt;   ; special clause
+      | &lt;item&gt;     ; matches &lt;item&gt;
+
+&lt;item&gt; : &lt;char&gt;       ; matches char
+       | &lt;char-set&gt;   ; matches char set
+       | (comp . &lt;char-set&gt;) ; matches complement of char set
+       | any          ; matches any char
+       | bol | eol    ; beginning/end of line assertion
+       | wb | nwb     ; word-boundary/negative word boundary assertion
+
+&lt;clause&gt; : (seq &lt;ast&gt; ...)       ; sequence
+       | (seq-uncase &lt;ast&gt; ...)  ; sequence (case insensitive match)
+       | (seq-case &lt;ast&gt; ...)    ; sequence (case sensitive match)
+       | (alt &lt;ast&gt; ...)         ; alternative
+       | (rep &lt;m&gt; &lt;n&gt; &lt;ast&gt; ...) ; repetition at least &lt;m&gt; up to &lt;n&gt; (greedy)
+                               ; &lt;n&gt; may be `#f'
+       | (rep-min &lt;m&gt; &lt;n&gt; &lt;ast&gt; ...)
+                               ; repetition at least &lt;m&gt; up to &lt;n&gt; (lazy)
+                               ; &lt;n&gt; may be `#f'
+       | (rep-while &lt;m&gt; &lt;n&gt; &lt;ast&gt; ...)
+                               ; like rep, but no backtrack
+       | (&lt;integer&gt; &lt;symbol&gt; &lt;ast&gt; ...)
+                               ; capturing group.  &lt;symbol&gt; may be #f.
+       | (cpat &lt;condition&gt; &lt;ast&gt; &lt;ast&gt;)
+                               ; conditional expression
+       | (backref . &lt;integer&gt;) ; backreference
+       | (once &lt;ast&gt; ...)      ; standalone pattern.  no backtrack
+       | (assert . &lt;asst&gt;)     ; positive lookahead assertion
+       | (nassert . &lt;asst&gt;)    ; negative lookahead assertion
+
+&lt;condition&gt; : &lt;integer&gt;     ; (?(1)yes|no) style conditional expression
+       | (assert . &lt;asst&gt;)  ; (?(?=condition)...) or (?(?&lt;=condition)...)
+       | (nassert . &lt;asst&gt;) ; (?(?!condition)...) or (?(?&lt;!condition)...)
+
+&lt;asst&gt; : &lt;ast&gt; ...
+       | ((lookbehind &lt;ast&gt; ...))
+</pre></td></tr></tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be_00e3_0082_0092_00e4_00bd_00bf_00e3_0081_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_52.html#g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

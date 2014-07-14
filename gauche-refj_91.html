@@ -1,0 +1,1160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.17 gauche.net - ネットワーキング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.17 gauche.net - ネットワーキング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.17 gauche.net - ネットワーキング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_91.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_90.html#Validator_00e4_00bb_0098_00e3_0081_008d_00e3_0082_00b9_00e3_0083_00ad_00e3_0083_0083_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002enet-_002d-_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">9.17 <code>gauche.net</code> - ネットワーキング</h2>
+
+<dl>
+<dt><a name="index-gauche_002enet"></a><u>Module:</u> <b>gauche.net</b></dt>
+<dd><a name="index-gauche_002enet-1"></a>
+<p>BSDソケットに基づいたネットワーキングに必要な手続きを提供するモジュールです。
+</p>
+<p>2つのレベルのAPIが定義されています。低レベルの手続きは<code>bind(2)</code>のような
+BSDソケットインタフェースに近いインタフェースを提供し、高レベルの手続きは
+典型的なコネクション指向のクライアントサーバアプリケーションに便利な
+インタフェースを提供します。
+</p>
+<p>また、ホストネームやプロトコルに関する情報にアクセスするAPIも定義されます。
+</p>
+<p>Gaucheは、<code>--enable-ipv6</code>コンフィギュアオプションつきで
+コンパイルされていれば、IPv6を扱うことができます。
+IPv6が使えるかどうかを調べるには、
+<code>cond-expand</code>中で<code>gauche.net.ipv6</code> feature identifierを
+使うことができます。次の例を見てください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(use gauche.net)
+(cond-expand
+  (gauche.net.ipv6
+    ... ipv6を使うコード ...)
+  (else
+    ... ipv4のみのコード ...))
+</pre></td></tr></tbody></table>
+
+<p><code>cond-expand</code>の詳細については<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>を
+参照してください。
+</p>
+</dd></dl>
+
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9">9.17.1 ソケットアドレス</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">9.17.2 高レベルネットワーク手続き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9">9.17.3 低レベルソケットインタフェース</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Netdb_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9">9.17.4 Netdbインタフェース</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9-1"></a>
+<h3 class="subsection">9.17.1 ソケットアドレス</h3>
+
+<a name="g_t_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088"></a>
+<h4 class="subsubheading">ソケットアドレスオブジェクト</h4>
+
+<dl>
+<dt><a name="index-_003csockaddr_003e"></a><u>Builtin Class:</u> <b>&lt;sockaddr&gt;</b></dt>
+<dd><a name="index-sockaddr"></a>
+<p>ソケットアドレスの抽象ベースクラスです。
+ソケットアドレスファミリはこのクラスのサブクラスとして実装されます。
+</p>
+<p>ソケットアドレスはビルトインクラスですが、<code>make</code>メソッドで
+特定のソケットアドレスファミリのインスタンスを作成することができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002dfamily"></a><u>Generic Function:</u> <b>sockaddr-family</b><i> addr</i></dt>
+<dd><p>ソケットアドレス<var>addr</var>のファミリを表すシンボルを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002dname"></a><u>Generic Function:</u> <b>sockaddr-name</b><i> addr</i></dt>
+<dd><p>ソケットアドレス<var>addr</var>の名前を表す文字列を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csockaddr_002din_003e"></a><u>Builtin Class:</u> <b>&lt;sockaddr-in&gt;</b></dt>
+<dd><a name="index-sockaddr_002din"></a>
+<p>AF_INETファミリのソケットアドレスです。このクラスのインスタンスを
+作成するには、次のようにして<code>make</code>メソッドを呼びます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make &lt;sockaddr-in&gt; :host <var>host</var> :port <var>port</var>)
+</pre></td></tr></tbody></table>
+<p><var>host</var>は文字列、整数のIPアドレス、<code>u8vector</code>のIPアドレス、
+もしくは<code>:any</code>、<code>:broadcast</code>、<code>:none</code>、<code>:loopback</code>の
+いずれかのキーワードでなければなりません。
+文字列の場合、それはホスト名かIPアドレスのドット表記です。
+Gaucheは<code>gethostbyname(3)</code>を使って実際のIPアドレスを得ます。
+この値がキーワード<code>:any</code>か<code>:broadcast</code>なら、それぞれ
+<code>INADDR_ANY</code>か<code>INADDR_BROADCAST</code>がアドレスとして使われます。
+キーワード<code>:loopback</code>はIPv4のループバックアドレス"127.0.0.1"を表します。
+</p>
+<p><var>port</var>はポート番号を示す正の整数です。
+2つ以上のプロトコルスタックを持つようなマシン上で複数のソケットアドレスを
+生成するには、後述の <code>make-sockaddrs</code> も参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002dfamily-1"></a><u>Method:</u> <b>sockaddr-family</b><i> (addr &lt;sockaddr-in&gt;)</i></dt>
+<dd><p>シンボル<code>inet</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002dname-1"></a><u>Method:</u> <b>sockaddr-name</b><i> (addr &lt;sockaddr-in&gt;)</i></dt>
+<dd><p>文字列"<var>a</var>.<var>b</var>.<var>c</var>.<var>d</var>:<var>port</var>"を返します。
+コロンの前はIPアドレスのドット表記で、<var>port</var>はポート番号です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002daddr"></a><u>Method:</u> <b>sockaddr-addr</b><i> (addr &lt;sockaddr-in&gt;)</i></dt>
+<dt><a name="index-sockaddr_002dport"></a><u>Method:</u> <b>sockaddr-port</b><i> (addr &lt;sockaddr-in&gt;)</i></dt>
+<dd><p>それぞれ、IPアドレスとポート番号を整数で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csockaddr_002dun_003e"></a><u>Builtin Class:</u> <b>&lt;sockaddr-un&gt;</b></dt>
+<dd><a name="index-sockaddr_002dun"></a>
+<p>AF_UNIXファミリのソケットアドレスです。このクラスのインスタンスを作成するには、
+<code>make</code>メソッドを次のように呼んで下さい。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make &lt;sockaddr-un&gt; :path <var>path</var>)
+</pre></td></tr></tbody></table>
+<p><var>path</var>はソケットのパス名を表す文字列です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002dfamily-2"></a><u>Method:</u> <b>sockaddr-family</b><i> (addr &lt;sockaddr-un&gt;)</i></dt>
+<dd><p>シンボル<code>unix</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sockaddr_002dname-2"></a><u>Method:</u> <b>sockaddr-name</b><i> (addr &lt;sockaddr-un&gt;)</i></dt>
+<dd><p>ソケットアドレスのパス名を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003csockaddr_002din6_003e"></a><u>Builtin Class:</u> <b>&lt;sockaddr-in6&gt;</b></dt>
+<dd><a name="index-sockaddr_002din6"></a>
+<p>AF_INET6ファミリのソケットアドレスです。
+このクラスはgaucheが?enable-ipv6つきでconfigureされている場合に使えます。
+コンストラクタとスロットは<code>&lt;sockaddr-in&gt;</code>と同じです。
+2つ以上のプロトコルスタックを持つようなマシン上で複数のソケットアドレスを
+生成するには、後述の <code>make-sockaddrs</code> も参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dsockaddrs"></a><u>Function:</u> <b>make-sockaddrs</b><i> host port :optional proto</i></dt>
+<dd><p>これは上位レベルのユーティリティ手続きで、プロトコル <var>proto</var> の
+<code><var>host</var>:<var>port</var></code> を指す、可能なすべてのドメインソケット
+アドレスを生成します。特に、指定したホストが IPv4 および IPv6 の両方の
+アドレスを持ち、稼働中のシステムがその両方をサポートしている場合、IPv4 と
+IPv6 の両方のソケットアドレスが返ります。もし、<var>host</var> が複数の
+IP アドレスをもつ場合、ソケットアドレスはそれぞれのIPアドレス毎に生成
+されます。自分のネットワークアプリケーションを異るネットワークスタックの
+設定の間でこれまでよりはるかにポータブルなものにすることができます。
+</p>
+<p><var>host</var> に <code>#f</code> を渡すと、ローカルな(サーバ)アドレスが生成されます。
+<var>port</var> 引数に整数のかわりに、サービス名(たとえば、<code>"http"</code>)を
+わたすこともできます。<var>proto</var> の値は、<code>tcp</code> あるいは <code>udp</code>
+のどちらかのシンボルになります。デフォルトでは、<code>tcp</code> です。
+</p>
+<p>この手続きは常にソケットアドレスのリストを返します。もし、<var>host</var> の
+検索に失敗した場合には、空リストが返ります。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9_00e3_0081_00a8_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00a8_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b"></a>
+<h4 class="subsubheading">アドレスと文字列との変換</h4>
+
+<dl>
+<dt><a name="index-inet_002dstring_002d_003eaddress"></a><u>Function:</u> <b>inet-string-&gt;address</b><i> address</i></dt>
+<dd><p>文字列で表現されたインターネットアドレス<var>address</var>を整数のアドレス
+に変換します。<var>address</var>のパーズが成功した場合には値を2つ返します。
+ひとつは整数で表現されたアドレスの値、もうひとつは認識されたプロトコル
+(定数値で、<code>2</code> (= <code>AF_INET</code>)ならIPv4アドレス、<code>10</code> (=
+<code>AF_INET6</code>)ならIPv6アドレス)です。<var>address</var>のパーズに失敗した
+ら、<code>#f</code>と<code>#f</code>との2つが返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(inet-string-&gt;address "192.168.1.1")
+ ⇒ 3232235777 and 2
+(inet-string-&gt;address "::1")
+ ⇒ 1 and 10
+(inet-string-&gt;address "::192.168.1.1")
+ ⇒ 3232235777 and 10
+(inet-string-&gt;address "ffe0::1")
+ ⇒ 340116213421465348979261631549233168385 and 10
+(inet-string-&gt;address "::192.168.1.1")
+ ⇒ 3232235777 and 10
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-inet_002dstring_002d_003eaddress_0021"></a><u>Function:</u> <b>inet-string-&gt;address!</b><i> address buf</i></dt>
+<dd><p><code>inet-string-&gt;address</code>と同じですが、整数値を返すかわりに、与えら
+れたu8vectorである<var>buf</var>をパーズしたアドレスで埋めるところが違いま
+す。inetアドレスの整数表現はbignumと同じやりかたです。この関数を使えば
+bignumを生成しなくてすみます。与えられたu8vector<var>buf</var>は変更可能で
+なければなりません。変換に成功した場合はプロトコルが、失敗した場合は
+<code>#f</code>が返ります。
+</p>
+<p>呼び出し側は格納に十分なバッファを用意しなければなりません。<var>buf</var>
+が必要な分より大きい場合には結果は先頭から詰められ、ベクタの他の部分は
+そのままになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let* ((buf (make-u8vector 16 0))
+       (proto (inet-string-&gt;address! "192.168.1.1" buf)))
+  (list proto buf))
+ ⇒ (2 #u8(192 168 1 1 0 0 0 0 0 0 0 0 0 0 0 0))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-inet_002daddress_002d_003estring"></a><u>Function:</u> <b>inet-address-&gt;string</b><i> address protocol</i></dt>
+<dd><p>与えれれた<var>address</var>をプロトコル<var>protocol</var>の文字列表現に変換し
+ます。プロトコルとしては<code>2</code> (定数<code>AF_INET</code>)または<code>10</code>
+(定数<code>AF_INET6</code>)が指定可能です。<var>address</var>としては整数または
+u8vectorが使えます。u8vectorをつかった場合には必要な部分だけが読み込ま
+れます。したがって、必要な長さ以上あるベクタでもかまいません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(inet-address-&gt;string 3232235777 AF_INET)
+  ⇒ "192.168.1.1"
+
+(inet-address-&gt;string '#u8(192 168 1 1) AF_INET)
+  ⇒ "192.168.1.1"
+
+(inet-address-&gt;string 3232235777 AF_INET6)
+  ⇒ "::c0a8:101"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a2_00e3_0083_0089_00e3_0083_00ac_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d-1"></a>
+<h3 class="subsection">9.17.2 高レベルネットワーク手続き</h3>
+
+<dl>
+<dt><a name="index-_003csocket_003e"></a><u>Builtin Class:</u> <b>&lt;socket&gt;</b></dt>
+<dd><a name="index-socket"></a>
+<p>通信の終端であるところのソケットを表すクラスです。
+</p>
+<p>コネクション型のソケットには、入力用と出力用の2つのポートが結び付いており、
+それらを使って通信路にアクセスできます。
+<code>socket-input-port</code>と<code>socket-output-port</code>はそれぞれ
+入力用、出力用のポートを返します。
+</p>
+</dd></dl>
+
+<p>以下の3つは手軽にコネクション型のソケットを作成する
+ための手続きです。 大抵の場合はこれらの手続きで間に合いますが、
+より細かい制御が必要な場合は低レベルAPIを使用して下さい。
+</p>
+<dl>
+<dt><a name="index-make_002dclient_002dsocket"></a><u>Function:</u> <b>make-client-socket</b><i> :optional address-spec …</i></dt>
+<dd><p>引数<var>address-spec</var> …によって指定されるアドレスと接続する
+クライアントソケットを作成して返します。
+</p>
+<dl compact="compact">
+<dt> <code>(make-client-socket 'unix <var>path</var>)</code></dt>
+<dd><p><var>path</var>で待っているUnixドメインのサーバーソケットに接続します。
+</p></dd>
+<dt> <code>(make-client-socket 'inet <var>host</var> <var>port</var>)</code></dt>
+<dd><p>ホスト<var>host</var>のポート<var>port</var>にTCPで接続します。
+<var>host</var>はIPv4アドレスのドット表記でもホスト名でも
+構いません。Gaucheが?enable-ipv6でコンパイルされていれば、
+IPv6形式のアドレス表記も受け付けます。
+<var>port</var>はポート番号を指定する正確な整数か、文字列のサービス名
+(<code>"http"</code>等)でなければなりません。
+</p>
+<p>Gaucheが?enable-ipv6でコンパイルされており、ホスト名が渡されて、
+そのホスト名がIPv6とIPv4の両方のアドレスを持っていた場合は、
+最初にIPv6での接続が試みられ、それが失敗した場合にIPv4での接続が試みられます。
+</p></dd>
+<dt> <code>(make-client-socket <var>host</var> <var>port</var>)</code></dt>
+<dd><p>上と同じです。この形式はSTkとの互換性のために提供されています。
+</p></dd>
+<dt> <code>(make-client-socket <var>sockaddr</var>)</code></dt>
+<dd><p><code>&lt;sockaddr&gt;</code>クラスのインスタンスが渡された場合には、それに対応する
+ソケットをオープンし、そのアドレスへ接続します。
+</p></dd>
+</dl>
+
+<p>ソケットを作成できなかったり、指定されたアドレスに接続できなかった場合は
+エラーが報告されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-client-socket 'inet "www.w3.com" 80)
+  ⇒ ;<span class="roman">a socket connected to www.w3.com, port 80</span>
+(make-client-socket "127.0.0.1" 23)
+  ⇒ ;<span class="roman">a socket connected to localhost, port 23</span>
+(make-client-socket 'unix "/tmp/.sock"
+  ⇒ ;<span class="roman">a socket connected to a unix domain socket "/tmp/.sock"</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dserver_002dsocket"></a><u>Function:</u> <b>make-server-socket</b><i> :optional address-spec …</i></dt>
+<dd><p><var>address-spec</var>にて接続を待つサーバソケットを作成して返します。
+</p>
+<dl compact="compact">
+<dt> <code>(make-server-socket 'unix <var>path</var> [:backlog <var>num</var>])</code></dt>
+<dd><p>パス名<var>path</var>を持つUnixドメインソケットが作成されます。
+キーワード引数<var>backlog</var>に渡された数値は<code>socket-listen</code>に渡され、
+サーバが接続要求を貯めておくキューの最大長を指定します。
+デフォルトは5です。多忙なサーバーで、"connection refused"が頻発する場合は
+この数値を増やしてみて下さい。
+</p></dd>
+<dt> <code>(make-server-socket 'inet <var>port</var> [:reuse-addr? <var>flag</var>] [:sock-init <var>proc</var>] [:backlog <var>num</var>])</code></dt>
+<dd><p>ポート<var>port</var>にて接続を待つInetドメインのTCPソケットが作成されます。
+<var>port</var>は非負の正確な整数か、文字列のサービス名(<code>"http"</code>等)でなければなりません。
+<var>port</var>が零の場合はシステムが適当なポート番号を割り当てます。
+キーワード引数<var>reuse-addr?</var>に真の値が与えられた場合は、
+ソケットに<code>SO_REUSEADDR</code>オプションがセットされます。
+その場合、他のプロセスが解放したばかりの(TCP)ポートでも
+エラーとならずに使うことができます。
+</p>
+<p>キーワード引数<code>sock-init</code>が与えられた場合、<code>proc</code> が出来たての
+ソケットとそのソケットアドレスを引数にして呼び出されます。
+つまり、<code>proc</code> はそのような2つの引数を取る手続きでなければなりません。
+ソケットに特殊なオプションを設定したいような場合に便利です。
+</p>
+<p>キーワード引数<var>backlog</var>はunixソケットと同じです。上の記述を参照して下さい。
+</p>
+</dd>
+<dt> <code>(make-server-socket <var>port</var> [:reuse-addr? <var>flag</var>] [:sock-init <var>proc</var>][:backlog <var>num</var>])</code></dt>
+<dd><p>これは、<var>port</var>が整数でなければならないことを除けば、
+上の形式と同じ動作をします。STkの<code>make-server-socket</code>との
+互換性のために提供されています。
+</p></dd>
+<dt> <code>(make-server-socket <var>sockaddr</var> [:reuse-addr? <var>flag</var>][:sock-init <var>proc</var>][:backlog <var>num</var>])</code></dt>
+<dd><p>この形式は、listenするソケットアドレスを<code>&lt;sockaddr&gt;</code>のインスタンスで
+明示的に指定します。
+</p></dd>
+</dl>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(make-server-socket 'inet 8080)
+  ⇒ #&lt;socket (listen "0.0.0.0:8080")&gt;
+(make-server-socket 8080)
+  ⇒ #&lt;socket (listen "0.0.0.0:8080")&gt;
+(make-server-socket 'inet 0)
+  ⇒ #&lt;socket (listen "0.0.0.0:35628")&gt;
+(make-server-socket 'unix "/tmp/.sock")
+  ⇒ #&lt;socket (listen "/tmp/.sock")&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dserver_002dsockets"></a><u>Function:</u> <b>make-server-sockets</b><i> host port :key reuse-addr? sock-init</i></dt>
+<dd><p><var>host</var> が持つすべての利用可能なネットワークインタフェース上の
+<var>port</var> で接続を待つソケットを生成し、それらのリストを返します。
+<var>port</var> には数字のポート番号のほか、"<code>http</code>"などの
+サービス名も指定できます。
+</p>
+<p>この手続きは、ホストが複数のプロトコルスタック(IPv4とIPv6など)を
+持つ場合に特に便利です。
+</p>
+<p>キーワード引数の意味は<code>make-server-socket</code>のと同じです。
+</p></dd></dl>
+
+<p>上記の手続きによって返されたソケットオブジェクトに対して、
+以下のようなアクセサがあります。
+</p>
+<dl>
+<dt><a name="index-socket_002daddress"></a><u>Function:</u> <b>socket-address</b><i> socket</i></dt>
+<dd><p>ソケット<var>socket</var>のソケットアドレスを返します。
+ソケットにアドレスがまだバインドされていない場合は<code>#f</code>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dinput_002dport"></a><u>Function:</u> <b>socket-input-port</b><i> socket :key (buffering :modest)</i></dt>
+<dt><a name="index-socket_002doutput_002dport"></a><u>Function:</u> <b>socket-output-port</b><i> socket :key (buffering :line)</i></dt>
+<dd><p>それぞれ、<var>socket</var>からデータを読みだす入力ポート、および
+<var>socket</var>にデータを書き出す出力ポートを返します。
+</p>
+<p>キーワード引数<var>buffering</var>はポートのバッファリングモードを
+指定します。バッファリングモードの説明は<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">ファイルポート</a>にあります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dclose"></a><u>Function:</u> <b>socket-close</b><i> socket</i></dt>
+<dd><p>ソケット<var>socket</var>をクローズします。<var>socket</var>の入出力ポートも
+クローズされます。
+</p>
+<p>注意: リリース 0.7.2 より、この手続きは接続をシャットダウンしないように
+なりました。その理由は、<var>socket</var> が fork した別プロセスから参照され
+ている可能性があり、既存の接続を妨害することなくクローズしたい場合がある
+からです。<code>socket-shutdown</code> を呼べば接続を明示的にシャットダウンできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dclient_002dsocket"></a><u>Function:</u> <b>call-with-client-socket</b><i> socket proc :key input-buffering output-buffering</i></dt>
+<dd><p><var>socket</var>は接続されたクライアントソケットでなければなりません。
+<var>proc</var>がソケットから読み出す入力ポートと、
+ソケットに書き出す出力ポートを引数として呼ばれます。
+<var>proc</var>が正常終了するか、エラーを投げた場合にソケットはクローズされます。
+</p>
+<p>キーワード引数<var>input-buffering</var>と<var>output-buffering</var>が与えられた場合、
+それらはそれぞれ<code>socket-input-port</code>と<code>socket-output-port</code>の
+<var>buffering</var>キーワード引数へと渡されます。
+</p></dd></dl>
+
+<p>これは高レベルソケット手続きを使った、非常に単純なhttpクライアントです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#!/usr/bin/env gosh
+(use gauche.net)
+
+(define (usage)
+  (display "Usage: swget url\n" (current-error-port))
+  (exit 1))
+
+;; Returns three values: host, port, and path.
+(define (parse-url url)
+  (rxmatch-let (rxmatch #/^http:\/\/([-A-Za-z\d.]+)(:(\d+))?(\/.*)?/ url)
+      (#f host #f port path)
+    (values host port path)))
+
+(define (get url)
+  (receive (host port path) (parse-url url)
+    (call-with-client-socket
+        (make-client-socket 'inet host (string-&gt;number (or port "80")))
+      (lambda (in out)
+        (format out "GET ~a HTTP/1.0\r\n" path)
+        (format out "host: ~a\r\n\r\n" host)
+        (flush out)
+        (copy-port in (current-output-port))))))
+
+(define (main args)
+  (if (= (length args) 2)
+      (get (cadr args))
+      (usage))
+  0)
+</pre></td></tr></tbody></table>
+
+
+<hr size="6">
+<a name="g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Netdb_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9-1"></a>
+<h3 class="subsection">9.17.3 低レベルソケットインタフェース</h3>
+
+<p>ここにある関数群はシステムコールと類似した API を提供します。
+ソケット API プログラミングに慣れていれば、ソケットをより細かく
+制御できるので、役に立つでしょう。
+</p>
+<dl>
+<dt><a name="index-make_002dsocket"></a><u>Function:</u> <b>make-socket</b><i> domain type :optional protocol</i></dt>
+<dd><p>パラメータで指定したソケットを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-PF_005fUNIX"></a><u>Constant:</u> <b>PF_UNIX</b></dt>
+<dt><a name="index-PF_005fINET"></a><u>Constant:</u> <b>PF_INET</b></dt>
+<dt><a name="index-PF_005fINET6"></a><u>Constant:</u> <b>PF_INET6</b></dt>
+<dd><p>これらの定数はそれぞれシステムが提供する<code>PF_UNIX</code>、<code>PF_INET</code>、
+<code>PF_INET6</code>に束縛されています。
+これらの値を<var>make-socket</var>の<var>domain</var>引数に使うことができます。
+</p>
+<p>(<code>PF_INET6</code>はオペレーティングシステムがIPv6をサポートしている場合にのみ
+定義されます。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-AF_005fUNIX"></a><u>Constant:</u> <b>AF_UNIX</b></dt>
+<dt><a name="index-AF_005fINET"></a><u>Constant:</u> <b>AF_INET</b></dt>
+<dt><a name="index-AF_005fINET6"></a><u>Constant:</u> <b>AF_INET6</b></dt>
+<dd><p>これらの定数はそれぞれ、<code>AF_UNIX</code>、<code>AF_INET</code>、<code>AF_INET6</code>
+に束縛されています。
+</p>
+<p>(<code>AF_INET6</code>はオペレーティングシステムがIPv6をサポートしている場合にのみ
+定義されます。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SOCK_005fSTREAM"></a><u>Constant:</u> <b>SOCK_STREAM</b></dt>
+<dt><a name="index-SOCK_005fDGRAM"></a><u>Constant:</u> <b>SOCK_DGRAM</b></dt>
+<dt><a name="index-SOCK_005fRAW"></a><u>Constant:</u> <b>SOCK_RAW</b></dt>
+<dd><p>これらの定数はそれぞれ、<code>SOCK_STREAM</code>、<code>SOCK_DGRAM</code>、
+<code>SOCK_RAW</code> に束縛されており、
+<var>make-socket</var>の<var>type</var>引数に使うことができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dfd"></a><u>Function:</u> <b>socket-fd</b><i> socket</i></dt>
+<dd><p>ソケットのもつ整数のシステムファイルディスクリプタを返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-socket_002dstatus"></a><u>Function:</u> <b>socket-status</b><i> socket</i></dt>
+<dd><p><var>socket</var> の内部状態を、以下のシンボルのどれかで返します。
+</p><table>
+<tbody><tr><td>none</td><td>生成直後</td></tr>
+<tr><td>bound</td><td><code>socket-bind</code> によって、あるアドレスに束縛されている</td></tr>
+<tr><td>listening</td><td><code>socket-listen</code> によって、接続をリッスンしている</td></tr>
+<tr><td>connected</td><td><code>socket-connect</code> あるいは <code>socket-accept</code> によって接続されている</td></tr>
+<tr><td>shutdown</td><td><code>socket-shutdown</code> によってシャットダウンされた</td></tr>
+<tr><td>closed</td><td><code>socket-close</code> によってクローズされた</td></tr>
+</tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dbind"></a><u>Function:</u> <b>socket-bind</b><i> socket address</i></dt>
+<dd><p><var>socket</var> をローカルネットワークアドレス <var>address</var> に束縛します。
+通常は、特定のアドレスをこのサーバのポートに結びつけるのに用います。
+もし、束縛が失敗したら(多くの場合、そのアドレスが既に使用されている)、
+エラーシグナルが発生します。
+</p>
+<p>INET ドメインアドレスの場合には port=0 とした <var>address</var> を
+渡せます。システムがポート番号を割当て、<var>socket</var> の
+<code>address</code> スロットに実際のアドレスをセットします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dlisten"></a><u>Function:</u> <b>socket-listen</b><i> socket backlog</i></dt>
+<dd><p><var>socket</var> をリッスンします。ソケットは既になんらかのアドレスに
+束縛されていなければなりません。<var>backlog</var> はキューに入れる
+接続要求の最大数を指定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002daccept"></a><u>Function:</u> <b>socket-accept</b><i> socket</i></dt>
+<dd><p><var>socket</var>に来た接続要求をアクセプトします。リモートエンティティへ
+接続している新しいソケットを返します。元の <var>socket</var> は引き続き
+次の接続要求を待ちます。接続要求がないとき、これの呼出しは要求が
+一つ来るまで待ちます。
+</p>
+<p>接続要求をペンディングしているかどうかをチェックするのに
+<code>sys-select</code>が使えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dconnect"></a><u>Function:</u> <b>socket-connect</b><i> socket address</i></dt>
+<dd><p><var>socket</var> をリモートアドレス <var>address</var> に接続します。
+これは、クライアントソケットをリモートエンティティに接続するための
+方法です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dshutdown"></a><u>Function:</u> <b>socket-shutdown</b><i> socket how</i></dt>
+<dd><p><var>socket</var> の接続をシャットダウンします。<var>how</var> が<code>SHUT_RD</code> (0) なら、
+<var>socket</var> の受信チャネルが不許可となります。<var>how</var> が<code>SHUT_WR</code> (1)なら、
+<var>socket</var> の送信チャネルが不許可となります。<var>how</var> が<code>SHUT_RDWR</code> (2)なら、
+<var>socket</var> の送受信チャネルの両方が不許可となります。
+接続していないソケットに対して、この手続きを呼ぶとエラーになります。
+</p>
+<p>ソケットの送信チャネルをシャットダウンすると、リモート側の受信チャネル
+に EOF があらわれます。これは、リモート側が何かを送り返す前に EOF
+を受けとることを期待している場合、便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dgetsockname"></a><u>Function:</u> <b>socket-getsockname</b><i> socket</i></dt>
+<dd><p><var>socket</var>のローカル側アドレスを表す<code>&lt;sockaddr&gt;</code>インスタンスを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dgetpeername"></a><u>Function:</u> <b>socket-getpeername</b><i> socket</i></dt>
+<dd><p><var>socket</var>の通信相手のアドレスを表す<code>&lt;sockaddr&gt;</code>インスタンスを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dsend"></a><u>Function:</u> <b>socket-send</b><i> socket msg :optional flags</i></dt>
+<dt><a name="index-socket_002dsendto"></a><u>Function:</u> <b>socket-sendto</b><i> socket msg to-address :optional flags.</i></dt>
+<dd><p>それぞれ、<code>send(2)</code> および <code>sendto(2)</code> へのインタフェース。
+<var>msg</var> の内容を <var>socket</var> を通じて送出します。
+<var>msg</var>は文字列もしくはユニフォームベクタでなければなりません。
+バイナリパケットを送る場合はユニフォームベクタの使用を推奨します。
+</p>
+<p><code>socket-send</code> を使うときには、<var>socket</var> は既に接続されて
+いなければなりません。他方、<code>socket-sendto</code> は未接続の
+ソケットに対して使用でき、送出先アドレスは <code>&lt;sockaddr&gt;</code> のインスタンス
+<var>to-address</var> で指定します。
+</p>
+<p>オプション引数 <var>flags</var> は整数定数 <code>MSG_*</code> のビット毎のORで
+指定できます。詳しくはシステムの man ページ <code>send(2)</code> および
+<code>sendto(2)</code> を見て下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dsendmsg"></a><u>Function:</u> <b>socket-sendmsg</b><i> socket msghdr :optional flags</i></dt>
+<dd><p><code>sendmsg(3)</code>を使って、<var>msghdr</var>で記述されるパケットを<var>socket</var>
+を通じて送ります。<var>msghdr</var>引数は文字列かu8vectorで、
+<code>struct msghdr</code>構造体のバイナリ表現でなければなりません。
+<var>msghdr</var>引数に適したデータを構築する確かな方法は、下に述べる
+<code>socket-buildmsg</code>を使うことです。
+</p>
+<p><var>flags</var>引数は<code>socket-send</code>および<code>socket-sendto</code>と同じです。
+</p>
+<p>送り出されたオクテット数を返します。
+</p>
+<p>この手続きはWindowsネイティブ環境では(まだ)サポートされません。
+これが使えるかどうかは、機能識別子<code>gauche.os.windows</code>を使って判定
+できます (<a indepth="true" href="gauche-refj_17.html#g_t_00e3_0083_0097_00e3_0083_00a9_00e3_0083_0083_00e3_0083_0088_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e4_00be_009d_00e5_00ad_0098_00e3_0081_00ae_00e6_00a9_009f_00e8_0083_00bd">プラットフォーム依存の機能</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002dbuildmsg"></a><u>Function:</u> <b>socket-buildmsg</b><i> addr iov control flags :optional buf</i></dt>
+<dd><p><code>struct msghdr</code>構造体のバイナリ表現を構築します。
+作られたmsghdrは<code>socket-sendmsg</code>に渡すことができます。
+この手続きを理解するには、<code>sendmsg(3)</code>の動作をよく知っていることが必要です。
+</p>
+<p><var>addr</var>引数は<code>&lt;sockaddr&gt;</code>のインスタンスか<code>#f</code>でなければ
+なりません。<code>&lt;sockaddr&gt;</code>のインスタンスである場合、そのアドレスが
+msghdrの<code>msg_name</code>フィールドに使われます。
+</p>
+<p><var>iov</var>引数はベクタか<code>#f</code>でなければなりません。ベクタの場合、
+各要素は文字列かu8vectorでなければなりません。これはmsghdrの
+<code>msg_iov</code>フィールドに使われます。各要素の内容はカーネル内で
+結合されてペイロードとなります。
+</p>
+<p><var>control</var>引数は補助データ(cmsg)を指定します。補助データが必要ない
+場合は<code>#f</code>を渡せます。そうでなければ、<var>control</var>引数は
+次の形式を持つリストでなければなりません。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((<var>level</var> <var>type</var> <var>data</var>) …)
+</pre></td></tr></tbody></table>
+<p><var>level</var>と<var>type</var>は正確な整数で、<var>data</var>は文字列かu8vectorの
+いずれかです。
+最初の2つはそれぞれcmsgの<code>cmsg_level</code>と
+<code>cmsg_type</code>フィールドを指定します。<var>data</var>はcmsgのデータとなります。
+(<code>cmsg_len</code>は<var>data</var>から計算されます)。
+</p>
+<p><var>flags</var>引数は<code>msg_flags</code>フィールドに使われます。
+</p>
+<p><var>buf</var>引数が省略されるか<code>#f</code>の場合、msghdrを構築するのに
+必要なメモリがアロケートされます。書き換え可能なu8vectorが<var>buf</var>
+に渡されれば、<code>socket-buildmsg</code>はできるだけそれをバッファに使って
+msghdrを構築しようとします。<var>buf</var>で領域が不足する場合のみ
+新たなメモリをアロケートします。
+</p>
+<p>この手続きは構築されたmsghdrをu8vectorとして返します。
+</p>
+<p>この手続きはWindowsネイティブ環境では(まだ)サポートされません。
+これが使えるかどうかは、機能識別子<code>gauche.os.windows</code>を使って判定
+できます (<a indepth="true" href="gauche-refj_17.html#g_t_00e3_0083_0097_00e3_0083_00a9_00e3_0083_0083_00e3_0083_0088_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e4_00be_009d_00e5_00ad_0098_00e3_0081_00ae_00e6_00a9_009f_00e8_0083_00bd">プラットフォーム依存の機能</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002drecv_0021"></a><u>Function:</u> <b>socket-recv!</b><i> socket buf :optional flags</i></dt>
+<dd><p><code>recv(2)</code>へのインタフェースです。<var>socket</var>からメッセージを
+受信し、それを変更可能なユニフォームベクタ<var>buf</var>へと書き込みます。
+そして実際に書き込まれたバイト数を返します。
+<var>socket</var>は既にコネクトされていなければなりません。
+<var>buf</var>の大きさが受信したメッセージより小さい場合、<var>socket</var>の
+タイプによっては残りのメッセージは捨てられる可能性があります。
+</p>
+<p>オプション引数 <var>flags</var> は整数定数 <code>MSG_*</code> のビット毎のORで
+指定できます。詳しくはシステムの man ページ <code>recv(2)</code>を見て下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-socket_002drecvfrom_0021"></a><u>Function:</u> <b>socket-recvfrom!</b><i> socket buf addrs :optional flags</i></dt>
+<dd><p><code>recvfrom(2)</code>へのインタフェースです。<var>socket</var>からメッセージを
+受け取り、変更可能なユニフォームベクタへ書き込みます。<var>socket</var>は
+コネクトされていなくても構いません。<code>socket-recv</code>と同様に、
+<var>buf</var>の大きさがメッセージ全てを保持するのに十分でない場合、
+<var>socket</var>のタイプによっては残りのメッセージは捨てられます。
+</p>
+<p>ふたつの値を返します。実際に<var>buf</var>に書かれたバイト数と、
+送信者のアドレスを示す<code>&lt;sys-sockaddr&gt;</code>のサブクラスのインスタンスです。
+</p>
+<p><var>addrs</var>引数はソケットアドレスインスタンスのリストでなければなりません。
+ただし、リストの終端 (最後の<code>cdr</code>) は<code>#t</code>であっても許されます。
+(この特殊な場合として、<var>addrs</var>引数にただ<code>#t</code>を渡すことも許されます)。
+<var>addrs</var>引数に渡されたソケットアドレスの中身は何でも構いません。
+送信者のアドレスファミリーに一致するソケットアドレスインスタンスが<var>addrs</var>
+中にあった場合、<code>socket-recvfrom!</code>はそのインスタンスに直接
+送信者のアドレスを書き込みます。受信し得る全てのアドレスファミリのソケットアドレスを
+リストで渡しておけば、<code>socket-recvfrom!</code>が(成功時には)
+メモリアロケーションを行わないことが保証されます。これは
+速度が重要となるタイトなループ内で<code>socket-recvfrom!</code>を呼ぶ場合に
+重要です。
+</p>
+<p>送信者のアドレスファミリに一致するソケットアドレスがあたえられなかった場合、
+<code>socket-recvfrom!</code>の振舞いは<var>addrs</var>のリスト終端の値によります。
+<var>addrs</var>が<code>()</code>で終端されていた場合 (<var>addrs</var>が真性リストで
+あった場合)、送信者のアドレスは捨てられ、<code>socket-recvfrom!</code>は
+二番めの値として<code>#f</code>を返します。<var>addrs</var>が<code>#t</code>で終端
+されていた場合、<code>socket-recvfrom!</code>は新たなソケットアドレス
+インスタンスを作成して返します。
+</p>
+<p>簡単な場合として次の二つがあります：<var>addrs</var>に<code>()</code>が渡された場合、
+送信者のアドレスは常に捨てられます。<var>socket</var>がコネクトされていれば
+送信者のアドレスは既にわかっているので、そういう場合に便利でしょう。
+一方<var>addrs</var>に<code>#t</code>を渡せば、常に新しいソケットアドレスが
+アロケートされて返されます。メモリアロケーションについて気にしなくても
+良い場合は便利でしょう。
+</p>
+<p>オプション引数 <var>flags</var> は整数定数 <code>MSG_*</code> のビット毎のORで
+指定できます。詳しくはシステムの man ページ <code>recvfrom(2)</code>を見て下さい。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-socket_002drecv"></a><u>Function:</u> <b>socket-recv</b><i> socket bytes :optional flags</i></dt>
+<dt><a name="index-socket_002drecvfrom"></a><u>Function:</u> <b>socket-recvfrom</b><i> socket bytes :optional flags</i></dt>
+<dd><p><code>socket-recv!</code>や<code>socket-recvfrom!</code>と似ていますが、
+受け取ったメッセージを(不完全かもしれない)文字列として返します。
+<var>bytes</var>は受信する上限のバイト数を指定します。
+<code>socket-recvfrom</code>はそれに加えて、送信者のアドレスのために
+常に新たなソケットアドレスオブジェクトを生成します。
+</p>
+<p>これらの手続きの使用はお薦めしません。というのは、バイナリメッセージを
+不完全な文字列の形で扱うことになりがちだからです。文字列で
+バイナリメッセージを取り扱うことは多くの落とし穴を作ります。
+バイナリデータを扱う場合はユニフォームベクタ (特に<code>u8vector</code>)
+を使うべきでしょう。
+(これらの手続きが文字列を返すのは単に歴史的な理由によります)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-MSG_005fCTRUNC"></a><u>Variable:</u> <b>MSG_CTRUNC</b></dt>
+<dt><a name="index-MSG_005fDONTROUTE"></a><u>Variable:</u> <b>MSG_DONTROUTE</b></dt>
+<dt><a name="index-MSG_005fEOR"></a><u>Variable:</u> <b>MSG_EOR</b></dt>
+<dt><a name="index-MSG_005fOOB"></a><u>Variable:</u> <b>MSG_OOB</b></dt>
+<dt><a name="index-MSG_005fPEEK"></a><u>Variable:</u> <b>MSG_PEEK</b></dt>
+<dt><a name="index-MSG_005fTRUNC"></a><u>Variable:</u> <b>MSG_TRUNC</b></dt>
+<dt><a name="index-MSG_005fWAITALL"></a><u>Variable:</u> <b>MSG_WAITALL</b></dt>
+<dd><p><code>socket-send</code>、<code>socket-sendto</code>、<code>socket-recv</code> および
+<code>socket-recvfrom</code> の <var>flag</var> として使う定義済み整数定数。
+これらの定数のいくつかは、基盤のＯＳが提供していなければ未定義に
+なっています。
+</p></dd></dl>
+
+<p>以下に解説する getsockopt/setsockopt インタフェースを使えば、
+ソケットやプロトコルをさらに制御することができます。
+</p>
+<dl>
+<dt><a name="index-socket_002dsetsockopt"></a><u>Function:</u> <b>socket-setsockopt</b><i> socket level option value</i></dt>
+<dt><a name="index-socket_002dgetsockopt"></a><u>Function:</u> <b>socket-getsockopt</b><i> socket level option rsize</i></dt>
+<dd><p>これらは、setsockopt() および getsockopt() を呼ぶための
+インタフェースです。このインタフェースが少々ぎこちないのは、
+低レベルの呼び出しすべてにアクセスできるようにしているためです。
+</p>
+<p><var>socket</var> および <var>option</var> は、処理する対象の
+プロトコルスタックのレベルおよびオプションを指定する
+正確な整数です。以下にリストアップしたシステム定数に束縛された
+変数があります。
+</p>
+<p>ソケットオプションを設定するには、<var>value</var> に正確な整数を渡す方法と
+文字列を渡す方法があります。それが、整数なら、その値は、C の
+<code>int</code> として setsockopt (2) に渡されます。文字列なら、バイト列が
+そのまま渡されます。どの型の値が要求されるかは、オプションに依存します。
+Gauche 側では渡された値が setsockopt (2) で期待された型であるかどうかは
+知ることができません。正しい値が渡されるかどうかはプログラマの責任です。
+</p>
+<p>ソケットオプションを知るには、結果として期待する最大の長さを <var>rsize</var>
+を使って教える必要があります。Gauche 側は返されるそれぞれのオプションの
+合計を知らないからです。
+<code>socket-getsockopt</code> はオプションの値をバイト列として返します。
+オプションの値が整数だと、わかっているなら <var>rsize</var> に0を渡すこと
+ができます。その場合 <code>socket-getsockopt</code> は正確な整数として値を返します。
+</p>
+<p>関数名に関する註: これらの関数の名前を socket-{set|get}opt あるいは
+socket-{set|get}-option にしようかとも思いましたが、結局、命名の
+一貫性をとることにしました。それで、"sock" が重複しています。
+</p>
+</dd></dl>
+
+<p>以下のような定義済みの変数が用意されています。
+すべてのプラットフォームで利用できるわけではないものも含まれている
+ことに注意してください。
+これらの値の正確な使用は、お使いのシステムの man ページ <code>socket(7)</code>、
+<code>tcp(7)</code> あるいは <code>ip(7)</code> を参照してください。
+</p>
+<p>“level” 引数
+</p><dl>
+<dt><a name="index-SOL_005fSOCKET"></a><u>Variable:</u> <b>SOL_SOCKET</b></dt>
+<dt><a name="index-SOL_005fTCP"></a><u>Variable:</u> <b>SOL_TCP</b></dt>
+<dt><a name="index-SOL_005fIP"></a><u>Variable:</u> <b>SOL_IP</b></dt>
+<dd><p>これらの変数は、それぞれ、<code>SOL_SOCKET</code>、<code>SOL_TCP</code> および
+<code>SOL_IP</code> に束縛されています。
+</p></dd></dl>
+
+<p>“option” 引数
+</p><dl>
+<dt><a name="index-SO_005fKEEPALIVE"></a><u>Variable:</u> <b>SO_KEEPALIVE</b></dt>
+<dd><p>整数が期待されています。0でなければ、コネクション指向ソケットに
+キープアライブ(keep-alive)メッセージを送ることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SO_005fOOBINLINE"></a><u>Variable:</u> <b>SO_OOBINLINE</b></dt>
+<dd><p>整数が期待されています。0でなければ、帯域外データは直接
+受信データストリームに乗ります。さもなければ、帯域外データは、受信中に
+MSG_OOBフラグが設定されてたときにのみ渡されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SO_005fREUSEADDR"></a><u>Variable:</u> <b>SO_REUSEADDR</b></dt>
+<dd><p>整数が期待されています。0ではない場合、<code>socket-bind</code>は、
+ローカル・アドレスが、アクティブソケットにリッスンされていない
+場合にかぎり、そのアドレスを再利用することを許可されます。
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-SO_005fTYPE"></a><u>Variable:</u> <b>SO_TYPE</b></dt>
+<dd><p>ソケットの型(<code>sock_stream</code>など)を整数として取得します。
+<code>socket-getsockopt</code>でのみ使用可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SO_005fBROADCAST"></a><u>Variable:</u> <b>SO_BROADCAST</b></dt>
+<dd><p>整数が期待されています。0でなければ、データグラムソケットは
+ブロードキャストパケットを送受信することを許されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SO_005fPRIORITY"></a><u>Variable:</u> <b>SO_PRIORITY</b></dt>
+<dd><p>整数が期待されています。このソケットで送信されるすべてのパケットに
+ついてプロトコル定義の優先順位を指定します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-SO_005fERROR"></a><u>Variable:</u> <b>SO_ERROR</b></dt>
+<dd><p>保留状態のソケットエラー(整数値)を取得し、それをクリアします。
+<code>socket-getsockopt</code>でのみ使用可能です。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-inet_002dchecksum"></a><u>Function:</u> <b>inet-checksum</b><i> packet size</i></dt>
+<dd><p>ユニフォームベクタで与えられる<var>packet</var>のインターネットチェックサム(RFC1071)
+の1の補数を計算して返します。<var>packet</var>の最初の<var>size</var>バイトのみが
+計算の対象となります。返される値はネットワークバイトオーダ (ビッグエンディアン)
+です。<var>packet</var>より大きな値を<var>size</var>に指定するとエラーとなります。
+</p>
+<p>註: 使われているアルゴリズムは、<var>packet</var>がそれほど大きくないこと (&lt; 64K) を
+仮定しています。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="Netdb_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Netdb_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9-1"></a>
+<h3 class="subsection">9.17.4 Netdbインタフェース</h3>
+
+
+
+
+<dl>
+<dt><a name="index-_003csys_002dhostent_003e"></a><u>Builtin Class:</u> <b>&lt;sys-hostent&gt;</b></dt>
+<dd><a name="index-sys_002dhostent"></a>
+<p>このクラスはネットワークホストのオブジェクト用で、
+C の <code>struct hostent</code>
+に対応しています。以下のスロットは読み込み専用です。
+</p>
+<dl>
+<dt><a name="index-name-4"></a><u>Instance Variable of &lt;sys-hostent&gt;:</u> <b>name</b></dt>
+<dd><p>ホストの正式名(文字列)
+</p></dd></dl>
+<dl>
+<dt><a name="index-aliases"></a><u>Instance Variable of &lt;sys-hostent&gt;:</u> <b>aliases</b></dt>
+<dd><p>ホストの別名リスト(文字列のリスト)
+</p></dd></dl>
+<dl>
+<dt><a name="index-addresses"></a><u>Instance Variable of &lt;sys-hostent&gt;:</u> <b>addresses</b></dt>
+<dd><p>アドレスのリスト(文字列のリスト)。現時点では IPv4 のアドレスのみサポート
+しています。それぞれのアドレスは、ドットつき十進記法で表記されています。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgethostbyname"></a><u>Function:</u> <b>sys-gethostbyname</b><i> name</i></dt>
+<dd><p><var>name</var>という名前のホストを探し、見つかれば、<code>&lt;sys-hostent&gt;</code>
+オブジェクトを返します。見つからなければ、<code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((host (sys-gethostbyname "www.w3c.org")))
+  (list (slot-ref host 'name)
+        (slot-ref host 'aliases)
+        (slot-ref host 'addresses)))
+  ⇒ ("www.w3.org" ("www.w3c.org") ("18.29.1.34" "18.29.1.35"))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgethostbyaddr"></a><u>Function:</u> <b>sys-gethostbyaddr</b><i> addr proto</i></dt>
+<dd><p><var>proto</var>というプロトコルの、<var>addr</var>というアドレスを持つホストを
+探します。<var>addr</var>はアドレスの自然な文字列表現で、IPv4 については、
+ドットつき十進記法です。<var>proto</var>はプロトコル番号で、現時点では
+<code>AF_INET</code>のみサポートされています。ホストが見つかれば、
+<code>&lt;sys-hostent&gt;</code>オブジェクトを返します。
+見つからなければ、<code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((host (sys-gethostbyaddr "127.0.0.1" AF_INET)))
+  (list (slot-ref host 'name)
+        (slot-ref host 'aliases)
+        (slot-ref host 'addresses))
+  ⇒ ("localhost" ("localhost.localdomain") ("127.0.0.1"))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003csys_002dservent_003e"></a><u>Builtin Class:</u> <b>&lt;sys-servent&gt;</b></dt>
+<dd><a name="index-sys_002dservent"></a>
+<p>ネットワークサービスデータベースのエントリです。
+C の <code>struct servent</code>に対応しています。
+以下のスロットは読み込み専用です。
+</p>
+<dl>
+<dt><a name="index-name-5"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>name</b></dt>
+<dd><p>サービスの正式名(文字列)
+</p></dd></dl>
+<dl>
+<dt><a name="index-aliases-1"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>aliases</b></dt>
+<dd><p>サービスの別名リスト(文字列のリスト)
+</p></dd></dl>
+<dl>
+<dt><a name="index-port-3"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>port</b></dt>
+<dd><p>サービスに割り当てられたポート番号(正確な整数)
+</p></dd></dl>
+<dl>
+<dt><a name="index-proto"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>proto</b></dt>
+<dd><p>このサービス用のプロトコル名(文字列)
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetservbyname"></a><u>Function:</u> <b>sys-getservbyname</b><i> name proto</i></dt>
+<dd><p>ネットワークサービスデータベースをサービス名 <var>name</var> および
+プロトコル <var>proto</var> で検索します。<var>name</var> および <var>proto</var>
+は文字列でなければなりません。サービスが見つかれば、<code>&lt;sys-servent&gt;</code>
+のインスタンスを返します。見つからなければ、<code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((serv (sys-getservbyname "http" "tcp")))
+  (list (slot-ref serv 'name)
+        (slot-ref serv 'aliases)
+        (slot-ref serv 'port)
+        (slot-ref serv 'proto)))
+  ⇒ ("http" () 80 "tcp")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetservbyport"></a><u>Function:</u> <b>sys-getservbyport</b><i> port proto</i></dt>
+<dd><p>ネットワークサービスデータベースをサービス名 <var>port</var> および
+プロトコル <var>proto</var> で検索します。<var>port</var> は正確な整数でなければ
+なりません。また、<var>proto</var> は文字列でなければなりません。
+サービスが見つかれば、<code>&lt;sys-servent&gt;</code>
+のインスタンスを返します。見つからなければ、<code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((serv (sys-getservbyport 6000 "tcp")))
+  (list (slot-ref serv 'name)
+        (slot-ref serv 'aliases)
+        (slot-ref serv 'port)
+        (slot-ref serv 'proto)))
+  ⇒ ("x-server" () 6000 "tcp")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003csys_002dprotoent_003e"></a><u>Builtin Class:</u> <b>&lt;sys-protoent&gt;</b></dt>
+<dd><a name="index-sys_002dprotoent"></a>
+<p>プロトコルデータベースのエントリです。C の <code>struct protoent</code>に
+対応しています。以下のスロットは読み込み専用です。
+</p>
+<dl>
+<dt><a name="index-name-6"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>name</b></dt>
+<dd><p>プロトコルの正式名(文字列)
+</p></dd></dl>
+<dl>
+<dt><a name="index-aliases-2"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>aliases</b></dt>
+<dd><p>プロトコルの別名のリスト(文字列のリスト)
+</p></dd></dl>
+<dl>
+<dt><a name="index-proto-1"></a><u>Instance Variable of &lt;sys-servent&gt;:</u> <b>proto</b></dt>
+<dd><p>プロトコル番号(正確な整数)
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetprotobyname"></a><u>Function:</u> <b>sys-getprotobyname</b><i> name</i></dt>
+<dd><p>名前 <var>name</var> でネットワークプロトコルデータベースを検索します。
+名前 <var>name</var> は文字列でなければなりません。
+プロトコルが見つかれば、<code>&lt;sys-protoent&gt;</code>
+のインスタンスを返します。見つからなければ、<code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((proto (sys-getprotobyname "icmp")))
+  (list (slot-ref proto 'name)
+        (slot-ref proto 'aliases)
+        (slot-ref proto 'proto)))
+  ⇒ ("icmp" ("ICMP") 1)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetprotobynumber"></a><u>Function:</u> <b>sys-getprotobynumber</b><i> number</i></dt>
+<dd><p>プロトコル番号 <var>number</var> でネットワークプロトコルデータベースを検索
+する。プロトコル番号 <var>number</var> は正確な整数でなければなりません。
+プロトコルが見つかれば、<code>&lt;sys-protoent&gt;</code>
+のインスタンスを返します。見つからなければ、<code>#f</code> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((proto (sys-getprotobynumber 17)))
+  (list (slot-ref proto 'name)
+        (slot-ref proto 'aliases)
+        (slot-ref proto 'proto)))
+  ⇒ ("udp" ("UDP") 17)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003csys_002daddrinfo_003e"></a><u>Builtin Class:</u> <b>&lt;sys-addrinfo&gt;</b></dt>
+<dd><a name="index-sys_002daddrinfo"></a>
+<p>アドレス情報を保持する新しいインタフェースです。C の <code>struct addrinfo</code>
+に対応しています。これは gauche が ?enable-ipv6 オプションで設定され、
+ビルドされた場合にのみ利用可能です。以下のスロットが提供されます。
+</p>
+<dl>
+<dt><a name="index-flags"></a><u>Instance Variable of &lt;sys-addrinfo&gt;:</u> <b>flags</b></dt>
+</dl>
+<dl>
+<dt><a name="index-family"></a><u>Instance Variable of &lt;sys-addrinfo&gt;:</u> <b>family</b></dt>
+</dl>
+<dl>
+<dt><a name="index-socktype"></a><u>Instance Variable of &lt;sys-addrinfo&gt;:</u> <b>socktype</b></dt>
+</dl>
+<dl>
+<dt><a name="index-protocol"></a><u>Instance Variable of &lt;sys-addrinfo&gt;:</u> <b>protocol</b></dt>
+</dl>
+<dl>
+<dt><a name="index-addrlen"></a><u>Instance Variable of &lt;sys-addrinfo&gt;:</u> <b>addrlen</b></dt>
+</dl>
+<dl>
+<dt><a name="index-addr"></a><u>Instance Variable of &lt;sys-addrinfo&gt;:</u> <b>addr</b></dt>
+</dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dgetaddrinfo"></a><u>Function:</u> <b>sys-getaddrinfo</b><i> nodename servname hints</i></dt>
+<dd><p>与えられた <var>nodename</var>、<var>servname</var> および <var>hints</var> から
+<code>&lt;sys-addrinfo&gt;</code> のインスタンスのリストを返します。
+これは gauche が ?enable-ipv6 オプションで設定され、
+ビルドされた場合にのみ利用可能です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dntohs"></a><u>Function:</u> <b>sys-ntohs</b><i> integer</i></dt>
+<dt><a name="index-sys_002dntohl"></a><u>Function:</u> <b>sys-ntohl</b><i> integer</i></dt>
+<dt><a name="index-sys_002dhtons"></a><u>Function:</u> <b>sys-htons</b><i> integer</i></dt>
+<dt><a name="index-sys_002dhtonl"></a><u>Function:</u> <b>sys-htonl</b><i> integer</i></dt>
+<dd><p>16bit (<code>s</code>)もしくは32bit (<code>l</code>) の整数を
+ネットワークバイト順 (<code>n</code>) とホストバイト順 (<code>h</code>) の間で
+相互変換するユーティリティ関数です。
+</p>
+<p>netdbインタフェースのScheme APIは必要な箇所ではこれらの関数を内部的に
+呼んでいるので、Cでプログラミングしている時ほどこれらの関数を必要とする
+ことはないでしょう。ただ、バイナリデータパケットを構築したり解析したり
+する際は便利かもしれません。バイナリデータの扱いについては
+<a indepth="true" href="gauche-refj_128.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aa_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e3_0081_00ae_00e3_0083_0091_00e3_0083_0083_00e3_0082_00af"><code>binary.pack</code> - バイナリデータのパック</a>も参照して下さい。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00bd_008e_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0082_00bd_00e3_0082_00b1_00e3_0083_0083_00e3_0083_0088_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_008d_00e3_0083_0083_00e3_0083_0088_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00ad_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

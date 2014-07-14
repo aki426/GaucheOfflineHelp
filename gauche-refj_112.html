@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.4 srfi-5 - シグネチャとrest引数に互換性のあるlet形式</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.4 srfi-5 - シグネチャとrest引数に互換性のあるlet形式">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.4 srfi-5 - シグネチャとrest引数に互換性のあるlet形式">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008d_00e3_0083_0081_00e3_0083_00a3_00e3_0081_00a8rest_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ab_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ae_00e3_0081_0082_00e3_0082_008blet_00e5_00bd_00a2_00e5_00bc_008f"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_113.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d5-_002d-_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008d_00e3_0083_0081_00e3_0083_00a3_00e3_0081_00a8rest_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ab_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ae_00e3_0081_0082_00e3_0082_008blet_00e5_00bd_00a2_00e5_00bc_008f"></a>
+<h2 class="section">10.4 <code>srfi-5</code> - シグネチャとrest引数に互換性のあるlet形式</h2>
+
+<dl>
+<dt><a name="index-srfi_002d5"></a><u>Module:</u> <b>srfi-5</b></dt>
+<dd><a name="index-srfi_002d5-1"></a>
+<p>このモジュールは SRFI-5 の拡張 <code>let</code> 構文を提供します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-let-2"></a><u>Macro:</u> <b>let</b><i> ((var val) … [. (rest val …)]) body …</i></dt>
+<dt><a name="index-let-3"></a><u>Macro:</u> <b>let</b><i> name ((var val) … [. (rest val …)]) body …</i></dt>
+<dt><a name="index-let-4"></a><u>Macro:</u> <b>let</b><i> (name (var val) … [. (rest val …)]) body …</i></dt>
+<dd><p>[SRFI-5]
+<code>let</code> 構文は 2通りの拡張がされています。
+</p>
+<ul>
+<li>
+拡張 <code>let</code> 構文は、<var>name</var> 束縛リスト中で(名前付き let 構文用の)
+識別子を許します(上の3つめの構文)。
+</li><li>
+拡張 <code>let</code> 構文は、<code>lambda</code> 構文の rest パラメータと同様の
+働きをする rest パラメータ束縛を許します。
+</li></ul>
+
+<p>この拡張に関する理論的根拠については SRFI-5 のドキュメントを参照してください。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_113.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

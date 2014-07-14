@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.12 dbm.odbm - オリジナルのDBMインタフェース</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.12 dbm.odbm - オリジナルのDBMインタフェース">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.12 dbm.odbm - オリジナルのDBMインタフェース">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00aa_00e3_0083_00aa_00e3_0082_00b8_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00aeDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_137.html#NDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_139.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00ab_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="dbm_002eodbm-_002d-_00e3_0082_00aa_00e3_0083_00aa_00e3_0082_00b8_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00aeDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<h2 class="section">11.12 <code>dbm.odbm</code> - オリジナルのDBMインタフェース</h2>
+
+<dl>
+<dt><a name="index-dbm_002eodbm"></a><u>Module:</u> <b>dbm.odbm</b></dt>
+<dd><a name="index-dbm_002eodbm-1"></a>
+<p>Provides interface to the legacy dbm library.
+Extends <code>dbm</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003codbm_003e"></a><u>Class:</u> <b>&lt;odbm&gt;</b></dt>
+<dd><a name="index-odbm"></a>
+<p><code>&lt;dbm&gt;</code> を継承しています。レガシーな DBM ライブラリのための実装を
+提供します。このモジュールは、あなたのシステムにすでに DBM がある場合にのみ
+インストールされます。
+</p>
+<p>レガシー DBM の最大の制限は、データベースを一時に一つしか開けないことです。
+複数の <code>&lt;odbm&gt;</code> のインスタンスを作ることができますが、一時に一つしか
+開くことが出来ず、一つ以上開こうとするとエラーになります。
+</p></dd></dl>
+
+<p>統合された DBM インターフェース (See section <a indepth="true" href="gauche-refj_134.html#g_t_00e6_00b1_008e_00e7_0094_00a8DBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>dbm</code> - 汎用DBMインタフェース</a>) の
+他に、このモジュールでは DBM API への直接のアクセスを提供する以下の
+低レベルな手続きを提供しています。これらの API の詳細については DBM の
+マニュアルを見て下さい。
+</p>
+<dl>
+<dt><a name="index-odbm_002dinit"></a><u>Function:</u> <b>odbm-init</b><i> path</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-odbm_002dclose"></a><u>Function:</u> <b>odbm-close</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-odbm_002dstore"></a><u>Function:</u> <b>odbm-store</b><i> key value</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-odbm_002dfetch"></a><u>Function:</u> <b>odbm-fetch</b><i> key</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-odbm_002ddelete"></a><u>Function:</u> <b>odbm-delete</b><i> key</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-odbm_002dfirstkey"></a><u>Function:</u> <b>odbm-firstkey</b></dt>
+</dl>
+
+<dl>
+<dt><a name="index-odbm_002dnextkey"></a><u>Function:</u> <b>odbm-nextkey</b><i> key</i></dt>
+</dl>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_137.html#NDBM_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_139.html#g_t_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0095_00e3_0082_00a3_00e3_0083_00ab_00e3_0082_00bf" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

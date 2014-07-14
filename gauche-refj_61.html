@@ -1,0 +1,573 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.23 プログラムのロード</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.23 プログラムのロード">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.23 プログラムのロード">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_61.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089-1"></a>
+<h2 class="section">6.23 プログラムのロード</h2>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089">6.23.1 Schemeファイルのロード</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0080_00e3_0082_00a4_00e3_0083_008a_00e3_0083_009f_00e3_0083_0083_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089">6.23.2 ダイナミックライブラリのロード</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#require_00e3_0081_00a8provide">6.23.3 requireとprovide</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Autoload">6.23.4 Autoload</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">6.23.5 ライブラリの操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0080_00e3_0082_00a4_00e3_0083_008a_00e3_0083_009f_00e3_0083_0083_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089-1"></a>
+<h3 class="subsection">6.23.1 Schemeファイルのロード</h3>
+
+<dl>
+<dt><a name="index-load"></a><u>Function:</u> <b>load</b><i> file :key paths (error-if-not-found #t) environment ignore-coding</i></dt>
+<dd><p>[R5RS+]
+<var>file</var>をロードします。すなわち、<var>file</var>に書かれたScheme式を順次読み込んで
+評価します。<var>file</var>の拡張子 (“<code>.scm</code>”) は省略できます。
+</p>
+<p><var>file</var>が “/”, “./” または “../” で始まっていない場合は、
+システムファイルサーチパス (変数<code>*load-path*</code> に格納されています)
+の中から該当ファイルが探されます。あるいは、キーワード引数<var>paths</var>にディレクトリ名の
+リストを渡すことによりサーチパスを指定することもできます。
+</p>
+<p>ロードに成功した場合は<code>#t</code>が返されます。
+指定ファイルがみつからない場合はエラーとなりますが、もしキーワード引数
+<code>error-if-not-found</code>に<code>#f</code>が与えられていれば単に<code>load</code>から
+<code>#f</code>が返されます。
+</p>
+<p>デフォルトでは、<code>load</code>はコーディング認識ポート(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0_00e8_00aa_008d_00e8_00ad_0098_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">コーディング認識ポート</a>参照)を
+使ってソースファイルを読み込むので、ファイル先頭の"<code>coding:</code>" コメントによる
+文字エンコーディング指定が有効になります。
+(codingコメントについては<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088">マルチバイトスクリプト</a>を参照)。
+但し、キーワード引数<var>ignore-coding</var>に真の値が渡された場合、
+<code>load</code>はcoding-aware portを作成せず、直接ファイルポートから
+ソースを読み込みます。
+</p>
+<p>キーワード引数<var>environment</var>にモジュールが渡された場合は、
+あたかもそのモジュールがファイルの先頭でselectされたかのように
+<code>load</code>されます。
+</p>
+<p>カレントモジュールは保存されます。つまり、<var>file</var>中で<code>select-module</code>によって
+カレントモジュールを変更しても、<code>load</code>が終わったら<code>load</code>を読んだ時点の
+モジュールに戻ります。
+</p>
+<p>ライブラリファイルをロードする場合は、‘<code>use</code>’ (<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e">モジュールの定義と選択</a>参照) を
+使うか、下に説明する‘<code>require</code>’ を使う方が良いでしょう。
+<code>load</code>と<code>require</code>の違いについては<a indepth="true" href="gauche-refj_11.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0091_00e3_0082_00a4_00e3_0083_00ab">コンパイル</a>を参照してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002aload_002dpath_002a"></a><u>Variable:</u> <b>*load-path*</b></dt>
+<dd><p><code>load</code>と<code>require</code>がファイルを探すディレクトリのリストを保持しています。
+</p>
+<p>もしサーチパスにディレクトリを追加したい場合は、この変数を直接変更せずに、下に説明する
+<code>add-load-path</code>を用いて下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-add_002dload_002dpath"></a><u>Special Form:</u> <b>add-load-path</b><i> path flag …</i></dt>
+<dd><p>パス<var>path</var>をライブラリロードパスのリストに加えます。
+<var>path</var>が相対パスの場合、<code>:relative</code>フラグが与えられて
+いなければ、プロセスの現在のワーキングディレクトリからの相対と解釈されます。
+</p>
+<p>以下の値が<var>flag</var>引数として認識されます。
+</p>
+<dl compact="compact">
+<dt> <code>:after</code></dt>
+<dd><p><var>path</var>を現在のロードパスリストの末尾に加えます。
+デフォルトでは、<var>path</var>はロードパスリストの先頭に加えられます。
+</p></dd>
+<dt> <code>#t</code></dt>
+<dd><p><code>:after</code>と同じです。互換性のために認識されます。
+</p></dd>
+<dt> <code>:relative</code></dt>
+<dd><p><var>path</var>を、(カレントワーキングディレクトリではなく)
+現在ロード中のファイルのあるディレクトリからの相対パスとして
+解釈します。現在ロード中のファイルが不明な場合 (REPLから
+評価されたり、ソケットから読まれたりしている場合) は、このフラグは無視されます。
+</p></dd>
+</dl>
+
+<p>ロードパスを変更したい場合、<code>*load-path*</code>を直接替えずにこのフォームを
+使って下さい。このフォームはコンパイル時に解釈されるのに対し、<code>*load-path*</code>を
+書き換えるコードは実行時に解釈されます。“<code>use</code>” や “<code>require</code>” は
+コンパイル時のロードパスを使うので、<code>*load-path*</code>への変更は反映されないかもしれません。
+</p>
+<p>更に、<code>add-load-path</code>は<var>path</var>の下にアーキテクチャ依存のディレクトリが
+ないかどうかを探し、あればそれを内部の共有ライブラリサーチパスに追加します。
+例えばあなたが自分のSchemeモジュールを<code>/home/yours/lib</code>に入れていて、
+それが共有ライブラリを必要としていたとします。手続き<code>gauche-architecture</code>
+(<a indepth="true" href="gauche-refj_63.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">環境の問い合わせ</a>参照)が返す値を<var>ARCH</var>として、
+共有ライブラリを<code>/home/yours/lib/<var>ARCH</var>/</code>に置いておくと、
+共有ライブラリはそこからロードされます。この方法を取ると、複数のプラットフォーム用に
+別々にコンパイルされた共有ライブラリを管理することができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-load_002dfrom_002dport"></a><u>Function:</u> <b>load-from-port</b><i> port</i></dt>
+<dd><p>入力ポート<var>port</var>から、EOFを読むまで繰り返しScheme式を読み込み評価します。
+</p>
+<p><var>port</var>にコーディング認識ポートを渡さない限り、"<code>coding:</code>"コメント
+による文字コード変換は行われないことに注意して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002dload_002dport"></a><u>Function:</u> <b>current-load-port</b></dt>
+<dt><a name="index-current_002dload_002dpath"></a><u>Function:</u> <b>current-load-path</b></dt>
+<dt><a name="index-current_002dload_002dhistory"></a><u>Function:</u> <b>current-load-history</b></dt>
+<dt><a name="index-current_002dload_002dnext"></a><u>Function:</u> <b>current-load-next</b></dt>
+<dd><p>これらの手続きによって、現在のロードのコンテクストを知ることができます。
+ロードされているファイルの中でこれらの手続きを呼ぶと、次のような値が返されます。
+</p><dl compact="compact">
+<dt> <code>current-load-port</code></dt>
+<dd><p>現在のフォームがロードされている入力ポート。
+</p></dd>
+<dt> <code>current-load-path</code></dt>
+<dd><p>現在のフォームがロードされているファイル。
+ロードのソースがファイルでない場合、この値は<code>#f</code>。
+</p></dd>
+<dt> <code>current-load-history</code></dt>
+<dd><p>入力ポートと行番号のペアのリストで、ロードのネスティングを示したもの。
+例えばあなたが‘<tt>foo.scm</tt>’をロードし、そのファイルの7行目で
+‘<tt>bar.scm</tt>’がロードされ、そのファイルの18行目で‘<tt>baz.scm</tt>’が
+ロードされたとします。<code>current-load-history</code>を‘<tt>baz.scm</tt>’中で
+呼ぶと、それは次のような値を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">((#&lt;port "foo.scm"&gt; . 7) (#&lt;port "bar.scm"&gt; . 18))
+</pre></td></tr></tbody></table>
+</dd>
+<dt> <code>current-load-next</code></dt>
+<dd><p>現在のファイルがロードされた時点での、ファイルサーチパスの残りを返します。
+例えば <code>*load-path*</code> が
+<code>("." "../lib" "/home/gauche/lib" "/share/gauche/lib")</code>で、
+あなたが‘<tt>foo.scm</tt>’をロードしたところ、それが‘<tt>../lib/</tt>’中に見つかったと
+しましょう。このとき、‘<tt>foo.scm</tt>’中で<code>current-load-next</code>を呼べば
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">("/home/gauche/lib" "/share/gauche/lib")
+</pre></td></tr></tbody></table>
+<p>が返されます。
+</p></dd>
+</dl>
+
+<p><code>load</code>されていない状態で呼ばれた時は、これらの手続きはそれぞれ<code>#f</code>、
+<code>#f</code>、<code>()</code>、<code>()</code>を返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e3_0083_0080_00e3_0082_00a4_00e3_0083_008a_00e3_0083_009f_00e3_0083_0083_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Scheme_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#require_00e3_0081_00a8provide" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0080_00e3_0082_00a4_00e3_0083_008a_00e3_0083_009f_00e3_0083_0083_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089-1"></a>
+<h3 class="subsection">6.23.2 ダイナミックライブラリのロード</h3>
+
+<dl>
+<dt><a name="index-dynamic_002dload"></a><u>Function:</u> <b>dynamic-load</b><i> file :key init-function export-symbols</i></dt>
+<dd><p>ダイナミックローダブルライブラリ(共有ライブラリ)<var>file</var>をロードしてリンクします。
+<var>file</var>にはサフィックス(“.so” 等) を含めないで下さい。システムによって
+サフィックスは異なるため、<code>dynamic-load</code>がそれを追加します。
+</p>
+<p>キーワード引数<var>init-function</var>は共有ライブラリ中の初期化関数の名前を
+指定します。デフォルトでは、サフィックスを除くファイル名が “foo” の場合、
+初期化関数名は “Scm_Init_foo” となります。
+</p>
+<p>キーワード引数<var>export-symbols</var>は、ロードされるライブラリ中の外部シンボルを
+プロセスのシンボルテーブルに追加すべきかどうかを指定します。(註：ここでの「シンボル」
+とはCの関数名や変数名のことで、Schemeのシンボルのことではありません)。
+デフォルトでは共有ライブラリの外部シンボルはプロセスのシンボルテーブルに追加されず、
+それぞれの共有ライブラリは他の共有ライブラリのシンボルを見ることができません。
+<var>export-symbols</var>に真の値を渡すと、フラグ<code>RTLD_GLOBAL</code>が
+<code>dlopen()</code>に渡されて、その共有ライブラリ中のシンボルがこれからロードされる
+共有ライブラリからも見えるようになります。
+</p>
+<p>通常、共有ライブラリはSchemeモジュール中でロードされるので、モジュールユーザが
+直接この手続きを呼ぶ必要はほとんどないでしょう。
+</p>
+<p>一度ロードされた共有ライブラリをアンロードすることはできません。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="require_00e3_0081_00a8provide"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0080_00e3_0082_00a4_00e3_0083_008a_00e3_0083_009f_00e3_0083_0083_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Autoload" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="require_00e3_0081_00a8provide-1"></a>
+<h3 class="subsection">6.23.3 requireとprovide</h3>
+
+<p><code>require</code>と<code>provide</code>は、Lispでライブラリファイルを一度だけ
+読み込むことを保証するための伝統的な方法です。
+ある<em>feature</em>を最初に<code>require</code>すると、その機能を提供する
+ライブラリファイルがロードされ、その機能が提供されたということが記憶されます。
+2回め以降のその<em>feature</em>のリクエストではファイルはロードされません。
+</p>
+<p>Gaucheでは<code>use</code>構文 (<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e4_00bd_00bf_00e7_0094_00a8">モジュールの使用</a>参照) が
+requireのメカニズムをボンネットの下に隠してくれるので、
+これらの式を直接目にする必要はほとんどありません。
+もしあなたがちょっと変わった方式でライブラリを構成したくて、したがって
+Gaucheの標準的なメカニズムをバイパスしたい場合に限り、使うようにしてください。
+</p>
+<dl>
+<dt><a name="index-require"></a><u>Special Form:</u> <b>require</b><i> feature</i></dt>
+<dd><p><var>feature</var>がまだロードされていなければロードします。<var>feature</var>は文字列で
+なければなりません。それがそのまま(サフィックスを除く)ファイル名としてロードパスから
+探されます。<code>require</code>の解釈はコンパイル時に行われます。
+</p>
+<p>SLIBモジュールをロードすると、<code>require</code>が拡張されます。詳しくは<a indepth="true" href="gauche-refj_159.html#SLIB_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"><code>slib</code> - SLIBインタフェース</a>を
+参照して下さい。
+</p>
+<p>もしロードされたファイルが<code>provide</code>フォームを含んでいなかった場合、
+あたかもファイルの最後に<code>(provide <var>feature</var>)</code>があったかのように、
+<var>feature</var>が自動的にprovideされます。これを
+<em>autoprovide</em>機能と呼んでいます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-provide"></a><u>Function:</u> <b>provide</b><i> feature</i></dt>
+<dd><p><var>feature</var>をシステムのprovideされたフィーチャーリストに加えます。
+以降、<var>feature</var>が<code>require</code>されてもファイルはふたたびロードされません。
+</p>
+<p><code>require</code>が要求された機能を自動的に<code>provide</code>されたかのように
+扱うAutoprovide機能があるために、<code>provide</code>を明示的に呼ぶ必要は
+ほとんど無いでしょう。<var>provide</var>を使いたいシチュエーションとしては
+次のようなものが考えられます。
+</p>
+
+<ul>
+<li>
+そのファイルをロードすることになったfeatureとは異なるfeature (複数可) を
+provideしたい場合。
+
+<p>例えばfeature Xがfeature Yを置き換えるものだとします。
+XはYのAPIを全て提供しますが、実装は異なります。この場合、
+‘<tt>X.scm</tt>’が一度ロードされたら、‘<tt>Y.scm</tt>’をロードしてほしくないと思うでしょう。
+‘<tt>X.scm</tt>’に <code>(provide "X")</code> と <code>(provide "Y")</code> の両方を
+書いておくことで、‘<tt>X.scm</tt>’がfeature Yもprovideすると明示すれば、それが実現できます。
+(注：<code>provide</code>が呼ばれると、<code>require</code>のautoprovide機能は
+抑制されるため、‘<tt>X.scm</tt>’中で<code>(provide "X")</code>も指定する必要があります。)
+</p>
+<p>もちろんの方法では、ユーザが <code>(require "Y")</code> を <code>(require "X")</code>
+より先に書いてしまったら‘<tt>Y.scm</tt>’はロードされてしまいます。
+この方法は、現場において、永久的な解決が高コストになるような場合のとりあえずの
+回避処置と考えるべきでしょう。
+</p>
+</li><li>
+featureを全く<code>provide</code>しない。
+<var>feature</var>引数に<code>#f</code>を渡すことで、何のfeatureも<code>provide</code>することなく
+<code>require</code>によるautoprovidingを抑制できます。
+
+<p>これもまた、何らかの一時的な解決と考えるべきです。たとえば開発中に、
+‘<tt>X.scm</tt>’を頻繁に変更するために<code>(require "X")</code>が常に
+そのファイルをロードするようにさせたい、といった場合が考えられます。
+‘<tt>X.scm</tt>’のリリースの前に <code>(provide #f)</code> を消しておくことを
+忘れないように。また、インタラクティブにリロードしたいならば
+<code>gauche.reload</code> (<a indepth="true" href="gauche-refj_97.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089"><code>gauche.reload</code> - モジュールの再ロード</a>参照) を使うことを
+おすすめします。
+</p></li></ul>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-provided_003f"></a><u>Function:</u> <b>provided?</b><i> feature</i></dt>
+<dd><p><var>feature</var>が既にprovideされていれば<code>#t</code>を返します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="Autoload"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#require_00e3_0081_00a8provide" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Autoload-1"></a>
+<h3 class="subsection">6.23.4 Autoload</h3>
+
+<dl>
+<dt><a name="index-autoload"></a><u>Macro:</u> <b>autoload</b><i> file/module item …</i></dt>
+<dd><p><var>item</var> … がオートロードされるように設定します。すなわち、
+次に<var>item</var>が参照された時、それが実際に評価される前に<var>file/module</var>がロード
+されるようにします。これによって、必要とされる時まで<var>file/module</var>のロードを遅らせる
+ことができます。
+</p>
+<p>引数<var>file/module</var>には、文字列かシンボルを指定できます。文字列の場合は
+そのファイルがロードされます。シンボルの場合、その名のモジュールが(<code>use</code>と
+同じルールで)ロードされ、<var>item</var>が<var>file/module</var>から
+オートロードを呼び出したモジュールへとインポートされます。
+(モジュールの<code>use</code>の詳細については<a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_00a8_00e9_0081_00b8_00e6_008a_009e">モジュールの定義と選択</a>を参照して下さい)。
+</p>
+<p><var>item</var>は変数名(シンボル)か、<code>(:macro <var>symbol</var>)</code>というフォーム
+でなければなりません。変数名の場合は、その変数が評価されようとした時に
+指定のファイル／モジュールがロードされます。後者のフォームの場合は、
+<code>(<var>symbol</var> arg …)</code> というフォームがコンパイルされようとした
+時に指定のファイル／モジュールがロードされます。後者はマクロのオートロードになります。
+</p>
+<p><var>symbol</var>は<var>file/module</var>の中で定義されなければなりません。
+そうでなければロード時にエラーが報告されます。
+</p>
+<p>手続きのオートロードの例を示します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(autoload "foo" foo0 foo1)
+(autoload "bar" bar0 bar1)
+
+(define (foobar x)
+  (if (list? x)
+      (map bar0 x)
+      (foo0)))
+
+(foobar '(1 2)) ; <span class="roman">この時点で "bar" がロードされる</span>
+
+(foobar #f)     ; <span class="roman">この時点で "foo" がロードされる</span>
+</pre></td></tr></tbody></table>
+
+<p>マクロのオートロードを設定した場合、指定のファイルまたはモジュールは、
+そのマクロを使っているフォームが実行されるされないにかかわらず、
+コンパイラがそのフォームを見た時点でロードされることに注意してください。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Autoload" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_62.html#g_t_00e6_00af_0094_00e8_00bc_0083_00e3_0081_00a8_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c-1"></a>
+<h3 class="subsection">6.23.5 ライブラリの操作</h3>
+
+<p>ある特定のライブラリおよび/あるいはモジュールがシステムにインストールされ
+ているかどうかをチェックするための手続きがいくつかあります。
+</p>
+<p>以下の説明の中では、<var>pattern</var>はシンボルまたは文字列です。シンボル
+である場合にはモジュール名(たとえば、<code>foo.bar</code>)を指定します。
+文字列である場合にはライブラリの部分パス(たとえば、<code>"foo/bar"</code>)を
+指定します。これはライブラリサーチパス以下で検索されます。
+</p>
+<dl>
+<dt><a name="index-library_002dfold"></a><u>Function:</u> <b>library-fold</b><i> pattern proc seed :key paths strict? allow-duplicates?</i></dt>
+<dd><p>ライブラリ/モジュールファイルに対する基本イテレータ。この手続きは
+<var>pattern</var> にマッチする Scheme のプログラムファイルを検索します。
+検索は <var>paths</var> (デフォルトは標準のファイルロードパス、
+<code>*load-path*</code>)にリストされたディレクトリ以下でおこなわれます。
+マッチしたファイル毎に、<var>proc</var> が、そのマッチしたモジュール名あるいは
+ライブラリ名、そのプログラムファイルのフルパス、状態値、の3つの引数を
+ともなって呼びだされます。<var>seed</var>は、初期状態値として使われ、
+<var>proc</var> が返す値は次の <var>proc</var> の呼出し時に状態値として使われます。
+最後の <var>proc</var> から返された値は <code>library-fold</code> の値として返ります。
+</p>
+
+<p><var>pattern</var> がシンボルでかつ、キーワード引数 <var>strict?</var> が
+<code>#t</code> (デフォルト値)であれば、この手続きは
+あたえられたモジュール名のパターンにマッチするようにみえるファイル名に
+たいして <code>library-has-module?</code> を適用して、
+本当にそのモジュールを実装しているファイルを見付けます。
+大量のモジュールにマッチさせようとすると、時間がかる可能性があります。
+<code>#f</code> を <var>strict?</var> に渡すことで、余分なチェックを回避できます。
+<var>pattern</var> が文字列だった場合、照合はファイル名に対してのみ行われ、
+<var>strict?</var>は無視されます。
+</p>
+<p>デフォルトでは、<var>path</var> 中の <var>pattern</var> にマッチする同じ名前をもつ
+2つ以上のファイルがあるばあい、<var>path</var> に最初に出現したものだけが
+採用されます。そのライブラリに対して、<code>require</code> あるいは
+<code>use</code> を用いたをつかった場合に得られるのはこのファイルです。
+すべてのマッチしたファイルについて反復したければ、<var>allow-duplicates?</var>
+キーワード引数に <code>#t</code> を渡します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(library-fold 'srfi-1 acons '())
+ ⇒ ((srfi-1 . "../lib/srfi-1.scm"))
+
+(library-fold "srfi-1" acons '())
+ ⇒ (("srfi-1" . "../lib/srfi-1.scm"))
+
+;; <code>acons</code> が呼ばれるのとは逆順のリストが
+;; 返ることに注意してください
+(library-fold 'srfi-1 acons '() :allow-duplicates? #t)
+ ⇒ ((srfi-1 . "/usr/share/gauche/0.7.1/lib/srfi-1.scm")
+   (srfi-1 . "../lib/srfi-1.scm"))
+
+;; 以下の場合は、モジュール名ではマッチしませんが、
+;; ファイル名ではマッチします
+(library-fold 'srfi-19.* acons '())
+ ⇒ ()
+
+(library-fold "srfi-19/*" acons '())
+ ⇒ (("srfi-19/read-tai" . "../lib/srfi-19/read-tai.scm")
+   ("srfi-19/format" . "../lib/srfi-19/format.scm"))
+
+;; 利用可能な dbm の実装を見付けます
+(library-fold 'dbm.* acons '())
+ ⇒ ((dbm.cdb . "/usr/share/gauche/0.7.4.2/lib/dbm/cdb.scm")
+   (dbm.gdbm . "../lib/dbm/gdbm.scm")
+   (dbm.ndbm . "../lib/dbm/ndbm.scm")
+   (dbm.odbm . "../lib/dbm/odbm.scm"))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-library_002dmap"></a><u>Function:</u> <b>library-map</b><i> pattern proc :key paths allow-duplicates? strict?</i></dt>
+<dt><a name="index-library_002dfor_002deach"></a><u>Function:</u> <b>library-for-each</b><i> pattern proc :key paths allow-duplicates? strict?</i></dt>
+<dd><p>マッチしたライブラリ/モジュール上のイテレータの <code>map</code>版および
+<code>for-each</code>版。照合操作とキーワード引数の詳細については上述の
+<code>library-fold</code>を参照してください。
+</p>
+<p><var>proc</var>は、マッチしたモジュール/ファイル名と、そのファイルの
+フルパスの 2 つの引数をうけとります。<code>library-for-each</code> は
+結果を捨てます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(library-map 'srfi-4 list :allow-duplicates? #t)
+ ⇒ ((srfi-4 "../lib/srfi-4.scm")
+            (srfi-4 "/usr/share/gauche/0.7.1/lib/srfi-4.scm"))
+
+(library-map 'dbm.* (lambda (m p) m))
+ ⇒ (dbm.odbm dbm.ndbm dbm.gdbm dbm.cdb)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-library_002dexists_003f"></a><u>Function:</u> <b>library-exists?</b><i> mod/path :key paths force-search? strict?</i></dt>
+<dd><p><var>mod/path</var> で指定されたライブラリあるいはモジュールを検索し、
+もしあれば、真値を返します。キーワード引数 <var>paths</var> および
+<var>strict?</var> は <code>library-fold</code> のそれと同じ意味です。
+</p>
+<p>上述のイテレータ手続きとはちがい、この手続きは呼び出しの過程で
+最初に既にロードされているライブラリおよびモジュールをチェックします。
+もしそのときに <var>mod/path</var> を見つけたら、真値を返し、ファイル
+システムを見にいくことはありません。キーワード引数 <var>force-search?</var>
+に <code>#t</code> を渡せば、すでにロードされいるライブラリおよびモジュール
+のチェックはスキップされます。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-library_002dhas_002dmodule_003f"></a><u>Function:</u> <b>library-has-module?</b><i> path module</i></dt>
+<dd><p><var>path</var> で指定したファイルが存在し、かつ、<code>module</code> で名指しされた
+モジュールが実装されている場合でその場合に限り、<code>#t</code> を返します。
+<var>path</var> は実際のファイル名でなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(library-has-module? "./test/foo/bar.scm" 'foo.bar)
+ ⇒ #t ;; <span class="roman">if ./test/foo/bar.scm implements module foo.bar</span>.
+</pre></td></tr></tbody></table>
+
+<p>この手続きは典型的なソースコードの配置を仮定して、与えられたファイルが
+そのモジュールを実装しているかどうかを決定します。すなわち、
+まずそのコードのフォームを読み、与えられたモジュールを定義している
+<code>define-module</code> フォームかどうかを見ます。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Autoload" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_62.html#g_t_00e6_00af_0094_00e8_00bc_0083_00e3_0081_00a8_00e3_0082_00bd_00e3_0083_00bc_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e3_0081_00ae_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

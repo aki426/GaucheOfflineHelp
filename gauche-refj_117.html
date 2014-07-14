@@ -1,0 +1,634 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.9 srfi-19 - 時間のデータ型と手続き</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.9 srfi-19 - 時間のデータ型と手続き">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.9 srfi-19 - 時間のデータ型と手続き">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_116.html#g_t_00e5_00ae_009a_00e7_00be_00a9_00e6_00b8_0088_00e3_0081_00bf_00e3_0081_00ae_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d19-_002d-_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<h2 class="section">10.9 <code>srfi-19</code> - 時間のデータ型と手続き</h2>
+
+<dl>
+<dt><a name="index-srfi_002d19"></a><u>Module:</u> <b>srfi-19</b></dt>
+<dd><a name="index-srfi_002d19-1"></a>
+<p>このSRFIは、時間と日付に関する様々な表現と、それらの間の変換メソッドを提供します。
+</p>
+<p>Gaucheでは、timeオブジェクトは<code>&lt;time&gt;</code>クラスとして組み込みで
+サポートされています(<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)。dateオブジェクトは以下で説明する
+<code>&lt;date&gt;</code>クラスとしてサポートされます。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097">10.9.1 時間のタイプ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">10.9.2 時間に関する問い合わせ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">10.9.3 時間に関する手続き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0097_00a5_00e4_00bb_0098">10.9.4 日付</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0097_00a5_00e4_00bb_0098_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e6_009b_00b8_00e3_0081_008d">10.9.5 日付の読み書き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097-1"></a>
+<h3 class="subsection">10.9.1 時間のタイプ</h3>
+
+<p>時間のタイプはシンボルで表現されます。
+このモジュールでは以下の定数が自分の名前に束縛された形で提供されています。
+</p>
+<dl>
+<dt><a name="index-time_002dutc"></a><u>Constant:</u> <b>time-utc</b></dt>
+<dd><p>[SRFI-19]
+UTC timeです。Gaucheの組み込みの<code>current-time</code>は常にこのタイプの時間を
+返します (<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dtai"></a><u>Constant:</u> <b>time-tai</b></dt>
+<dd><p>[SRFI-19]
+International Atomic Time。この時間は閏秒を計算に入れており、
+UTCより若干大きな値を取ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dmonotonic"></a><u>Constant:</u> <b>time-monotonic</b></dt>
+<dd><p>[SRFI-19]
+実装依存の、単調増加する時間。Gaucheの実装ではこれは<code>time-tai</code>と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dduration"></a><u>Constant:</u> <b>time-duration</b></dt>
+<dd><p>[SRFI-19]
+二つの絶対的な時点の間の期間。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dprocess"></a><u>Constant:</u> <b>time-process</b></dt>
+<dd><p>[SRFI-19]
+現在のプロセスのCPU時間。
+Gaucheは、POSIX time(3)コールが返すユーザ時間とシステム時間の合計からこの値を
+計算します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dthread"></a><u>Constant:</u> <b>time-thread</b></dt>
+<dd><p>[SRFI-19]
+現在のスレッドのCPU時間。
+現在の実装ではこれは<code>time-process</code>と同じです。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b-1"></a>
+<h3 class="subsection">10.9.2 時間に関する問い合わせ</h3>
+
+<dl>
+<dt><a name="index-current_002dtime-1"></a><u>Function:</u> <b>current-time</b><i> :optional time-type</i></dt>
+<dd><p>[SRFI-19]
+Gauche組み込みの<code>current-time</code> (<a indepth="true" href="gauche-refj_63.html#g_t_00e6_0099_0082_00e9_0096_0093">時間</a>参照)を拡張して、
+必要な時間のタイプを省略可能な引数<var>time-type</var>で指定できるようにしています。
+可能な<var>time-type</var>の値は<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0082_00bf_00e3_0082_00a4_00e3_0083_0097">時間のタイプ</a>で説明されているものです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002ddate"></a><u>Function:</u> <b>current-date</b><i> :optional tz-offset</i></dt>
+<dd><p>[SRFI-19]
+現在の日付を<code>&lt;date&gt;</code>クラスのインスタンスとして返します(<a href="#g_t_00e6_0097_00a5_00e4_00bb_0098">日付</a>参照)。
+<var>tz-offset</var>が与えられた場合、それがUTCからのオフセットを表す秒数として
+使われます。<var>tz-offset</var>が与えられなかった場合はローカルタイムゾーンで
+表現された日付が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002djulian_002dday"></a><u>Function:</u> <b>current-julian-day</b></dt>
+<dd><p>[SRFI-19]
+現在のユリウス日(Julian day)を返します。Julian dayは
+-4714-11-24T12:00:00Z (November 24, -4714 at noon, UTC) からの日数を
+実数で表現したものです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-current_002dmodified_002djulian_002dday"></a><u>Function:</u> <b>current-modified-julian-day</b></dt>
+<dd><p>[SRFI-19]
+現在の修正ユリウス日(Modified julian day)を返します。Modified julian dayは
+1858-11-17T00:00:00Z (November 17, 1858 at midnight, UTC)
+からの日数を実数で表現したものです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dresolution"></a><u>Function:</u> <b>time-resolution</b></dt>
+<dd><p>[SRFI-19]
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0097_00a5_00e4_00bb_0098" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d-1"></a>
+<h3 class="subsection">10.9.3 時間に関する手続き</h3>
+
+<dl>
+<dt><a name="index-make_002dtime"></a><u>Function:</u> <b>make-time</b><i> type nanoseconds seconds</i></dt>
+<dd><p>[SRFI-19]
+与えられた初期値を持つ<code>&lt;time&gt;</code>クラスのインスタンスを返します。
+<code>(make &lt;time&gt; :type type :second seconds :nanosecond nanoseconds)</code>
+と等価です。
+</p>
+<p>(この関数は0.6.8より前のリリースでは間違って定義されていました。
+<var>seconds</var>と<var>nanoseconds</var>の引数が逆になっていたのです。
+<code>make-time</code>を使っているコードは注意して下さい)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dtype"></a><u>Function:</u> <b>time-type</b><i> time</i></dt>
+<dt><a name="index-time_002dsecond"></a><u>Function:</u> <b>time-second</b><i> time</i></dt>
+<dt><a name="index-time_002dnanosecond"></a><u>Function:</u> <b>time-nanosecond</b><i> time</i></dt>
+<dt><a name="index-set_002dtime_002dtype_0021"></a><u>Function:</u> <b>set-time-type!</b><i> time type</i></dt>
+<dt><a name="index-set_002dtime_002dsecond_0021"></a><u>Function:</u> <b>set-time-second!</b><i> time second</i></dt>
+<dt><a name="index-set_002dtime_002dnanosecond_0021"></a><u>Function:</u> <b>set-time-nanosecond!</b><i> time nanosecond</i></dt>
+<dd><p>[SRFI-19]
+<code>&lt;time&gt;</code>オブジェクトのスロットのアクセサです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002dtime"></a><u>Function:</u> <b>copy-time</b><i> time</i></dt>
+<dd><p>[SRFI-19]
+与えられた<var>time</var>と同じ内容の新しい<code>&lt;time&gt;</code>オブジェクトを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_003d_003f"></a><u>Function:</u> <b>time=?</b><i> time0 time1</i></dt>
+<dt><a name="index-time_003c_003f"></a><u>Function:</u> <b>time&lt;?</b><i> time0 time1</i></dt>
+<dt><a name="index-time_003c_003d_003f"></a><u>Function:</u> <b>time&lt;=?</b><i> time0 time1</i></dt>
+<dt><a name="index-time_003e_003f"></a><u>Function:</u> <b>time&gt;?</b><i> time0 time1</i></dt>
+<dt><a name="index-time_003e_003d_003f"></a><u>Function:</u> <b>time&gt;=?</b><i> time0 time1</i></dt>
+<dd><p>[SRFI-19]
+二つの時間を比較します。時間のタイプは一致していなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002ddifference"></a><u>Function:</u> <b>time-difference</b><i> time0 time1</i></dt>
+<dt><a name="index-time_002ddifference_0021"></a><u>Function:</u> <b>time-difference!</b><i> time0 time1</i></dt>
+<dd><p>[SRFI-19]
+二つの時間の差を<code>time-duration</code>タイプの時間として返します。
+二つの時間のタイプは一致していなければなりません。
+<code>Time-difference!</code>は結果を格納するために<var>time0</var>を変更します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-add_002dduration"></a><u>Function:</u> <b>add-duration</b><i> time0 time-duration</i></dt>
+<dt><a name="index-add_002dduration_0021"></a><u>Function:</u> <b>add-duration!</b><i> time0 time-duration</i></dt>
+<dt><a name="index-subtract_002dduration"></a><u>Function:</u> <b>subtract-duration</b><i> time0 time-duration</i></dt>
+<dt><a name="index-subtract_002dduration_0021"></a><u>Function:</u> <b>subtract-duration!</b><i> time0 time-duration</i></dt>
+<dd><p>[SRFI-19]
+<var>time-duration</var>を<var>time0</var>に加算、または<var>time0</var>から減算します。
+返される時間のタイプは<var>time0</var>と同じです。<var>time-duration</var>のタイプは
+<code>time-duration</code>でなければなりません。
+<code>add-duration!</code>と<code>subtract-duration!</code>は結果を格納するのに
+<var>time0</var>を再利用します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0097_00a5_00e4_00bb_0098"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0097_00a5_00e4_00bb_0098_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e6_009b_00b8_00e3_0081_008d" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0097_00a5_00e4_00bb_0098-1"></a>
+<h3 class="subsection">10.9.4 日付</h3>
+
+<dl>
+<dt><a name="index-_003cdate_003e"></a><u>Class:</u> <b>&lt;date&gt;</b></dt>
+<dd><a name="index-date"></a>
+<p>日付を表現します。
+</p>
+<dl>
+<dt><a name="index-nanosecond-1"></a><u>Instance Variable of &lt;date&gt;:</u> <b>nanosecond</b></dt>
+<dd><p>日付のナノ秒部分、0 から 999,999,999 までの整数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-second-2"></a><u>Instance Variable of &lt;date&gt;:</u> <b>second</b></dt>
+<dd><p>日付の秒部分、0 から 60 までの整数です。(60 は閏秒)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-minute"></a><u>Instance Variable of &lt;date&gt;:</u> <b>minute</b></dt>
+<dd><p>日付の分部分、0 から 59 までの整数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-hour-1"></a><u>Instance Variable of &lt;date&gt;:</u> <b>hour</b></dt>
+<dd><p>日付の時部分、0 から 23 までの整数です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-day"></a><u>Instance Variable of &lt;date&gt;:</u> <b>day</b></dt>
+<dd><p>日付の日部分、0 から 31 日までの整数です。実際の上限は年と月によって決定
+されます。(註: 1 は朔日(ついたち)、0 は仕様では認められていますが、
+なぜなのかはわかりません。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-month"></a><u>Instance Variable of &lt;date&gt;:</u> <b>month</b></dt>
+<dd><p>日付の月部分、1 から 12 までの整数です。1 は一月、2 は二月、以下同様です。
+(註: これは POSIX の <code>&lt;sys-tm&gt;</code> の命名法とは異ります。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-year-1"></a><u>Instance Variable of &lt;date&gt;:</u> <b>year</b></dt>
+<dd><p>日付の年部分です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-zone_002doffset"></a><u>Instance Variable of &lt;date&gt;:</u> <b>zone-offset</b></dt>
+<dd><p>このタイムゾーンが GMT より何秒東にあるかを示す整数です。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002ddate"></a><u>Function:</u> <b>make-date</b><i> nanosecond second minute hour day month year zone-offset</i></dt>
+<dd><p>[SRFI-19]
+与えられた値から <code>&lt;date&gt;</code> オブジェクトを作成します。
+註: この手続きは与えられた値が正しい範囲であるかどうかをチェックしません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-date_003f"></a><u>Function:</u> <b>date?</b><i> obj</i></dt>
+<dd><p>[SRFI-19]
+<var>obj</var> が <code>&lt;date&gt;</code> オブジェクトである場合にかぎり真を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-date_002dnanosecond"></a><u>Function:</u> <b>date-nanosecond</b><i> date</i></dt>
+<dt><a name="index-date_002dsecond"></a><u>Function:</u> <b>date-second</b><i> date</i></dt>
+<dt><a name="index-date_002dminute"></a><u>Function:</u> <b>date-minute</b><i> date</i></dt>
+<dt><a name="index-date_002dhour"></a><u>Function:</u> <b>date-hour</b><i> date</i></dt>
+<dt><a name="index-date_002dday"></a><u>Function:</u> <b>date-day</b><i> date</i></dt>
+<dt><a name="index-date_002dmonth"></a><u>Function:</u> <b>date-month</b><i> date</i></dt>
+<dt><a name="index-date_002dyear"></a><u>Function:</u> <b>date-year</b><i> date</i></dt>
+<dt><a name="index-date_002dzone_002doffset"></a><u>Function:</u> <b>date-zone-offset</b><i> date</i></dt>
+<dd><p>[SRFI-19]
+アクセサです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-date_002dyear_002dday"></a><u>Function:</u> <b>date-year-day</b><i> date</i></dt>
+<dt><a name="index-date_002dweek_002dday"></a><u>Function:</u> <b>date-week-day</b><i> date</i></dt>
+<dt><a name="index-date_002dweek_002dnumber"></a><u>Function:</u> <b>date-week-number</b><i> date day-of-week-starting-week</i></dt>
+<dd><p>[SRFI-19]
+それぞれ、一年の何日目(一月一日が 1)か、何曜日(日曜日が 0、月曜日が 1
+など)か、一年のうち何週目(一年の最初の週が一週間に満たない場合はその
+週は無視)かを計算します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-date_002d_003ejulian_002dday"></a><u>Function:</u> <b>date-&gt;julian-day</b><i> date</i></dt>
+<dt><a name="index-date_002d_003emodified_002djulian_002dday"></a><u>Function:</u> <b>date-&gt;modified-julian-day</b><i> date</i></dt>
+<dt><a name="index-date_002d_003etime_002dmonotonic"></a><u>Function:</u> <b>date-&gt;time-monotonic</b><i> date</i></dt>
+<dt><a name="index-date_002d_003etime_002dtai"></a><u>Function:</u> <b>date-&gt;time-tai</b><i> date</i></dt>
+<dt><a name="index-date_002d_003etime_002dutc"></a><u>Function:</u> <b>date-&gt;time-utc</b><i> date</i></dt>
+<dd><p>[SRFI-19]
+日付から様々な様式の日付/時間に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-julian_002dday_002d_003edate"></a><u>Function:</u> <b>julian-day-&gt;date</b><i> jd :optional tz-offset</i></dt>
+<dt><a name="index-julian_002dday_002d_003etime_002dmonotonic"></a><u>Function:</u> <b>julian-day-&gt;time-monotonic</b><i> jd</i></dt>
+<dt><a name="index-julian_002dday_002d_003etime_002dtai"></a><u>Function:</u> <b>julian-day-&gt;time-tai</b><i> jd</i></dt>
+<dt><a name="index-julian_002dday_002d_003etime_002dutc"></a><u>Function:</u> <b>julian-day-&gt;time-utc</b><i> jd</i></dt>
+<dd><p>[SRFI-19]
+ユリウス日からから様々な様式の日付/時間に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-modified_002djulian_002dday_002d_003edate"></a><u>Function:</u> <b>modified-julian-day-&gt;date</b><i> jd :optional tz-offset</i></dt>
+<dt><a name="index-modified_002djulian_002dday_002d_003etime_002dmonotonic"></a><u>Function:</u> <b>modified-julian-day-&gt;time-monotonic</b><i> jd</i></dt>
+<dt><a name="index-modified_002djulian_002dday_002d_003etime_002dtai"></a><u>Function:</u> <b>modified-julian-day-&gt;time-tai</b><i> jd</i></dt>
+<dt><a name="index-modified_002djulian_002dday_002d_003etime_002dutc"></a><u>Function:</u> <b>modified-julian-day-&gt;time-utc</b><i> jd</i></dt>
+<dd><p>[SRFI-19]
+修正ユリウス日から様々な様式の日付/時間に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dmonotonic_002d_003edate"></a><u>Function:</u> <b>time-monotonic-&gt;date</b><i> time :optional tz-offset</i></dt>
+<dt><a name="index-time_002dmonotonic_002d_003ejulian_002dday"></a><u>Function:</u> <b>time-monotonic-&gt;julian-day</b><i> time</i></dt>
+<dt><a name="index-time_002dmonotonic_002d_003emodified_002djulian_002dday"></a><u>Function:</u> <b>time-monotonic-&gt;modified-julian-day</b><i> time</i></dt>
+<dt><a name="index-time_002dmonotonic_002d_003etime_002dtai"></a><u>Function:</u> <b>time-monotonic-&gt;time-tai</b><i> time</i></dt>
+<dt><a name="index-time_002dmonotonic_002d_003etime_002dtai_0021"></a><u>Function:</u> <b>time-monotonic-&gt;time-tai!</b><i> time</i></dt>
+<dt><a name="index-time_002dmonotonic_002d_003etime_002dutc"></a><u>Function:</u> <b>time-monotonic-&gt;time-utc</b><i> time</i></dt>
+<dt><a name="index-time_002dmonotonic_002d_003etime_002dutc_0021"></a><u>Function:</u> <b>time-monotonic-&gt;time-utc!</b><i> time</i></dt>
+<dd><p>[SRFI-19]
+time-monotonic形式から様々な様式の日付/時間に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dtai_002d_003edate"></a><u>Function:</u> <b>time-tai-&gt;date</b><i> time :optional tz-offset</i></dt>
+<dt><a name="index-time_002dtai_002d_003ejulian_002dday"></a><u>Function:</u> <b>time-tai-&gt;julian-day</b><i> time</i></dt>
+<dt><a name="index-time_002dtai_002d_003emodified_002djulian_002dday"></a><u>Function:</u> <b>time-tai-&gt;modified-julian-day</b><i> time</i></dt>
+<dt><a name="index-time_002dtai_002d_003etime_002dmonotonic"></a><u>Function:</u> <b>time-tai-&gt;time-monotonic</b><i> time</i></dt>
+<dt><a name="index-time_002dtai_002d_003etime_002dmonotonic_0021"></a><u>Function:</u> <b>time-tai-&gt;time-monotonic!</b><i> time</i></dt>
+<dt><a name="index-time_002dtai_002d_003etime_002dutc"></a><u>Function:</u> <b>time-tai-&gt;time-utc</b><i> time</i></dt>
+<dt><a name="index-time_002dtai_002d_003etime_002dutc_0021"></a><u>Function:</u> <b>time-tai-&gt;time-utc!</b><i> time</i></dt>
+<dd><p>[SRFI-19]
+time-tai形式から様々な様式の日付/時間に変換します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-time_002dutc_002d_003edate"></a><u>Function:</u> <b>time-utc-&gt;date</b><i> time :optional tz-offset</i></dt>
+<dt><a name="index-time_002dutc_002d_003ejulian_002dday"></a><u>Function:</u> <b>time-utc-&gt;julian-day</b><i> time</i></dt>
+<dt><a name="index-time_002dutc_002d_003emodified_002djulian_002dday"></a><u>Function:</u> <b>time-utc-&gt;modified-julian-day</b><i> time</i></dt>
+<dt><a name="index-time_002dutc_002d_003etime_002dmonotonic"></a><u>Function:</u> <b>time-utc-&gt;time-monotonic</b><i> time</i></dt>
+<dt><a name="index-time_002dutc_002d_003etime_002dmonotonic_0021"></a><u>Function:</u> <b>time-utc-&gt;time-monotonic!</b><i> time</i></dt>
+<dt><a name="index-time_002dutc_002d_003etime_002dtai"></a><u>Function:</u> <b>time-utc-&gt;time-tai</b><i> time</i></dt>
+<dt><a name="index-time_002dutc_002d_003etime_002dtai_0021"></a><u>Function:</u> <b>time-utc-&gt;time-tai!</b><i> time</i></dt>
+<dd><p>[SRFI-19]
+UTC 形式から様々な様式の日付/時間に変換します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0097_00a5_00e4_00bb_0098_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e6_009b_00b8_00e3_0081_008d"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0097_00a5_00e4_00bb_0098" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0097_00a5_00e4_00bb_0098_00e3_0081_00ae_00e8_00aa_00ad_00e3_0081_00bf_00e6_009b_00b8_00e3_0081_008d-1"></a>
+<h3 class="subsection">10.9.5 日付の読み書き</h3>
+
+<dl>
+<dt><a name="index-date_002d_003estring"></a><u>Function:</u> <b>date-&gt;string</b><i> date :optional format-string</i></dt>
+<dd><p>[SRFI-19+]
+<code>&lt;date&gt;</code>オブジェクトを文字列に変換します。書式は
+<var>format-string</var>で指定します。<var>format-string</var>が省略された場合に
+は<code>"~c"</code>が指定されたものとします。
+</p>
+<p>書式文字列は出力にコピーされます。ただし、<code>~</code>で始まる並びの部分は
+以下の規則にしたがって書き換えられます。
+</p>
+<dl compact="compact">
+<dt> <code>~~</code></dt>
+<dd><p>文字<code>~</code>そのもの。
+</p></dd>
+<dt> <code>~a</code></dt>
+<dd><p>ロケールによる曜日省略形(Sun...Sat)
+</p></dd>
+<dt> <code>~A</code></dt>
+<dd><p>ロケールによる曜日完全形(Sunday...Saturday)
+</p></dd>
+<dt> <code>~b</code></dt>
+<dd><p>ロケールによる月省略形(Jan...Dec)
+</p></dd>
+<dt> <code>~B</code></dt>
+<dd><p>ロケールによる月完全形(January...December)
+</p></dd>
+<dt> <code>~c</code></dt>
+<dd><p>ロケールによる日付時刻(たとえば、"Fri Jul 14 20:28:42-0400 2000")
+</p></dd>
+<dt> <code>~d</code></dt>
+<dd><p>月日にち、0を補填(01...31)
+</p></dd>
+<dt> <code>~D</code></dt>
+<dd><p>日付(mm/dd/yy)
+</p></dd>
+<dt> <code>~e</code></dt>
+<dd><p>月日にち、空白補填( 1...31)
+</p></dd>
+<dt> <code>~f</code></dt>
+<dd><p>秒 + 小数秒、小数点はロケールによるセパレータ(たとえば、5.2)
+</p></dd>
+<dt> <code>~h</code></dt>
+<dd><p>~b に同じ
+</p></dd>
+<dt> <code>~H</code></dt>
+<dd><p>時、0を補填、24時制(00...23)
+</p></dd>
+<dt> <code>~I</code></dt>
+<dd><p>時、0を補填、12時制(01...12)
+</p></dd>
+<dt> <code>~j</code></dt>
+<dd><p>年日にち、0補填(001...366)
+</p></dd>
+<dt> <code>~k</code></dt>
+<dd><p>時、空白補填、24時制( 0...23)
+</p></dd>
+<dt> <code>~l</code></dt>
+<dd><p>時、空白補填、12時制( 1...12)
+</p></dd>
+<dt> <code>~m</code></dt>
+<dd><p>月、0補填、(01...12)
+</p></dd>
+<dt> <code>~M</code></dt>
+<dd><p>分、0補填、(00...59)
+</p></dd>
+<dt> <code>~n</code></dt>
+<dd><p>改行
+</p></dd>
+<dt> <code>~N</code></dt>
+<dd><p>ナノ秒、0補填
+</p></dd>
+<dt> <code>~p</code></dt>
+<dd><p>ロケールによるAM、PM
+</p></dd>
+<dt> <code>~r</code></dt>
+<dd><p>時刻、12時制、"~I:~M:~S ~p"と同じ
+</p></dd>
+<dt> <code>~s</code></dt>
+<dd><p>エポックからの経過秒(UTC)
+</p></dd>
+<dt> <code>~S</code></dt>
+<dd><p>秒、0補填(00...60)
+</p></dd>
+<dt> <code>~t</code></dt>
+<dd><p>水平タブ
+</p></dd>
+<dt> <code>~T</code></dt>
+<dd><p>時刻、24時制、"~H:~M:~S"と同じ
+</p></dd>
+<dt> <code>~U</code></dt>
+<dd><p>年経過週、週は日曜はじまり(01...53)
+</p></dd>
+<dt> <code>~V</code></dt>
+<dd><p>年経過週、週は月曜はじまり(00...52)
+</p></dd>
+<dt> <code>~w</code></dt>
+<dd><p>曜日を表す数字、日曜が0 (0...6)
+</p></dd>
+<dt> <code>~W</code></dt>
+<dd><p>年経過週、週は月曜日はじまり(00...52)
+</p></dd>
+<dt> <code>~x</code></dt>
+<dd><p>ロケールによる日付、例えば、"07/31/00"
+</p></dd>
+<dt> <code>~X</code></dt>
+<dd><p>ロケールによる時刻、24時制、例えば、"06:51:44"
+</p></dd>
+<dt> <code>~y</code></dt>
+<dd><p>西暦の下2桁(00...99)
+</p></dd>
+<dt> <code>~Y</code></dt>
+<dd><p>西暦
+</p></dd>
+<dt> <code>~z</code></dt>
+<dd><p>RFC-2822スタイルのタイムゾーン
+</p></dd>
+<dt> <code>~1</code></dt>
+<dd><p>ISO-8601 の「年-月-日」形式
+</p></dd>
+<dt> <code>~2</code></dt>
+<dd><p>ISO-8601 の「時-分-秒タイムゾーン」形式
+</p></dd>
+<dt> <code>~3</code></dt>
+<dd><p>ISO-8601 の「時:分:秒」形式
+</p></dd>
+<dt> <code>~4</code></dt>
+<dd><p>ISO-8601 の「西暦-月-日T時:分:秒タイムゾーン」形式
+</p></dd>
+<dt> <code>~5</code></dt>
+<dd><p>ISO-8601 の「西暦-月-日T時:分:秒」形式
+</p></dd>
+</dl>
+
+<p>注意：現時点でGaucheはロケールの設定には従っておらず、常にロケールが
+"C" に設定されているものとしてフォーマットします。これについては将来変
+更する可能性がありますので、現在の振舞いを前提として、たとえば、
+<code>~a</code>が常に"Sun".."Sat"のようにフォーマットされることを前提にプロ
+グラムしてはいけません。
+</p>
+<p>いまのところプロセスのロケールを設定する標準的な方法がないので、
+"C"ロケール形式を取得できるかどうかを確かめるポータブルな方法がありま
+せん。とはいえ、Gaucheでは SRFI-19の拡張として"C"ロケールであることを
+確認する方法を提供しています。<code>@</code> を <code>~</code> とディレクティブ文
+字の間に挿入し、<code>~@a</code> のようにします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-string_002d_003edate"></a><u>Function:</u> <b>string-&gt;date</b><i> string template-string</i></dt>
+<dd><p>[SRFI-19]
+</p>
+
+
+
+
+
+
+</dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0097_00a5_00e4_00bb_0098" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

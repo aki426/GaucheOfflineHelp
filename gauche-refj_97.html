@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.23 gauche.reload - モジュールの再ロード</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.23 gauche.reload - モジュールの再ロード">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.23 gauche.reload - モジュールの再ロード">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_97.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_96.html#Pseudo-record-types" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_98.html#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002ereload-_002d-_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089"></a>
+<h2 class="section">9.23 <code>gauche.reload</code> - モジュールの再ロード</h2>
+
+<dl>
+<dt><a name="index-gauche_002ereload"></a><u>Module:</u> <b>gauche.reload</b></dt>
+<dd><a name="index-gauche_002ereload-1"></a>
+<p>開発のサイクルのなかで、モジュールを再ロードしなければならないことは
+頻繁におこります。このモジュールはそれを支援するものです。
+</p>
+<p>プログラムのいくつかの部分のセマンティクスはモジュールのロードの順に
+依存します。それで、任意のモジュールを再ロードすることはプログラムの
+ふるまいを予期せぬものに変えてしまう可能性があります。このモジュールは
+自分がなにをしようとしているか判っている開発者向けのものです。
+</p>
+<p><strong>再定義ルール</strong>: モジュールを再ロードすると、デフォルトでは、その
+モジュール内のすべての束縛はリセットされます。
+しかしながら、場合によってこれは望ましいことではありません。たとえば、
+中間結果をある変数に残したままにしておきたい場合です。
+再ロード手続きにどの束縛を保存するかを決めるためのルールを指定することが
+できます。
+</p>
+<p>このルールは以下の構文で記述します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  &lt;module-rules&gt; : (&lt;module-rule&gt; …)
+  &lt;module-rule&gt;  : (&lt;module-pattern&gt; &lt;rule&gt; …)
+  &lt;module-pattern&gt; : <span class="roman">a symbol module name, or a symbol containing glob pattern</span>
+  &lt;rule&gt;         : <span class="roman">procedure</span> | <span class="roman">symbol</span> | <span class="roman">regexp</span>
+                 | (and &lt;rule&gt; …)
+                 | (or  &lt;rule&gt; …)
+                 | (not &lt;rule&gt;)
+</pre></td></tr></tbody></table>
+
+<p><code>&lt;module-rules&gt;</code> はモジュールごとのルールをきめるグローバルルール
+です。<code>&lt;module-pattern&gt;</code> はモジュール名シンボルまたは(<code>mylib.*</code>
+のような)グロブパターンを含むシンボルのどちらかです。<code>&lt;rule&gt;</code> が
+手続きであれば、述語として使われ、この述語を満す値の束縛は再定義から
+保護されます。<code>&lt;rule&gt;</code> がシンボルであれば、それと同じ名前の
+変数の束縛は保護されます。<code>&lt;rule&gt;</code> が正規表現の場合、この正規表現に
+マッチする名前の変数は保護されます。
+</p>
+<p>再定義からの保護機構は、場当たり的なもので、セマンティクスとしても
+不透明なものであることに注意してください。特に<code>define</code>の右辺式は
+評価されてしまうので、そこで起きる副作用は効果を持ちます (例えば
+<code>define-class</code>はクラスの再定義を行ってしまいます)。
+これは利便のためだけのものだと考えて下さい。
+正確な振舞いを知りたければ、コードを見てください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reload"></a><u>Function:</u> <b>reload</b><i> module-name :optional rule …</i></dt>
+<dd><p>指定されたモジュールを再ロードします。オプションで
+<var>rule</var> … をつかって再定義ルールを指定することができます。
+ここで、それぞれの <var>rule</var> は上の <code>&lt;rule&gt;</code> で定義されたものです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reload_002dmodified_002dmodules"></a><u>Function:</u> <b>reload-modified-modules</b><i> :optional module-rules</i></dt>
+<dd><p>前回ロードしたときより変更のあったモジュールを再ロードします。
+オプション引数 <var>module-rules</var> が与えられていれば、再ロードした
+モジュールに適用する再定義ルールを決定するために使います。
+<var>module-rules</var>が省略された場合、現在のルールが適用されます。
+デフォルトの現在のルールは空です。現在のルールは
+<code>module-reload-rules</code>をつかって設定できます。
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-module_002dreload_002drules"></a><u>Function:</u> <b>module-reload-rules</b><i> :optional module-rules</i></dt>
+<dd><p>これは一種の「パラメータ」(<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>参照)で、
+<code>reload-modified-modules</code>に対応するデフォルトのモジュールルールを
+保持しています。引数なしで呼ばれたときには、現在のモジュールルールを
+返します。<var>module-rules</var>とともに呼ばれたきにはその引数を
+現在のモジュールルールにします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reload_002dverbose"></a><u>Function:</u> <b>reload-verbose</b><i> :optional flag</i></dt>
+<dd><p>これは再ロード手続きのメッセージ出力レベルを制御するパラメータです。
+引数なしで呼ばれると現在の出力レベルフラグを返します。<var>flag</var>と
+ともに呼ばれると現在の出力レベルをこれに設定します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_96.html#Pseudo-record-types" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_98.html#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aa_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b9_00e3_0083_0091_00e3_0083_0083_00e3_0083_0081_00e3_0083_00a3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

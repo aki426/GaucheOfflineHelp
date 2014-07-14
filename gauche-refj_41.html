@@ -1,0 +1,1064 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.3 数値</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.3 数値">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.3 数値">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_41.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_40.html#g_t_00e7_00ad_0089_00e4_00be_00a1" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4-1"></a>
+<h2 class="section">6.3 数値</h2>
+
+<p>Gaucheは次のタイプの数値をサポートしています。
+</p><dl compact="compact">
+<dt> 多倍長の正確な整数</dt>
+<dd><p>メモリの許す限りの精度が扱えます。
+</p></dd>
+<dt> 多倍長の正確な非整数の有理数</dt>
+<dd><p>分母と分子は正確な整数で表現されます。
+メモリの許す限りの精度が扱えます。
+</p></dd>
+<dt> 浮動小数点の不正確な実数</dt>
+<dd><p>実装に使われるC言語の<code>double</code>型で表現されます。通常IEEE 64bit浮動小数点数です。
+</p></dd>
+<dt> 浮動小数点の不正確な複素数</dt>
+<dd><p>実部と虚部はそれぞれ浮動小数点の不正確な実数で表現されます。
+</p></dd>
+</dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9">6.3.1 数値クラス</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e">6.3.2 数値に関する述語</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083">6.3.3 数値の比較</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097">6.3.4 数値の演算</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b">6.3.5 数値の変換</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097">6.3.6 ビット演算</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3">6.3.7 エンディアン</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9-1"></a>
+<h3 class="subsection">6.3.1 数値クラス</h3>
+
+<dl>
+<dt><a name="index-_003cnumber_003e"></a><u>Builtin Class:</u> <b>&lt;number&gt;</b></dt>
+<dt><a name="index-_003ccomplex_003e"></a><u>Builtin Class:</u> <b>&lt;complex&gt;</b></dt>
+<dt><a name="index-_003creal_003e"></a><u>Builtin Class:</u> <b>&lt;real&gt;</b></dt>
+<dt><a name="index-_003crational_003e"></a><u>Builtin Class:</u> <b>&lt;rational&gt;</b></dt>
+<dt><a name="index-_003cinteger_003e"></a><u>Builtin Class:</u> <b>&lt;integer&gt;</b></dt>
+<dd><a name="index-number"></a>
+<a name="index-complex"></a>
+<a name="index-real"></a>
+<a name="index-rational"></a>
+<a name="index-integer"></a>
+<p>数値オブジェクトのクラス階層を構成します。<code>&lt;complex&gt;</code>は
+<code>&lt;number&gt;</code>を継承し、<code>&lt;real&gt;</code>は<code>&lt;complex&gt;</code>を継承し、
+<code>&lt;rational&gt;</code>は<code>&lt;real&gt;</code>を継承し、
+<code>&lt;integer&gt;</code>は<code>&lt;rational&gt;</code>を継承します。
+</p>
+<p>これらのクラスはR5RSで定義されている数値の階層とは必ずしも対応しません。
+特に、<code>&lt;integer&gt;</code>クラスのインスタンスはR5RSでいうexact integerのみになります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="lisp">(integer? 1)        ⇒ #t
+(is-a? 1 &lt;integer&gt;) ⇒ #t
+(is-a? 1 &lt;real&gt;)    ⇒ #t
+
+(integer? 1.0)        ⇒ #t
+(is-a? 1.0 &lt;integer&gt;) ⇒ #f
+(is-a? 1.0 &lt;real&gt;)    ⇒ #t
+
+(class-of (expt 2 100)) ⇒ #&lt;class &lt;integer&gt;&gt;
+(class-of (sqrt -3)) ⇒ #&lt;class &lt;complex&gt;&gt;
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e-1"></a>
+<h3 class="subsection">6.3.2 数値に関する述語</h3>
+
+<dl>
+<dt><a name="index-number_003f"></a><u>Function:</u> <b>number?</b><i> obj</i></dt>
+<dt><a name="index-complex_003f"></a><u>Function:</u> <b>complex?</b><i> obj</i></dt>
+<dt><a name="index-real_003f"></a><u>Function:</u> <b>real?</b><i> obj</i></dt>
+<dt><a name="index-rational_003f"></a><u>Function:</u> <b>rational?</b><i> obj</i></dt>
+<dt><a name="index-integer_003f"></a><u>Function:</u> <b>integer?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>がそれぞれ数、複素数、実数、有理数、整数ならば<code>#t</code>を返します。
+Gaucheでは、数の集合は複素数の集合と同一であり、有理数の集合は
+<code>+inf.0</code>, <code>-inf.0</code>, <code>+nan.0</code>を除いた実数の集合と同一
+(浮動小数点数が有限精度であるため)です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(complex? 3+4i)   ⇒ #t
+(complex? 3)      ⇒ #t
+(real? 3)         ⇒ #t
+(real? -2.5+0.0i) ⇒ #t
+(real? #e1e10)    ⇒ #t
+(integer? 3+0i)   ⇒ #t
+(integer? 3.0)    ⇒ #t
+
+(real? +inf.0)     ⇒ #t
+(real? +nan.0)     ⇒ #t
+(rational? +inf.0) ⇒ #f
+(rational? +nan.0) ⇒ #f
+</pre></td></tr></tbody></table>
+
+<p>R6RSでは正確性についてより厳密な定義がなされ、特に
+非正確なゼロを虚数部に持つ複素数は実数ではないと規定されています。
+Gaucheは今のところ正確な複素数を持たず、虚部がゼロの複素数は
+自動的に実数に変換されます。従ってR6RSのコードのうち、
+<code>(real? 1+0.0i)</code>が<code>#f</code>であることを当てにしているものは
+うまく動かないでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-real_002dvalued_003f"></a><u>Function:</u> <b>real-valued?</b><i> obj</i></dt>
+<dt><a name="index-rational_002dvalued_003f"></a><u>Function:</u> <b>rational-valued?</b><i> obj</i></dt>
+<dt><a name="index-integer_002dvalued_003f"></a><u>Function:</u> <b>integer-valued?</b><i> obj</i></dt>
+<dd><p>[R6RS]
+Gaucheではこれらの手続きはそれぞれ<code>real?</code>、<code>rational?</code>、
+および<code>integer?</code>の別名となっています。これらはR6RSコードとの互換性のために
+提供されています。
+</p>
+<p>R6RSで規定されている、これらの手続きと<code>-valued</code>がついていない手続きの違いは、
+これらの手続きは非正確なゼロの虚部を持つ複素数に対しても<code>#t</code>を返すという
+ことです。Gaucheではゼロの虚部を持つ複素数は実数とみなしているので、
+この違いは現れません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-exact_003f"></a><u>Function:</u> <b>exact?</b><i> obj</i></dt>
+<dt><a name="index-inexact_003f"></a><u>Function:</u> <b>inexact?</b><i> obj</i></dt>
+<dd><p>[R5RS]
+<var>obj</var>がそれぞれ正確な数、不正確な数ならば<code>#t</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(exact? 1)       ⇒ #t
+(exact? 1.0)     ⇒ #f
+(inexact? 1)     ⇒ #f
+(inexact? 1.0)   ⇒ #t
+
+(exact? (modulo 5 3)) ⇒ #t
+(inexact? (modulo 5 3.0)) ⇒ #f
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-zero_003f"></a><u>Function:</u> <b>zero?</b><i> z</i></dt>
+<dd><p>[R5RS]
+数値<var>z</var>がゼロに等しければ<code>#t</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(zero? 1)        ⇒ #f
+(zero? 0)        ⇒ #t
+(zero? 0.0)      ⇒ #t
+(zero? 0.0+0.0i) ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-positive_003f"></a><u>Function:</u> <b>positive?</b><i> x</i></dt>
+<dt><a name="index-negative_003f"></a><u>Function:</u> <b>negative?</b><i> x</i></dt>
+<dd><p>[R5RS]
+実数<var>x</var>がそれぞれ正または負なら<code>#t</code>を返します。
+非実数を渡すとエラーになります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-finite_003f"></a><u>Function:</u> <b>finite?</b><i> z</i></dt>
+<dt><a name="index-infinite_003f"></a><u>Function:</u> <b>infinite?</b><i> z</i></dt>
+<dt><a name="index-nan_003f"></a><u>Function:</u> <b>nan?</b><i> z</i></dt>
+<dd><p>[R6RS]
+実数に対して、それが有限、無限、NaNであればそれぞれ<code>#t</code>を返します。
+</p>
+<p>非実数の複素数に対しては、<code>finite?</code>は実数部と仮数部がともに
+有限なら<code>#t</code>を、<code>infinite?</code>は実数部と仮数部の少なくともどちらかが
+無限なら<code>#t</code>を、<code>nan?</code>は実数部と仮数部の少なくともどちらかが
+NaNなら<code>#t</code>を返します。(これはR6RSとは非互換です。R6RSでは
+これらの手続きは引数に非実数の数が与えられた場合はエラーを通知しなければならないからです。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-odd_003f"></a><u>Function:</u> <b>odd?</b><i> n</i></dt>
+<dt><a name="index-even_003f"></a><u>Function:</u> <b>even?</b><i> n</i></dt>
+<dd><p>[R5RS]
+整数<var>n</var>がそれぞれ奇数または偶数なら<code>#t</code>を返します。
+非整数を渡すとエラーになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(odd? 3)     ⇒ #t
+(even? 3)    ⇒ #f
+(odd? 3.0)   ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-fixnum_003f"></a><u>Function:</u> <b>fixnum?</b><i> n</i></dt>
+<dt><a name="index-bignum_003f"></a><u>Function:</u> <b>bignum?</b><i> n</i></dt>
+<dd><p><var>n</var>が正確な整数で、かつ内部的にそれぞれ<var>fixnum</var>もしくは<var>bignum</var>
+で表現されているときに<code>#t</code>を返します。
+通常のSchemeプログラムは整数の内部表現を気にする必要はありません。
+これらの手続きは、ある種の最適化を行う低レベル手続きのために用意されています。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ab_00e9_0096_00a2_00e3_0081_0099_00e3_0082_008b_00e8_00bf_00b0_00e8_00aa_009e" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083-1"></a>
+<h3 class="subsection">6.3.3 数値の比較</h3>
+
+<dl>
+<dt><a name="index-_003d"></a><u>Function:</u> <b>=</b><i> z1 z2 z3 …</i></dt>
+<dd><p>[R5RS]
+与えられた全ての数値<var>z</var>が等しければ<code>#t</code>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(= 2 2)          ⇒ #t
+(= 2 3)          ⇒ #f
+(= 2 2.0)        ⇒ #t
+(= 2 2.0 2.0+0i) ⇒ #t
+(= 2/4 1/2)      ⇒ #t
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003c"></a><u>Function:</u> <b>&lt;</b><i> x1 x2 x3 …</i></dt>
+<dt><a name="index-_003c_003d"></a><u>Function:</u> <b>&lt;=</b><i> x1 x2 x3 …</i></dt>
+<dt><a name="index-_003e"></a><u>Function:</u> <b>&gt;</b><i> x1 x2 x3 …</i></dt>
+<dt><a name="index-_003e_003d"></a><u>Function:</u> <b>&gt;=</b><i> x1 x2 x3 …</i></dt>
+<dd><p>[R5RS]
+与えられた全ての実数<var>x</var>がそれぞれ単調増加、単調非減少、単調減少、単調非増加している
+場合に<code>#t</code>を返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-max"></a><u>Function:</u> <b>max</b><i> x1 x2 …</i></dt>
+<dt><a name="index-min"></a><u>Function:</u> <b>min</b><i> x1 x2 …</i></dt>
+<dd><p>[R5RS]
+与えられた実数のうち、それぞれ最大と最小のものを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-min_0026max"></a><u>Function:</u> <b>min&amp;max</b><i> x1 x2 …</i></dt>
+<dd><p>与えられた実数から、最大値と最小値の二つの値を返します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00af_0094_00e8_00bc_0083" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097-1"></a>
+<h3 class="subsection">6.3.4 数値の演算</h3>
+
+<dl>
+<dt><a name="index-_002b"></a><u>Function:</u> <b>+</b><i> z …</i></dt>
+<dt><a name="index-_002a"></a><u>Function:</u> <b>*</b><i> z …</i></dt>
+<dd><p>[R5RS]
+与えられた数の和と積をそれぞれ返します。引数が与えられない場合、
+<code>(+)</code> は 0、 <code>(*)</code> は 1 となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002d"></a><u>Function:</u> <b>-</b><i> z1 z2 …</i></dt>
+<dt><a name="index-_002f"></a><u>Function:</u> <b>/</b><i> z1 z2 …</i></dt>
+<dd><p>[R5RS]
+一つだけ数値が与えられた場合、それぞれnegationと逆数を返します。
+</p>
+<p>2つ以上の数値が与えられた場合、それぞれ次の結果を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>z1</var> - <var>z2</var> - <var>z3</var> …
+<var>z1</var> / <var>z2</var> / <var>z3</var> …
+</pre></td></tr></tbody></table>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(- 3)       ⇒ -3
+(- -3.0)    ⇒ 3.0
+(- 5+2i)    ⇒ -5.0-2.0i
+(/ 3)       ⇒ 1/3
+(/ 5+2i)    ⇒ 0.172413793103448-0.0689655172413793i
+
+(- 5 2 1)     ⇒ 2
+(- 5 2.0 1)   ⇒ 2.0
+(- 5+3i -i)   ⇒ 5.0+2.0i
+(/ 14 6)      ⇒ 7/3
+(/ 6+2i 2)    ⇒ 3.0+1.0i
+</pre></td></tr></tbody></table>
+
+<p>註：0.8.8までGaucheは正確な有理数をサポートしておらず、
+それ以前は除数と被除数がともに正確な数であっても商が整数にならなければ
+結果は非正確な数へと変換されていました。今のGaucheはそうではありません。
+</p>
+<p>既存のコードが以前のGaucheのふるまいを当てにしていた場合、
+速度が大きく低下する可能性があります。正確な有理数の演算は
+浮動小数点数の演算よりはるかに遅いからです。
+(正確な結果を得たいのでない場合は)下に述べる<code>/.</code>を使うと良いでしょう。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002b_002e"></a><u>Function:</u> <b>+.</b><i> z …</i></dt>
+<dt><a name="index-_002a_002e"></a><u>Function:</u> <b>*.</b><i> z …</i></dt>
+<dt><a name="index-_002d_002e"></a><u>Function:</u> <b>-.</b><i> z1 z2 …</i></dt>
+<dt><a name="index-_002f_002e"></a><u>Function:</u> <b>/.</b><i> z1 z2 …</i></dt>
+<dd><p><code>+</code>、<code>*</code>、<code>-</code>、<code>/</code>と同様ですが、引数は不正確な
+数へと変換され、結果も常に不正確な数となります。
+正確数による計算が不要で、bignumや正確な有理数をうっかり使ってしまう
+ことによるオーバヘッドを避けたい時に便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-abs"></a><u>Function:</u> <b>abs</b><i> z</i></dt>
+<dd><p>[R5RS+]
+実数の<var>z</var>に対しては、その絶対値を返します。
+複素数の<var>z</var>に対しては、そのmagnitudeを返します。
+複素数を扱うのはGaucheの拡張です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(abs -1)   ⇒ 1
+(abs -1.0) ⇒ 1.0
+(abs 1+i)  ⇒ 1.4142135623731
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-quotient"></a><u>Function:</u> <b>quotient</b><i> n1 n2</i></dt>
+<dt><a name="index-remainder"></a><u>Function:</u> <b>remainder</b><i> n1 n2</i></dt>
+<dt><a name="index-modulo"></a><u>Function:</u> <b>modulo</b><i> n1 n2</i></dt>
+<dd><p>[R5RS]
+整数<var>n1</var>を整数<var>n2</var>で割った商(quotient)および余り(remainder, modulo)
+を返します。  <var>n1</var>と<var>n2</var>の両方が正確な数値の時のみ、戻り値は正確な数値になります。
+</p>
+<p><code>remainder</code>と<code>modulo</code> はどちらかの引数が負の時に異なる値を返します。
+Remainder <var>R</var> と商 <var>Q</var> とは次の関係があります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  <var>n1</var> = <var>Q</var> * <var>n2</var> + <var>R</var>
+</pre></td></tr></tbody></table>
+<p>ここで商について <code>abs(<var>Q</var>) = floor(abs(<var>n1</var>)/abs(<var>n2</var>))</code>
+ですから、<var>R</var>の符号は常に<var>n1</var>と同じになります。
+</p>
+<p>一方、moduloは<var>n2</var>が正の時は<var>n1</var>の符号に関わらず期待したように動作します
+(例: <code>(modulo -1 <var>n2</var>) == <var>n2</var> - 1</code>)。
+<var>n2</var>が負の場合は次の式によって正の場合にマップできます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  modulo(<var>n1</var>, <var>n2</var>) = -modulo(-<var>n1</var>, -<var>n2</var>)
+</pre></td></tr></tbody></table>
+<p>したがって、moduloの結果の符号は常に<var>n2</var>の符号と同じになります。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(remainder 10 3)    ⇒ 1
+(modulo 10 3)       ⇒ 1
+
+(remainder -10 3)   ⇒ -1
+(modulo -10 3)      ⇒ 2
+
+(remainder 10 -3)   ⇒ 1
+(modulo 10 -3)      ⇒ -2
+
+(remainder -10 -3)  ⇒ -1
+(modulo -10 -3)     ⇒ -1
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-quotient_0026remainder"></a><u>Function:</u> <b>quotient&amp;remainder</b><i> n1 n2</i></dt>
+<dd><p>整数<var>n1</var>を整数<var>n2</var>で割った商(quotient)および余り(remainder)
+を同時に計算し、2つの値として返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-div"></a><u>Function:</u> <b>div</b><i> x y</i></dt>
+<dt><a name="index-mod"></a><u>Function:</u> <b>mod</b><i> x y</i></dt>
+<dt><a name="index-div_002dand_002dmod"></a><u>Function:</u> <b>div-and-mod</b><i> x y</i></dt>
+<dt><a name="index-div0"></a><u>Function:</u> <b>div0</b><i> x y</i></dt>
+<dt><a name="index-mod0"></a><u>Function:</u> <b>mod0</b><i> x y</i></dt>
+<dt><a name="index-div0_002dand_002dmod0"></a><u>Function:</u> <b>div0-and-mod0</b><i> x y</i></dt>
+<dd><p>[R6RS]
+これらはR6RSで導入された整数除算手続きです。
+<code>quotient</code>, <code>modulo</code>, <code>remainder</code>と違い、
+これらの手続きは整数でない値を取ることもできます。
+被除数<var>x</var>には任意の実数、除数<var>y</var>にはゼロ以外の実数が許されます。
+</p>
+<p><code>div</code>は整数<var>n</var>を、<code>mod</code>は実数<var>m</var>を返し、
+それらは以下の関係を満たします。
+</p>
+<ul>
+<li>
+<var>x</var> = <var>n</var> <var>y</var> + <var>m</var>
+</li><li>
+0 &lt;= <var>m</var> &lt; |<var>y</var>|
+</li></ul>
+
+<p>例:
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(div 123 10)     ⇒ 12
+(mod 123 10)     ⇒ 3
+
+(div 123 -10)    ⇒ -12
+(mod 123 -10)    ⇒ 3
+
+(div -123 10)    ⇒ -13
+(mod -123 10)    ⇒ 7
+
+(div -123 -10)   ⇒ 13
+(mod -123 -10)   ⇒ 7
+
+(div 123/7 10/9) ⇒ 15
+(mod 123/7 10/9) ⇒ 19/21
+;; 123/7 = 10/9 * 15 + 19/21
+
+(div 14.625 3.75) ⇒ 3.0
+(mod 14.625 3.75) ⇒ 3.375
+;; 14.625 = 3.75 * 3.0 + 3.375
+</pre></td></tr></tbody></table>
+
+<p><var>x</var>が非負の整数、<var>y</var>が整数である場合は、
+<code>div</code>と<code>mod</code>の結果は<code>quotient</code>と<code>remainder</code>
+の結果に一致します。しかし<var>x</var>が負になると結果は異なります。
+</p>
+<p><code>div-and-mod</code>は<code>div</code>と<code>mod</code>を同時に計算し、
+結果を二つの値で返します。
+</p>
+<p><var>div0</var>と<var>mod0</var>は、<code>m</code>の値域が異なる以外は同じです。
+</p>
+<ul>
+<li>
+<var>x</var> = <var>n</var> <var>y</var> + <var>m</var>
+</li><li>
+-|<var>y</var>|/2 &lt;= <var>m</var> &lt; |<var>y</var>|/2
+</li></ul>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(div0 123 10)   ⇒ 12
+(mod0 123 10)   ⇒ 3
+
+(div0 127 10)   ⇒ 13
+(mod0 127 10)   ⇒ -3
+
+(div0 127 -10)  ⇒ -13
+(mod0 127 -10)  ⇒ -3
+
+(div0 -127 10)  ⇒ -13
+(mod0 -127 10)  ⇒ 3
+
+(div0 -127 -10) ⇒ 13
+(mod0 -127 -10) ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p><code>div0-and-mod0</code>は<code>div0</code>と<code>mod0</code>を同時に計算し、
+結果を二つの値で返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-gcd"></a><u>Function:</u> <b>gcd</b><i> n …</i></dt>
+<dt><a name="index-lcm"></a><u>Function:</u> <b>lcm</b><i> n …</i></dt>
+<dd><p>[R5RS]
+与えられた整数の、最大公約数と最小公倍数をそれぞれ返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-numerator"></a><u>Function:</u> <b>numerator</b><i> q</i></dt>
+<dt><a name="index-denominator"></a><u>Function:</u> <b>denominator</b><i> q</i></dt>
+<dd><p>[R5RS]
+有理数<var>q</var>の分子と分母をそれぞれ返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-floor"></a><u>Function:</u> <b>floor</b><i> x</i></dt>
+<dt><a name="index-ceiling"></a><u>Function:</u> <b>ceiling</b><i> x</i></dt>
+<dt><a name="index-truncate"></a><u>Function:</u> <b>truncate</b><i> x</i></dt>
+<dt><a name="index-round"></a><u>Function:</u> <b>round</b><i> x</i></dt>
+<dd><p>[R5RS]
+引数<var>x</var>は実数でなければなりません。<code>floor</code>と<code>ceiling</code>はそれぞれ
+<var>x</var>を越えない最大の整数と、<var>x</var>を下回らない最小の整数を返します。
+<var>truncate</var>は<var>x</var>の小数部をゼロの方向に向かって切捨てた整数を返します。
+<var>round</var>は<var>x</var>に最も近い整数を返します。<var>x</var>の
+小数部が0.5ぴったりだった場合は<var>round</var>は最も近い偶数を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-floor_002d_003eexact"></a><u>Function:</u> <b>floor-&gt;exact</b><i> x</i></dt>
+<dt><a name="index-ceiling_002d_003eexact"></a><u>Function:</u> <b>ceiling-&gt;exact</b><i> x</i></dt>
+<dt><a name="index-truncate_002d_003eexact"></a><u>Function:</u> <b>truncate-&gt;exact</b><i> x</i></dt>
+<dt><a name="index-round_002d_003eexact"></a><u>Function:</u> <b>round-&gt;exact</b><i> x</i></dt>
+<dd><p>これらは、頻出する<code>(inexact-&gt;exact (floor x))</code> 等を簡潔に書くための
+手続きです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-clamp"></a><u>Function:</u> <b>clamp</b><i> x :optional min max</i></dt>
+<dd><table><tbody><tr><td>&nbsp;</td><td><pre class="example"> <var>min</var> <span class="roman">if</span> <var>x</var> <code>&lt;</code> <var>min</var>
+ <var>x</var>   <span class="roman">if</span> <var>min</var> <code>&lt;=</code> <var>x</var> <code>&lt;=</code> <var>max</var>
+ <var>max</var> <span class="roman">if</span> <var>max</var> <code>&lt;</code> <var>x</var>
+</pre></td></tr></tbody></table>
+<p>を返します。もし<var>min</var>または<var>max</var>が省略されるか<code>#f</code>が与えられたら、
+それぞれ <var>-∞</var> もしくは <var>+∞</var> と解釈されます。
+与えられた全ての数値が正確な整数の場合に限り正確な整数を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(clamp 3.1 0.0 1.0) ⇒ 1.0
+(clamp 0.5 0.0 1.0) ⇒ 0.5
+(clamp -0.3 0.0 1.0) ⇒ 0.0
+(clamp -5 0)        ⇒ 0
+(clamp 3724 #f 256) ⇒ 256
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-exp"></a><u>Function:</u> <b>exp</b><i> z</i></dt>
+<dt><a name="index-log"></a><u>Function:</u> <b>log</b><i> z</i></dt>
+<dt><a name="index-log-1"></a><u>Function:</u> <b>log</b><i> z1 z2</i></dt>
+<dt><a name="index-sin"></a><u>Function:</u> <b>sin</b><i> z</i></dt>
+<dt><a name="index-cos"></a><u>Function:</u> <b>cos</b><i> z</i></dt>
+<dt><a name="index-tan"></a><u>Function:</u> <b>tan</b><i> z</i></dt>
+<dt><a name="index-asin"></a><u>Function:</u> <b>asin</b><i> z</i></dt>
+<dt><a name="index-acos"></a><u>Function:</u> <b>acos</b><i> z</i></dt>
+<dt><a name="index-atan"></a><u>Function:</u> <b>atan</b><i> z</i></dt>
+<dd><p>[R5RS][R6RS]
+超越関数です。複素数も扱えます。
+</p>
+<p>2引数の<code>log</code>はR6RSで追加されたもので、<var>z2</var>を底とした<var>z1</var>の対数を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-atan-1"></a><u>Function:</u> <b>atan</b><i> y x</i></dt>
+<dd><p>[R5RS]
+実数<var>x</var>と<var>y</var>に対して
+<code>(angle (make-rectangular x y))</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sinh"></a><u>Function:</u> <b>sinh</b><i> z</i></dt>
+<dt><a name="index-cosh"></a><u>Function:</u> <b>cosh</b><i> z</i></dt>
+<dt><a name="index-tanh"></a><u>Function:</u> <b>tanh</b><i> z</i></dt>
+<dt><a name="index-asinh"></a><u>Function:</u> <b>asinh</b><i> z</i></dt>
+<dt><a name="index-acosh"></a><u>Function:</u> <b>acosh</b><i> z</i></dt>
+<dt><a name="index-atanh"></a><u>Function:</u> <b>atanh</b><i> z</i></dt>
+<dd><p>双曲線関数です。複素数も扱えます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sqrt"></a><u>Function:</u> <b>sqrt</b><i> z</i></dt>
+<dd><p>[R5RS]
+複素数<var>z</var>の平方根のひとつを返します。枝刈りの定義はCommon Lispと同じです。
+実数に対しては正の平方根を返します。
+</p>
+<p><var>z</var> が正確な実数の平方である場合、戻り値は正確数となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(sqrt 2)      ⇒ 1.4142135623730951
+(sqrt -2)     ⇒ 0.0+1.4142135623730951i
+(sqrt 256)    ⇒ 16
+(sqrt 256.0)  ⇒ 16.0
+(sqrt 81/169) ⇒ 9/13
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-exact_002dinteger_002dsqrt"></a><u>Function:</u> <b>exact-integer-sqrt</b><i> k</i></dt>
+<dd><p>[R6RS]
+非負の正確な整数<var>k</var>に対し、次の式を満たす
+非負の正確な整数<var>s</var>と<var>r</var>を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>k</var> = (+ (* <var>s</var> <var>s</var>) <var>r</var>)
+<var>k</var> &lt; (* (+ <var>s</var> 1) (+ <var>s</var> 1))
+</pre></td></tr></tbody></table>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(exact-integer-sqrt 782763574)
+  ⇒ 27977 <span class="roman">and</span> 51045
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-expt"></a><u>Function:</u> <b>expt</b><i> z1 z2</i></dt>
+<dd><p>[R5RS]
+複素数<var>z1</var>, <var>z2</var>に対して、
+<var>z1</var>^<var>z2</var> (<var>z1</var>の<var>z2</var>乗)を返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-fixnum_002dwidth"></a><u>Function:</u> <b>fixnum-width</b></dt>
+<dt><a name="index-greatest_002dfixnum"></a><u>Function:</u> <b>greatest-fixnum</b></dt>
+<dt><a name="index-least_002dfixnum"></a><u>Function:</u> <b>least-fixnum</b></dt>
+<dd><p>[R6RS]
+These procedures return the width of fixnum (<var>w</var>),
+the greatest integer representable by fixnum (<var>2^w - 1</var>),
+and the least integer representable by fixnum (<var>- 2^w</var>),
+respectively.  You might want to care the fixnum range when
+you are writing a performance-critical section.
+</p>
+<p>These names are defined in R6RS.  Common Lisp and ChezScheme have
+<code>most-positive-fixnum</code> and <code>most-negative-fixnum</code>.
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b-1"></a>
+<h3 class="subsection">6.3.5 数値の変換</h3>
+
+<dl>
+<dt><a name="index-make_002drectangular"></a><u>Function:</u> <b>make-rectangular</b><i> x1 x2</i></dt>
+<dt><a name="index-make_002dpolar"></a><u>Function:</u> <b>make-polar</b><i> x1 x2</i></dt>
+<dd><p>[R5RS]
+二つの実数<var>x1</var>と<var>x2</var>から複素数を作ります。
+<code>make-rectangular</code> は <var>x1</var> + <b>i</b><var>x2</var> を返します。
+<code>make-polar</code> は <var>x1</var><b>e</b>^(<b>i</b><var>x2</var>) を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-real_002dpart"></a><u>Function:</u> <b>real-part</b><i> z</i></dt>
+<dt><a name="index-imag_002dpart"></a><u>Function:</u> <b>imag-part</b><i> z</i></dt>
+<dt><a name="index-magnitude"></a><u>Function:</u> <b>magnitude</b><i> z</i></dt>
+<dt><a name="index-angle"></a><u>Function:</u> <b>angle</b><i> z</i></dt>
+<dd><p>[R5RS]
+複素数<var>z</var>を取り、実数を返します。
+<code>real-part</code>と<code>imag-part</code>は<var>z</var>の実数部と虚数部をそれぞれ返し、
+<code>magnitude</code>と<code>angle</code>は<var>z</var>の絶対値と偏角をそれぞれ返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-decode_002dfloat"></a><u>Function:</u> <b>decode-float</b><i> x</i></dt>
+<dd><p>与えられた浮動小数点数<var>x</var>に対して、
+3つの正確な整数からなるベクタ <code>#(<var>m</var>, <var>e</var>, <var>sign</var>)</code>
+を返します。ここで、
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">  <var>x</var> = (* <var>sign</var> <var>m</var> (expt 2.0 <var>e</var>))
+  <var>sign</var> は 1, 0 または -1.
+</pre></td></tr></tbody></table>
+<p>です。このAPIはChezSchemeから取られました。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(decode-float 3.1415926)
+ ⇒ #(7074237631354954 -51 1)
+(* 7074237631354954 (expt 2.0 -51))
+ ⇒ 3.1415926
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-fmod"></a><u>Function:</u> <b>fmod</b><i> x y</i></dt>
+<dt><a name="index-modf"></a><u>Function:</u> <b>modf</b><i> x</i></dt>
+<dt><a name="index-frexp"></a><u>Function:</u> <b>frexp</b><i> x</i></dt>
+<dt><a name="index-ldexp"></a><u>Function:</u> <b>ldexp</b><i> x n</i></dt>
+<dd><p>[POSIX]
+これらの手続きは、浮動小数点数を分解したり合成するのに使えます。
+<code>fmod</code>は実数<var>x</var>を実数<var>y</var>で割った余りを返します。すなわち、
+<var>x</var>/<var>y</var>を0に近いほうの整数に丸めた値を<var>n</var>とするとき、
+<var>x</var>-<var>n</var>*<var>y</var>を返します。
+<code>modf</code>は<var>x</var>の少数部と整数部を返します。
+<code>frexp</code>は実数<var>x</var>を、仮数部と指数部に分解して返します。すなわち、
+<var>x</var> = <var>fraction</var> * 2^<var>exponent</var> かつ 0 &lt;= <var>fraction</var> &lt;= 0.5
+であるところの<var>fraction</var>と<var>exponent</var>を返します。
+<code>ldexp</code>は<code>frexp</code>の逆関数で、<var>x</var> * 2^<var>n</var> を返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(fmod 32.1 10.0)  ⇒ 2.1
+(fmod 1.5 1.4)    ⇒ 0.1
+(modf 12.5)       ⇒ 0.5 <span class="roman">and</span> 12.0
+(frexp 3.14)      ⇒ 0.785 <span class="roman">and</span> 2
+(ldexp 0.785 2)   ⇒ 3.14
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-exact"></a><u>Function:</u> <b>exact</b><i> z</i></dt>
+<dt><a name="index-inexact"></a><u>Function:</u> <b>inexact</b><i> z</i></dt>
+<dd><p>[R6RS]
+それぞれ数<var>z</var>の正確な表現および不正確な表現を返します。
+</p>
+<p>浮動小数点数の表現が有限精度であるため、任意の不正確な実数を正確な
+有理数に変換することは常に可能です。しかしそれはあなたの求めるもの
+ではないかもしれません。次の例を見てください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(exact 3.1415926535879)
+  ⇒ 7074237752024177/2251799813685248
+</pre></td></tr></tbody></table>
+
+<p>不正確な実数を丸めた正確な整数が欲しい場合は、<code>floor</code>、<code>ceiling</code>、
+<code>truncate</code>もしくは<code>round</code>を明示的に使って下さい。
+<code>floor-&gt;exact</code>、<code>round-&gt;exact</code>等を使うという手もあります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(exact (round 3.1415926535879)) ⇒ 3
+
+(round-&gt;exact 3.1415926535879)  ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p>Gaucheは正確な複素数をサポートしません。虚数部がゼロでない不正確な
+複素数を<code>exact</code>に渡すとエラーとなります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-exact_002d_003einexact"></a><u>Function:</u> <b>exact-&gt;inexact</b><i> z</i></dt>
+<dt><a name="index-inexact_002d_003eexact"></a><u>Function:</u> <b>inexact-&gt;exact</b><i> z</i></dt>
+<dd><p>[R5RS]
+それぞれ、正確数を非正確に変換、あるいはその逆を行います。
+</p>
+<p>不正確な数を<code>exact-&gt;inexact</code>に渡したり、または正確な数を
+<code>inexact-&gt;exact</code>に渡した場合、Gaucheではそれをエラーにせず
+引数をそのまま返します。従ってこれらはGaucheでは
+上の<code>inexact</code>および<code>exact</code>とそれぞれ等価です。
+R5RS実装の中には、非正確数を<code>exact-&gt;inexact</code>に渡したりすると
+エラーになるものもあり得るので、ポータブルなコードを書く場合は
+注意してください。
+</p>
+<p>一般的には、<code>exact</code>および<code>inexact</code>を使う方が
+簡潔で良いでしょう。こちらの手続きはR5RSプログラムとの互換性の
+ために用意されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-number_002d_003estring"></a><u>Function:</u> <b>number-&gt;string</b><i> z :optional radix use-upper?</i></dt>
+<dt><a name="index-string_002d_003enumber"></a><u>Function:</u> <b>string-&gt;number</b><i> string :optional radix</i></dt>
+<dd><p>[R5RS+]
+これらの手続きは数値とそれを<var>radix</var>進数で表現する文字列とを変換します。
+<var>radix</var>は2から36の間でなければなりません。省略された場合は10進数とみなされます。
+</p>
+<p><code>number-&gt;string</code>は数値<var>z</var>を取り文字列を返します。
+<var>z</var>が正確な整数以外の場合、<var>radix</var>は10でなければなりません。
+10より大きい<var>radix</var>に関しては、小文字のアルファベットが桁として使われます。
+但し、省略可能な引数<var>use-upper?</var>に真の値が与えられた場合は大文字のアルファベットが
+使われます。<var>use-upper?</var>引数はGaucheの拡張です。
+</p>
+<p><code>string-&gt;number</code>は文字列<var>string</var>を取り数値を返します。
+不正確な数値は10進数表記しか認識されません。与えられた文字列が数値を構成しない
+場合は<code>#f</code>が返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-x_002d_003enumber"></a><u>Generic Function:</u> <b>x-&gt;number</b><i> obj</i></dt>
+<dt><a name="index-x_002d_003einteger"></a><u>Generic Function:</u> <b>x-&gt;integer</b><i> obj</i></dt>
+<dd><p>数値への強制型変換手続きです。
+<var>obj</var>をそれぞれ数値もしくは正確な整数と解釈して返します。
+数値と文字列に対してのメソッドは定義されています
+(文字列は<var>string-&gt;number</var>を使って変換されます。
+数値として解釈できない文字列に関しては0が返されます)。
+その他の<var>obj</var>については単に0が返されます。
+<code>x-&gt;integer</code>は、<var>obj</var>が数値として表現できるけれど正確な整数では
+ない場合、<code>round</code>と<code>inexact-&gt;exact</code>によって正確な整数に変換します。
+</p>
+<p>他のクラスはこのメソッドを定義することにより、独自の変換関数を提供することができます。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097-1"></a>
+<h3 class="subsection">6.3.6 ビット演算</h3>
+
+<p>これらの手続きは整数を半無限のビットベクタとして扱います。
+正の整数の場合、数値の左側に無限に0が続いていると見倣されます。
+負の整数の場合、数値は2の補数で表現され、左側に無限に1が続いていると見倣されます。
+</p>
+<p>これらの操作の名前に関しては、Scheme界には大きく二つの流儀があります。
+GaucheはSLIBの元々の“logical”モジュールに合わせました。
+その起源はCommon Lispです。
+もう一つの流儀では、<code>arithmetic-shift</code>といった、より長く記述的な名前を使います。
+</p>
+<p>SRFI-60 (See section <a indepth="true" href="gauche-refj_124.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c"><code>srfi-60</code> - 整数に対するビット操作</a>) は両方の流儀の名前を定義しており、
+さらにいくつかの追加の手続きも用意しています。他のScheme向けに書かれた
+コードをGaucheに移植する際には有用でしょう。
+</p>
+<dl>
+<dt><a name="index-ash"></a><u>Function:</u> <b>ash</b><i> n count</i></dt>
+<dd><p>[SRFI-60]
+整数<var>n</var>を左に整数<var>count</var>ビットだけシフトします。
+<var>count</var>が負であれば、-<var>count</var>だけ<var>n</var>を右にシフトします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">; <span class="roman">Note: 6  ≡ [...00110], and</span>
+; <span class="roman">      -6 ≡ [...11010]</span>
+(ash 6 2)   ⇒ 24  ;<span class="roman">[...0011000]</span>
+(ash 6 -2)  ⇒ 1   ;<span class="roman">[...0000001]</span>
+(ash -6 2)  ⇒ -24 ;<span class="roman">[...1101000]</span>
+(ash -6 -2) ⇒ -2  ;<span class="roman">[...1111110]</span>
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-logand"></a><u>Function:</u> <b>logand</b><i> n1 …</i></dt>
+<dt><a name="index-logior"></a><u>Function:</u> <b>logior</b><i> n1 …</i></dt>
+<dt><a name="index-logxor"></a><u>Function:</u> <b>logxor</b><i> n1 …</i></dt>
+<dd><p>[SRFI-60]
+整数<var>n1</var> …の、それぞれビット論理積、
+ビット論理和、ビット排他的論理積を返します。
+ゼロ個の引数が与えられた場合は、<code>logand</code>は<code>-1</code>を、
+<code>logior</code>と<code>logxor</code>は<code>0</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lognot"></a><u>Function:</u> <b>lognot</b><i> n</i></dt>
+<dd><p>[SRFI-60]
+整数<var>n</var>のビット否定を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-logtest"></a><u>Function:</u> <b>logtest</b><i> n1 n2 …</i></dt>
+<dd><p>[SRFI-60]
+≡ <code>(not (zero? (logand <var>n1</var> <var>n2</var> …)))</code>
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-logbit_003f"></a><u>Function:</u> <b>logbit?</b><i> index n</i></dt>
+<dd><p>[SRFI-60]
+整数<var>n</var>の<var>index</var>目のビットが1ならば<code>#t</code>を、0ならば<code>#f</code>を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-bit_002dfield"></a><u>Function:</u> <b>bit-field</b><i> n start end</i></dt>
+<dd><p>[SRFI-60]
+整数<var>n</var>の<var>start</var>ビット目(含む)から<var>end</var>ビット目(含まない)までを
+取り出した数値を返します。<var>start</var> &lt; <var>end</var> でなければなりません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002dbit"></a><u>Function:</u> <b>copy-bit</b><i> index n bit</i></dt>
+<dd><p>[SRFI-60]
+<var>bit</var>が真の値なら、整数<var>n</var>の<var>index</var>ビット目をセットした数値を
+返します。
+<var>bit</var>が偽の値なら、整数<var>n</var>の<var>index</var>ビット目をリセットした数値を
+返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-copy_002dbit_002dfield"></a><u>Function:</u> <b>copy-bit-field</b><i> n start end from</i></dt>
+<dd><p>[SRFI-60]
+正確な整数を返します。この整数の各ビットは<var>start</var>番目のビット(この
+ビットを含む)から<var>end</var>番目のビット(このビットは含まない)の部分以外
+は<var>n</var>と同じで、この区間のビットは、正確な数<var>from</var>の下位
+<code>(<var>end</var>-<var>start</var>)</code>ビットのコピーです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(number-&gt;string (copy-bit-field #b10000000 1 5 -1) 2)
+  ⇒ "10011110"
+
+(number-&gt;string (copy-bit-field #b10000000 1 7 #b010101010) 2)
+  ⇒ "11010100"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-logcount"></a><u>Function:</u> <b>logcount</b><i> n</i></dt>
+<dd><p>[SRFI-60]
+<var>n</var>が正なら、<var>n</var>のビットのうち<code>1</code>の個数を返します。<var>n</var>
+が負なら、<var>n</var>の2に関する補数のビットのうち<code>0</code>の個数を返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(logcount 0)      ⇒ 0
+(logcount #b0010) ⇒ 1
+(logcount #b0110) ⇒ 2
+(logcount #b1111) ⇒ 4
+
+(logcount #b-0001) ⇒ 0  ;; 2の補数:  ....111111
+(logcount #b-0010) ⇒ 1  ;; 2の補数:  ....111110
+(logcount #b-0011) ⇒ 1  ;; 2の補数:  ....111101
+(logcount #b-0100) ⇒ 2  ;; 2の補数:  ....111100
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-integer_002dlength"></a><u>Function:</u> <b>integer-length</b><i> n</i></dt>
+<dd><p>[SRFI-60]
+正確な整数<var>n</var>を表現するのに必要な最小ビット数を返します。負の数は2
+の補数で表現されるものと仮定しています。符号用のビットは考慮しません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(integer-length 255)  ⇒ 8
+(integer-length 256)  ⇒ 9
+
+(integer-length -256)  ⇒ 8
+(integer-length -257)  ⇒ 9
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_42.html#g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00a8_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00a2_00e3_0083_00b3-1"></a>
+<h3 class="subsection">6.3.7 エンディアン</h3>
+
+<p>Schemeの世界では、数値がマシン上でどのように表現されているかを気にする
+必要はほとんどありません。しかし、外の世界とバイナリ表現でデータを
+やりとりする場合はそれが問題になります。
+</p>
+<p><code>binary.io</code>モジュール(<a indepth="true" href="gauche-refj_127.html#g_t_00e3_0083_0090_00e3_0082_00a4_00e3_0083_008a_00e3_0083_00aaI_002fO"><code>binary.io</code> - バイナリI/O</a>参照)や
+<code>write-block</code>/<code>read-block!</code>(<a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>参照)
+等、Gaucheのバイナリ入出力手続きはエンディアンを指定する
+省略可能な<var>endian</var>引数を取ります。
+</p>
+<p>エンディアンの指定には次のシンボルを使います。
+</p>
+<dl compact="compact">
+<dt> <code>big-endian</code></dt>
+<dd><p>ビッグエンディアン。32ビット整数値<code>#x12345678</code>は<code>#x12 #x34 #x56 #x78</code>
+のようなバイトシーケンスとして出力されます。
+</p></dd>
+<dt> <code>little-endian</code></dt>
+<dd><p>リトルエンディアン。32ビット整数値<code>#x12345678</code>は<code>#x78 #x56 #x34 #x12</code>
+のようなバイトシーケンスとして出力されます。
+</p></dd>
+<dt> <code>arm-little-endian</code></dt>
+<dd><p>これは<code>little-endian</code>のバリエーションで、ARMプロセッサの
+特定のモードで使われるものです。倍精度浮動小数点数以外は<code>little-endian</code>
+と同様に動作します。倍精度浮動小数点数については、ふたつのリトルエンディアンワードが
+ビッグエンディアンの順で書き出されます (例えばマシンレジスタ上でのビットパターンが
+<code>#x0102030405060708</code>の場合、出力は
+<code>#x04 #x03 #x02 #x01 #x08 #x07 #x06 #x05</code>となります)。
+</p></dd>
+</dl>
+
+<p><var>endian</var>引数が省略された場合は、これらの手続きはパラメータ<code>default-endian</code>の
+値を使います。
+</p>
+<dl>
+<dt><a name="index-default_002dendian"></a><u>Parameter:</u> <b>default-endian</b></dt>
+<dd><p>これは、バイナリ入出力ルーチンで<var>endian</var>指定が省略された場合に
+共通して使われるエンディアンを指定する動的パラメータです
+(<a indepth="true" href="gauche-refj_92.html#g_t_00e3_0083_0091_00e3_0083_00a9_00e3_0083_00a1_00e3_0083_00bc_00e3_0082_00bf"><code>gauche.parameter</code> - パラメータ</a>参照)。
+このパラメータの初期値はシステムのネイティブエンディアンです。
+</p></dd></dl>
+
+<p>システムのネイティブエンディアンは次の手続きで得られます。
+</p>
+<dl>
+<dt><a name="index-native_002dendian"></a><u>Function:</u> <b>native-endian</b></dt>
+<dd><p>システムのエンディアンを示すシンボルを返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_00bc_0094_00e7_00ae_0097" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_42.html#g_t_00e8_00ab_0096_00e7_0090_0086_00e5_0080_00a4" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e6_0095_00b0_00e5_0080_00a4" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

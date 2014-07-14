@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>7.4 ジェネリックファンクションとメソッド</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 7.4 ジェネリックファンクションとメソッド">
+<meta name="keywords" content="Gauche ユーザリファレンス: 7.4 ジェネリックファンクションとメソッド">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0083_00b3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00a8_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00a4_0089_00e6_009b_00b4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_70.html#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e3_0083_0095_00e3_0082_00a1_00e3_0083_00b3_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00a8_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089-1"></a>
+<h2 class="section">7.4 ジェネリックファンクションとメソッド</h2>
+
+<a name="g_t_00e3_0083_00a1_00e3_0082_00bd_00e3_0083_0083_00e3_0083_0089_00e3_0081_00ae_00e5_00ae_009a_00e7_00be_00a9"></a>
+<h3 class="subheading">メソッドの定義</h3>
+
+<dl>
+<dt><a name="index-define_002dgeneric"></a><u>Macro:</u> <b>define-generic</b><i> name :key class</i></dt>
+<dd><p>ジェネリック関数を生成し、<var>name</var> に束縛します。
+</p>
+<p>通常は、これを使う必要はありません。もし、まだ存在していなければ、
+<code>define-method</code> マクロが暗黙裏にジェネリック関数を生成してくれるからです。
+</p>
+<p>キーワード引数<code>class</code>に、<code>&lt;generic&gt;</code>のサブクラスを渡すことで、
+作られるジェネリック関数をデフォルトの<code>&lt;generic&gt;</code>クラスのインスタンスでは
+なく指定のクラスのインスタンスにすることができます。<code>&lt;generic&gt;</code>の
+サブクラスを定義してメソッド適用をカスタマイズする場合に便利です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-define_002dmethod"></a><u>Macro:</u> <b>define-method</b><i> name specs body</i></dt>
+<dd><p><var>name</var> という名前のメソッドを定義します。すでにグローバルに <var>name</var>
+に束縛されているジェネリック関数オブジェクトが存在していれば、生成された
+メソッドはそのジェネリック関数に追加されます。<var>name</var> が未束縛であるか
+またはジェネリック関数以外に束縛されているなら、新しいジェネリック関数が
+生成され、<var>name</var> に束縛されて、新しいメソッドがそれに追加されます。
+</p>
+<p><var>specs</var> はこのメソッドに対応する引数とその型を指定します。これは
+lambda 形式の引数リストに似ていますが、それぞれの引数の型を指定できる
+ところが違います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><i>specs</i> : ( <i>arg</i> … )
+      | ( <i>arg</i> … . <i>symbol</i> )
+      | ( <i>arg</i> … <i>extended-spec</i> …)
+      | <i>symbol</i>
+
+<i>arg</i>   : ( <i>symbol</i> <i>class</i> )
+      | <i>symbol</i>
+</pre></td></tr></tbody></table>
+
+<p><i>class</i> は引数が所属すべきクラスを指定します。<code><i>arg</i></code> が単に
+シンボルであれば、<code>(<i>arg</i> &lt;top&gt;)</code> と同じです。rest 引数の
+型を指定することはできません。それは常にリストに束縛されるからです。
+</p>
+<p><code>:optional</code>、<code>:key</code>、<code>:rest</code>等の拡張引数指定を使うことも
+できます。(拡張引数指定については<a indepth="true" href="gauche-refj_24.html#g_t_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0082_0092_00e4_00bd_009c_00e3_0082_008b">手続きを作る</a>を参照してください)。
+拡張引数指定は、メソッドディスパッチに関しては rest引数と同様に扱われます。
+すなわち、省略可能引数やキーワード引数にクラスを指定することはできません。
+</p>
+<p>引数リストのクラスのリストは<em>メソッド特定化子リスト</em>といい、
+これを基に、ジェネリック関数は適切なメソッドを選択します。<var>specs</var> と
+それに対応する特定化子リストの例をあげておきます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">specs:        ((self &lt;myclass&gt;) (index &lt;integer&gt;) value)
+specializers: (&lt;myclas&gt; &lt;integer&gt; &lt;top&gt;)
+
+specs:        ((self &lt;myclass&gt;) obj . options)
+specializers: (&lt;myclas&gt; &lt;top&gt; . &lt;top&gt;)
+
+specs:        (obj (attr &lt;string&gt;))
+specializers: (&lt;top&gt; &lt;string&gt;)
+
+specs:        args
+specializers: &lt;top&gt;
+
+specs:        ((self &lt;myclass&gt;) obj :optional (a 0) (b 1) :key (c 2))
+specializers: (&lt;myclas&gt; &lt;top&gt; . &lt;top&gt;)
+</pre></td></tr></tbody></table>
+
+<p>その特定化子リストがジェネリック関数の中のメソッドの一つに一致するような
+<var>name</var> 上のメソッドを定義すると、既存のメソッドは新しく定義された
+メソッドに置き換えられます。
+</p></dd></dl>
+
+<a name="g_t_00e3_0082_00b8_00e3_0082_00a7_00e3_0083_008d_00e3_0083_00aa_00e3_0083_0083_00e3_0082_00af_00e9_0096_00a2_00e6_0095_00b0_00e3_0081_00ae_00e9_0081_00a9_00e7_0094_00a8"></a>
+<h3 class="subheading">ジェネリック関数の適用</h3>
+
+<p>ジェネリック関数は適用されると、まず、与えられた引数に適合する
+特定化子リストを持つメソッドを選択します。たとえば、ジェネリック関数
+<code>foo</code> が 3つのメソッドを持っており、それらの特定化子リストが
+それぞれ、<code>(&lt;string&gt; &lt;top&gt;)</code>、<code>(&lt;string&gt; &lt;string&gt;)</code>、
+<code>(&lt;top&gt; &lt;top&gt;)</code> であるとします。<code>foo</code> が <code>(foo "abc" 3)</code> の
+ように適用されたとき、最初と 3番目のメソッドが選択されます。
+</p>
+<p>選択されたメソッドは、もっとも<em>特定化された</em>ものから、もっとも一般的なものへ
+の順でソートされます。これは以下のように計算されます。
+</p>
+<ul>
+<li>
+<code>(A1 A2 …)</code> という特定化子リストをもつメソッド <code>a</code> と
+<code>(B1 B2 …)</code> という特定化子リストをもつメソッド <code>b</code> とが
+あるとします。
+
+</li><li>
+<code>An</code> と <code>Bn</code> とが異る最小の <var>n</var> を見つけます。<var>n</var> 番目の
+引数のクラスをとり、そのクラスの順位リストをチェックします。もし、
+その CPL の中で、<code>An</code> が <code>Bn</code> より先にくれば、method <code>a</code> は
+メソッド <code>b</code> より特定化されているということにし、さもなければ、
+<code>b</code> が <code>a</code> がより特定化されているということにします。
+
+</li><li>
+もし、<code>a</code> および <code>b</code> のすべての特定化子が、一方は rest 引数
+をもち、もう一方はもたないという以外同じであれば、rest 引数をもたない
+メソッドのほうがそうでないものより特定化されているとします。
+</li></ul>
+
+<p>メソッドがソートされたら、最初のメソッドの本体が実引数で呼ばれます。
+</p>
+<p>メソッド本体内部では、特別なローカル変数 <code>next-method</code>が暗黙裏に
+束縛されます。
+</p>
+<dl>
+<dt><a name="index-next_002dmethod"></a><u>Next method:</u> <b>next-method</b></dt>
+<dt><a name="index-next_002dmethod-1"></a><u>Next method:</u> <b>next-method</b><i> args …</i></dt>
+<dd><p>この変数は、メソッド本体内部で、ソートされたメソッドリストで次のメソッド
+をカプセル化した特別なオブジェクトに束縛されます。
+</p>
+<p>引数なしで呼ぶと、次のメソッドがこのメソッドよばれたときとと同じ引数で
+起動されます。<var>args</var> … を明示的にわたすと、次のメソッドがその
+渡された引数で起動されます。
+</p>
+<p><code>next-method</code> がもっとも特定化されていないメソッドで呼ばれた場合、
+すなわち、「次のメソッド」がない場合、エラーシグナルがあがります。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_68.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_00a4_0089_00e6_009b_00b4" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_70.html#g_t_00e3_0083_00a1_00e3_0082_00bf_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0088_00e3_0082_00b3_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_71.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e6_00a6_0082_00e8_00a6_0081" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

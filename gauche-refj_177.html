@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.51 util.lcs - 最長共通サブシーケンス</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.51 util.lcs - 最長共通サブシーケンス">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.51 util.lcs - 最長共通サブシーケンス">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e6_009c_0080_00e9_0095_00b7_00e5_0085_00b1_00e9_0080_009a_00e3_0082_00b5_00e3_0083_0096_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_176.html#g_t_00e5_0090_008c_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_178.html#g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002elcs-_002d-_00e6_009c_0080_00e9_0095_00b7_00e5_0085_00b1_00e9_0080_009a_00e3_0082_00b5_00e3_0083_0096_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9"></a>
+<h2 class="section">11.51 <code>util.lcs</code> - 最長共通サブシーケンス</h2>
+
+<dl>
+<dt><a name="index-util_002elcs"></a><u>Module:</u> <b>util.lcs</b></dt>
+<dd><a name="index-util_002elcs-1"></a>
+<p>このモジュールは、与えられた2つのシーケンスの最長共通サブシーケンスを見つける
+アルゴリズムを実装しています。アルゴリズムは、Eugene Myersの
+O(ND)アルゴリズムに基づいています(<a indepth="true" href="gauche-refj_189.html#myers86">Myers86</a>)。
+</p>
+<p>このアルゴリズムを使うアプリケーションの1つは、2つのテキストストリームの
+相違点を計算する<a indepth="true" href="gauche-refj_165.html#g_t_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00aa_00e3_0083_00bc_00e3_0083_00a0_00e3_0081_00ae_00e7_009b_00b8_00e9_0081_0095_00e7_0082_00b9_00e3_0082_0092_00e8_00a8_0088_00e7_00ae_0097_00e3_0081_0099_00e3_0082_008b"><code>text.diff</code> - テキストストリームの相違点を計算する</a>です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lcs"></a><u>Function:</u> <b>lcs</b><i> seq-a seq-b :optional eq-fn</i></dt>
+<dd><p>2つのリスト、<var>seq-a</var>と<var>seq-b</var>の最長共通シーケンスを計算して
+返します。オプションの<var>eq-fn</var>では、比較を行う述語を指定します。
+省略されると、<code>equal?</code>が使われます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lcs '(x a b y) '(p a q b))
+ ⇒ (a b)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-lcs_002dwith_002dpositions"></a><u>Function:</u> <b>lcs-with-positions</b><i> seq-a seq-b :optional eq-fn</i></dt>
+<dd><p><code>lcs</code>の詳細バージョンです。引数は同じです。
+</p>
+<p>以下の構造のリストを返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>length</var> ((<var>elt</var> <var>a-pos</var> <var>b-pos</var>) …))
+</pre></td></tr></tbody></table>
+
+<p><var>length</var>は、見つかったLCS(最長共通サブシーケンス)の長さを表す整数です。
+それに続くのは、LCSの要素のリストで、その要素を構成するそれぞれのサブリスト、
+<var>seq-a</var>の中での要素の位置(整数)、<var>seq-b</var>の中での要素の位置(整数)
+となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lcs-with-positions '(a) '(a))
+ ⇒ (1 ((a 0 0)))
+
+(lcs-with-positions '(x a b y) '(p q a b))
+ ⇒ (2 ((a 1 2) (b 2 3)))
+
+(lcs-with-positions '(x a b y) '(p a q b))
+ ⇒ (2 ((a 1 1) (b 2 3)))
+
+(lcs-with-positions '(x y) '(p q))
+ ⇒ (0 ())
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-lcs_002dfold"></a><u>Function:</u> <b>lcs-fold</b><i> a-proc b-proc both-proc seed a b :optional eq-fn</i></dt>
+<dd><p>2つのリスト<var>a</var>と<var>b</var>から引き出された“編集リスト”に対する
+基本的なイテレータです。
+</p>
+<p><var>a-proc</var>、<var>b-proc</var>、<var>both-proc</var>は全て2引数を取る手続きです。
+2番目の引数は、計算の中間の値です。最初の値は、<var>a-proc</var>では<var>a</var>にしかない要素、
+<var>b-proc</var>では<var>b</var>にしかない要素、<var>both-proc</var>では<var>a</var>と<var>b</var>の両方に
+ある要素となります。それぞれの手続きが返す値は、次に呼び出される手続きのうちの1つの
+状態を表す値として使われます。<var>seed</var>は、状態を表す値の初期値として使われます。
+<code>lcs-fold</code>が返す値は、最後の状態を表す値です。
+</p>
+<p>これらの3つの手続きは、以下の順番で呼ばれます。ここでは、シーケンス<var>a</var>は
+<var>a’</var><var>c</var><var>a”</var>、<var>b</var>は<var>b’</var><var>c</var><var>b”</var>となっているとすると、
+ここでは<var>a’</var>、<var>b’</var>、<var>a”</var>、<var>b”</var>はサブシーケンスで、
+<var>c</var>は<var>a</var>と<var>b</var>のLCSの先頭になります。そして、<var>a-proc</var>はまず
+<var>a’</var>のそれぞれの要素に対して呼ばれ、<var>b-proc</var>が<var>b’</var>のそれぞれの
+要素に対して呼ばれ、<var>both-proc</var>が<var>c</var>に対して呼ばれます。
+その後、このプロセスは<var>a”</var>と<var>b”</var>を使って繰り返されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lcs_002dedit_002dlist"></a><u>Function:</u> <b>lcs-edit-list</b><i> a b :optional eq-fn</i></dt>
+<dd><p>2つのリスト<var>a</var>と<var>b</var>から“編集リスト”を計算します。それは、
+<var>a</var>を<var>b</var>に変更するためのコマンド(追加と削除)の最小セットです。
+この手続きは、上の<code>lcs-fold</code>の上に構築されています。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>+</var>|<var>-</var> <var>position</var> <var>element</var>)
+</pre></td></tr></tbody></table>
+
+<p>例を挙げます。<var>a</var>と<var>b</var>がそれぞれ以下のようなリストだとします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>a</var> ≡ ("A" "B" "C" "E" "H" "J" "L" "M" "N" "P")
+<var>b</var> ≡ ("B" "C" "D" "E" "F" "J" "K" "L" "M" "R" "S" "T")
+</pre></td></tr></tbody></table>
+
+<p>すると、<code>(lcs-edit-list a b equal?)</code>は以下のリストを返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(((- 0 "A"))
+ ((+ 2 "D"))
+ ((- 4 "H") (+ 4 "F"))
+ ((+ 6 "K"))
+ ((- 8 "N") (- 9 "P") (+ 9 "R") (+ 10 "S") (+ 11 "T"))
+)
+</pre></td></tr></tbody></table>
+<p>結果は5つの片からなります。最初のものは1つのディレクティブ、<code>(- 0 ``A'')</code>から
+なり、これはリスト<var>a</var>の位置0にある要素<code>``A''</code>が削除されることを意味します。
+2番目のものはまた1つのディレクティブ、<code>(+ 2 ``D'')</code>からなり、これは
+リスト<var>b</var>の位置2にある要素<code>``D''</code>が追加されることを意味します。
+3番目のものは、リスト<var>a</var>の位置4にある<code>``H''</code>は削除され、リスト<var>b</var>の
+位置4にある<code>``F''</code>が追加される、などとなります。
+</p>
+<p>もしあなたがPerlのAlgorithm::Diffモジュールを良く知っていれば、
+その<code>diff</code>手続きが返すものと同じ構造だということが分かるでしょう。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_176.html#g_t_00e5_0090_008c_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_178.html#g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

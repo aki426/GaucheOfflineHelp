@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.11 gauche.lazy - 遅延シーケンスユーティリティ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.11 gauche.lazy - 遅延シーケンスユーティリティ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.11 gauche.lazy - 遅延シーケンスユーティリティ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_84.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_86.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002elazy-_002d-_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<h2 class="section">9.11 <code>gauche.lazy</code> - 遅延シーケンスユーティリティ</h2>
+
+<p>This module provides utiltiy procedures that yields lazy sequences.
+For the details of lazy sequences, see <a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9">遅延シーケンス</a>.
+</p>
+<p>Since lazy sequences are forced implicitly and indistinguishable
+from ordinary lists, we don’t need a separate set of procedures
+for <em>taking</em> lists and lazy sequences; we can use <code>find</code>
+to search in both ordinary lists and lazy sequences.
+</p>
+<p>However, we do need a separate set of procedures
+for <em>returning</em> either lists or lazy sequences.  For example,
+<var>lmap</var> can take any kind of sequences, and
+returns lazy sequence (and calls the procedure on demand).
+</p>
+<p>This distinction is subtle, so I reiterate it.  You can use
+both <code>map</code> and <code>lmap</code> on lazy sequences.  If you want
+the result list at once, use <code>map</code>; it doesn’t have
+overhead of delayed calculation.  If you don’t know you’ll use
+the entire result, or you know the result will get very large
+list and don’t want to waste space for an intermediate list,
+you want to use <code>lmap</code>.
+</p>
+<dl>
+<dt><a name="index-x_002d_003elseq"></a><u>Function:</u> <b>x-&gt;lseq</b><i> obj</i></dt>
+<dd><p>A convenience function to coerce <var>obj</var> to (possibly lazy) list.
+If <var>obj</var> is a list, it is returned as it is.  If <var>obj</var> is
+other type of collection, the return value is a lazy sequence
+that iterates over the collection.
+</p>
+<p>If you try <code>x-&gt;lseq</code> in REPL, it looks as if it just
+converts the input collection to a list.
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(x-&gt;lseq '#(a b c)) ⇒ (a b c)
+</pre></td></tr></tbody></table>
+
+<p>But that’s because the lazy sequence is forced by the output
+routine of the REPL.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lunfold"></a><u>Function:</u> <b>lunfold</b><i> p f g seed :optional tail-gen</i></dt>
+<dd><p>A lazy version of <code>unfold</code> (See section <a indepth="true" href="gauche-refj_110.html#SRFI_002d1-_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c_00e9_0096_00a2_00e6_0095_00b0">SRFI-1 リスト操作関数</a>).
+The arguments <var>p</var>, <var>f</var> and <var>g</var> are procedures,
+each of which take one argument, the current seed value.
+The predicate <var>p</var> determines when to stop, <var>f</var> creates
+each element, and <var>g</var> generates the next seed value.
+The <var>seed</var> argument gives the initial seed value.
+If <var>tail-gen</var> is given, it should also be a procedure
+that takes one argument, the last seed value (that is, the
+seed value <code>(p seed)</code> returned <code>#f</code>).  It must return
+a (possibly lazy) list, that forms the tail of the resulting sequence.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lunfold ($ = 10 $) ($ * 2 $) ($ + 1 $) 0 (^_ '(end)))
+  ⇒ (0 2 4 6 8 10 12 14 16 18 end)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-lmap"></a><u>Function:</u> <b>lmap</b><i> proc seq seq2 …</i></dt>
+<dd><p>Returns a lazy sequence consists of values calculated
+by applying <var>proc</var> to every first element of <var>seq</var> <code>seq2</code>
+…, every second element of them, etc., until any of
+the input is exhausted.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lmap_002daccum"></a><u>Function:</u> <b>lmap-accum</b><i> proc seed seq seq2 …</i></dt>
+<dd><p>The procedure <var>proc</var> takes one element each from
+<var>seq</var> <var>seq2</var> …, plus the current seed value.
+It must return two values, a result value and the next seed value.
+The result of <code>lmap-accum</code> is a lazy sequence consists
+of the first values returned by each invocation of <var>proc</var>.
+</p>
+<p>This is a lazy version of <code>map-accum</code> (See section <a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0">コレクションに対するマッピング</a>),
+but <code>lmap-accum</code> does not return the final seed value.  We only
+know the final seed value when we have the result sequence to the
+end, so it can’t be calculated lazily.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lappend"></a><u>Function:</u> <b>lappend</b><i> seq …</i></dt>
+<dd><p>Returns a lazy sequence consists of elements in <var>seq</var> ….
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lfilter"></a><u>Function:</u> <b>lfilter</b><i> proc seq</i></dt>
+<dd><p>Returns a lazy sequence that consists of non-false values calculated
+by applying <var>proc</var> on every elements in <var>seq</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lfilter_002dmap"></a><u>Function:</u> <b>lfilter-map</b><i> proc seq seq2 …</i></dt>
+<dd><p>Lazy version of <code>filter-map</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lstate_002dfilter"></a><u>Function:</u> <b>lstate-filter</b><i> proc seed seq</i></dt>
+<dd><p>Lazy version of <code>state-filter</code>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ltake"></a><u>Function:</u> <b>ltake</b><i> seq n :optional fill? padding</i></dt>
+<dt><a name="index-ltake_002dwhile"></a><u>Function:</u> <b>ltake-while</b><i> pred seq</i></dt>
+<dd><p>Lazy versions of <code>take*</code> and <code>take-while</code>
+(See section <a indepth="true" href="gauche-refj_44.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_0088_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9_00e3_0081_00a8_00e5_00a4_0089_00e6_009b_00b4">リストへのアクセスと変更</a>).   Note that
+<code>ltake</code> works rather like <code>take*</code> than <code>take</code>,
+that is, it won’t complain if the input sequence has less than <var>n</var>
+elements.  Because of the lazy nature of <code>ltake</code>, it can’t know
+whether input is too short or not before returning the sequence.
+</p>
+<p>There are no <code>ldrop</code> and <code>ldrop-while</code>; if you apply
+<code>drop</code> and <code>drop-while</code> on lazy sequence, they return
+lazy sequence.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-lrxmatch"></a><u>Function:</u> <b>lrxmatch</b><i> rx seq</i></dt>
+<dd><p>This is a lazy sequence version of <code>grxmatch</code>
+(See section <a indepth="true" href="gauche-refj_82.html#Generator-operations">Generator operations</a>).
+</p>
+<p>The <var>seq</var> argument must be a sequence of characters.
+The return value is a lazy sequence of <var>&lt;rxmatch&gt;</var> objects,
+each representing strings matching to the regular expression <var>rx</var>.
+</p>
+<p>This procedure is convenient to scan character sequences from
+lazy character sequences, but it may be slow if you’re looking for
+rarely matching string from very large input.  Unless <var>seq</var>
+is a string, <code>lrxmatch</code> buffers certain
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_84.html#g_t_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00af_00e3_0083_0086_00e3_0082_00a3_00e3_0083_0096_00e3_0082_00bb_00e3_0083_0083_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_86.html#g_t_00e3_0083_00aa_00e3_0082_00b9_00e3_0083_008a_00e3_0083_00bc" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

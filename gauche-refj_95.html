@@ -1,0 +1,834 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.21 gauche.process - 高レベルプロセスインタフェース</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.21 gauche.process - 高レベルプロセスインタフェース">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.21 gauche.process - 高レベルプロセスインタフェース">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_95.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_94.html#g_t_00e9_0083_00a8_00e5_0088_0086_00e7_00b6_0099_00e7_00b6_009a" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Running-subprocess" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002eprocess-_002d-_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9"></a>
+<h2 class="section">9.21 <code>gauche.process</code> - 高レベルプロセスインタフェース</h2>
+
+<dl>
+<dt><a name="index-gauche_002eprocess"></a><u>Module:</u> <b>gauche.process</b></dt>
+<dd><a name="index-gauche_002eprocess-1"></a>
+<p>このモジュールは、<code>sys-fork</code> や <code>sys-exec</code> などの低レベルな
+システムコールの上に実装された、Unix プロセス制御の高レベル API を提供します。
+また、このモジュールは、サブプロセスに情報を送ったり、サブプロセスから
+情報を受け取ったりするのに便利な「プロセスポート」を提供します。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Running-subprocess">9.21.1 Running subprocess</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Process-object">9.21.2 Process object</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Process-ports">9.21.3 Process ports</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Running-subprocess"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Process-object" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Running-subprocess-1"></a>
+<h3 class="subsection">9.21.1 Running subprocess</h3>
+
+<dl>
+<dt><a name="index-run_002dprocess"></a><u>Function:</u> <b>run-process</b><i> cmd/args :key redirects input output error                    fork wait directory host sigmask</i></dt>
+<dd><p>サブプロセスで、<var>cmd/args</var>に与えられたコマンドと引数を実行し、
+<code>&lt;process&gt;</code>オブジェクトを返します。
+<code>&lt;process&gt;</code>オブジェクトについては次節で説明します。
+</p>
+<p><var>cmd/args</var>引数はリストで、その<code>car</code>がコマンド名を、
+<code>cdr</code>がコマンドラインに渡す引数を指定します。
+</p>
+<p>コマンド名がスラッシュを含んでいた場合、それは実行可能ファイルへの
+パス名と解釈されます。そうでなければ、コマンド名が<code>PATH</code>環境変数
+にあるディレクトリから探されます。
+</p>
+<p><var>cmd/args</var>の各要素は、<code>x-&gt;string</code>で文字列に変換されます。
+</p>
+<p>例えば、次の式は<code>ls -al</code>を実行します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-process '(ls -al))
+</pre></td></tr></tbody></table>
+
+<p>上の式をREPLで実行したなら、おそらく戻り値が<code>ls</code>の出力より先に表示されるでしょう。
+デフォルトでは、<code>run-process</code>は子プロセスの
+終了を待たずに、直ちに戻ります。子プロセスの終了を待ちたい場合は<code>wait</code>キーワード
+引数を使います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-process '(ls -al) :wait #t)
+</pre></td></tr></tbody></table>
+
+<p>あるいは戻り値の<code>&lt;process&gt;</code>オブジェクトを保持しておいて、後で
+<code>process-wait</code>を呼ぶことによって子プロセスの終了を待つこともできます。
+<code>process-wait</code>については<a href="#Process-object">Process object</a>で説明します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let1 p (run-process '(ls -al))
+  ... do some other work ...
+  (process-wait p))
+</pre></td></tr></tbody></table>
+
+<p>ところで、<code>-i</code>は虚数として読まれることに注意してください。
+<code>-i</code>を引数として渡したい場合は文字列にするか、<code>|-i|</code>のように
+エスケープしてシンボルにする必要があります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-process '(ls "-i"))
+</pre></td></tr></tbody></table>
+
+<p>注：以前のバージョンのこの手続きは引数の取りかたが若干異なっており、
+例えば<code>(run-process "ls" "-al" :wait #t)</code>のように呼び出しました。
+これはSTkとの互換性によるものです。現在でもこの呼び出しはサポートされていますが、
+非推奨です。
+</p>
+<p>子プロセスの実行を細かく制御するために、<code>run-process</code>はたくさんの
+キーワード引数を取ります。以下でそれらをいくつかのカテゴリに分類して説明します。
+</p></dd></dl>
+
+
+<a name="g_t_00e5_0090_008c_00e6_009c_009f"></a>
+<h4 class="subsubheading">同期</h4>
+
+<dl>
+<dt><a name="index-wait"></a><u>run-process argument:</u> <b>wait</b><i> <var>flag</var></i></dt>
+<dd><p><var>flag</var> が真の場合、<code>run-process</code> はサブプロセスが終了するまで待ちます。
+そうでなければ、サブプロセスは非同期に実行され、<code>run-process</code> は
+すぐに返ります。これがデフォルトの振る舞いになります。
+</p>
+<p>サブプロセスが非同期に実行している場合、その終了ステータスを回収するために
+適切なタイミングで <code>process-wait</code> を呼ぶことは、呼び出し側の責任であることに
+注意してください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; This returns after wget terminates.
+(define p (run-process '(wget http://practical-scheme.net/) :wait #t))
+
+;; Check the exit status
+(let1 st (process-exit-status p)
+  (cond [(sys-wait-exited? st)
+         (print "wget exitted with status " (sys-wait-exit-status st))]
+        [(sys-wait-signaled? st)
+         (print "wget interrupted by signal " (sys-wait-termsig st))]
+        [else
+         (print "wget terminated with unknown status " st)]))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-fork"></a><u>run-process argument:</u> <b>fork</b><i> <var>flag</var></i></dt>
+<dd><p><var>flag</var> が真の場合、<code>run-process</code> はサブプロセスを実行するために
+フォークします。これはデフォルトの振る舞いです。<var>flag</var> が偽の場合、
+<code>run-process</code> は直接 <code>sys-exec</code> を呼ぶので、それは返りません。
+</p></dd></dl>
+
+<a name="I_002fO_00e3_0083_00aa_00e3_0083_0080_00e3_0082_00a4_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088"></a>
+<h4 class="subsubheading">I/Oリダイレクト</h4>
+
+<dl>
+<dt><a name="index-redirects"></a><u>run-process argument:</u> <b>redirects</b><i> (<var>iospec</var> …)</i></dt>
+<dd><p>子プロセスのI/Oをどのようにリダイレクトするかを指定します。
+各<var>iospec</var>は次の形式のいずれかです。ここで<var>fd</var>, <var>fd0</var>および<var>fd1</var>は
+<em>子プロセスにおける</em>ファイルディスクリプタを指定する非負の整数です。
+</p>
+<dl compact="compact">
+<dt> <code>(&lt; <var>fd</var> <var>source</var>)</code></dt>
+<dd><p><var>source</var>は文字列、シンボル、キーワード<code>:null</code>、整数、入力ポートのいずれかです。
+</p>
+<p>文字列の場合、それはファイル名を指定します。そのファイルが読み込み用にオープンされ、
+子プロセスはfdからその内容を読み込みます。指定されたファイルが存在しないか
+読み込み用にオープンできなければエラーが報告されます。
+</p>
+<p>シンボルの場合、一方向のパイプが作られ、その読み出し側の端が子プロセスのfdへと
+接続されます。書き込み側の端は
+<code>(process-input <var>process</var> <var>source</var>)</code>
+を呼び出すことで入手できます。
+</p>
+<p><code>:null</code>の場合、<var>fd</var>はシステムのヌルデバイスからの
+読み込みになります。
+</p>
+<p>整数の場合は、現プロセスの読み込み用ファイルディスクリプタを指定します。
+そのファイルディスクリプタの読み込み元が<code>dup</code>されて、子プロセスからは<var>fd</var>として
+見えます。
+</p>
+<p>入力ポートの場合は、入力元のファイルディスクリプタが<code>dup</code>されて
+子プロセスの<var>fd</var>になります。ファイルディスクリプタを持たないポートを渡した
+場合はエラーになります(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>の<code>port-file-number</code>参照)。
+</p>
+</dd>
+<dt> <code>(&lt;&lt; <var>fd</var> <var>value</var>)</code></dt>
+<dt> <code>(&lt;&lt;&lt; <var>fd</var> <var>obj</var>)</code></dt>
+<dd><p><var>value</var>または<var>obj</var>を子プロセスの入力ファイルディスクリプタ<var>fd</var>への
+入力とします。
+</p>
+<p><code>&lt;&lt;</code>を使う場合、<var>value</var>は文字列かユニフォームベクタ
+(See section <a indepth="true" href="gauche-refj_105.html#g_t_00e3_0083_00a6_00e3_0083_008b_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf"><code>gauche.uvector</code> - ユニフォームベクタ</a>)でなければなりません。その内容がそのまま
+子プロセスの入力へと送られます。ユニフォームベクタはバイナリデータを渡すのに便利です。
+</p>
+<p><code>&lt;&lt;&lt;</code>を使う場合、<var>obj</var>には任意のSchemeオブジェクトを渡せます。
+<code>(write-to-string obj)</code>の結果の文字列が子プロセスの入力へと送られます。
+</p>
+</dd>
+<dt> <code>(&lt;&amp; <var>fd0</var> <var>fd1</var>)</code></dt>
+<dd><p>子プロセスのファイルディスクリプタ<var>fd0</var>が、
+同じく子プロセスのファイルディスクリプタ<var>fd1</var>が指しているものと
+同じ入力を参照するようにします。
+<var>&lt;</var>との違いに注意してください。<code>(&lt; 3 0)</code>とすると、
+現プロセスのstdin (ファイルディスクリプタ0) が子プロセスからはファイルディスクリプタ3
+として見えるようになります。<code>(&lt;&amp; 3 0)</code>とすると、子プロセスのファイルディスクリプタ3
+は子プロセスのstdinと同じものを見るようになります (それは他の<var>iospec</var>によって
+ファイル等にリダイレクトされているかもしれません)。
+</p>
+<p><code>&lt;&amp;</code>の処理の順番について、下の方にある註も参照してください。
+</p>
+</dd>
+<dt> <code>(&gt; <var>fd</var> <var>sink</var>)</code></dt>
+<dt> <code>(&gt;&gt; <var>fd</var> <var>sink</var>)</code></dt>
+<dd><p><var>sink</var>は文字列、シンボル、キーワード<code>:null</code>、整数、あるいは
+ファイル出力ポートでなければなりません。
+</p>
+<p>文字列の場合、それはファイル名です。指定されたファイルが書き込み用にオープンされ、
+子プロセスのファイルディスクリプタ<var>fd</var>からそこに書き込むことができます。
+指定のファイルが既に存在している場合、<code>&gt;</code>はファイルをまず空にするのに対し、
+<code>&gt;&gt;</code>はファイルの後に追加します。
+<code>&gt;</code>と<code>&gt;&gt;</code>の違いが出るのは<var>sink</var>がファイルの場合のみです。
+</p>
+<p><var>sink</var>が<code>:null</code>なら、<var>fd</var>はシステムのヌルデバイスへの
+書き出しになります。
+</p>
+<p>整数の場合、それは現プロセスの書き込み用ファイルディスクリプタを
+指定します。それが<code>dup</code>されて子プロセスの<var>fd</var>となります。
+</p>
+<p>出力ポートの場合は、出力先のファイルディスクリプタが<code>dup</code>されて
+子プロセスの<var>fd</var>になります。ファイルディスクリプタを持たないポートを渡した
+場合はエラーになります(<a indepth="true" href="gauche-refj_60.html#g_t_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e6_0093_008d_00e4_00bd_009c">ポート共通の操作</a>の<code>port-file-number</code>参照)。
+</p>
+</dd>
+<dt> <code>(&gt;&amp; <var>fd0</var> <var>fd1</var>)</code></dt>
+<dd><p>子プロセスのファイルディスクリプタ<var>fd0</var>が、子プロセスのファイルディスクリプタ<var>fd1</var>
+が参照するのと同じ出力先を参照するようにします。
+<var>&gt;</var>との違いに注意: <code>(&gt; 2 1)</code>は子プロセスのstderrが現プロセスのstdout
+と同じところに送られるようにするのに対し、<code>(&gt;&amp; 2 1)</code>は子プロセスのstderr
+が子プロセスのstdoutに送られます (それは別の<var>iospec</var>によってリダイレクト
+されているかもしれません)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; 子プロセスのstdoutとstderrを一緒にして読み込む
+(let1 p (run-process '(command arg)
+                     :redirects '((&gt;&amp; 2 1) (&gt; 1 out)))
+  (begin0 (port-&gt;string (process-output p 'out))
+          (process-wait p)))
+</pre></td></tr></tbody></table>
+
+</dd>
+</dl>
+
+<p>註: I/Oリダイレクト指定は、unixのシェルと違って、
+全て<em>同時に</em>処理されます。つまり、以下の式はどちらも同じように、
+stdoutとstderrをファイル‘<tt>out</tt>’に書き出す処理となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-process '(command arg) :redirects '((&gt;&amp; 2 1) (&gt; 1 "out")))
+(run-process '(command arg) :redirects '((&gt; 1 "out") (&gt;&amp; 2 1)))
+</pre></td></tr></tbody></table>
+
+<p>unixのシェルではリダイレクト指定は<em>順に</em>処理されるので、
+次の二つのコマンドラインは異なる動作となります。最初の例では
+子プロセスのstderrが<em>現時点での</em>stdout (それは現プロセスのstdoutでもある)
+へと向けられ、次に子プロセスのstdoutがファイル‘<tt>out</tt>’に向けられます。
+従ってエラーメッセージは現プロセスのstdoutへと現れます。二番目の例では
+最初に子プロセスのstdoutがファイル‘<tt>out</tt>’へ向けられるので、
+<code>2&gt;&amp;1</code>が処理される時にはstderrの行き先はやはり‘<tt>out</tt>’となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">$ command arg 2&gt;&amp;1 1&gt;out
+$ command arg 1&gt;out 2&gt;&amp;1
+</pre></td></tr></tbody></table>
+
+<p><code>run-process</code>は<var>redirects</var>引数の順番にかかわらず
+常に後者のように動作すると言ってもよいでしょう。
+</p>
+<p>もし前者の例のように子プロセスのstderrだけを親プロセスのstdoutに
+向けたいのであれば、次のように<code>&gt;</code>を使うことで実現できます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-process '(command arg) :redirects '((&gt; 2 1) (&gt; 1 "out")))
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-input"></a><u>run-process argument:</u> <b>input</b><i> <var>source</var></i></dt>
+<dt><a name="index-output"></a><u>run-process argument:</u> <b>output</b><i> <var>sink</var></i></dt>
+<dt><a name="index-error-3"></a><u>run-process argument:</u> <b>error</b><i> <var>sink</var></i></dt>
+<dd><p>サブプロセスの標準入出力を制御します。
+<var>source</var>及び<var>sink</var>は、文字列、キーワード <code>:pipe</code>、
+キーワード<code>:null</code>、整数のファイルディスクリプタ、もしくはシンボルです。
+</p>
+<p>実のところ、これらは<var>redirects</var>引数の略記にすぎません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">:input x   ≡ :redirects '((&lt; 0 x))
+:output x  ≡ :redirects '((&gt; 1 x))
+:error x   ≡ :redirects '((&gt; 2 x))
+</pre></td></tr></tbody></table>
+
+<p>キーワード<code>:pipe</code>は互換性のためだけにサポートされています。
+それぞれ、シンボル<code>stdin</code>、<code>stdout</code>、<code>stderr</code>が
+指定されたかのように振る舞います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">:input :pipe   ≡ :redirects '((&lt; 0 stdin))
+:output :pipe  ≡ :redirects '((&gt; 1 stdout))
+:error :pipe   ≡ :redirects '((&gt; 2 stderr))
+</pre></td></tr></tbody></table>
+
+<p>すなわち、パイプが作成され、その一方が子プロセスの標準入出力のいずれかに接続されます。
+もう一方の端は<code>(process-input <var>process</var>)</code>、
+<code>(process-output <var>process</var>)</code>および
+<code>(process-error <var>process</var>)</code>によって得ることができます。
+(<code>process-input</code>, <code>process-output</code>は<var>name</var>引数が
+省略されるとそれぞれ<code>stdin</code>, <code>stdout</code>をデフォルトとし、
+また<code>(process-error p)</code>は<code>(process-output p 'stderr)</code>と
+等価だからです)
+</p>
+<p>引数の意味の詳しい説明については上の<var>redirects</var>の項を参照してください。
+</p></dd></dl>
+
+
+<a name="g_t_00e5_00ae_009f_00e8_00a1_008c_00e7_0092_00b0_00e5_00a2_0083"></a>
+<h4 class="subsubheading">実行環境</h4>
+
+<dl>
+<dt><a name="index-directory"></a><u>run-process argument:</u> <b>directory</b><i> <var>directory</var></i></dt>
+<dd><p><var>directory</var>に文字列が与えられた場合、
+そのディレクトリが起動されるプロセスのワーキングディレクトリとなります。
+<code>#f</code>が与えられた場合はの引数は何もしません。
+文字列か<code>#f</code>以外が与えられた場合、もしくは文字列が存在するディレクトリの
+名前でない場合はエラーが報告されます。
+</p>
+<p><var>host</var>キーワード引数も与えられている場合、この引数は
+リモートプロセスのワーキングディレクトリを指定します。
+</p>
+<p>註: <code>run-process</code>は<var>directory</var>が有効な値であることを事前に
+チェックしますが、実際の<code>chdir(2)</code>は<code>exec(2)</code>の直前に
+行われます。事前のチェックにもかかわらず<code>chdir</code>が失敗する可能性が
+あります。その時点では<code>run-process</code>の呼び出し元にエラーを伝える
+確実な方法が無いため、Gaucheは標準エラー出力にメッセージを印字して
+exitします。頑健なプログラムを書く場合、そのようなケースにも留意して下さい。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-sigmask"></a><u>run-process argument:</u> <b>sigmask</b><i> <var>mask</var></i></dt>
+<dd><p><var>mask</var>は<code>&lt;sys-sigset&gt;</code>のインスタンス、整数のリスト、
+あるいは<code>#f</code>でなければなりません。
+<code>&lt;sys-sigset&gt;</code>のインスタンスである場合、それが実行する
+プロセスのシグナルマスクになります。整数のリストの場合は各整数が
+マスクすべきシグナル番号とみなされます。マルチスレッドアプリケーションで
+<code>run-process</code>を使う場合はシグナルマスクを適切に設定することが重要です。
+<code>sys-exec</code>の説明を参照して下さい (<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>)。
+</p>
+<p><var>host</var>キーワード引数が与えられている場合は、この引数は
+ローカル側のプロセス(<code>ssh</code>)のみのシグナルマスクをセットします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-detached"></a><u>run-process argument:</u> <b>detached</b><i> <var>flag</var></i></dt>
+<dd><p>真の値が渡されると、作られるプロセスは親プロセスのプロセスグループから
+切り離され、独自のプロセスグループを作ります。
+デーモンプロセスを作る際に便利です。<var>detached</var>引数の詳しい動作については、
+<code>sys-fork-and-exec</code> を見てください (<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照)。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-host"></a><u>run-process argument:</u> <b>host</b><i> <var>hostspec</var></i></dt>
+<dd><p>この引数は、<var>command</var>をリモートホストで実行させるのに使います。
+<var>hostspec</var>の完全な構文は<code>protocol:user@hostname:port</code>で、
+<var>protocol:</var>、<code>user@</code>、<code>:port</code>の部分は省略可能です。
+</p>
+<p><var>protocol</var>はリモートに接続するプロトコルを指定します。現在のところ
+<code>ssh</code>だけがサポートされており、また省略された場合も<code>ssh</code>が
+使われます。<var>user</var>はリモートでのユーザ名を、<var>hostname</var>は
+リモートホスト名を指定します。<var>port</var>は<var>protocol</var>のデフォルト
+以外のポートを使いたい場合に指定します。
+</p>
+<p>コマンドライン引数はリモートホスト上で解釈されます。
+一方、I/Oリダイレクトはローカル側で処理されす。
+例えば、次のコードはリモートマシンの‘<tt>/foo/bar</tt>’の内容を読み、
+それをローカルのワーキングディレクトリ内のファイル‘<tt>baz</tt>’へとコピーします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(run-process '(cat "bar")
+             :host "remote-host.example.com"
+             :directory "/foo"
+             :output "baz")
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<hr size="6">
+<a name="Process-object"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Running-subprocess" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Process-ports" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Process-object-1"></a>
+<h3 class="subsection">9.21.2 Process object</h3>
+
+<dl>
+<dt><a name="index-_003cprocess_003e"></a><u>Class:</u> <b>&lt;process&gt;</b></dt>
+<dd><a name="index-process"></a>
+<p>子プロセスの状態を保持するためのオブジェクト。以下で説明される
+<code>run-process</code> 手続きにより、プロセスを作ることができます。
+次章で説明するプロセスポートもプロセスオブジェクトを用いています。
+</p>
+<p><code>&lt;process&gt;</code>クラスは、<code>run-process</code>や<code>open-input-process</code>
+といった高レベルAPIで作られた子プロセスの状態を管理しています。
+それらの子プロセスの終了ステータスをとるには、
+<code>process-wait</code>や<code>process-wait-any</code>といった
+高レベルAPIを利用してください。これらの手続きはシステムコール以外の情報管理も
+行います。<code>sys-wait</code>や<code>sys-waitpid</code>といった低レベルAPIで
+直接子プロセスの終了ステータスを取ると、<code>&lt;process&gt;</code>クラスの
+内部状態に矛盾が生じます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cprocess_002dabnormal_002dexit_003e"></a><u>Class:</u> <b>&lt;process-abnormal-exit&gt;</b></dt>
+<dd><a name="index-process_002dabnormal_002dexit"></a>
+<p>主にプロセスポートユーティリティ関数で使われるコンディション型。
+<code>&lt;error&gt;</code>を継承。このコンディション型は高レベルプロセスポートユーティ
+リティが子プロセスが非ゼロのexitステータスで終了したことを検知したとき
+に投げられます。
+</p>
+<dl>
+<dt><a name="index-process-1"></a><u>Instance Variable of &lt;process-abnormal-exit&gt;:</u> <b>process</b></dt>
+<dd><p>プロセスオブジェクト。
+</p></dd></dl>
+
+<p>注: Unix用語では，exitステータスにかかわらず，プロセスがcalling
+<code>exit(2)</code>を呼ぶか，<code>main()</code>から帰った場合を「正常な終了」と
+しています。コマンドによっては非ゼロのexitステータスで何らかの正常な実行結果を
+示すものもあります(<code>grep(1)</code>など)。しかし，ほとんどのコマ
+ンドでは，非ゼロの exit ステータスは要求された操作が実行できなかったこ
+とを表わします。それゆえ上のような場合を例外的な場合として扱います。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-process_003f"></a><u>Function:</u> <b>process?</b><i> obj</i></dt>
+<dd><p>≡ <code>(is-a? <var>obj</var> &lt;process&gt;)</code>
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dpid"></a><u>Method:</u> <b>process-pid</b><i> (process &lt;process&gt;)</i></dt>
+<dd><p>サブプロセス <var>process</var> のプロセスIDを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dcommand"></a><u>Method:</u> <b>process-command</b><i> (process &lt;process&gt;)</i></dt>
+<dd><p>サブプロセス <var>process</var> 内で起動されたコマンドを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dinput"></a><u>Method:</u> <b>process-input</b><i> (process &lt;process&gt;) :optional name</i></dt>
+<dt><a name="index-process_002doutput"></a><u>Method:</u> <b>process-output</b><i> (process &lt;process&gt;) :optional name</i></dt>
+<dd><p>プロセスの入力もしくは出力に一方の端がつながれたパイプの、もう一方の端を取り出します。
+<var>name</var>は<code>run-process</code>の<var>redirects</var>引数に与えた
+識別用の名前です。次の例を見てください。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let1 p (run-process '(command arg)
+                     :redirects '((&lt; 3 aux-in)
+                                  (&gt; 4 aux-out)))
+  (let ([auxin  (process-input p 'aux-in)]
+        [auxout (process-output p 'aux-out)])
+    ;; feed something to the child's input
+    (display 'something auxin)
+    ;; read data from the child's output
+    (read-line auxout)
+    …
+    )
+  (process-wait p))
+</pre></td></tr></tbody></table>
+
+<p>シンボル<code>aux-in</code>と<code>aux-out</code>がパイプを識別するのに
+使われています。<code>process-input</code>が返すのは<em>出力</em>ポートであり、
+<code>process-output</code>が返すのは<em>入力</em>ポートであることに注意してください。
+</p>
+<p><var>name</var>が省略された場合、<code>process-input</code>は<code>stdin</code>を、
+<code>process-output</code>は<code>stdout</code>を使います。これらは
+子プロセスの標準入力/出力をそれぞれ<code>:input :pipe</code>/<code>:output :pipe</code>で
+リダイレクトした場合に使われる名前です。
+</p>
+<p>名前に対応するパイプが無い場合は<code>#f</code>が返ります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let* ((process (run-process '("date") :output :pipe))
+       (line (read-line (process-output process))))
+  (process-wait process)
+  line)
+ ⇒ "Fri Jun 22 22:22:22 HST 2001"
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-process_002derror"></a><u>Method:</u> <b>process-error</b><i> (process &lt;process&gt;)</i></dt>
+<dd><p>これは<code>(process-output <var>process</var> 'stderr)</code>と等価です。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-process_002dalive_003f"></a><u>Function:</u> <b>process-alive?</b><i> process</i></dt>
+<dd><p><var>process</var> が生きている場合は真を返します。<code>process-wait</code> によって
+明示的にチェックされない限り、Gauche はサブプロセスのステータスを知ることが
+できないことに注意してください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dlist"></a><u>Function:</u> <b>process-list</b></dt>
+<dd><p>アクティブなプロセスのリストを返します。プロセスは、その終了ステータスが
+<code>process-wait</code> によって明示的に回収されない場合は、アクティブなまま
+残ります。
+ひとたび終了ステータスが回収され、プロセスの状態がインアクティブに
+変更されると、そのプロセスは<code>process-list</code>が返すリストからは除かれます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dwait"></a><u>Function:</u> <b>process-wait</b><i> process :optional nohang error-on-nonzero-status</i></dt>
+<dd><p>サブプロセス <var>process</var> の終了ステータスを取得し、<var>process</var>
+のstatusスロットに値を格納します。statusスロットの値は
+<code>process-exit-status</code>で得ることができます。
+</p>
+<p>デフォルトでは、この手続きは<var>process</var> が終了するまで実行を一時停止します。
+しかし、<var>nohang</var>に真の値が与えられた場合は、<var>process</var>が終了して
+いない場合にも直ちに返ります。
+</p>
+<p>オプショナル引数<var>error-on-nonzero-status</var>に真の値が与えられた場合、
+この手続きは得られた終了ステータスが0で無い場合に
+<code>&lt;process-abnormal-exit&gt;</code>エラーを投げます。
+</p>
+<p>この呼び出しによって<var>process</var>の終了ステータスが実際に取得された場合は
+<code>#t</code>を、そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dwait_002dany"></a><u>Function:</u> <b>process-wait-any</b><i> :optional nohang</i></dt>
+<dd><p><code>run-process</code>で作られたサブプロセスのどれかの終了ステータスを取得します。
+終了ステータスが取得できたプロセスのプロセスオブジェクトを返します。
+</p>
+<p>真の値が<var>nohang</var>に与えられた場合は、どの子プロセスも終了していない場合は
+直ちに<code>#f</code>を返します。そうでなければ、この手続きはいずれかの子プロセスが
+終了するまで待ちます。
+</p>
+<p>子プロセスが存在しない場合は、この手続きは直ちに<code>#f</code>を返します。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-process_002dexit_002dstatus"></a><u>Function:</u> <b>process-exit-status</b><i> process</i></dt>
+<dd><p><code>process-wait</code>によって取得された<var>process</var>の終了ステータスを
+返します。<var>process</var>に対して<code>process-wait</code>を呼ぶ前にこの手続きを
+呼んだ場合の結果は未定義です。
+</p>
+<p>終了ステータスの解釈はプラットフォームに依存します。プロセスが自発的に
+(<code>exit</code>を呼んで)終了したか、それともシグナルによって終了させられたかを
+確かめるには<code>sys-wait-exited?</code>か<code>sys-wait-signaled?</code>を
+使ってください。また、終了コードもしくは終了と原因となったシグナルを
+知るには<code>sys-wait-exit-status</code>を<code>sys-wait-termsig</code>
+使ってください (<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e7_00ae_00a1_00e7_0090_0086">プロセス管理</a>参照)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dsend_002dsignal"></a><u>Function:</u> <b>process-send-signal</b><i> process signal</i></dt>
+<dd><p>サブプロセス <var>process</var> にシグナル <var>signal</var> を送ります。
+<var>signal</var> は正確整数のシグナルナンバーでなければなりません。
+シグナルの定義済み変数については、<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab">シグナル</a>を参照して下さい。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002dkill"></a><u>Function:</u> <b>process-kill</b><i> process</i></dt>
+<dt><a name="index-process_002dstop"></a><u>Function:</u> <b>process-stop</b><i> process</i></dt>
+<dt><a name="index-process_002dcontinue"></a><u>Function:</u> <b>process-continue</b><i> process</i></dt>
+<dd><p>それぞれ、<var>process</var> に、SIGKILL、SIGSTOP、SIGCONT を送ります。
+</p></dd></dl>
+
+<hr size="6">
+<a name="Process-ports"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Process-object" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Process-ports-1"></a>
+<h3 class="subsection">9.21.3 Process ports</h3>
+
+<dl>
+<dt><a name="index-open_002dinput_002dprocess_002dport"></a><u>Function:</u> <b>open-input-process-port</b><i> command :key input error encoding conversion-buffer-size</i></dt>
+<dd><p><var>command</var> を子プロセスで非同期に実行します。
+走らせた子プロセスの標準出力につながれた入力ポートと、
+プロセスオブジェクトの二つの値を返します。
+</p>
+<p><var>command</var>は文字列かリストです。
+</p>
+<p>文字列の場合、それは<code>/bin/sh</code>に渡されます。
+環境変数の置換やグロブパターン、リダイレクトなどのシェルの機能が
+文字列中で使えます。
+文字列をつなぎ合わせてコマンドラインを作成する場合、
+特殊文字をシェルに解釈してほしくなければ、それを正しくエスケープするのは
+呼び出し元の責任です。下で説明する<code>shell-escape-string</code>は
+助けになるかもしれません。
+</p>
+<p><var>command</var>がリストの場合は、各要素が<code>x-&gt;string</code>で文字列に
+変換された後に、<code>sys-exec</code>を使って直接コマンドを起動します
+(リストの<code>car</code>がコマンドのパス名と<code>argv[0]</code>の両方に使われます)。
+シェルの介入を避けたい場合はこの形式を使うと良いでしょう。
+特殊文字をエスケープする必要はありません。
+</p>
+<p>デフォルトでは、子プロセスの標準入力は<code>/dev/null</code>にリダイレクトされ、
+標準エラー出力は呼び出したプロセスと共有されます。
+<var>input</var>と<var>error</var>キーワード引数にパス名を与えることで、
+これらの出力をリダイレクトすることができます。
+</p>
+<p>また、プロセスの出力の文字エンコーディングを指定するために
+<var>encoding</var>キーワード引数を与えることもできます。
+それがGaucheの内部エンコーディングと異なっていた場合、
+<code>open-input-process-port</code>は文字コード変換ポートを挿入します。
+<var>encoding</var>が与えられた場合、<var>conversion-buffer-size</var>キーワード引数で
+変換バッファの大きさを指定することも可能です。文字コード変換の詳細については
+<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>を参照して下さい。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(receive (port process) (open-input-process-port "ls -l Makefile")
+  (begin0 (read-line port)
+          (process-wait process)))
+ ⇒ "-rw-r--r--   1 shiro    users        1013 Jun 22 21:09 Makefile"
+
+(receive (port process) (open-input-process-port '(ls -l "Makefile"))
+  (begin0 (read-line port)
+          (process-wait process)))
+ ⇒ "-rw-r--r--   1 shiro    users        1013 Jun 22 21:09 Makefile"
+
+(open-input-process-port "command 2&gt;&amp;1")
+ ⇒ ;<span class="roman">the port reads both stdout and stderr</span>
+
+(open-input-process-port "command 2&gt;&amp;1 1&gt;/dev/null")
+ ⇒ ;<span class="roman">the port reads stderr</span>
+</pre></td></tr></tbody></table>
+<p>サブプロセスの終了ステータスは自動的に回収されません。
+<code>process-wait</code> を呼ぶことは呼び出し側の責任であり、これを怠ると
+サブプロセスはゾンビプロセスになります。それが面倒であれば、以下の
+手続きを使うことができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dinput_002dprocess"></a><u>Function:</u> <b>call-with-input-process</b><i> command proc :key input error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dd><p>子プロセスで<var>command</var> を実行し、その標準出力と入力ポートを
+パイプで繋ぎ、そのポートを引数として <var>proc</var> を呼び出します。
+<var>proc</var> が返るとその終了ステータスを回収し、<var>proc</var> が返した
+結果を返します。<var>proc</var> がエラーを通知しても、クリーンアップは
+行われます。
+</p>
+<p>キーワード引数<var>on-abnormal-exit</var>は子プロセスが0以外の終了ステータス
+を返した場合の振舞いを指定します。その値は<code>:error</code>(デフォルト)、
+<code>:ignore</code>、もしくは一引数の手続きでなければなりません。
+値が<code>:error</code>の場合、0以外の終了ステータスは
+<code>&lt;process-abnormal-exit&gt;</code>エラーコンディションを発生させます。
+コンディションオブジェクトの<code>process</code>スロットには子プロセスオブジェクトが
+保持されます。値が<code>:ignore</code>の場合、0以外の終了ステータスに対して
+特別なアクションは取られません。値が手続きの場合、0以外の終了ステータスに対して
+子プロセスオブジェクトを引数にしてその手続きが呼ばれます。その手続きが
+戻れば、<code>call-with-input-process</code>は正常動作と同じように戻ります。
+</p>
+<p><var>command</var>および他のキーワード引数の意味は<code>open-input-process-port</code>と
+同じです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-input-process "ls -l *"
+  (lambda (p) (read-line p)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-with_002dinput_002dfrom_002dprocess"></a><u>Function:</u> <b>with-input-from-process</b><i> command thunk :key input error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dd><p>子プロセスで <var>command</var> を実行し、コマンドの標準出力に
+接続された現在の入力ポートとともに <var>thunk</var> を呼び出します。
+<var>thunk</var>が終了するかエラーを投げた後に、コマンドの終了ステータスが
+回収されます。
+</p>
+<p><var>command</var>およびキーワード引数の意味は<code>call-with-input-process</code>と
+同じです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-input-from-process "ls -l *" read-line)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-open_002doutput_002dprocess_002dport"></a><u>Function:</u> <b>open-output-process-port</b><i> command :key output error encoding conversion-buffer-size</i></dt>
+<dd><p>子プロセスで <code>command</code> を非同期に実行します。
+子プロセスの標準入力に接続された出力ポートと、
+プロセスオブジェクトの二つの値を返します。
+</p>
+<p><var>command</var>引数、および<var>encoding</var>と<var>conversion-buffer-size</var>の
+意味は、<code>open-input-process-port</code>と同じです。
+</p>
+<p>デフォルトでは、子プロセスの標準出力は<code>/dev/null</code>にリダイレクトされ、
+標準エラー出力は呼び出したプロセスと共有されます。
+<var>output</var>と<var>error</var>キーワード引数にパス名を与えることで、
+これらの出力をリダイレクトすることができます。
+</p>
+<p>サブプロセスの終了ステータスは自動的には回収されません。
+適切なタイミングで、サブプロセスに対して <code>process-wait</code> を呼ぶ
+必要があります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002doutput_002dprocess"></a><u>Function:</u> <b>call-with-output-process</b><i> command proc :key output error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dd><p><code>command</code> を子プロセスで実行し、コマンドの標準入力に
+接続された出力ポートとともに <var>proc</var> を呼び出します。
+コマンドの終了ステータスは、<var>proc</var> が返るかエラーを通知した
+後に回収されます。
+</p>
+<p>キーワード引数の意味は<var>open-output-process-port</var>と同じです。
+ただし<var>on-abnormal-exit</var>については<code>call-with-input-process</code>
+で説明したのと同じ意味です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-output-process "/usr/sbin/sendmail"
+  (lambda (out) (display mail-body out)))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-with_002doutput_002dto_002dprocess"></a><u>Function:</u> <b>with-output-to-process</b><i> command thunk :key output error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dd><p>コマンドの標準入力に接続された出力ポートが、<var>thunk</var> の実行中は
+現在の出力ポートにセットされることを除いて、<code>call-with-output-process</code>
+と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-call_002dwith_002dprocess_002dio"></a><u>Function:</u> <b>call-with-process-io</b><i> command proc :key error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dd><p><var>command</var> をサブプロセスで実行し、<var>proc</var> を2つの引数と
+ともに呼び出します。最初の引数は入力ポートで、コマンドの標準出力に
+接続されたものです。2番目の引数は出力ポートでコマンドの標準入力に
+接続されたものです。コマンドからのエラー出力は、<var>error</var>キーワード
+引数でパス名が指定されない限り、呼び出したプロセスのエラー出力が共有されます。
+</p>
+<p>コマンドの終了ステータスは、<var>proc</var>が戻るかエラーを投げた場合に
+回収されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-process_002doutput_002d_003estring"></a><u>Function:</u> <b>process-output-&gt;string</b><i> command :key error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dt><a name="index-process_002doutput_002d_003estring_002dlist"></a><u>Function:</u> <b>process-output-&gt;string-list</b><i> command :key error encoding conversion-buffer-size on-abnormal-exit</i></dt>
+<dd><p><var>command</var> を実行し、その(標準出力への)出力を回収して返します。
+<code>process-output-&gt;string</code> は <var>command</var> からの全ての出力を連結し
+1つの文字列とします。その際、空白文字からなるシーケンスは1つの空白に
+置換されます。このアクションは、シェルスクリプトにおける「コマンド置換」
+に似たものです。
+<code>process-output-&gt;string-list</code> は <var>command</var> からの出力を行ごとに
+回収し、それらをリストにしたものを返します。改行文字は削除されます。
+</p>
+<p>内部的には、<var>command</var> は <code>call-with-input-process</code> により
+実行されます。キーワード引数は<code>call-with-input-process</code>に
+そのまま渡されます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(process-output-&gt;string '(uname -smp))
+  ⇒ "Linux i686 unknown"
+
+(process-output-&gt;string '(ls))
+  ⇒ "a.out foo.c foo.c~ foo.o"
+
+(process-output-&gt;string-list '(ls))
+  ⇒ ("a.out" "foo.c" "foo.c~" "foo.o")
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-shell_002descape_002dstring"></a><u>Function:</u> <b>shell-escape-string</b><i> arg</i></dt>
+<dd><p><var>arg</var>がシェルのコマンドライン引数解析に影響を与える文字を含んでいる場合、
+それらがシェルによって解釈されないようにエスケープされた文字列を返します。
+そうでなければ<var>arg</var>自体を返します。
+</p>
+<p>自分でコマンドライン文字列を組み立てる必要がある場合に使ってください。
+(単一のコマンドライン文字列でなく、コマンドライン引数のリストを渡す場合は
+エスケープの必要はありません。引数はシェルを通さずに子プロセスに渡される
+からです。)
+</p>
+<p>Windowsネイティブビルドの場合、この手続きはWindowsの標準Cランタイムの
+引数解析に合わせてあります。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Process-object" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00bb_00e3_0082_00b9_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00bf_00e3_0083_0095_00e3_0082_00a7_00e3_0083_00bc_00e3_0082_00b9" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

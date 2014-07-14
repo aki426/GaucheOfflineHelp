@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.26 gauche.syslog - Syslog</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.26 gauche.syslog - Syslog">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.26 gauche.syslog - Syslog">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Syslog"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_0092_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_101.html#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002esyslog-_002d-Syslog"></a>
+<h2 class="section">9.26 <code>gauche.syslog</code> - Syslog</h2>
+
+<dl>
+<dt><a name="index-gauche_002esyslog"></a><u>Module:</u> <b>gauche.syslog</b></dt>
+<dd><a name="index-gauche_002esyslog-1"></a>
+<p>このモジュールは syslog(3) のシステムロガーのインタフェースを提供します。
+</p>
+<p>一般的なアプリケーションについては、<code>gauche.logger</code> モジュールの
+ほうが使いやすいでしょう(<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0"><code>gauche.logger</code> - ユーザレベルのロギング</a>参照)。
+このモジュールは syslog の API に直接アクセスする必要のある人向きです。
+</p>
+<p>手続き群は基盤になっているシステムで syslog がサポートされている場合に
+のみ定義されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dopenlog"></a><u>Function:</u> <b>sys-openlog</b><i> ident option facility</i></dt>
+<dd><p>[POSIX]
+システムロガーへのコネクションをオープンします。文字列の引数 <var>ident</var>
+はログの接頭辞に使われます。通常はプログラムを名前にします。<var>option</var>
+は整数のフラグで、ログの振舞いを制御します。<var>facility</var> はプログラムの
+タイプを指定する整数です。
+</p>
+<p><var>option</var>のフラグは以下の整数定数の1つまたは複数を <code>logior</code> で
+合成することができます：
+<code>LOG_CONS</code>、<code>LOG_NDELAY</code>、<code>LOG_NOWAIT</code>、
+<code>LOG_ODELAY</code>、<code>LOG_PERROR</code> および <code>LOG_PID</code> です
+(これらの定数のいくつかは基盤となるシステムがサポートしていなければ
+定義されません)。
+</p>
+<p><var>facility</var> 引数は以下の整数定数のどれかひとつです。
+<code>LOG_AUTH</code>、<code>LOG_AUTHPRIV</code>、<code>LOG_CRON</code>,
+<code>LOG_DAEMON</code>、<code>LOG_FTP</code>、<code>LOG_KERN</code>、<code>LOG_LOCAL0</code>、
+から <code>LOG_LOCAL7</code>、<code>LOG_LPR</code>、<code>LOG_MAIL</code>、<code>LOG_NEWS</code>,
+<code>LOG_SYSLOG</code>、<code>LOG_USER</code>、<code>LOG_UUCP</code> までです。
+(これらの定数のいくつかは基盤となるシステムがサポートしていなければ
+定義されません)。
+</p>
+<p>これらの定数の詳しい説明については、システムの openlog(3) の
+マニュアル・ページを見てください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsyslog"></a><u>Function:</u> <b>sys-syslog</b><i> priority message</i></dt>
+<dd><p>[POSIX]
+文字列 <var>message</var> をログに記録します。syslog(3) とは違って、この手続きは
+フォーマットを行いません。フォーマットされた文字列を生成するなら
+<code>format</code> (<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0087_00ba_00e5_008a_009b">出力</a>参照)が使えます。あるいは、より高水準の
+ルーチン <code>log-format</code> (<a indepth="true" href="gauche-refj_87.html#g_t_00e3_0083_00a6_00e3_0083_00bc_00e3_0082_00b6_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_00ad_00e3_0082_00ae_00e3_0083_00b3_00e3_0082_00b0"><code>gauche.logger</code> - ユーザレベルのロギング</a>参照)
+を使うこともできます。
+</p>
+<p>整数の引数 <var>priority</var> は上述の <var>facility</var> 定数のどれかひとつ
+と、以下の<var>level</var>定数と<code>logior</code>して、合成することができます：
+<code>LOG_EMERG</code>、<code>LOG_ALERT</code>、<code>LOG_CRIT</code>、<code>LOG_ERR</code>、
+<code>LOG_WARNING</code>、<code>LOG_NOTICE</code>、<code>LOG_INFO</code>、<code>LOG_DEBUG</code>
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dcloselog"></a><u>Function:</u> <b>sys-closelog</b></dt>
+<dd><p>[POSIX]
+ロギングシステムとのコネクションをクローズします。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dsetlogmask"></a><u>Function:</u> <b>sys-setlogmask</b><i> mask</i></dt>
+<dd><p>[POSIX]
+どの <code>sys-syslog</code>への呼び出しを記録できるかを決める、プロセスのログ
+優先度マスクを設定します。
+優先度マスク<var>mask</var>は<code>sys-syslog</code>の<var>level</var>引数に
+対応するビットマスクを<code>logior</code>することで作成できます。
+レベルに対応するビットマスクは下の<code>sys-logmask</code>から
+取得することができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-sys_002dlogmask"></a><u>Function:</u> <b>sys-logmask</b><i> level</i></dt>
+<dd><p>[POSIX]
+ログレベル <var>level</var> から <code>sys-setlogmask</code> に対する
+ビットマスク整数を返します。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0082_0092_00e5_00ae_009f_00e8_00a3_0085_00e3_0081_0099_00e3_0082_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_101.html#g_t_00e7_00ab_00af_00e6_009c_00ab_00e3_0081_00ae_00e5_0088_00b6_00e5_00be_00a1" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

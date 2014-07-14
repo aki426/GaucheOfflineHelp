@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>2.2 マルチバイト文字列</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 2.2 マルチバイト文字列">
+<meta name="keywords" content="Gauche ユーザリファレンス: 2.2 マルチバイト文字列">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_5.html#g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097-1"></a>
+<h2 class="section">2.2 マルチバイト文字列</h2>
+
+<p>従来、文字列は単なるバイトの配列として扱われてきました。
+そのため一文字が複数バイトを占めるようになっても
+文字列は単純な文字の配列であると考えられがちですが、
+Gaucheにおいては、そうではありません。
+</p>
+<p>Gaucheは内部的に<em>マルチバイト文字列</em>をサポートします。
+すなわち、文字列中の文字が占めるバイト数は一定していません。
+Schemeの文字列プリミティブのセマンティクスは保たれているので、
+詳細を気にしないでもプログラムは書けますが、
+下にあげるいくつかの点を知っておいたほうが良いでしょう。
+</p>
+<p>文字列オブジェクトは型タグと文字列本体へのポインタを保持しています。
+文字列本体は「copy-on-write」方式で管理されます。すなわち、<code>substring</code>
+や正規表現を使って部分文字列を切り出したり、あるいは単に文字列をコピーした場合、
+文字列オブジェクトそのものは別につくられますが、文字列本体は共有されます。
+文字列が破壊的に変更される場合にのみ、文字列本体がコピーされます。
+</p>
+<p>したがって、<code>make-string</code>である大きさの文字列をあらかじめアロケート
+しておき、<code>string-set!</code>で順に埋めて行くようなアルゴリズムは
+Gaucheでは非常に効率が悪くなります。そのようなアルゴリズムは使わない方が良いでしょう。
+(そのようなアルゴリズムはマルチバイト文字列とも相性が良くありません)。
+文字列を順に埋めて行く場合は<em>string ports</em>を使うのが
+効率の良い方法です (<a indepth="true" href="gauche-refj_60.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088">文字列ポート</a>参照)。
+</p>
+<p><code>string-scan</code> (<a indepth="true" href="gauche-refj_50.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0082_0092_00e6_0089_00b1_00e3_0081_0086_00e3_0081_009d_00e3_0081_00ae_00e4_00bb_0096_00e3_0081_00ae_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">文字列を扱うその他の手続き</a>参照) や正規表現
+(<a indepth="true" href="gauche-refj_51.html#g_t_00e6_00ad_00a3_00e8_00a6_008f_00e8_00a1_00a8_00e7_008f_00be">正規表現</a>参照) など文字列を検索するプリミティブは、
+インデックスを介さずに一致した文字列を直接返すことができます。
+</p>
+<p>Gaucheのコンパイル時に、文字の<em>内部エンコーディング</em>を選択することができます。
+実行時に手続き<code>gauche-character-encoding</code>によってどの内部エンコーディング
+でコンパイルされたかを知ることが出来ます。
+今のところ、以下のエンコーディングがサポートされています。
+</p>
+<dl compact="compact">
+<dt> <code>euc-jp</code></dt>
+<dd><p>ASCII、JIS X 0201カナ、JIS X 0212及びJIS X 0213:2000文字集合のEUC-JP
+エンコーディング
+</p></dd>
+<dt> <code>sjis</code></dt>
+<dd><p>JIS X 0201カナ及びJIS X 0213:2000文字集合のShift-JISエンコーディング。
+ソースコードの互換性のため、文字コード0から0x7fの範囲はJIS X 0201 roman
+ではなくASCIIにマップされます。
+</p></dd>
+<dt> <code>utf-8</code></dt>
+<dd><p>UnicodeのUTF-8エンコーディング。
+</p></dd>
+<dt> <code>none</code></dt>
+<dd><p>8ビット固定長の文字エンコーディング。文字コード0から0x7fの範囲はASCIIと
+みなします。文字列をどのエンコーディングとして解釈するかはアプリケーション次第です。
+</p></dd>
+</dl>
+
+<p>他の文字エンコーディングからの変換は特別なポートを使って行われます。
+<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a> を参照して下さい。
+</p>
+<p>ソースプログラムのエンコーディングを指定する方法については
+次の章で説明します。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_5.html#g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_7.html#g_t_00e3_0083_009e_00e3_0083_00ab_00e3_0083_0081_00e3_0083_0090_00e3_0082_00a4_00e3_0083_0088_00e3_0082_00b9_00e3_0082_00af_00e3_0083_00aa_00e3_0083_0097_00e3_0083_0088" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_4.html#g_t_00e4_00b8_00bb_00e8_00a6_0081_00e3_0081_00aa_00e6_00a6_0082_00e5_00bf_00b5" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.47 text.unicode - Unicodeユーティリティ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.47 text.unicode - Unicodeユーティリティ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.47 text.unicode - Unicodeユーティリティ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_172.html#g_t_00e6_0080_00a0_00e6_0083_00b0_00e3_0081_00aa_00e3_0083_0086_00e3_0082_00ad_00e3_0082_00b9_00e3_0083_0088_00e6_00a7_008b_00e7_00af_0089" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unicode-transfer-encodings" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="text_002eunicode-_002d-Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3"></a>
+<h2 class="section">11.47 <code>text.unicode</code> - Unicodeユーティリティ</h2>
+
+<dl>
+<dt><a name="index-text_002eunicode"></a><u>Module:</u> <b>text.unicode</b></dt>
+<dd><a name="index-text_002eunicode-1"></a>
+<p>This module provides various operations on a sequence of Unicode codepoints.
+</p>
+<p>Gauche can be compiled with a native encoding other than Unicode,
+and the full Unicode-compatible behavior on characters and strings may
+not be available on such systems.  So we provide most operations in two
+flavors: Operations on characters and strings, or operations on
+codepoints represented as a sequence of integers.
+</p>
+<p>If Gauche is compiled with its native encoding being <code>none</code>,
+<code>euc-jp</code> or <code>sjis</code>, character-and-string operations
+are likely to be partial functions of the operations defined
+in Unicode standard.  That is, if the operation can yield a
+character that are not supported in the native encoding, it
+may be remapped to an alternative character.  Each manual entry
+explains the detailed behavior.
+</p>
+<p>The codepoint operations are independent from Gauche’s native
+encoding and supports full spec as defined in Unicode standard.
+If Gauche is compiled with the <code>utf-8</code> native encoding,
+the operations are essentially the same as character-and-string flavors
+when you convert codepoints and characters by <code>char-&gt;integer</code> and
+<code>integer-&gt;char</code>.  The codepoint operations are handy when
+you need to support the algorithms described in Unicode standard
+fully, no matter what the running Gauche’s native encoding is.
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Unicode-transfer-encodings">11.47.1 Unicode transfer encodings</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Unicode-text-segmentation">11.47.2 Unicode text segmentation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Full-string-case-conversion">11.47.3 Full string case conversion</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Unicode-transfer-encodings"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unicode-text-segmentation" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Unicode-transfer-encodings-1"></a>
+<h3 class="subsection">11.47.1 Unicode transfer encodings</h3>
+
+<p>The procedures in this group operate on codepoints represented as integers.
+In the following descriptions, ‘octets’ refers to an integer
+between 0 to 255, inclusive.
+</p>
+<p>They take optional <var>strictness</var> argument.  It specifies
+what to do when the procedure encounters a datum outside
+of the defined domain.  Its value can be either one of the
+following symbols:
+</p>
+<dl compact="compact">
+<dt> <code>strict</code></dt>
+<dd><p>Raises an error when the procedure encounters such input.
+This is the default behavior.
+</p></dd>
+<dt> <code>permissive</code></dt>
+<dd><p>Whenever possible, treat the date as if it is a valid value.
+For example, codepoint value beyond <code>#x10ffff</code> is invalid
+in Unicode standard, but it may be useful for some other purpose
+that just want to use UTF-8 as an encoding scheme of binary data.
+</p></dd>
+<dt> <code>ignore</code></dt>
+<dd><p>Whenver possible, treat the invalid input as if they do not exist.
+</p></dd>
+</dl>
+
+<p>The procedure may still raise an error in <code>permissive</code> or
+<code>ignore</code> strictness mode, if there can’t be a sensible
+way to handle the input data.
+</p>
+<dl>
+<dt><a name="index-ucs4_002d_003eutf8"></a><u>Function:</u> <b>ucs4-&gt;utf8</b><i> codepoint :optional strictness</i></dt>
+<dd><p>Takes an integer codepoint and returns list of octets that
+encodes the input in UTF-8.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(ucs4-&gt;utf8 #x3bb)  ⇒ (206 187)
+(ucs4-&gt;utf8 #x3042) ⇒ (227 129 130)
+</pre></td></tr></tbody></table>
+
+<p>If <var>strictness</var> is <code>strict</code> (default), input codepoint
+between <code>#xd800</code> to <code>#xdfff</code>, and beyond <code>#x110000</code>,
+are rejected.  If <var>strictness</var> is <code>permissive</code>, it accepts
+input between <code>0</code> and <code>#x7fffffff</code>, inclusive; it may produce
+5 or 6 octets if the input is large (as the original UTF-8 definition).
+If <var>strictness</var> is <code>ignore</code>, it returns an empty list
+for invalid codepoints.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-utf8_002dlength"></a><u>Function:</u> <b>utf8-length</b><i> octet :optional strictness</i></dt>
+<dd><p>Takes <var>octet</var> as the first octet of UTF-8 sequence, and
+returns the number of total octets requried to decode
+the codepoint.
+</p>
+<p>If <var>strictness</var> is <code>strict</code> (default), this
+procedure returns either 1, 2, 3 or 4.   An error is
+thrown if <var>octet</var> cannot be a leading octet of
+a proper UTF-8 encoded Unicode codepoint.
+</p>
+<p>If <var>strictness</var> is <code>permissive</code>, this procedure
+may return an integer between 0 and 6, inclusive.
+It allows the codepoint range <code>#x110000</code> to
+<code>#x7fffffff</code> as the original utf-8 spec, so
+the maximum number of octets can be up to 6.
+If the input is in the range between <code>#xc0</code>
+and <code>#xdf</code>, inclusive, this procedure returns
+1?it’s up to the application how to treat these illegal
+octets.  For other values, it returns <code>0</code>.
+</p>
+<p>If <var>strictness</var> is <var>ignore</var>, this procedure
+returns <code>0</code> when it would raise an error if
+<var>strictness</var> is <code>strict</code>.  Other than that,
+it works the same as the default case.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-utf8_002d_003eucs4"></a><u>Function:</u> <b>utf8-&gt;ucs4</b><i> octet-list :optional strictness</i></dt>
+<dd><p>Takes a list of octets, and decodes it as a utf-8 sequence.
+Returns two values: The decoded ucs4 codepoint, and the
+rest of the input list.
+</p>
+<p>An invalid utf8 sequence causes an error if <var>strictness</var>
+is <code>strict</code>, or skipped if it is <code>ignore</code>.
+If <var>strictness</var> is <code>permissive</code>, the procedure accepts
+the original utf-8 sequence which can produce surrogated pair
+range (between <code>#xd800</code> and <code>#dfff</code>) and the range
+between <code>#x110000</code> to <code>#x7fffffff</code>.  The invalid
+octet sequence is still an error with <code>permissive</code> mode.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ucs4_002d_003eutf16"></a><u>Function:</u> <b>ucs4-&gt;utf16</b><i> codepoint :optional strictness</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-utf16_002dlength"></a><u>Function:</u> <b>utf16-length</b><i> octet :optional strictness</i></dt>
+</dl>
+
+<dl>
+<dt><a name="index-utf16_002d_003eucs4"></a><u>Function:</u> <b>utf16-&gt;ucs4</b><i> octet-list :optional strictness</i></dt>
+</dl>
+
+<hr size="6">
+<a name="Unicode-text-segmentation"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Unicode-transfer-encodings" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Full-string-case-conversion" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Unicode-text-segmentation-1"></a>
+<h3 class="subsection">11.47.2 Unicode text segmentation</h3>
+
+<p>These procedures implements grapheme-cluster and
+word breaking algorithms defined in UAX #29: Unicode Text Segmentation.
+</p>
+<dl>
+<dt><a name="index-string_002d_003ewords"></a><u>Function:</u> <b>string-&gt;words</b><i> string</i></dt>
+<dt><a name="index-codepoints_002d_003ewords"></a><u>Function:</u> <b>codepoints-&gt;words</b><i> sequence</i></dt>
+<dd><p>From given string or codepoint sequence (a <code>&lt;sequence&gt;</code>
+object containing list of codepoints), returns a list of
+words.  Each cluster is represented as a string, or
+a sequence of the same type as input, respectively.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-&gt;words "That's it.")
+ ⇒ ("That's" " " "it" ".")
+(codepoints-&gt;words '(84 104 97 116 39 115 32 105 116 46)
+ ⇒ ((84 104 97 116 39 115) (32) (105 116) (46))
+</pre></td></tr></tbody></table>
+
+<p>In the second example, the list is a list of codepoints
+of characters in "That’s it."
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-string_002d_003egrapheme_002dclusters"></a><u>Function:</u> <b>string-&gt;grapheme-clusters</b><i> string</i></dt>
+<dt><a name="index-codepoints_002d_003egrapheme_002dclusters"></a><u>Function:</u> <b>codepoints-&gt;grapheme-clusters</b><i> sequence</i></dt>
+<dd><p>From given string or codepoint sequence (a <code>&lt;sequence&gt;</code>
+object containing list of codepoints), returns a list of
+grapheme clusters.  Each cluster is represented as a string,
+or a sequence of the same type as input, respectively.
+</p></dd></dl>
+
+
+<p>The following procedures are low-level building blocks
+to build the above <code>string-&gt;words</code> etc.
+A <var>generator</var> argument is a procedure
+with no arguments, and returns a value (or some values) at at time
+for every call, until it returns EOF.
+</p>
+<dl>
+<dt><a name="index-make_002dword_002dbreaker"></a><u>Function:</u> <b>make-word-breaker</b><i> generator</i></dt>
+<dt><a name="index-make_002dgrapheme_002dcluster_002dbreaker"></a><u>Function:</u> <b>make-grapheme-cluster-breaker</b><i> generator</i></dt>
+<dd><p>From given <var>generator</var> is a generator of characters or codepoints,
+returns a generator that returns two values: The first value is the
+character or codepoint generated from the original generator, and the
+second value is a boolean flag, which is <code>#t</code> if a word
+or a grapheme cluster
+breaks before the character/codepoint, and <code>#f</code> otherwise.
+</p>
+<p>Suppose a generator <var>g</var> returns characters in a string
+<code>That's it.</code>, one at a time.  Then the created generator
+will work as follows:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define brk (make-word-breaker g))
+(brk)  ⇒  #\T     and #t
+(brk)  ⇒  #\h     and #f
+(brk)  ⇒  #\a     and #f
+(brk)  ⇒  #\t     and #f
+(brk)  ⇒  #\'     and #f
+(brk)  ⇒  #\s     and #f
+(brk)  ⇒  #\space and #t
+(brk)  ⇒  #\i     and #t
+(brk)  ⇒  #\t     and #f
+(brk)  ⇒  #\.     and #t
+(brk)  ⇒  #&lt;eof&gt;  and #t
+</pre></td></tr></tbody></table>
+
+<p>It shows the word breaks at those character boundaries shown
+by the caret <code>^</code> below (for clearity, I use <code>_</code> to indicate
+the space).
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  T h a t ' s _ i t .
+ ^           ^ ^   ^ ^
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-make_002dword_002dreader"></a><u>Function:</u> <b>make-word-reader</b><i> generator return</i></dt>
+<dt><a name="index-make_002dgrapheme_002dcluster_002dreader"></a><u>Function:</u> <b>make-grapheme-cluster-reader</b><i> generator return</i></dt>
+<dd><p>The input <var>generator</var> is a generator of characters or codepoints,
+and <var>return</var> is a procedure that takes a list of characters or
+codepoints, and returns an object.   These procedures creates a
+generator that returns an object at at time, each consists of a
+word or a grapheme cluster, respectively.
+</p>
+<p>Suppose a generator <var>g</var> returns characters in a string
+<code>That's it.</code>, one at a time, again.
+Then the created generator works as follows:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define brk (make-word-reader g list-&gt;string))
+(brk)  ⇒  "That's"
+(brk)  ⇒  " "
+(brk)  ⇒  "it"
+(brk)  ⇒  "."
+(brk)  ⇒  #&lt;eof&gt;
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+
+<hr size="6">
+<a name="Full-string-case-conversion"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Unicode-text-segmentation" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_174.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Full-string-case-conversion-1"></a>
+<h3 class="subsection">11.47.3 Full string case conversion</h3>
+
+<dl>
+<dt><a name="index-string_002dupcase-1"></a><u>Function:</u> <b>string-upcase</b><i> string</i></dt>
+<dt><a name="index-string_002ddowncase-1"></a><u>Function:</u> <b>string-downcase</b><i> string</i></dt>
+<dt><a name="index-string_002dtitlecase-1"></a><u>Function:</u> <b>string-titlecase</b><i> string</i></dt>
+<dt><a name="index-string_002dfoldcase"></a><u>Function:</u> <b>string-foldcase</b><i> string</i></dt>
+<dd><p>[R6RS]
+Converts given <var>string</var> to upper case, using language-independent
+full case folding defined by Unicode standard.
+They differ from srfi-13’s procedures
+with the same names (See section <a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0081_00ae_00e3_0082_00b1_00e3_0083_00bc_00e3_0082_00b9_0028_00e5_00a4_00a7_00e6_0096_0087_00e5_00ad_0097_00e5_00b0_008f_00e6_0096_0087_00e5_00ad_0097_0029_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0">文字列のケース(大文字小文字)マッピング</a>),
+which simply uses character-by-character case mapping.
+Notably, the length of resulting string may differ from the source string,
+and some conversions are sensitive to whether the character is at the
+word boundary or not.  The word boundaries are determined according
+to UAX #29 text segmentation rules.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(string-upcase "strase")
+ ⇒ "STRASSE"
+(string-downcase "ΧΑΟΣΧΑΟΣ.ΧΑΟΣ. Σ.")
+ ⇒ "χαοσχαοσ.χαο?. σ."
+(string-titlecase "You're talking about R6RS, right?")
+ ⇒ "You're Talking About R6rs, Right?"
+(string-foldcase "strase")
+ ⇒ "strasse"
+(string-foldcase "ΧΑΟΣΣ")
+ ⇒ "χαοσσ"
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-codepoints_002dupcase"></a><u>Function:</u> <b>codepoints-upcase</b><i> sequence</i></dt>
+<dt><a name="index-codepoints_002ddowncase"></a><u>Function:</u> <b>codepoints-downcase</b><i> sequence</i></dt>
+<dt><a name="index-codepoints_002dtitlecase"></a><u>Function:</u> <b>codepoints-titlecase</b><i> sequence</i></dt>
+<dt><a name="index-codepoints_002dfoldcase"></a><u>Function:</u> <b>codepoints-foldcase</b><i> sequence</i></dt>
+<dd><p>Like <code>string-upcase</code> etc, but these work on a sequence of
+codepoints instead.  Returns a sequence of the same type of the input.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(codepoints-upcase '#(115 116 114 97 223 101))
+ ⇒ #(83 84 82 65 83 83 69)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Unicode-text-segmentation" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_174.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Unicode_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

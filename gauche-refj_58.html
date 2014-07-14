@@ -1,0 +1,1050 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.20 例外</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.20 例外">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.20 例外">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_58.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_57.html#g_t_00e9_0081_0085_00e5_00bb_00b6_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096-1"></a>
+<h2 class="section">6.20 例外</h2>
+
+<p>Gaucheの例外システムは次の3つのコンポーネントから構成されています。
+(1)例外状況が発生したことを通知する方法、
+(2)例外状況をどのように処理するかを指定する方法、
+(3)例外状況を知らせたコードとそれを処理するコードがやりとりするための
+標準オブジェクト(<em>コンディション</em>)。
+</p>
+<p>普通これらの3つのコンポーネントは一緒に使われます。
+そこで、最初に例を用いて典型的な使い方について説明し、
+そのあとでそれぞれの機能について詳しく解説します。
+</p>
+<p>用語について: いくつかの言語では<em>例外(exception)</em>というと、
+例外的状況に遭遇したコードとそのハンドラがやりとりをするために用られる
+オブジェクトのことを指します。Gaucheではそのようなオブジェクトのことを言うときには、
+SRFI-35にならって<em>コンディション(condition)</em>を使います。
+<em>例外</em>というのは、状況であり、<em>コンディション</em>はそれを記述する
+実行時のオブジェクトです。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081">6.20.1 例外処理の概要</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5">6.20.2 例外の通知</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">6.20.3 例外の処理</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">6.20.4 コンディション</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081-1"></a>
+<h3 class="subsection">6.20.1 例外処理の概要</h3>
+
+<a name="g_t_00e7_0089_00b9_00e5_00ae_009a_00e3_0081_00ae_00e3_0082_00a8_00e3_0083_00a9_00e3_0083_00bc_00e3_0082_0092_00e6_008d_0095_00e3_0081_00be_00e3_0081_0088_00e3_0082_008b"></a>
+<h4 class="subsubheading">特定のエラーを捕まえる</h4>
+
+<p>最もよくある例外処理のひとつは、組み込みあるいは
+ライブラリの手続きから発生した特定のエラーを捕捉するというものです。
+<code>guard</code>マクロがこのような目的の場合に使えます。
+コードは以下のような感じになるでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (exc
+        ((condition-has-type? exc &lt;read-error&gt;)
+         (format #t "read error!")
+         'read-error)
+        (else 'other-error))
+  (read-from-string "(abc"))
+</pre></td></tr></tbody></table>
+
+<p><code>guard</code>節の cadr 部は <code>(<var>variable</var> <var>clause</var> …)</code> という
+形式です。この例では、変数は <code>exc</code>で、2つの節があります。
+それぞれの <var>clause</var> は <code>cond</code> と似た形式になります。
+</p>
+<p><code>guard</code> の cddr 部は本体で、式のリストです。この例では、式は
+<code>(read-from-string "(abc")</code> のひとつだけです。
+</p>
+<p><code>guard</code> はその本体部を実行するところから始めます。
+<code>read-from-string</code> は構文エラーに出くわすと、<code>&lt;read-error&gt;</code>型の
+エラーを発生させます。<code>guard</code>フォームがこのエラーを捕捉し、
+そのコンディションオブジェクトを変数<var>exc</var>に束縛し、<var>exc</var>の後の
+節を、<code>cond</code>と同じようにチェックします。この場合、投げられた
+コンディションは <code>&lt;read-error&gt;</code>なので、最初の節のテストを満し、
+その節の残りの部分が実行されます。すなわち、<code>"read error!"</code> が
+印字され、シンボル <code>read-error</code> が返ります。
+</p>
+<p>他の言語を使い慣れていれば、同じパターンであることがわかると思います。
+<code>guard</code> フォームの cddr 部は、C++やJavaの <var>try</var> 節、あるいは、
+Common Lisp の <code>handler-case</code> の cadr 部に似ています。
+また、<code>guard</code> フォームの cdadr 部は、<code>catch</code> 節あるいは、
+<code>handler-case</code> の cddr 部に似ています。
+</p>
+<p>テスト式においては、投げられたコンディションのタイプをチェックする
+のが普通です。<code>condition-has-type?</code> という関数が
+SRFI-35 で定義されていますが、これはちょっと冗長です。Gauche の
+コンディションクラスは述語のようにも使えるようになっており、上の
+式は以下のように書くこともができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (exc
+        ((&lt;read-error&gt; exc) 'read-error)
+        (else 'other-error))
+  (read-from-string "(abc")))
+</pre></td></tr></tbody></table>
+
+<p><em>注意事項:</em> 一般的には、投げられたコンディションが特定の
+タイプであるかをチェックするのに<code>is-a?</code>は使えません。
+コンディションが合成されたものである可能性があるからです。
+合成されたコンディションについての
+詳細は <a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a> を参照してください。
+</p>
+<p>もし、<var>clause</var> のどのテストも満されず、かつ <code>else</code> 節があたえられて
+いなければ、その例外は <code>guard</code> から「抜け」ます。すなわち、<code>guard</code>
+の外側のレベルあるいはトップレベルで処理されることになります。たとえば、
+以下の <code>guard</code> フォームでは、<code>&lt;read-error&gt;</code> と
+<code>&lt;system-error&gt;</code> としか処理できず、もし、本体が他のタイプのコンディション
+を投げてきたら、その外側のレベルで処理しなければなりません。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (exc
+        ((&lt;read-error&gt; exc) (handle-read-error))
+        ((&lt;system-error&gt; exc) (handle-system-error))
+        )
+  body …)
+</pre></td></tr></tbody></table>
+
+<p><code>guard</code>および他の低レベルの例外処理の構成についての詳細は
+<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">例外の処理</a> を参照してください。
+</p>
+
+<a name="g_t_00e8_0087_00aa_00e5_0088_0086_00e3_0081_00ae_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e3_0081_008b_00e3_0082_0089_00e4_00be_008b_00e5_00a4_0096_00e3_0082_0092_00e9_0080_009a_00e7_009f_00a5_00e3_0081_0099_00e3_0082_008b"></a>
+<h4 class="subsubheading">自分のコードから例外を通知する</h4>
+
+<p>例外を通知する一般的な方法は <code>raise</code>手続きを使うことです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(raise <var>condition</var>)
+</pre></td></tr></tbody></table>
+
+<p><var>condition</var>にはどんなオブジェクトでも渡すことができます。
+それをどのように解釈するかはひとえに例外ハンドラにかかってます。
+もし、コンディションとして整数があがってくるというのが判っていれば、
+<code>guard</code> で以下のように捕捉することができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (exc
+        ((integer? exc) 'raised))
+  (raise 3))
+</pre></td></tr></tbody></table>
+
+<p>とはいうものの、<code>&lt;condition&gt;</code> あるいはそのサブクラスのインスタンスを
+使うのが好ましいというのが通例です。<code>condition</code> マクロはコンディション
+オブジェクトを作成するのに使えます。以下の例は、いくつかのスロット値をもち
+それらを発生させるコンディションの作りかたを示したものです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; create and raise an error condition
+(raise (condition
+        (&lt;error&gt; (message "An error occurred."))))
+
+;; create and raise a system error condition
+(raise (condition
+        (&lt;system-error&gt; (message "A system error occurred.")
+                        (errno EINTR))))
+</pre></td></tr></tbody></table>
+
+<p><code>condition</code> マクロおよび、どのようなコンディションクラスが用意
+されているかの詳細については <a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a> を参照してください。
+</p>
+<p>最も一般的なコンディションのタイプはエラーコンディションなので、
+<code>error</code> および <code>errorf</code> という便利な手続きが
+用意されています。これらはメッセージ付きのエラーコンディションを
+生成し、それを発生させます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; `error' concatenates the arguments into a message.
+(unless (integer? obj)
+  (error "Integer expected, but got:" obj))
+
+;; `errorf' uses format to create a message.
+(unless (equal? x y)
+  (errorf "~s and ~s don't match" x y))
+</pre></td></tr></tbody></table>
+
+<p><em>注意事項:</em> いくつかの言語での例外を投げる機構、たとえば、
+C++やJavaの <code>throw</code> はその継続を破棄します。これとは違い
+Schemeの <code>raise</code> はその呼び出し元へ戻ることができます。もし、
+<code>raise</code> で元へもどらないで欲しいのなら、簡便な方法としては、
+常にエラーコンディションの一つをわたるようにするというのがあります。
+そうすると Gauche では <code>raise</code> は戻らないことを保証します。
+<code>raise</code>の詳細については、<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5">例外の通知</a>を参照してください。
+</p>
+
+<a name="g_t_00e7_008b_00ac_00e8_0087_00aa_00e3_0081_00ae_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0082_0092_00e5_00ae_009a_00e7_00be_00a9_00e3_0081_0099_00e3_0082_008b"></a>
+<h4 class="subsubheading">独自のコンディションを定義する</h4>
+
+<p>独自のコンディションクラスを定義することが可能で、そうすることで、
+アプリケーション固有の情報を例外が発生した点からハンドラへ渡すことが
+できます。
+</p>
+<p>Gauche のフレームワーク(SRFI-35)に適合させるためには、新しく定義する
+コンディションクラスは組み込みの <code>&lt;condition&gt;</code> クラスあるいは
+その子孫を継承し、また、メタクラス <code>&lt;condition-meta&gt;</code>
+のインスタンスであることが望まれます。
+</p>
+<p>可搬性を増すと同時に上の慣例を確実にするための方法のひとつは、
+<code>define-condition-type</code>マクロを使うことです。これは、
+<code>SRFI-35</code>で定義されています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-condition-type &lt;myapp-error&gt; &lt;error&gt;
+  myapp-error?
+  (debug-info myapp-error-debug-info)
+  (reason myapp-error-reason))
+</pre></td></tr></tbody></table>
+
+<p>これは、(Gauche内のクラス)<code>&lt;myapp-err&gt;</code>を定義するもので、
+このクラスには<code>myapp-error?</code>という述語とアクセサのあるスロット
+があります。こうすれば、以下のようなコードで新しいコンディション
+型が使えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (exc
+         ((myapp-error? exc)
+          (let ((debug-info (myapp-error-debug-info exc))
+                (reason (myapp-error-reason exc)))
+            ... handle myapp-error ...)))
+  ...
+  ...
+  (if (something-went-wrong)
+    (raise (condition
+             (&lt;myapp-error&gt; (debug-info "during processing xxx")
+                            (reason "something went wrong")))))
+  ...
+  ...
+  )
+</pre></td></tr></tbody></table>
+
+<p>SRFIとの互換性が重要でないなら、Gaucheの拡張された<code>error</code>手続きを
+使うと<code>&lt;error&gt;</code>のサブタイプであるコンディションを投げるコードを
+より簡潔に書くことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  (if (something-went-wrong)
+    (error &lt;myapp-error&gt;
+           :debug-info "during processing xxx"
+           :reason "something went wrong"))
+</pre></td></tr></tbody></table>
+
+
+<p>Gauche のオブジェクトシステムでコンディション型がどのように実装されているかは
+<code>define-condition-type</code>マクロの解説を参照してください。
+</p>
+<hr size="6">
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5-1"></a>
+<h3 class="subsection">6.20.2 例外の通知</h3>
+
+<a name="g_t_00e3_0082_00a8_00e3_0083_00a9_00e3_0083_00bc_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5"></a>
+<h4 class="subsubheading">エラーの通知</h4>
+
+<p>最も良くある例外ケースはエラーです。単純なエラーを通知するために、
+ふたつの簡単な関数が用意されています。
+複合コンディションを通知する必要がある場合は
+下で説明する<code>raise</code>手続きを使って下さい。
+</p>
+<dl>
+<dt><a name="index-error"></a><u>Function:</u> <b>error</b><i> string arg …</i></dt>
+<dt><a name="index-error-1"></a><u>Function:</u> <b>error</b><i> condition-type keyword-arg … string arg …</i></dt>
+<dd><p>[SRFI-23+] エラーを通知します。最初の形式は、
+<var>string</var>と<var>arg</var> …からなるメッセージを持つ
+<code>&lt;error&gt;</code>コンディションを作成それを<code>raise</code>します。
+この形式はsrfi-23の<code>error</code>と互換です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">gosh&gt; (define (check-integer x)
+        (unless (integer? x)
+           (error "Integer required, but got:" x)))
+check-integer
+gosh&gt; (check-integer "a")
+*** ERROR: Integer required, but got: "a"
+Stack Trace:
+_______________________________________
+</pre></td></tr></tbody></table>
+
+<p>2番目の形式は<code>&lt;error&gt;</code>以外のエラーコンディションを通知したいときに
+使います。<var>condition-type</var>はコンディションタイプ
+でなければなりません (コンディションタイプについては<a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a>を
+参照して下さい)。その後に、キーワードと値のリストを与えることで
+コンディションのスロットを初期化することができます。また、その後に
+メッセージを構成する文字列と他のオブジェクトのリストを与えることができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-condition-type &lt;my-error&gt; &lt;error&gt; #f
+  (reason)
+  (priority))
+
+...
+  (unless (memq operation *supported-operations*)
+    (error &lt;my-error&gt;
+           :reason 'not-supported :priority 'urgent
+           "Operation not supported:" operation))
+...
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-errorf"></a><u>Function:</u> <b>errorf</b><i> fmt-string arg …</i></dt>
+<dt><a name="index-errorf-1"></a><u>Function:</u> <b>errorf</b><i> condition-type keyword-arg … fmt-string arg …</i></dt>
+<dd><p><code>error</code>に似ていますが、エラーメッセージは<code>format</code>によりフォーマット
+されます。すなわち、最初のフォームは以下と等価です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define (errorf fmt . args)
+  (error (apply format #f fmt args)))
+</pre></td></tr></tbody></table>
+
+<p>2番目の形式は<code>&lt;error&gt;</code>以外のエラーコンディションを通知するのに
+使えます。<var>condition-type</var>, <var>keyword-arg</var>の意味については
+<code>error</code>と同じです。
+</p></dd></dl>
+
+<a name="g_t_00e4_00b8_0080_00e8_0088_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_009d_00a1_00e4_00bb_00b6_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5"></a>
+<h4 class="subsubheading">一般的な条件の通知</h4>
+
+<dl>
+<dt><a name="index-raise"></a><u>Function:</u> <b>raise</b><i> condition</i></dt>
+<dd><p>[SRFI-18]
+これは、例外事態を通知する基本となるメカニズムです。
+</p>
+<p>この手続きは現在の例外ハンドラを呼び出します。引数<var>condition</var>は
+例外の性質を表現するのに使われ、例外ハンドラに渡されます。
+Gaucheの組み込み手続きやライブラリ手続きは常に、<code>&lt;condition&gt;</code>クラス
+もしくはそのサブクラスのインスタンスを<var>condition</var>として用いますが、
+ユーザは任意のオブジェクトを<code>raise</code>に渡すこともできます。
+渡された<var>condition</var>の解釈は例外ハンドラに任されます。
+</p>
+<p><em>注意事項:</em> いくつかの主流の言語では、例外を「投げる」と制御はそこに
+戻りません。Gaucheでは<code>raise</code>から戻って来れるように
+セットアップすることが可能です。詳細は<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">例外の処理</a>を
+参照してください。
+</p>
+<p><code>raise</code>から戻って来ることが無いようにしたい場合は、
+<code>&lt;serious-condition&gt;</code>やそのサブクラスのインスタンスを<var>condition</var>
+として<code>raise</code>に渡すのが確実です。
+組み込みコンディションのクラス階層については<a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">コンディション</a>を参照して下さい。
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e9_0080_009a_00e7_009f_00a5" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086-1"></a>
+<h3 class="subsection">6.20.3 例外の処理</h3>
+
+<a name="g_t_00e4_00b8_008a_00e4_00bd_008d_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e6_00a9_009f_00e6_00a7_008b"></a>
+<h4 class="subsubheading">上位レベルの例外処理機構</h4>
+
+<dl>
+<dt><a name="index-guard"></a><u>Macro:</u> <b>guard</b><i> (var clause …) body …</i></dt>
+<dd><p>[SRFI-34]
+これはGaucheでのエラー処理の高水準フォームです。
+</p>
+<p><var>var</var> はシンボルで <var>clause</var> は <code>cond</code> 節と同じ形式です。
+つまり、各節は以下の形式のどれかひとつです。
+</p><ol>
+<li>
+<code>(<var>test</var> <var>expr</var> …)</code>
+</li><li>
+<code>(<var>test</var> =&gt; <var>proc</var>)</code>
+</li></ol>
+
+<p>最後の<var>clause</var>は<code>(else <var>expr</var> …)</code>という形式も許されます。
+</p>
+<p>このフォームは通常の場合には <var>body</var> … を評価し最後の
+<var>body</var> の式の値を返します。本体の式を評価している最中に例外が
+発生した場合、発生した例外を変数 <var>var</var> に束縛し、その後
+各節の <var>test</var> 式を評価します。もし、<var>test</var> 式のひとつが
+真値を返したとき、その節が上述の最初の形式であれば、対応する
+<var>expr</var> が評価されます。あるいは、節が二番目の形式であれば、
+手続き<var>proc</var>に<var>test</var>の結果が渡されます。
+</p>
+<p>指定された節の <var>test</var> および <var>expr</var> が評価されるとき、
+<code>guard</code>を呼び出した時点での例外ハンドラが設定されます。つまり、
+<var>clause</var> 内部で再び例外が発生した場合、その例外は、<em>外側の</em>
+例外ハンドラまたは <code>guard</code> フォームで処理されます。
+</p>
+<p>もし、どの <var>test</var> も真値を返さず、最後の <code>clause</code> が
+<code>else</code> 節であれば、それに結びつけられた <var>expr</var> が評価されます。
+もし、どの <var>test</var> も真値を返さず、<code>else</code> 節がなければ、再び
+例外が発生し、外側の例外ハンドラで処理されます。
+</p>
+<p>例外が <code>clause</code> のどれかで処理された時には、<code>guard</code> は
+それを処理した節の最後の <var>expr</var> の値を返します。
+</p>
+<p><var>clause</var>は<code>guard</code>と同じ動的環境で評価されます。すなわち、
+<code>body</code>中の<code>dynamic-wind</code>は<var>clause</var>の評価の前に
+巻戻されます。これは低レベル関数の<code>with-error-handler</code>や
+<code>with-exception-handler</code>とは異なることに注意してください。
+これら低レベル関数では例外ハンドラが呼ばれてから動的環境が巻戻されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((z '()))
+  (guard (e (else (push! z 'caught)))
+    (dynamic-wind (lambda () (push! z 'pre))
+                  (lambda () (error "foo"))
+                  (lambda () (push! z 'post))))
+  (reverse z))
+ ⇒ (pre post caught)
+
+(guard (e (else (print 'OUTER) #f))
+  (with-output-to-string ()
+    (print 'INNER)
+    (error "foo")))
+ ⇒ OUTERを文字列ポートではなくguard実行時の
+      current-output-portに出力。
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-unwind_002dprotect"></a><u>Macro:</u> <b>unwind-protect</b><i> body cleanup</i></dt>
+<dd><p><var>body</var>を実行してから<var>cleanup</var>を実行し、<var>body</var>の結果を返す。
+<var>body</var>内で例外が挙がった場合、その例外が<code>unwind-protect</code>フォー
+ムを抜ける前に、<var>cleanup</var>が実行されます。たとえば、以下のコードで
+はなにも問題が起きなければ、<code>start-motor</code>、<code>drill-a-hole</code>、
+<code>stop-motor</code>が、この順で呼ばれます。何か不具合が
+<code>start-motor</code>あるいは<code>drill-a-hole</code>で起った場合でも、例外が
+<code>unwind-protect</code>を抜ける前に<code>stop-motor</code>が呼ばれます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(unwind-protect
+  (begin (start-motor)
+         (drill-a-hole))
+  (stop-motor))
+</pre></td></tr></tbody></table>
+
+<p><var>cleanup</var>フォームは<code>unwind-protect</code>と同じ動的環境で評価されま
+す。例外が<var>cleanup</var>内で投げられた場合その例外は、
+<code>unwind-protect</code>フォームの外側で処理されることになります。
+</p>
+<p>このフォームは<code>dynamic-wind</code>と似ていますが、この2つは動作するレイ
+ヤが違いますので混同しないようにしてください。
+<code>dynamic-wind</code>は最下位レイヤのもので、現在の例外ハンドラ、現在の入出力
+ポート、パラメータなどを管理するのに用います。
+<code>dynamic-wind</code>の<var>before</var>および<var>after</var>のサンクは
+対応する制御フローの遷移が起きたときに必ず呼ばれます。
+一方、<code>unwind-protect</code>はGaucheの例外システムの面倒しか見ません。
+<code>unwind-protect</code>の<var>cleanup</var>は<var>body</var>が正常終了するか
+Gaucheの例外を投げたときにのみ呼びだされます。上述の例で、<code>unwind-protect</code>の外側で
+補足された継続が呼ばれ、制御が<code>drill-a-hole</code>を抜けると、
+<var>cleanup</var>は呼ばれません。制御が再び<code>drill-a-hole</code>に戻る可能性
+があるからです。たとえば、ユーザレベルのスレッドシステムが
+<code>call/cc</code>で実装されているような場合にこのようなことが起こる可能性
+があります。
+</p>
+<p>このフォームの名前はCommon Lispから取りました。同様のマクロに
+<code>try-finally</code>というような別の名前を使っているSchemeの処理系もあります。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-with_002derror_002dhandler"></a><u>Function:</u> <b>with-error-handler</b><i> handler thunk</i></dt>
+<dd><p><var>handler</var>をアクティブなエラーハンドラにし、<var>thunk</var>を実行します。
+<var>thunk</var>が正常に戻ったら、その結果が返されます。
+<var>thunk</var>の実行中にエラーが通知されたら、エラーを表す例外オブジェクトを
+1引数とする<var>handler</var>が、<code>with-error-handler</code>の継続とともに呼ばれます。
+すなわち、<code>with-error-handler</code>は、<var>handler</var>が返す値を返します。
+</p>
+<p><var>handler</var>がエラーを通知したら、それは<code>with-error-handler</code>が
+呼ばれたときにインストールされていたハンドラにより処理されます。
+</p>
+<p><var>handler</var>が実行される場合の動的な環境は、エラーが起きたときのそれと
+同じです。<var>thunk</var>内で<code>dynamic-wind</code>が使われていたら、
+その<var>after</var>メソッドは<var>handler</var>が戻った後、かつ<code>with-error-handler</code>が
+戻る前に呼ばれます。
+</p>
+<p>註: この手続きを直接使うことはもはや<em>推奨されません</em>。<code>guard</code>の方が
+より安全でポータブルだからです。互換性を保つためまだしばらくは
+この手続きを残しますが、この手続きを使っているコードを<code>guard</code>によって
+書き直すことを推奨します。「エラー時に後始末をする」というよくある次のような処理は：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(with-error-handler (lambda (e) (cleanup) (raise e))
+  (lambda () body …))
+</pre></td></tr></tbody></table>
+<p>次のように書き直すことができます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(guard (e (else (cleanup) (raise e)))
+  body …)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<a name="g_t_00e5_0087_00a6_00e7_0090_0086_00e3_0081_0095_00e3_0082_008c_00e3_0081_00aa_00e3_0081_008b_00e3_0081_00a3_00e3_0081_009f_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e3_0081_00b5_00e3_0082_008b_00e3_0081_00be_00e3_0081_0084"></a>
+<h4 class="subsubheading">処理されなかった例外のふるまい</h4>
+
+<p>プログラムで定義した例外ハンドラを設定していないところで例外が発生した
+場合以下のようなことが起ります。
+</p>
+<ul>
+<li>
+プログラムが対話的に走っている場合(REPL)、投げられた例外の情報とスタッ
+クトレースが表示され、プログラムはトップレベルのプロンプトに戻ります。
+</li><li>
+プログラムが対話的に走っているのではない場合は、投げられた例外の情報と
+スタックトレースが表示された後、プログラムは終了コード
+<code>EX_SOFTWARE</code> (70)で終了します。
+</li></ul>
+
+<a name="g_t_00e4_00b8_008b_00e4_00bd_008d_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e3_0081_00ae_00e4_00be_008b_00e5_00a4_0096_00e5_0087_00a6_00e7_0090_0086_00e6_00a9_009f_00e6_00a7_008b"></a>
+<h4 class="subsubheading">下位レベルの例外処理機構</h4>
+
+<p>このレイヤはSRFI-18互換のシンプルな例外メカニズムを提供します。
+<code>with-error-handler</code>のような高次元の構造の振る舞いを、
+<code>with-exception-handler</code>を使って上書きすることができます。
+</p>
+<p>これは諸刃の剣であることに注意して下さい。あなたは独自の例外処理
+セマンティクスを構築する自由がありますが、Gaucheシステムは何か
+間違いがあっても救ってくれません。システムの高次元のセマンティクスを
+カスタマイズしたいか、他のSRFI-18準拠のコードを移植している場合にのみ、
+これらのプリミティブを使って下さい。
+</p>
+<dl>
+<dt><a name="index-current_002dexception_002dhandler"></a><u>Function:</u> <b>current-exception-handler</b></dt>
+<dd><p>[SRFI-18]
+現在の例外ハンドラを返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-with_002dexception_002dhandler"></a><u>Function:</u> <b>with-exception-handler</b><i> handler thunk</i></dt>
+<dd><p>[SRFI-18]
+<var>handler</var>は1引数を取る手続きです。この手続きは、<var>handler</var>を
+現在の例外ハンドラにセットし、<var>thunk</var>を呼び出します。
+</p></dd></dl>
+
+<p>一般的に、エラーのような継続不可能な例外をこの低レベルなメカニズムで
+扱いたい場合は、明示的にそのハンドラから制御を移さなければなりません
+(前述の<code>with-error-handler</code>の説明を参照して下さい)。
+<code>raise</code>は、ハンドラが継続不可能な例外を返したことを検知し、
+デフォルトのエラーハンドラメカニズムを使ってエラーを報告しますが、
+それは単に安全ネットにしか過ぎません。
+</p>
+<p><var>handler</var>は<code>raise</code>の動的な環境と同じ環境で呼ばれることにも
+注意して下さい。したがって、<var>handler</var>内部で例外を発生させると、
+再度<var>handler</var>によって捕捉されます。その例外処理を“外側”の例外
+ハンドラへ伝播させるのはプログラマの責任です。
+</p>
+<p>これらの手続きの振る舞いは、次の概念的なSchemeコードによって
+説明されるでしょう。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">;; <span class="roman">低レベルな例外メカニズムの概念的な実装</span>
+;; <span class="roman">%xhは例外ハンドラのリスト</span>
+
+(define (current-exception-handler) (car %xh))
+
+(define (raise exn)
+  (receive r ((car %xh) exn)
+    (when (uncontinuable-exception? exn)
+      (set! %xh (cdr %xh))
+      (raise (<span class="roman"><i>make-error</i></span> "returned from uncontinuable exception")))
+    (apply values r)))
+
+(define (with-exception-handler handler thunk)
+  (let ((prev %xh))
+    (dynamic-wind
+      (lambda () (set! %xh (cons handler %xh)))
+      thunk
+      (lambda () (set! %xh prev)))))
+</pre></td></tr></tbody></table>
+
+
+<hr size="6">
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_59.html#eval-_00e3_0081_00a8-repl" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3-1"></a>
+<h3 class="subsection">6.20.4 コンディション</h3>
+
+<a name="g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9"></a>
+<h4 class="subsubheading">組み込みコンディションクラス</h4>
+
+<p>現在のところGaucheには以下の組み込みコンディションクラスの階層があります。
+これは、おおよそのところ SRFI-35 および SRFI-36 のコンディションの階層を
+反映したものですが、Gauche風のクラス名になっています。対応する SRFI の
+コンディションタイプがあるものについては、SRFI でのクラス名も使えます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">  &lt;condition&gt;
+    +- &lt;compound-condition&gt;
+    +- &lt;serious-condition&gt;
+    |    +- &lt;serious-compound-condition&gt; ; also inherits &lt;compound-condition&gt;
+    +- &lt;message-condition&gt;
+         +- &lt;error&gt;                      ; also inherits &lt;serious-condition&gt;
+              +- &lt;system-error&gt;
+              +- &lt;unhandled-signal-error&gt;
+              +- &lt;read-error&gt;
+              +- &lt;io-error&gt;
+                   +- &lt;port-error&gt;
+                        +- &lt;io-read-error&gt;
+                        +- &lt;io-write-error&gt;
+                        +- &lt;io-closed-error&gt;
+                        +- &lt;io-unit-error&gt;
+</pre></td></tr></tbody></table>
+
+<p>いくつかのコンディションが同時に発生することがあることに注意してください。
+たとえば、ファイルの読み込がデバイスの欠陥により失敗した場合は、
+<code>&lt;system-error&gt;</code> <em>および</em> <code>&lt;io-read-error&gt;</code> の両方からなる
+エラーとなるでしょう。
+このような場合、<em>合成したコンディション (compound condition)</em> が発生します。
+したがって、たとえば、<code>&lt;io-read-error&gt;</code> が投げられたかどうかをチェック
+するのに、単に <code>(is-a? obj &lt;io-read-error&gt;)</code> を使えばよいというわけ
+にはいきません。
+後述の「コンディション API」の節を参照してください。
+</p>
+<dl>
+<dt><a name="index-_003ccondition_002dmeta_003e"></a><u>Metaclass:</u> <b>&lt;condition-meta&gt;</b></dt>
+<dd><a name="index-condition_002dmeta"></a>
+<p>すべてのコンディションクラスはこのクラスのインスタンスです。
+このクラスは <code>object-apply</code> を定義していますので、
+コンディションクラスは述語として使うことができます。たとえば、
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(&lt;error&gt; obj) ≡ (condition-has-type? obj &lt;error&gt;)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<dl>
+<dt><a name="index-_003ccondition_003e"></a><u>Class:</u> <b>&lt;condition&gt;</b></dt>
+<dt><a name="index-_0026condition"></a><u>Condition Type:</u> <b>&amp;condition</b></dt>
+<dd><a name="index-condition"></a>
+<a name="index-_0026condition-1"></a>
+<p>[SRFI-35]
+コンディションの階層のルートクラスです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003ccompound_002dcondition_003e"></a><u>Class:</u> <b>&lt;compound-condition&gt;</b></dt>
+<dd><a name="index-compound_002dcondition"></a>
+<p>合成コンディションを表現します。合成コンディションは
+<code>make-compound-condition</code> を用いて1つ以上のコンディションから
+生成することができます。このクラスを直接使ってはいけません。
+</p>
+<p>合成コンディションは<code>condition-has-type?</code> に対して、
+元のコンディションのどれかが、与えられたタイプなら、<code>#t</code> を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cserious_002dcondition_003e"></a><u>Class:</u> <b>&lt;serious-condition&gt;</b></dt>
+<dt><a name="index-_0026serious"></a><u>Condition Type:</u> <b>&amp;serious</b></dt>
+<dd><a name="index-serious_002dcondition"></a>
+<a name="index-_0026serious-1"></a>
+<p>[SRFI-35]
+このクラスのコンディションは無視して先を続けることはできない深刻な
+状況のためにあります。特に、このタイプのコンディションを <code>raise</code>
+したら、それは元には絶対に戻らないと考えて問題ありません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cserious_002dcompound_002dcondition_003e"></a><u>Class:</u> <b>&lt;serious-compound-condition&gt;</b></dt>
+<dd><a name="index-serious_002dcompound_002dcondition"></a>
+<p>深刻なコンディションを含む合成コンディションを表現するための
+内部クラスです。<code>&lt;compound-condition&gt;</code> および
+<code>&lt;serious-condition&gt;</code> の両方を継承しています。
+<code>make-compound-condition</code> は深刻なコンディションを含む複数の
+コンディションを渡されると、このクラスを使います。このクラスを
+直接使ってはいけません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cmessage_002dcondition_003e"></a><u>Class:</u> <b>&lt;message-condition&gt;</b></dt>
+<dt><a name="index-_0026message"></a><u>Condition Type:</u> <b>&amp;message</b></dt>
+<dd><a name="index-message_002dcondition"></a>
+<p>[SRFI-35]
+このクラスはメッセージ付のコンディションを表現し、スロットを一つ
+もっています。
+</p>
+<dl>
+<dt><a name="index-message"></a><u>Instance Variable of &lt;message-condition&gt;:</u> <b>message</b></dt>
+<dd><p>メッセージ
+</p>
+</dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cerror_003e"></a><u>Class:</u> <b>&lt;error&gt;</b></dt>
+<dt><a name="index-_0026error"></a><u>Condition Type:</u> <b>&amp;error</b></dt>
+<dd><a name="index-error-2"></a>
+<a name="index-_0026error-1"></a>
+<p>[SRFI-35]
+エラーを表します。<code>&lt;serious-condition&gt;</code> および
+<code>&lt;message-condition&gt;</code> を継承しています。したがって、
+<code>message</code> スロットを持っています。
+</p>
+<p>注意事項: SRFI-35 の<code>&amp;error</code>コンディションは <code>&amp;serious</code>
+のみを継承し、<code>&amp;message</code> は継承していません。したがって、
+このエラーコンディションにメッセージを付与するためには、
+合成コンディションを使わなければなりません。Gauche は
+主として過去のバージョンとの互換性を確保するために、
+ここで多重継承を用いています。
+可搬性のあるコードを書くには、以下のようにメッセージコンディション
+付きのエラーコンディションを使うべきです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(condition
+  (&amp;message (message "Error message"))
+  (&amp;error))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003csystem_002derror_003e"></a><u>Class:</u> <b>&lt;system-error&gt;</b></dt>
+<dd><a name="index-system_002derror"></a>
+<p><code>&lt;error&gt;</code> のサブクラス。
+システムコールがエラーを返したとき、この型の例外が投げられます。
+<code>message</code> スロットには通常エラーの(<code>strerror(3)</code>のような)説明が
+含まれています。それ以外に、このクラスにはもうひとつ次のような
+インスタンススロットがあります。
+</p>
+<dl>
+<dt><a name="index-errno"></a><u>Instance Variable of &lt;system-error&gt;:</u> <b>errno</b></dt>
+<dd><p>システムのエラー番号の整数値を持ちます。
+</p>
+<p>エラー番号はシステムによって異なる可能性があります。Gaucheは典型的な
+Unixのエラー番号に対して定数を定義している(例: <code>EACCES</code>, <code>EBADF</code>)ので、
+それを使うと良いでしょう。定義されている定数に関しては
+<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0_00e3_0081_00b8_00e3_0081_00ae_00e5_0095_008f_00e3_0081_0084_00e5_0090_0088_00e3_0082_008f_00e3_0081_009b">システムへの問い合わせ</a>の<code>sys-strerror</code>の説明を参照してください。
+</p></dd></dl>
+
+<p>このクラスには対応する SRFI のコンディションタイプがありませんが、
+OSの生のエラーコードを取得するのに重要です。いくつかのケースで
+このタイプのコンディションは他の、たとえば <code>&lt;io-read-error&gt;</code>
+のようなコンディションと合成されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cunhandled_002dsignal_002derror_003e"></a><u>Class:</u> <b>&lt;unhandled-signal-error&gt;</b></dt>
+<dd><a name="index-unhandled_002dsignal_002derror"></a>
+<p><code>&lt;error&gt;</code>のサブクラス。多くのシグナルのデフォルトハンドラは
+このコンディションを投げます。詳しくは<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086">シグナルの処理</a>を
+参照してください。
+</p><dl>
+<dt><a name="index-signal"></a><u>Instance Variable of &lt;unhandled-signal-error&gt;:</u> <b>signal</b></dt>
+<dd><p>受け取ったシグナル番号を示す整数値。典型的なシグナル番号については
+定数が定義されています。<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0081_00a8_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008a_00e3_0083_00ab_00e3_0082_00bb_00e3_0083_0083_00e3_0083_0088">シグナルとシグナルセット</a>を参照のこと。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cread_002derror_003e"></a><u>Class:</u> <b>&lt;read-error&gt;</b></dt>
+<dt><a name="index-_0026read_002derror"></a><u>Condition Type:</u> <b>&amp;read-error</b></dt>
+<dd><a name="index-read_002derror"></a>
+<a name="index-_0026read_002derror-1"></a>
+<p>[SRFI-36]
+<code>&lt;error&gt;</code> のサブクラス。リーダがS式を読み込み中に、字句エラー
+または構文エラーを検出したとき、この型のコンディションが投げられます。
+</p>
+<dl>
+<dt><a name="index-port"></a><u>Instance Variable of &lt;read-error&gt;:</u> <b>port</b></dt>
+<dd><p>リーダがS式を読みこんでいたポート。
+(註: SRFI-36 の <code>&amp;read-error</code> はこのスロットを定義していません。
+ポータブルなプログラムを書く場合はこのスロットを使わないで下さい)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-line"></a><u>Instance Variable of &lt;read-error&gt;:</u> <b>line</b></dt>
+<dd><p>リーダがこのエラーを発生させたときの入力行カウント(1がベース)。
+リーダが行カウントを保持しないポートから読み込むときには、-1 となる。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-column"></a><u>Instance Variable of &lt;read-error&gt;:</u> <b>column</b></dt>
+<dt><a name="index-position"></a><u>Instance Variable of &lt;read-error&gt;:</u> <b>position</b></dt>
+<dt><a name="index-span"></a><u>Instance Variable of &lt;read-error&gt;:</u> <b>span</b></dt>
+<dd><p>これらのスロットは、SRFI-36 の <code>&amp;read-error</code> で定義されています。
+今のところ、これらのスロットは常に <code>#f</code> を保持するようになっています。
+</p></dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cio_002derror_003e"></a><u>Class:</u> <b>&lt;io-error&gt;</b></dt>
+<dt><a name="index-_0026io_002derror"></a><u>Condition Type:</u> <b>&amp;io-error</b></dt>
+<dd><a name="index-io_002derror"></a>
+<a name="index-_0026io_002derror-1"></a>
+<p>[SRFI-36]
+I/O エラーのベースとなるクラス。<code>&lt;error&gt;</code> を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cport_002derror_003e"></a><u>Class:</u> <b>&lt;port-error&gt;</b></dt>
+<dt><a name="index-_0026io_002dport_002derror"></a><u>Condition Type:</u> <b>&amp;io-port-error</b></dt>
+<dd><a name="index-port_002derror"></a>
+<a name="index-_0026io_002dport_002derror-1"></a>
+<p>[SRFI-36]
+ポート関連の I/O エラー。<code>&lt;io-error&gt;</code> を継承しています。
+</p>
+<dl>
+<dt><a name="index-port-1"></a><u>Instance Variable of &lt;port-error&gt;:</u> <b>port</b></dt>
+<dd><p>エラーを起したポートを保持。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_003cio_002dread_002derror_003e"></a><u>Class:</u> <b>&lt;io-read-error&gt;</b></dt>
+<dt><a name="index-_0026io_002dread_002derror"></a><u>Condition Type:</u> <b>&amp;io-read-error</b></dt>
+<dd><a name="index-io_002dread_002derror"></a>
+<a name="index-_0026io_002dread_002derror-1"></a>
+<p>[SRFI-36]
+ポートから読み込み中の I/O エラー。<code>&lt;port-error&gt;</code> を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cio_002dwrite_002derror_003e"></a><u>Class:</u> <b>&lt;io-write-error&gt;</b></dt>
+<dt><a name="index-_0026io_002dwrite_002derror"></a><u>Condition Type:</u> <b>&amp;io-write-error</b></dt>
+<dd><a name="index-io_002dwrite_002derror"></a>
+<a name="index-_0026io_002dwrite_002derror-1"></a>
+<p>[SRFI-36]
+ポートへの書き出し中の I/O エラー。<code>&lt;port-error&gt;</code> を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cio_002dclosed_002derror_003e"></a><u>Class:</u> <b>&lt;io-closed-error&gt;</b></dt>
+<dt><a name="index-_0026io_002dclosed_002derror"></a><u>Condition Type:</u> <b>&amp;io-closed-error</b></dt>
+<dd><a name="index-io_002dclosed_002derror"></a>
+<a name="index-_0026io_002dclosed_002derror-1"></a>
+<p>[SRFI-36]
+クローズされたポートで読み込み/書き出しをしようしたときの I/O エラー。
+<code>&lt;port-error&gt;</code> を継承しています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cio_002dunit_002derror_003e"></a><u>Class:</u> <b>&lt;io-unit-error&gt;</b></dt>
+<dd><a name="index-io_002dunit_002derror"></a>
+<p>対象となるポートでサポートされていない単位での読み/書き要求
+(たとえば、キャラクタ専用ポートでのバイナリ I/O 要求)の際の I/O エラー。
+<code>&lt;port-error&gt;</code> を継承しています。
+</p></dd></dl>
+
+
+<a name="g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3API"></a>
+<h4 class="subsubheading">コンディションAPI</h4>
+
+<dl>
+<dt><a name="index-define_002dcondition_002dtype"></a><u>Macro:</u> <b>define-condition-type</b><i> name supertype predicate field-spec …</i></dt>
+<dd><p>[SRFI-35+]
+新しいコンディションタイプを定義します。Gaucheでは、コンディションタイプは
+クラスであり、そのメタクラスは <code>&lt;condition-meta&gt;</code> です。
+</p>
+<p><var>name</var> が新しいタイプの名前になり、この名前の変数が作成された
+コンディションタイプに束縛されます。<var>supertype</var> はこのコンディション
+タイプのスーパータイプ(直接のスーパークラス)の名前です。コンディション
+タイプは <code>&lt;condition&gt;</code> を継承するか、その子孫を継承しなければ
+なりません。(この形式では、多重継承を指定することはできません。
+一般的にいって、コンディションタイプの階層の中では多重継承は避ける
+べきです。そのかわりに、合成コンディションを使えます。合成コンディションは
+多重継承を使いません。)
+</p>
+<p>変数 <var>predicate</var> はこのコンディションタイプ用の述語手続きに
+束縛されます。
+</p>
+<p>各 <code>field-spec</code> は <code>(field-name accessor-name)</code> の形式で
+このコンディションは、フィールド名は <var>field-name</var> で決まります。
+変数 <var>accessor-name</var> はそのフィールドにアクセスする手続きに
+束縛されます。Gauche では、それぞれのフィールドは生成された
+クラスのスロットとなります。
+</p>
+<p>Gaucheはsrfi-35を拡張して、<var>predicate</var>や<var>accessor-name</var>を
+定義する必要が無い場合はその位置に<code>#f</code>を指定できるようにしています。
+<var>accessor-name</var>が必要無い場合はそれを省略することもできます。
+</p>
+<p><code>define-condition-type</code>がクラス定義に展開される際に、
+各スロットは<code>:init-keyword</code>スロットオプションにスロット名と
+同名のキーワードを取るように定義されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dtype_003f"></a><u>Function:</u> <b>condition-type?</b><i> obj</i></dt>
+<dd><p>[SRFI-35]
+<var>obj</var>がコンディションタイプである場合で、その場合にかぎり、
+<code>#t</code> を返します。Gauche では <code>(is-a? obj &lt;condition-meta&gt;)</code>
+と同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dcondition_002dtype"></a><u>Function:</u> <b>make-condition-type</b><i> name parent field-names</i></dt>
+<dd><p>[SRFI-35]
+新しいコンディションタイプを生成する手続き版です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dcondition"></a><u>Function:</u> <b>make-condition</b><i> type field-name value …</i></dt>
+<dd><p>[SRFI-35]
+コンディションタイプ <var>type</var> のコンディションを生成し、
+<code>field-name</code> および <code>value</code> のペアで指定されたように
+フィールドを初期化します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_003f"></a><u>Function:</u> <b>condition?</b><i> obj</i></dt>
+<dd><p>[SRFI-35]
+<var>obj</var> がコンディションである場合で、その場合にかぎり、
+<code>#t</code> を返します。Gauche では <code>(is-a? obj &lt;condition&gt;)</code> と
+同じです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dhas_002dtype_003f"></a><u>Function:</u> <b>condition-has-type?</b><i> obj type</i></dt>
+<dd><p>[SRFI-35]
+<var>obj</var> がコンディションタイプ <var>type</var> に属している場合で、その
+場合にかぎり、<code>#t</code> を返します。合成コンディションがあるので、
+これは、<code>is-a?</code> と同じではありません
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition_002dref"></a><u>Function:</u> <b>condition-ref</b><i> condition field-name</i></dt>
+<dd><p>[SRFI-35]
+<var>condition</var> のフィールド <var>field-name</var> の値を検索します。
+<var>condition</var> が合成コンディションであれば、元のコンディションの
+フィールドにアクセスできます。もし、複数の元のコンディションが、
+<var>field-name</var> を持つ場合には、最初に <code>make-compound-condition</code>
+に渡されたものが優先されます。
+</p>
+<p>コンディションのフィールドにアクセスするには、<var>slot-ref</var> および
+<var>ref</var> の両方あるいはどちらかを使えます。合成コンディションでは、
+<code>slot-missing</code> メソッドが定義されますので、<var>slot-ref</var> は
+あたかも、合成コンディションが元になったコンディションの全てのスロットを
+もつかのように振舞います。しかしながら、<code>condition-ref</code> を
+使う方が可搬性が増します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-make_002dcompound_002dcondition"></a><u>Function:</u> <b>make-compound-condition</b><i> condition0 condition1 …</i></dt>
+<dd><p>[SRFI-35]
+<var>condition0</var> <var>condition1</var> … のすべてを持つ合成コンディション
+を返します。返されたコンディションのフィールドは、与えられたコンディション
+のすべてのフィールドの和集合になります。同じ名前のフィールドを持つ
+コンディションがある場合には最初に与えられものが優先されます。
+返されたコンディションは元になったコンディションのすべてのタイプの
+コンディションタイプをもつことになります。
+(これは多重継承ではありません。上の <code>&lt;compound-condition&gt;</code> を参照)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-extract_002dcondition"></a><u>Function:</u> <b>extract-condition</b><i> condition condition-type</i></dt>
+<dd><p>[SRFI-35]
+<var>condition</var> はコンディションで、<var>condition-type</var>タイプで
+なければなりません。この手続きは <var>condition-type</var> のコンディション
+を返し、<var>condition</var> からとりだされた値のフィールドを持ちます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-condition-1"></a><u>Macro:</u> <b>condition</b><i> type-field-binding …</i></dt>
+<dd><p>[SRFI-35]
+コンディションを生成するのに便利なマクロ。
+合成されたコンディションも生成できます。
+<var>Type-field-binding</var> は、
+<code>(<var>condition-type</var> (<var>field-name</var> <var>value-expr</var>) …)</code>
+という形式になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(condition
+  (type0 (field00 value00) ...)
+  (type1 (field10 value10) ...)
+  ...)
+ ≡
+(make-compound-condition
+  (make-condition type0 'field00 value00 ...)
+  (make-condition type1 'field10 value10 ...)
+  ...)
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096_00e3_0081_00ae_00e5_0087_00a6_00e7_0090_0086" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_59.html#eval-_00e3_0081_00a8-repl" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e4_00be_008b_00e5_00a4_0096" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

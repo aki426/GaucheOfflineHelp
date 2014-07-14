@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10. ライブラリモジュール - SRFI</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10. ライブラリモジュール - SRFI">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10. ライブラリモジュール - SRFI">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_107.html#g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI-1"></a>
+<h1 class="chapter">10. ライブラリモジュール - SRFI</h1>
+
+<p>この章ではSRFIの機能を提供するモジュールをリストします。
+一部のSRFIはGaucheのコアに組み込まれており、
+この章には挙げられていないことに注意して下さい。
+サポートされている全てのSRFIのリストは<a indepth="true" href="gauche-refj_5.html#g_t_00e6_00a8_0099_00e6_00ba_0096_00e3_0081_00b8_00e3_0081_00ae_00e6_00ba_0096_00e6_008b_00a0">標準への準拠</a>にあります。
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f">10.1 <code>srfi-0</code> - 機能条件式</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-0
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_110.html#List-library">10.2 <code>srfi-1</code> - List library</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-1
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_111.html#g_t_00e5_008d_0098_00e4_00b8_0080_00e5_009e_008b_00e3_0081_00ae_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf">10.3 <code>srfi-4</code> - 単一型のベクタ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-4
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_112.html#g_t_00e3_0082_00b7_00e3_0082_00b0_00e3_0083_008d_00e3_0083_0081_00e3_0083_00a3_00e3_0081_00a8rest_00e5_00bc_0095_00e6_0095_00b0_00e3_0081_00ab_00e4_00ba_0092_00e6_008f_009b_00e6_0080_00a7_00e3_0081_00ae_00e3_0081_0082_00e3_0082_008blet_00e5_00bd_00a2_00e5_00bc_008f">10.4 <code>srfi-5</code> - シグネチャとrest引数に互換性のあるlet形式</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-5
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_113.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e3_0083_0099_00e3_0083_00bc_00e3_0082_00b9_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e8_00a8_00ad_00e5_00ae_009a_00e8_00a8_0080_00e8_00aa_009e">10.5 <code>srfi-7</code> - 機能ベースプログラム設定言語</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-7
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_114.html#Let_002dvalues">10.6 <code>srfi-11</code> - Let-values</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-11
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_115.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e5_0088_0097_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa">10.7 <code>srfi-13</code> - 文字列ライブラリ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-13
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_116.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e9_009b_0086_00e5_0090_0088_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa">10.8 <code>srfi-14</code> - 文字集合ライブラリ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-14
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_117.html#g_t_00e6_0099_0082_00e9_0096_0093_00e3_0081_00ae_00e3_0083_0087_00e3_0083_00bc_00e3_0082_00bf_00e5_009e_008b_00e3_0081_00a8_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d">10.9 <code>srfi-19</code> - 時間のデータ型と手続き</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-19
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_118.html#g_t_00e3_0083_00a9_00e3_0083_00b3_00e3_0083_0080_00e3_0083_00a0_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e3_0081_00ae_00e3_0082_00bd_00e3_0083_00bc_00e3_0082_00b9">10.10 <code>srfi-27</code> - ランダムビットのソース</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-27
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_119.html#g_t_00e5_009c_00b0_00e5_009f_009f_00e5_008c_0096">10.11 <code>srfi-29</code> - 地域化</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-29
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_120.html#args_002dfold-_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_00a0_00e5_00bc_0095_00e6_0095_00b0_00e5_0087_00a6_00e7_0090_0086">10.12 <code>srfi-37</code> - args-fold プログラム引数処理</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-37
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_121.html#Eager-comprehensions">10.13 <code>srfi-42</code> - 先行評価的内包表記</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-42
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_122.html#Vector-library">10.14 <code>srfi-43</code> - ベクタライブラリ</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-43
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_123.html#Requiring-extensions">10.15 <code>srfi-55</code> - require の拡張</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-55
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_124.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_0093_00e3_0083_0083_00e3_0083_0088_00e6_0093_008d_00e4_00bd_009c">10.16 <code>srfi-60</code> - 整数に対するビット操作</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-60
+</td></tr>
+<tr><td align="left" valign="top"><a indepth="true" href="gauche-refj_125.html#g_t_00e7_0092_00b0_00e5_00a2_0083_00e5_00a4_0089_00e6_0095_00b0_00e3_0081_00b8_00e3_0081_00ae_00e3_0082_00a2_00e3_0082_00af_00e3_0082_00bb_00e3_0082_00b9">10.17 <code>srfi-98</code> - 環境変数へのアクセス</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  srfi-98
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_107.html#g_t_00e4_00bb_00ae_00e6_0083_00b3_00e3_0083_009d_00e3_0083_00bc_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

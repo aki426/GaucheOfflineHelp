@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.37 sxml.serializer - SXMLからXMLとXHTMLのシリアライゼーション</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.37 sxml.serializer - SXMLからXMLとXHTMLのシリアライゼーション">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.37 sxml.serializer - SXMLからXMLとXHTMLのシリアライゼーション">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_162.html#SXML_00e3_0081_008b_00e3_0082_0089_00e3_0083_009e_00e3_0083_00bc_00e3_0082_00af_00e3_0082_00a2_00e3_0083_0083_00e3_0083_0097_00e3_0081_00b8_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="sxml_002eserializer-_002d-SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3"></a>
+<h2 class="section">11.37 <code>sxml.serializer</code> - SXMLからXMLとXHTMLのシリアライゼーション</h2>
+
+<dl>
+<dt><a name="index-sxml_002eserializer"></a><u>Module:</u> <b>sxml.serializer</b></dt>
+<dd><a name="index-sxml_002eserializer-1"></a>
+<p>このモジュールはSXMLからXMLとHTMLへの変換を行う、様々な機能を持つ
+シリアライザを提供します。XSLT2.0とXQuery1.0に部分的に適合しています。
+(<a href="http://www.w3.org/TR/2005/CR-xslt-xquery-serialization-20051103/">http://www.w3.org/TR/2005/CR-xslt-xquery-serialization-20051103/</a>)。
+sxml.toolsのsxml:sxml-&gt;xmlとsxml:sxml-&gt;htmlよりも強力です。
+</p>
+<p>マニュアルのエントリは主に、オリジナルのソースコードから取られてています。
+</p></dd></dl>
+
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b">11.37.1 簡単なSXML変換</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#g_t_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00a0SXML_00e5_00a4_0089_00e6_008f_009b">11.37.2 カスタムSXML変換</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00a0SXML_00e5_00a4_0089_00e6_008f_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b-1"></a>
+<h3 class="subsection">11.37.1 簡単なSXML変換</h3>
+
+<p>高レベルの、簡単に使えるシリアライザです。大抵の目的にはこれで十分使えるでしょう。
+</p>
+<dl>
+<dt><a name="index-srl_003asxml_002d_003exml"></a><u>Function:</u> <b>srl:sxml-&gt;xml</b><i> sxml-obj :optional port-or-filename</i></dt>
+<dd><p><var>sxml-obj</var>をXMLへと変換します。出力は人間が読みやすいように
+インデントされます。
+</p>
+<p><var>port-or-filename</var>が与えられなければ、
+戻り値は<var>sxml-obj</var>の変換結果の文字列になります。
+</p>
+<p><var>port-or-filename</var>がポートならば、そのポートにXMLを書き出します。
+戻り値は不定です。
+</p>
+<p><var>port-or-filename</var>が文字列ならば、その名のファイルにXMLを書き出し
+ます。戻り値は不定です。そのようなファイルが既に存在する場合、
+結果は不定です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-srl_003asxml_002d_003exml_002dnoindent"></a><u>Function:</u> <b>srl:sxml-&gt;xml-noindent</b><i> sxml-obj :optional port-or-filename</i></dt>
+<dd><p><code>srl:sxml-&gt;xml</code>と同じように動作しますが、インデントを行いません。
+</p>
+<p>引数<var>port-or-filename</var>は<code>srl:sxml-&gt;xml</code>と同様に動作します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-srl_003asxml_002d_003ehtml"></a><u>Function:</u> <b>srl:sxml-&gt;html</b><i> sxml-obj :optional port-or-filename</i></dt>
+<dd><p><var>sxml-obj</var>をHTMLへと変換します。出力は人間が読みやすいように
+インデントされます。
+</p>
+<p>引数<var>port-or-filename</var>は<code>srl:sxml-&gt;xml</code>と同様に動作します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-srl_003asxml_002d_003ehtml_002dnoindent"></a><u>Function:</u> <b>srl:sxml-&gt;html-noindent</b><i> sxml-obj :optional port-or-filename</i></dt>
+<dd><p><code>srl:sxml-&gt;html</code>と同じように動作しますが、インデントを行いません。
+</p>
+<p>引数<var>port-or-filename</var>は<code>srl:sxml-&gt;xml</code>と同様に動作します。
+</p></dd></dl>
+
+<hr size="6">
+<a name="g_t_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00a0SXML_00e5_00a4_0089_00e6_008f_009b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_164.html#CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0082_00ab_00e3_0082_00b9_00e3_0082_00bf_00e3_0083_00a0SXML_00e5_00a4_0089_00e6_008f_009b-1"></a>
+<h3 class="subsection">11.37.2 カスタムSXML変換</h3>
+
+<p>以下の手続きはXMLシリアライザの全ての設定パラメータへのアクセスを提供
+します。
+</p>
+<dl>
+<dt><a name="index-srl_003aparameterizable"></a><u>Function:</u> <b>srl:parameterizable</b><i> sxml-obj :optional port-or-filename params*</i></dt>
+<dd><p>汎用シリアライズ手続、この実装でサポートするすべてのシリアライズパラメー
+タのパラメータ化。
+</p>
+<p><var>sxml-obj</var> - シリアライズするSXMLオブジェクト。
+</p>
+<p><var>port-or-filename</var> - <code>#f</code>あるいはポートあるいは文字列のどれか。
+srl:sxml-&gt;xmlのものと同じ働きをします(<a href="#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b">簡単なSXML変換</a>)。
+</p>
+<p><var>params</var> - 各パラメータはパラメータ名(シンボル)とパラメータ値との
+コンス対。利用可能なパラメータ名とその値については後述。
+</p>
+<p><code>method</code> - シンボル<code>xml</code>か<code>html</code>のどちらか。XMLメソッド
+とHTMLメソッドの相違についての詳しい説明は、XSLT 2.0 と XQuery
+Serialization
+(<a href="http://www.w3.org/TR/2005/CR-xslt-xquery-serialization-20051103/">http://www.w3.org/TR/2005/CR-xslt-xquery-serialization-20051103/</a>)
+を参照してください。
+</p>
+<p><code>indent</code> - 出力の XML が読みやすさのために空白を含むかどうか
+(<code>#t</code>あるいは<code>#f</code>)。文字列を設定することもでき、その場合
+インデント単位に使われます。
+</p>
+<p><code>omit-xml-declaration?</code> - XML宣言を省略するかどうか。デフォルトは
+<code>#t</code>。
+</p>
+<p><code>standalone</code> - XML ドキュメントを XML 宣言でスタンドアローンとし
+て定義するかどうか。<code>yes</code>、<code>no</code>、<code>omit</code>のうちいづれかの
+シンボルでなければならない。デフォルトは <code>omit</code>
+</p>
+<p><code>version</code> - XML宣言中のXMLバージョン。文字列または数。デフォルト
+は<code>"1.0"</code>。
+</p>
+<p><code>cdata-section-elements</code> - SXML要素の名前(シンボル)のリスト。これ
+らの要素の中身はCDATAセクションと同様にエスケープされる。
+</p>
+<p><code>ns-prefix-assig</code> - <code>(cons prefix namespace-uri)</code>のリスト。
+各<code>prefix</code>はシンボルで、<code>namespace-uri</code>は文字列。
+対応する接頭辞をつけて与えられた名前空間をシリアライズする。
+</p>
+<p>注意： パラメータ名が期待された名前ではない場合、あるいはパラメータ値
+が不正な形式である場合にはそのようなパラメータは警告なしで無視されます。
+</p>
+<p>使用実例：
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="lisp">(srl:parameterizable
+  '(tag (@ (attr "value")) (nested "text node") (empty))
+  (current-output-port)
+  '(method . xml)  ; XML出力をデフォールト
+  '(indent . "\t")  ; インデントは一つのタブ
+  '(omit-xml-declaration . #f)  ; XML宣言をつける
+  '(standalone . yes)  ; 「standalone」宣言もつける
+  '(version . "1.0"))  ; XMLのバージョン
+</pre></td></tr></tbody></table>
+
+<table><tbody><tr><td>&nbsp;</td><td><pre class="lisp">param ::= (cons param-name param-value)
+param-name ::= symbol
+
+cdata-section-elements
+value ::= (listof sxml-elem-name)
+sxml-elem-name ::= symbol
+
+indent
+value ::= 'yes | #t | 'no | #f | whitespace-string
+
+method
+value ::= 'xml | 'html
+
+ns-prefix-assig
+value ::= (listof (cons prefix namespace-uri))
+prefix ::= symbol
+namespace-uri ::= string
+
+omit-xml-declaration?
+value ::= 'yes | #t | 'no | #f
+
+standalone
+value ::= 'yes | #t | 'no | #f | 'omit
+
+version
+value ::= string | number
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-srl_003asxml_002d_003estring"></a><u>Function:</u> <b>srl:sxml-&gt;string</b><i> sxml-obj cdata-section-elements indent method ns-prefix-assig omit-xml-declaration? standalone version</i></dt>
+<dd><p><code>srl:parameterizable</code>と同様ですが、文字列を返し、パラメータ解析のオーバヘッ
+ドはありません。この関数のインタフェースはこのライブラリの将来のバージョ
+ンでは変更されるかもしれません。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-srl_003adisplay_002dsxml"></a><u>Function:</u> <b>srl:display-sxml</b><i> sxml-&gt;obj port-or-filename cdata-section-elements indent method ns-prefix-assig omit-xml-declaration? standalone version</i></dt>
+<dd>
+<p><code>srl:parameterizable</code>と同様ですが、結果を
+<var>port-or-filename</var>に書き出します。パラメータ解析のオーバーヘッドはありません。
+この関数のインタフェースはこの
+ライブラリの将来のバージョンでは変更されるかもしれません。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e7_00b0_00a1_00e5_008d_0098_00e3_0081_00aaSXML_00e5_00a4_0089_00e6_008f_009b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_164.html#CSV_00e3_0083_0086_00e3_0083_00bc_00e3_0083_0096_00e3_0083_00ab" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#SXML_00e3_0081_008b_00e3_0082_0089XML_00e3_0081_00a8XHTML_00e3_0081_00ae_00e3_0082_00b7_00e3_0083_00aa_00e3_0082_00a2_00e3_0083_00a9_00e3_0082_00a4_00e3_0082_00bc_00e3_0083_00bc_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

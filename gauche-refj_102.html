@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.28 gauche.test - 単体テスト</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.28 gauche.test - 単体テスト">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.28 gauche.test - 単体テスト">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_102.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e5_008d_0098_00e4_00bd_0093_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_101.html#g_t_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e7_00ab_00af_00e6_009c_00ab_00e5_0088_00b6_00e5_00be_00a1" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002etest-_002d-_00e5_008d_0098_00e4_00bd_0093_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088"></a>
+<h2 class="section">9.28 <code>gauche.test</code> - 単体テスト</h2>
+
+<dl>
+<dt><a name="index-gauche_002etest"></a><u>Module:</u> <b>gauche.test</b></dt>
+<dd><a name="index-gauche_002etest-1"></a>
+<p>テストスクリプトを書くための手続きを提供します。
+テストスクリプトは次のような形になります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="lisp">(use gauche.test)
+(test-start "my feature")
+(load "my-feature")  ; <span class="roman">テストすべきプログラムをロード</span>
+(import my-feature)  ; <span class="roman">モジュールを定義している場合はインポート</span>
+
+(test-module 'my-feature) ; <span class="roman">モジュールの一貫性チェック</span>
+
+(test-section "feature group 1")
+(test "feature 1-1" EXPECT (lambda () TEST-BODY))
+(test "feature 1-2" EXPECT (lambda () TEST-BODY))
+ …
+
+(test-section "feature group 2")
+(define test-data ...)
+(test "feature 2-1" EXPECT (lambda () TEST-BODY))
+(test "feature 2-2" (test-error) (lambda () TEST-THAT-SIGNALS-ERROR))
+ …
+
+(test-end :exit-on-failure #t)
+</pre></td></tr></tbody></table>
+
+<p>このテストスクリプトは、バッチ処理でもインタラクティブセッションからでも
+実行できます。インタラクティブセッションの場合はこのテストスクリプトを
+ただロードすれば、各テストの結果とサマリーが報告されます。
+バッチテストの場合は、標準出力を別のファイルにリダイレクトしておくと良いでしょう。
+標準出力が端末でない場合、テスト手続きは詳しい結果をstdoutに出力し、簡単な
+メッセージを標準エラー出力に書き出します。
+</p>
+<p>モジュールやプログラムを書いたら、Makefileに"check"ターゲットを作ることを
+お薦めします。ルールはこんな感じになるでしょう：
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">check :
+        gosh my-feature-test.scm &gt; test.log
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00ab_00e3_0081_00ae_00e6_00a7_008b_00e9_0080_00a0"></a>
+<h3 class="subheading">テストファイルの構造</h3>
+
+<dl>
+<dt><a name="index-test_002dstart"></a><u>Function:</u> <b>test-start</b><i> module-name</i></dt>
+<dd><p>テストの状態を初期化して、ヘッダをログに書き出します。テストを呼ぶ前に呼んで下さい。
+<var>module-name</var>はログのために使われる文字列です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-test_002dsection"></a><u>Function:</u> <b>test-section</b><i> section-name</i></dt>
+<dd><p>一群のテストの開始をマークします。単にログに使われるだけです。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-test_002dend"></a><u>Function:</u> <b>test-end</b><i> :key exit-on-failure</i></dt>
+<dd><p>失敗したテストのリストを報告します。<var>exit-on-failure</var>が<code>#f</code>か
+省略された場合は、この手続きは失敗したテストの数を返します。
+</p>
+<p>そうでなければ、この手続きは<code>exit</code>を呼んで<code>gosh</code>を
+終了させます。<code>exit-on-failure</code>にfixnumが渡された場合は、
+それがプロセスの終了ステータスとして使われます。<code>exit-on-failure</code>が
+他の真となる値であった場合は、終了ステータスは1となります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-test_002drecord_002dfile"></a><u>Function:</u> <b>test-record-file</b><i> file</i></dt>
+<dd><p>テストスクリプトがいくつかある場合を考えます。通常は、それらのテストスクリプト
+をひとつづつ走らせて結果を確かめるのではなく、全部を一気に走らせて
+簡単な結果のまとめだけを知りたいと思うでしょう。
+</p>
+<p><em>test record file</em>はテスト結果を集積するための補助ファイルです。
+その内容は次のような一行のサマリになっています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">Total:  9939 tests,  9939 passed,     0 failed,     0 aborted.
+</pre></td></tr></tbody></table>
+
+<p>test record fileが既に存在していると、<code>test-start</code>は
+それを読みこんで数字を覚えておきます。そして<code>test-end</code>が
+そのスクリプト中のテスト結果の数字を加算して、同じtest record fileに書き戻します。
+</p>
+<p>makefileの<code>check</code>ターゲットを次のように書いておけば、
+<code>make check</code>を実行するたびにテスト結果の一行サマリを
+得ることができます。
+ただし、‘<tt>test1.scm</tt>’、‘<tt>test2.scm</tt>’、‘<tt>test3.scm</tt>’はいずれも
+<code>test-start</code>呼び出し前に<code>(test-record-file "test.record")</code>を
+評価しているものとします。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">check:
+        @rm -f test.record test.log
+        gosh test1.scm &gt;&gt; test.log
+        gosh test2.scm &gt;&gt; test.log
+        gosh test3.scm &gt;&gt; test.log
+        @cat test.record
+</pre></td></tr></tbody></table>
+
+<p><code>test-record-file</code>手続きがうまく動作するためには、それが
+<code>test-start</code>より前に呼ばれなければならないことに注意してください。
+</p>
+<p>この手続きのかわりに、環境変数<code>GAUCHE_TEST_RECORD_FILE</code>を使って
+test record fileを指定することもできます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-GAUCHE_005fTEST_005fRECORD_005fFILE"></a><u>Environment Variable:</u> <b>GAUCHE_TEST_RECORD_FILE</b></dt>
+<dd><p>テストスクリプトが走る時にこの環境変数が指定されていれば、
+その値がtest record fileの名前として使われます。
+</p>
+<p>ただしテストスクリプト中に<code>test-record-file</code>の呼び出しがあると
+そちらが優先され、この環境変数は無視されます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-test_002dsummary_002dcheck"></a><u>Function:</u> <b>test-summary-check</b></dt>
+<dd><p>テストレコードファイルが(<code>test-record-file</code>もしくは環境変数
+<code>GAUCHE_TEST_RECORD_FILE</code>によって)設定されていた場合、
+それを読み込んで、失敗カウントとアボートカウントがともに0でなければ
+終了ステータス1でexitします。テストレコードファイルが設定されていなければ
+何もしません。
+</p>
+<p>これは、複数のテストスクリプトを持っていて、どれかが失敗したら<code>make</code>に
+それを伝えたいけれども、テストスクリプト自体はすべて走らせたい、という場合に便利です。
+各テストスクリプトで<code>test-end</code>に<code>:exit-on-failure</code>を
+使ってしまうと、<code>make</code>は失敗したテストスクリプトのところで処理を打ち切って
+しまいます。そこで<code>:exit-on-failure</code>を使うのを避け、
+テストレコードファイルを使い、ビルドの最後にこの関数を呼ぶようにします:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">check:
+   rm -f $GAUCHE_TEST_RECORD_FILE test.log
+   gosh test1.scm &gt;&gt; test.log
+   gosh test2.scm &gt;&gt; test.log
+   cat $GAUCHE_TEST_RECORD_FILE /dev/null
+   gosh -ugauche.test -Etest-summary-check -Eexit
+</pre></td></tr></tbody></table>
+
+<p>こうしておくと<code>make</code>は失敗があろうともすべてのテストスクリプトを
+実行し (<code>gosh</code>は常に終了ステータス0で終了するので)、
+最後の行でテストレコードファイルを参照して、失敗があった場合に
+<code>make</code>にそれを伝えることができます。
+</p></dd></dl>
+
+<a name="g_t_00e5_0080_008b_00e3_0080_0085_00e3_0081_00ae_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088"></a>
+<h3 class="subheading">個々のテスト</h3>
+
+<dl>
+<dt><a name="index-test_002a"></a><u>Macro:</u> <b>test*</b><i> name expected expr :optional check</i></dt>
+<dd><p><var>expr</var>をlambdaでくるんでくれる便利なマクロです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(test* name expected expr)
+  ≡ (test name expected (lambda () expr))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-test"></a><u>Function:</u> <b>test</b><i> name expected thunk :optional check</i></dt>
+<dd><p><var>thunk</var>を呼び、その結果が<var>expected</var>に沿っているかを
+<var>check</var>を次のとおり呼び出すことで確認します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>check</var> <var>expected</var> <var>result-of-thunk</var>)
+</pre></td></tr></tbody></table>
+<p>この手続きは、渡された結果が期待する値と合致する場合に<code>#t</code>を、
+そうでなければ<code>#f</code>を返さなければなりません。
+デフォルトの<var>check</var>手続きは下で述べる<code>test-check</code>です。
+これは、<var>expected</var>がいくつかの特殊なテストオブジェクトである場合をのぞき、
+<var>expected</var>と<var>result-of-thunk</var>が<code>equal?</code>
+である場合に<code>#t</code>を返します。すなわち、通常はテスト式の結果が
+期待するものと<code>equal?</code>であればテストは成功である、ということです。
+(特別な場合については下の “曖昧な結果をテストする” および
+“異常系をテストする” の項を見てください)。
+</p>
+<p>特別な比較手続きのひとつの用法は、不正確な数値を、多少の誤差を許して
+比較するような場合です。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(test "test 1" (/ 3.141592653589 4)
+      (lambda () (atan 1))
+      (lambda (expected result)
+        (&lt; (abs (- expected result)) 1.0e-10)))
+</pre></td></tr></tbody></table>
+
+<p><var>name</var>はログに残すためのテストの名前です。
+</p>
+<p><var>thunk</var>内で捕捉されないエラーが発生した場合、それは捕捉され、
+特別なエラーオブジェクト<code>&lt;test-error&gt;</code>に置き換えられます。
+その結果を、下で説明する<code>test-error</code>手続きで作った<code>&lt;test-error&gt;</code>
+オブジェクトと比較することにより、エラーが期待されたものであるか、
+また適切な例外が上がっているかをテストすることができます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-test_002dcheck"></a><u>Function:</u> <b>test-check</b><i> expected result :optional fallback</i></dt>
+<dd><p>テスト式の結果が期待された値に合致していることをチェックするために
+<code>test</code>と<code>test*</code>が使うデフォルトの手続きです。
+基本的に、<code>test-check</code>は<var>expected</var>と<var>result</var>を
+<var>fallback</var>に渡された手続きで比較するだけです。<var>fallback</var>の
+デフォルト値は<code>equal?</code>です。
+ただし、以下に述べるとおり、<var>expected</var>が特殊なテストオブジェクト
+だった場合には特別な振る舞いをします。
+</p></dd></dl>
+
+<a name="g_t_00e6_009b_0096_00e6_0098_00a7_00e3_0081_00aa_00e7_00b5_0090_00e6_009e_009c_00e3_0082_0092_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088_00e3_0081_0099_00e3_0082_008b"></a>
+<h3 class="subheading">曖昧な結果をテストする</h3>
+
+<dl>
+<dt><a name="index-test_002done_002dof"></a><u>Function:</u> <b>test-one-of</b><i> choice …</i></dt>
+<dd><p>時々、テスト式<var>expr</var>の結果が外部の環境に左右されるため、
+ひとつの確定した値を期待値<code>expected</code>として書いておけない場合があります。
+この手続きはそのようなテストを簡単に書けるようにします。
+</p>
+<p><em><var>choice</var> … のいずれか</em> を表現する特別なオブジェクトを返します。
+デフォルトの検査手続きである<code>test-check</code>は、<var>expected</var>引数に
+そのオブジェクトが渡ってきた場合には、テスト結果と<var>choice</var> …を
+ひとつづつ照合し、どれかがマッチすれば真を返します。
+</p>
+<p>例えば次のテストは、<code>proc</code>が1か2を返せば成功となります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(test* "proc returns either 1 or 2" (test-one-of 1 2) (proc))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e7_0095_00b0_00e5_00b8_00b8_00e7_00b3_00bb_00e3_0082_0092_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088_00e3_0081_0099_00e3_0082_008b"></a>
+<h3 class="subheading">異常系をテストする</h3>
+
+<dl>
+<dt><a name="index-test_002derror"></a><u>Function:</u> <b>test-error</b><i> :optional (condition-type &lt;error&gt;)</i></dt>
+<dd><p>与えられた<var>condition-type</var>と適合する<code>&lt;test-error&gt;</code>オブジェクト
+とマッチするような、新たな<code>&lt;test-error&gt;</code>オブジェクトを作成して返します。
+</p>
+<p>テスト結果をチェックする<code>test-check</code>手続きは<code>&lt;test-error&gt;</code>オブジェクトを
+特別に扱います。<code>err-expected</code>と<code>err-actual</code>が
+ともに<code>&lt;test-error&gt;</code>のインスタンスであるとき、
+<code>(test-check err-expected err-actual)</code>は
+<code>err-expected</code>の持つcondition typeが<code>err-actual</code>の
+それと同じであるか、スーパータイプである場合に<code>#t</code>を返します。
+</p>
+<p>例えば<code>foo</code>の呼び出しが<code>&lt;io-error&gt;</code> (もしくはそのサブタイプ) の
+コンディションを投げるかどうかをテストしたければ、次のように書くことができます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(test "see if foo raises &lt;io-error&gt;" (test-error &lt;io-error&gt;) (foo))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-_002atest_002derror_002a"></a><u>Variable:</u> <b>*test-error*</b></dt>
+<dd><p>(非推奨) condition typeとして<code>&lt;error&gt;</code>を持つ<code>&lt;test-error&gt;</code>
+オブジェクトに束縛されています。この変数は互換性のためにのみ残されています。
+新しいコードは上に述べた<code>test-error</code>手続きを使ってください。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_002atest_002dreport_002derror_002a"></a><u>Variable:</u> <b>*test-report-error*</b></dt>
+<dd><p>この変数が真であれば、<code>test</code>ルーチンはエラーを捕捉した際に
+スタックトレースをカレントエラーポートに出力します。
+期待しない状況でtest-errorオブジェクトが返された際に、そのエラーが
+どこで起こったかを知るのに役立つでしょう。
+</p>
+<p>この変数は<code>gauche.test</code>モジュールが読み込まれた時点で
+環境変数<code>GAUCHE_TEST_REPORT_ERROR</code>の値により初期化されます。
+例えば、テストスクリプト中の予期せぬエラーを調べるのに、
+次のようにすることができるでしょう (環境変数がセットされていれば、値は関係ありません)。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">env GAUCHE_TEST_REPORT_ERROR=1 gosh mytest.scm
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<a name="g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e3_0083_0086_00e3_0082_00b9_00e3_0083_0088"></a>
+<h3 class="subheading">モジュールのテスト</h3>
+
+<dl>
+<dt><a name="index-test_002dmodule"></a><u>Function:</u> <b>test-module</b><i> module :key allow-undefined bypass-arity-check</i></dt>
+<dd><p><var>Module</var>はモジュール名のシンボルかモジュールでなければなりません。
+この手続きはモジュール<var>module</var>に関していくつかの経験的な一貫性チェックを
+行います：(1) autoloadに設定されたシンボルがちゃんとロードできるか、
+(2) exportにリストされたシンボルがモジュール内で定義されているか、
+(3) 関数中で参照されているグローバル変数が全て定義されたものであるか、
+(4) グローバル変数が関数として呼ばれている場合、渡されている引数の個数が
+関数の定義に沿ったものであるか。
+この手続きは完璧ではないものの、
+ケアレスミスを発見することができます。
+</p>
+<p>しばしば、プラットフォームやコンパイルオプションによって
+グローバル変数が定義されるかどうかが異なる場合があります。
+コード中では実行時にその変数の存在を確認してから使うように
+コーディングしてあったとしても、<code>test-module</code>は
+そのようなロジックを追わないため、未定義変数の参照を報告して
+しまいます。そのような場合は、チェックから外す変数名のリストを
+<var>allow-undefined</var>キーワード引数に渡して下さい。
+</p>
+<p>引数の個数のチェックも、偽陽性のエラーをあげる可能性があります。
+モジュールがロードされた後のグローバルな関数の変更を当てにしている場合などです
+(例えば、コード中であるジェネリックファンクションに渡されている引数の個数が、
+モジュールのロード時点では不正なものだったとしても、そのコードが実行される
+までに該当引数のメソッドが追加されれば、正しいコードとなるわけです)。
+自分のコードは確かに正しく、チェックが誤りであるような場合は、
+該当関数の名前のリストを<code>bypass-arity-check</code>キーワード引数に
+渡してください。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_101.html#g_t_00e5_0085_00b1_00e9_0080_009a_00e3_0081_00ae_00e9_00ab_0098_00e3_0083_00ac_00e3_0083_0099_00e3_0083_00ab_00e7_00ab_00af_00e6_009c_00ab_00e5_0088_00b6_00e5_00be_00a1" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>9.22 gauche.record - レコード型</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 9.22 gauche.record - レコード型">
+<meta name="keywords" content="Gauche ユーザリファレンス: 9.22 gauche.record - レコード型">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_96.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_95.html#Process-ports" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Record-types-introduction" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="gauche_002erecord-_002d-_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"></a>
+<h2 class="section">9.22 <code>gauche.record</code> - レコード型</h2>
+
+<dl>
+<dt><a name="index-gauche_002erecord"></a><u>Module:</u> <b>gauche.record</b></dt>
+<dd><a name="index-gauche_002erecord-1"></a>
+<p>This module provides a facility to define <em>record types</em>,
+user-defined aggregate types.
+The API is upper compatible to SRFI-9 (Defining Record Types) and
+SRFI-99 (ERR5RS Records).
+</p></dd></dl>
+
+<p>Record types are implemented as Gauche’s classes,
+but have different characteristics from the general classes.
+See section <a href="#Record-types-introduction">はじめに</a>, for when you want to
+use record types.
+</p>
+<p>The record API consists of three layers, following
+SRFI-99 and R6RS design.
+</p>
+<p>The syntactic layer is the <code>define-record-type</code> macro
+that conveniently defines a record type and related procedures
+(a constructor, a predictate, accessors and modifiers) all at once
+declaratively.   Knowing this macro alone is sufficient for
+most common usage of records.
+</p>
+<p>The inspection layer defines common procedures
+to query information to the records and record types.
+</p>
+<p>The procedural layer is a low-level machinery to implement
+the syntactic layer; you don’t usually need to use them
+in day-to-day programming, but they might be handy to
+create record types on-the-fly at runtime.
+</p>
+<table class="menu" cellspacing="0" border="0">
+<tbody><tr><td align="left" valign="top"><a href="#Record-types-introduction">9.22.1 はじめに</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#Record-types-syntactic-layer">9.22.2 Syntactic Layer</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Record-types-inspection-layer">9.22.3 Inspection layer</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Record-types-procedural-layer">9.22.4 Procedural layer</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+<tr><td align="left" valign="top"><a href="#Pseudo-record-types">9.22.5 Pseudo record types</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">  
+</td></tr>
+</tbody></table>
+
+<hr size="6">
+<a name="Record-types-introduction"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Record-types-syntactic-layer" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0081_00af_00e3_0081_0098_00e3_0082_0081_00e3_0081_00ab-1"></a>
+<h3 class="subsection">9.22.1 はじめに</h3>
+
+<p>Gauche provides a general way for users to define new types as new
+classes, using object system (See section <a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0">オブジェクトシステム</a>), and indeed
+record types are implemented as Gauche’s classes.
+However, using record types instead of classes has several advantages.
+</p>
+<ul>
+<li>
+It is portable.  The API conforms two major record SRFIs,
+SRFI-9 and SRFI-99, so the code using record types can run on
+various Scheme systems.
+</li><li>
+It is efficient.  Record types are less flexibile than classes,
+but that allows Gauche to optimize more.  Hence creating records and
+accessing/modifying them are much faster than creating instances
+of general classes and accessing/modifying them.  It makes record
+types preferable choice when you only need a mechanism to bundle
+several related values to carry around, and don’t need fancier
+mechanisms such as class redefinitions.
+</li><li>
+As Gauche’s extention, you can define pseudo record types,
+which interpretes ordinary aggregate types such as vectors and lists
+as records.  (For Common Lisp users; it is like the <code>:type</code>
+option of <code>defstruct</code>).
+This helps flexibility of interface.  For example, you can ask
+your library’s users to pass a point in a vector of three numbers,
+instead of asking users to pack their point data into your
+custom point record type.  Yet inside your library you can
+treat the passed data as if it is your point record type.
+See <a href="#Pseudo-record-types">Pseudo record types</a>, for more details.
+</li></ul>
+
+<p>The disadvantage of record types is that
+they don’t obey Gauche’s class redefinition
+protocol (See section <a indepth="true" href="gauche-refj_67.html#g_t_00e3_0082_00af_00e3_0083_00a9_00e3_0082_00b9_00e3_0081_00ae_00e5_0086_008d_00e5_00ae_009a_00e7_00be_00a9">クラスの再定義</a>).
+That is, if you redefine a record with the same name,
+it creates a new record type unrelated to the old one.
+The record instances created from the old definition
+won’t be updated according to the new definition.
+</p>
+<p>More importantly, record constructors, accessors and modifiers
+are tend to be inlined where they are used, to achieve
+better performance.   Since they are inlined, the code
+that uses those procedures are not affected when
+the record type is redefined.
+This means if you redefine a record type, you have to
+reload (recompile) the sources that uses any of
+record constructors, accessors or modifiers.
+</p>
+
+<hr size="6">
+<a name="Record-types-syntactic-layer"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Record-types-introduction" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Record-types-inspection-layer" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Syntactic-Layer"></a>
+<h3 class="subsection">9.22.2 Syntactic Layer</h3>
+
+
+<dl>
+<dt><a name="index-define_002drecord_002dtype"></a><u>Macro:</u> <b>define-record-type</b><i> type-spec ctor-spec pred-spec field-spec …</i></dt>
+<dd><p>[SRFI-9][SRFI-99+]
+Defines a record type, and optionally defines
+a constructor, a predicate, and field accessors and modifiers.
+</p>
+<p>The <var>type-spec</var> argument names the record type,
+and optionally specifies the supertype (<var>parent</var>).
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>type-spec</var> : <var>type-name</var> | (<var>type-name</var> <var>parent</var>)
+
+<var>type-name</var> : <span class="roman">identifier</span>
+<var>parent</var> : <span class="roman">expression</span>
+</pre></td></tr></tbody></table>
+
+<p>The <var>type-name</var> identifier will be bound to a
+<em>record type descriptor</em>, or rtd,
+which can be used for introspection and reflection.
+See <a href="#Record-types-inspection-layer">Inspection layer</a> and <a href="#Record-types-procedural-layer">Procedural layer</a>
+for possible operations for record types.
+In Gauche, a record type descriptor is a <code>&lt;class&gt;</code> with a metaclass
+<code>&lt;record-meta&gt;</code>.
+</p>
+<p>The <var>parent</var> expression should evaluate to a record type descriptor.
+If given, the defined record type inherits it; that is, all the
+slots defined in the parent type are available to the <var>type-name</var>
+as well, and the instance of <var>type-name</var> answers <code>#t</code> to the
+predicate of the parent type.
+</p>
+<p>Since a record type is also a class, parent type is also a superclass
+of the defined record type.  However, record types are limited to
+have single inheritance.
+</p>
+<p>You can give a pseudo record base type as <var>parent</var> to define a
+pseudo record type, which allows you to access ordinary aggregates
+like vectors as records.  See <a href="#Pseudo-record-types">Pseudo record types</a> for more details.
+</p>
+<p>The <var>ctor-spec</var> defines the constructor of the record instance.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>ctor-spec</var> : #f | #t | <var>ctor-name</var>
+          | (<var>ctor-name</var> <var>field-name</var> …)
+
+<var>ctor-name</var> : <span class="roman">identifier</span>
+<var>field-name</var> : <span class="roman">identifier</span>
+</pre></td></tr></tbody></table>
+
+<p>If it is <code>#f</code>, no constructor is created.
+If it is <code>#t</code>, a default constructor is created with a name
+<code>make-<var>type-name</var></code>.  If it is a single identifier
+<var>ctor-name</var>, a default constructor is created with the name.
+The default constructor takes as many arguments as
+the number of fields of the record, including inherited ones if any.
+When called, it allocates an instance of the record, and initialize its
+fields with the given arguments in the order (inhertied fields comes
+first), and returns the record.
+</p>
+<p>The last variation of <var>ctor-spec</var> creates a custom
+constructor with the name <var>ctor-name</var>.  The custom constructor
+takes as many arguments as the given <var>field-name</var>s, and initializes
+the named fields.  If the inherited record type has a field of the same name
+as the ancestor record type, only the inherited ones are initialized.
+In Gauche, uninitialized fields remains unbound until some value is
+set to it.
+</p>
+<p>The <var>pred-spec</var> defines the predicate of the record instance,
+which takes one argument and returns <code>#t</code> iff it is an instance
+of the defined record type or its descendants.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>pred-spec</var> : #f | #t | <var>pred-name</var>
+
+<var>pred-name</var> : <span class="roman">identifier</span>
+</pre></td></tr></tbody></table>
+
+<p>If it is <code>#f</code>, no predicate is created.
+If it is <code>#t</code>, a predicate is created with a name
+<code><var>type-name</var>?</code>.  If it is a single identifier,
+a predicate is created with the given name.
+</p>
+<p>The rest of the arguments specify fields (slots) of the record.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example"><var>field-spec</var>
+ : <var>field-name</var>   ; <span class="roman">immutable, with default accessor</span>
+ | (<var>field-name</var>) ; <span class="roman">mutable, with default accessor/modifier</span>
+ | (<var>field-name</var> <var>accessor-name</var>); <span class="roman">immutable</span>
+ | (<var>field-name</var> <var>accessor-name</var> <var>modifier-name</var>); <span class="roman">mutable</span>
+
+<var>field-name</var>    : <span class="roman">identifier</span>
+<var>accessor-name</var> : <span class="roman">identifier</span>
+<var>modifier-name</var> : <span class="roman">identifier</span>
+</pre></td></tr></tbody></table>
+
+<p>The first and the third forms define immutable fields, which can only
+be intialized by the constructor but cannot be modified afterwards
+(thus such fields don’t have modifiers).
+The second and the fourth forms define multable fields.
+</p>
+<p>The third and fourth forms explicitly name the accessor and modifier.
+With the first and second forms, on the other hand,
+the accessor is named as
+<code><var>type-name</var>-<var>field-name</var></code>, and the modifier is named
+as <code><var>type-name</var>-<var>field-name</var>-set!</code>.
+</p></dd></dl>
+
+<p>Let’s see some examples.  Here’s a definition of a record
+type <code>point</code>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-record-type point #t #t
+  x y z)
+</pre></td></tr></tbody></table>
+
+<p>The variable <code>point</code> is bound to a record type descriptor,
+which is just a class.  But you can take its class and see it is
+indeed an instance of <code>&lt;record-meta&gt;</code> metaclass.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">point            ⇒ #&lt;class point&gt;
+(class-of point) ⇒ #&lt;class &lt;record-meta&gt;&gt;
+</pre></td></tr></tbody></table>
+
+<p>You can create an instance of <code>point</code> by the default
+constructor <code>make-point</code>.  The predicate is given the
+default name <code>point?</code>, and you can access the fields
+of the created record by <code>point-x</code> etc.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define p (make-point 1 2 3))
+
+(point? p)  ⇒ #t
+(point-x p) ⇒ 1
+(point-y p) ⇒ 2
+(point-z p) ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p>Since we defined all fields immutable, we cannot modify
+the instance <code>p</code>.
+</p>
+<p>Here’s a mutable version of point, <code>mpoint</code>.
+You can modify its fields by modifier procedures and
+generalized <code>set!</code>.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-record-type mpoint #t #t
+  (x) (y) (z))
+
+(define p2 (make-mpoint 1 2 3)) ; <span class="roman">create an instance</span>
+
+(mpoint-x p2)  ⇒ 1
+
+(mpoint-x-set! p2 4)            ; <span class="roman">default modifier</span>
+(mpoint-x p2)  ⇒ 4
+
+(set! (mpoint-x p2) 6)          ; <span class="roman">generalized <code>set!</code> also works</span>
+(mpoint-x p2)  ⇒ 6
+</pre></td></tr></tbody></table>
+
+<p>Next one is an example of inheritance.
+Note that the default constructor takes arguments for
+fields of the parent record as well.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-record-type (qpoint mpoint) #t #t
+  (w))
+
+(define p3 (make-qpoint 1 2 3 4))
+
+(qpoint? p3)  ⇒ #t      ; <span class="roman">p3 is a qpoint</span>
+(mpoint? p3)  ⇒ #t      ; <span class="roman">... and also an mpoint</span>
+
+(mpoint-x p3) ⇒ 1       ; <span class="roman">accessing inherited field</span>
+(mpoint-y p3) ⇒ 2
+(mpoint-z p3) ⇒ 3
+(qpoint-w p3) ⇒ 4
+</pre></td></tr></tbody></table>
+
+<p>A small caveat: Accessors and modifiers for inherited fields
+(e.g. <code>qpoint-x</code> etc.) are not created.
+</p>
+<p>Gauche’s convention is to enclose class name by <code>&lt;&gt;</code>.
+You can follow the convention and still explicitly gives
+simpler names (instead of <code>make-&lt;point&gt;</code> or <code>&lt;point&gt;-x</code>):
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-record-type &lt;point&gt; make-point point?
+  (x point-x)
+  (y point-y)
+  (z point-z))
+</pre></td></tr></tbody></table>
+
+
+<hr size="6">
+<a name="Record-types-inspection-layer"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Record-types-syntactic-layer" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Record-types-procedural-layer" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Inspection-layer"></a>
+<h3 class="subsection">9.22.3 Inspection layer</h3>
+
+<p>This layer provides common procedures that operates on record type
+descriptors and record instances.
+</p>
+<p>Note that a record type descriptor is a class in Gauche, so
+you can also use operators on classes (e.g. <code>class-name</code>,
+<code>class-slots</code> etc.) on record type descriptors as well.
+However, these procedures are more portable.
+</p>
+<dl>
+<dt><a name="index-record_003f"></a><u>Function:</u> <b>record?</b><i> obj</i></dt>
+<dd><p>[SRFI-99][R6RS]
+Returns <code>#t</code> iff <var>obj</var> is an instance of record type,
+<code>#f</code> otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-record_002drtd"></a><u>Function:</u> <b>record-rtd</b><i> record</i></dt>
+<dd><p>[SRFI-99][R6RS]
+Returns the record type descriptor of the record instance.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dname"></a><u>Function:</u> <b>rtd-name</b><i> rtd</i></dt>
+<dd><p>[SRFI-99]
+Returns the name of the record type descriptor <var>rtd</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dparent"></a><u>Function:</u> <b>rtd-parent</b><i> rtd</i></dt>
+<dd><p>[SRFI-99]
+Returns the parent type of the record type descriptor <var>rtd</var>.
+If <var>rtd</var> doesn’t have a parent, <code>#f</code> is returned.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dfield_002dnames"></a><u>Function:</u> <b>rtd-field-names</b><i> rtd</i></dt>
+<dd><p>[SRFI-99]
+Returns a vector of symbols, each of which is the names of the direct
+fields of the record represented by <var>rtd</var>.   The result doesn’t
+include inherited fields.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dall_002dfield_002dnames"></a><u>Function:</u> <b>rtd-all-field-names</b><i> rtd</i></dt>
+<dd><p>[SRFI-99]
+Returns a vector of symbols, each of which is the names of the
+fields of the record represented by <var>rtd</var>.   The result includes
+all inherited fields.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dfield_002dmutable_003f"></a><u>Function:</u> <b>rtd-field-mutable?</b><i> rtd field-name</i></dt>
+<dd><p>[SRFI-99]
+Returns <code>#t</code> iff the field with the name <var>field-name</var>
+of a record represened by <var>rtd</var> is mutable.
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="Record-types-procedural-layer"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Record-types-inspection-layer" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#Pseudo-record-types" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Procedural-layer"></a>
+<h3 class="subsection">9.22.4 Procedural layer</h3>
+
+<p>These procedures are low-level machinery on top of which
+<code>define-record-type</code> is implemented.  They can be used
+to create a new record type at runtime.
+</p>
+<dl>
+<dt><a name="index-make_002drtd"></a><u>Function:</u> <b>make-rtd</b><i> name field-specs :optional parent</i></dt>
+<dd><p>[SRFI-99]
+Creates and returns a new record type descriptor with name <var>name</var> and
+having fields specified by <var>field-specs</var>.  If <var>parent</var>
+is given, it must be a record type descriptor or <code>#f</code>.
+If it is a record type descriptor, the created record type
+inherits from it.
+</p>
+<p>The <var>field-specs</var> argument must be a vector, each
+element of which is a <em>field specifier</em>.  A field
+specifier can be a symbol, a list <code>(mutable <var>symbol</var>)</code>,
+or a list <code>(immutable <var>symbol</var>)</code>.  The <var>symbol</var> names
+the field.  A single symbol or <code>(mutable <var>symbol</var>)</code> format
+makes the field mutable, and <code>(immutable <var>symbol</var>)</code> format
+makes the field immutable.
+</p>
+<p>Note: Gauche does not implement the extension suggested in
+SRFI-99 yet, which is <code>sealed</code>, <code>opaque</code> and <code>uid</code>
+arguments.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_003f"></a><u>Function:</u> <b>rtd?</b><i> obj</i></dt>
+<dd><p>[SRFI-99]
+Returns <code>#t</code> if <var>obj</var> is a record type descriptor,
+<code>#f</code> otherwise.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dconstructor"></a><u>Function:</u> <b>rtd-constructor</b><i> rtd :optional field-specs</i></dt>
+<dd><p>[SRFI-99]
+Returns a procedure that creates an instance record of
+the record type represented by <var>rtd</var>.
+Without <var>field-specs</var>, it returns the default constructor,
+which takes as many arguments as the number of fields of
+the record to initialize them.
+</p>
+<p>You can give a vector of symbols as <var>field-specs</var>.  The <var>n</var>-th
+symbol specifies which field of the instance should be initialized
+by the <var>n</var>-th argument.   The <var>field-specs</var> vector cannot
+contain duplicate names.  If the record type defines a field with
+the same name as the one in the parent record type, the custom constructor
+can only initialize the field of the derived type’s instance.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dpredicate"></a><u>Function:</u> <b>rtd-predicate</b><i> rtd</i></dt>
+<dd><p>[SRFI-99]
+Returns a predicate to test an object is an instance of <var>rtd</var>.
+</p>
+<p>If <var>rtd</var> is a pseudo record type, the predicate merely tests
+the given object is in an appropriate type and has enough size
+to hold the contents.   See <a href="#Pseudo-record-types">Pseudo record types</a> for the details.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002daccessor"></a><u>Function:</u> <b>rtd-accessor</b><i> rtd field-name</i></dt>
+<dd><p>[SRFI-99]
+Returns a procedure that takes one argument, an instance of <var>rtd</var>,
+and returns the value of the <var>field-name</var> of the instance.
+</p>
+<p>An error is signalled if the record type doesn’t have the field
+of name <var>field-name</var>.
+</p>
+<p>If <var>rtd</var> is inherits other record types, and it defines a field
+of the same name as inherited ones, then the accessor returned by
+this procedure retrieves the value of the field of the derived record.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-rtd_002dmutator"></a><u>Function:</u> <b>rtd-mutator</b><i> rtd field-name</i></dt>
+<dd><p>[SRFI-99]
+Returns a procedure that takes two arguments, an instance of <var>rtd</var>
+and a value, and sets the latter as the value of the <var>field-name</var>
+of the instance.
+</p>
+<p>An error is signalled if the record type doesn’t have the field
+of name <var>field-name</var>, or the named field is immutable.
+</p>
+<p>Like <code>rtd-accessor</code>, if the record has a field with the same
+name as inherited one, the modifier returned by this procedure
+only modifies the field of the derived record.
+</p></dd></dl>
+
+
+<hr size="6">
+<a name="Pseudo-record-types"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Record-types-procedural-layer" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_97.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="Pseudo-record-types-1"></a>
+<h3 class="subsection">9.22.5 Pseudo record types</h3>
+
+<p>A pseudo record type is a record type that does not create
+an instance.  Instead it treats an object of other collection
+types, such as a vector, as if it had named fields.  It’s easier
+to understand by an example:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define-record-type (vpoint (pseudo-rtd &lt;vector&gt;)) #t #t
+  (x) (y) (z))
+
+(make-vpoint 1 2 3)  ⇒ #(1 2 3)
+(vpoint-x #(1 2 3))  ⇒ 1
+
+(rlet1 v (make-vpoint 1 2 3)
+  (set! (vpoint-y v) -1))
+ ⇒ #(1 -1 3)
+</pre></td></tr></tbody></table>
+
+<p>To create a pseudo record type, specify another pseudo
+record type as a parent.   The procedure <code>pseudo-rtd</code>
+can be used to obtain a base pseudo record type of
+the suitable instance class.
+</p>
+<dl>
+<dt><a name="index-pseudo_002drtd"></a><u>Function:</u> <b>pseudo-rtd</b><i> instance-class</i></dt>
+<dd><p>Returns a pseudo rtd suitable to use <var>instance-class</var> as
+a pseudo record.
+</p></dd></dl>
+
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a href="#Record-types-procedural-layer" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_97.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0081_00ae_00e5_0086_008d_00e3_0083_00ad_00e3_0083_00bc_00e3_0083_0089" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_74.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-Gauche_00e6_008b_00a1_00e5_00bc_00b5_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a href="#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

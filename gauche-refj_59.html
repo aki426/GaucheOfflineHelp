@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>6.21 eval と repl</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 6.21 eval と repl">
+<meta name="keywords" content="Gauche ユーザリファレンス: 6.21 eval と repl">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="eval-_00e3_0081_00a8-repl"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_58.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="eval-_00e3_0081_00a8-repl-1"></a>
+<h2 class="section">6.21 eval と repl</h2>
+
+<dl>
+<dt><a name="index-eval"></a><u>Function:</u> <b>eval</b><i> expr env</i></dt>
+<dd><p>[R5RS]
+<var>expr</var>を評価します。<var>env</var>は下に述べる手続きにより
+返される値でなければなりません。現時点では、それは単なる
+<code>&lt;module&gt;</code>オブジェクトですが、Gaucheが将来、ファースト
+クラスの環境オブジェクトを採用する可能性はあります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-null_002denvironment"></a><u>Function:</u> <b>null-environment</b><i> version</i></dt>
+<dt><a name="index-scheme_002dreport_002denvironment"></a><u>Function:</u> <b>scheme-report-environment</b><i> version</i></dt>
+<dt><a name="index-interaction_002denvironment"></a><u>Function:</u> <b>interaction-environment</b></dt>
+<dd><p>[R5RS]
+<code>eval</code>の第2引数として使われる環境識別子を返します。
+現時点では、環境識別子は単にモジュールです。
+<code>(null-environment 5)</code>は、R5RSで規定されている単なる構文的な
+束縛を含む<code>null</code>モジュールを返します。
+<code>(scheme-report-environment 5)</code>は、R5RSで規定されている
+構文的な束縛と手続きの束縛を含む<code>scheme</code>モジュールを返します。
+<code>(interaction-environment)</code>は、全てのGaucheのビルトインと
+ユーザ定義の全てを含んだ<code>user</code>モジュールを返します。
+将来、Gaucheがファーストクラスの環境オブジェクトを採用する可能性が
+あるので、環境識別子が単なるモジュールであることを当てにしないで
+下さい。
+</p>
+<p>引数<var>version</var>に5以外の値を渡すとエラーが通知されます。
+</p>
+</dd></dl>
+
+<dl>
+<dt><a name="index-read_002deval_002dprint_002dloop"></a><u>Function:</u> <b>read-eval-print-loop</b><i> :optional reader evaluator printer prompter</i></dt>
+<dd><p><code>gosh</code>のデフォルトのread-eval-printループをアプリケーションに
+エクスポートします。それぞれの引数は、Gaucheのデフォルトの手続きを使うことを
+示す<code>#f</code>であっても良いですし、以下の条件を満たす手続きであっても構いません。
+</p>
+<dl compact="compact">
+<dt> <em>reader</em></dt>
+<dd><p>引数を取らない手続きです。式を読み込んでそれを返すことを期待されます。
+</p></dd>
+<dt> <em>evaluator</em></dt>
+<dd><p>式と環境識別子を2引数として取る手続きです。式を評価して、0個以上の値を
+返すことを期待されます。
+</p></dd>
+<dt> <em>printer</em></dt>
+<dd><p>0個以上の引数を取る手続きです。それらの値を出力することを期待されます。
+この手続きの戻り値は無視されます。
+</p></dd>
+<dt> <em>prompter</em></dt>
+<dd><p>引数を取らない手続きです。プロンプトを出力することを期待されます。
+この手続きの戻り値は無視されます。
+</p></dd>
+</dl>
+
+<p>これらの手続きが与えられると、<code>read-eval-print-loop</code>は以下のように
+動作します。
+</p>
+<ol>
+<li>
+<var>prompter</var>を呼んでプロンプトを出力します。
+</li><li>
+<var>reader</var>を呼んで式を読み込みます。EOFが返されたら、ループを終了し
+<code>read-eval-print-loop</code>から戻ります。
+</li><li>
+<var>evaluator</var>を呼んで式を評価します。
+</li><li>
+<var>printer</var>を呼んで結果を出力し、その後、1から繰り返します。
+</li></ol>
+
+<p>これらの手続きのうちの1つからエラーが通知されると、そのエラーは
+デフォルトのエスケープハンドラにより捕捉・報告され、その後、
+ループが1から再開します。
+</p>
+<p>これらの手続きの内部で継続を捕捉し、後で再起動することは
+許されています。
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_58.html#g_t_00e3_0082_00b3_00e3_0083_00b3_00e3_0083_0087_00e3_0082_00a3_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_60.html#g_t_00e5_0085_00a5_00e5_0087_00ba_00e5_008a_009b" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_38.html#g_t_00e7_00b5_0084_00e3_0081_00bf_00e8_00be_00bc_00e3_0081_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_65.html#g_t_00e3_0082_00aa_00e3_0083_0096_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00af_00e3_0083_0088_00e3_0082_00b7_00e3_0082_00b9_00e3_0083_0086_00e3_0083_00a0" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

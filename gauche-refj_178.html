@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.52 util.match - パターンマッチング</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.52 util.match - パターンマッチング">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.52 util.match - パターンマッチング">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_177.html#g_t_00e6_009c_0080_00e9_0095_00b7_00e5_0085_00b1_00e9_0080_009a_00e3_0082_00b5_00e3_0083_0096_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="util_002ematch-_002d-_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0"></a>
+<h2 class="section">11.52 <code>util.match</code> - パターンマッチング</h2>
+
+<dl>
+<dt><a name="index-util_002ematch"></a><u>Module:</u> <b>util.match</b></dt>
+<dd><a name="index-util_002ematch-1"></a>
+<p>このモジュールは Andrew Wright のパターンマッチングマクロライブラリを
+ポートしたものです。このライブラリは Scheme 界では広くつかわれており、
+Chez Scheme、PLT Scheme、Scheme48、Chicken および SLIB を含む、様々な
+Scheme の実装にポートされています。この機能は Common Lisp の
+<code>destructuring-bind</code> に似ていますがより強力です。
+</p>
+<p>この版では、オリジナルの Wright’s macro のマクロとの互換性が保たれて
+います。ただし、例外がふたつあって、それは、(1) <var>box</var> はサポートされて
+いません。Gauche にそれがないからです。(2) 構造のマッチングは Gauche の
+オブジェクトシステムに統合されています。
+</p></dd></dl>
+
+<p>まず API のリストを示し、それからパターンの完全な構文のテーブルを示し、
+そして例を示します。
+</p>
+<a name="g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0083_009e_00e3_0083_0083_00e3_0083_0081_00e3_0083_00b3_00e3_0082_00b0-API"></a>
+<h3 class="subheading">パターンマッチング API</h3>
+
+<dl>
+<dt><a name="index-match"></a><u>Macro:</u> <b>match</b><i> expr clause …</i></dt>
+<dd>
+<p>それぞれの <var>clause</var> は以下のうちどちらかです。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<var>pat</var> <var>body</var> …)
+(<var>pat</var> (=&gt; <var>identifier</var>) <var>body</var> …)
+</pre></td></tr></tbody></table>
+
+<p>まず、<var>expr</var> を各節の <var>pat</var> に照合します。パターンの詳しい
+構文については後述します。
+</p>
+<p><var>pat</var> にマッチする部分が見つかれば、<var>pat</var> 中の <em>パターン変数</em>
+は、<var>expr</var> 中の対応する要素に束縛され、その後、<var>body</var> …
+が評価されます。<code>match</code>は<var>body</var> …の最後の式の値を返します。
+</p>
+<p>節が 2つ目の形式である場合、<var>identifier</var> は <var>clause</var> の失敗継続
+に束縛されます。これは引数をもたない手続きで、呼ばれると、あたかも、
+<var>pat</var> の照合に失敗したかの如くマッチャーに戻り、<code>match</code> が
+残りの節について試行を続けます。それゆえ、<var>body</var> … 内部で
+追加のテストを実行することが可能で、もし、満足いくものでなければ、
+<code>(<var>identifier</var>)</code> を呼ぶことで、照合結果を拒絶することができます。
+より詳しくは、後述の例を見てください。
+</p>
+<p>どの <var>pat</var> もマッチしなければ、<code>match</code> はエラーを報告します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-match_002dlambda"></a><u>Macro:</u> <b>match-lambda</b><i> clause …</i></dt>
+<dd><p>ひとつの引数をとり、それに対して <var>clause</var> … を用いて、
+<code>match</code> を実行する関数を生成します。機能としては以下の式と同等です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda (expr) (match expr <var>clause</var> …))
+</pre></td></tr></tbody></table>
+
+<p>例:
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(map (match-lambda
+       ((item price-per-lb (quantity 'lbs))
+        (cons item (* price-per-lb quantity)))
+       ((item price-per-lb (quantity 'kg))
+        (cons item (* price-per-lb quantity 2.204))))
+     '((apple      1.23 (1.1 lbs))
+       (orange     0.68 (1.4 lbs))
+       (cantaloupe 0.53 (2.1 kg))))
+ ⇒ ((apple . 1.353) (orange . 0.952)
+            (cantaloupe . 2.4530520000000005))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-match_002dlambda_002a"></a><u>Macro:</u> <b>match-lambda*</b><i> clause …</i></dt>
+<dd><p><code>match-lambda</code> と同じですが、<code>match</code> をすべての引数のリスト
+に対して実行します。機能としては以下の式と同等です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(lambda expr (match expr <var>clause</var> …))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-match_002dlet"></a><u>Macro:</u> <b>match-let</b><i> ((pat expr) …) body-expr …</i></dt>
+<dt><a name="index-match_002dlet-1"></a><u>Macro:</u> <b>match-let</b><i> name ((pat expr) …) body-expr …</i></dt>
+<dt><a name="index-match_002dlet_002a"></a><u>Macro:</u> <b>match-let*</b><i> ((pat expr) …) body-expr …</i></dt>
+<dt><a name="index-match_002dletrec"></a><u>Macro:</u> <b>match-letrec</b><i> ((pat expr) …) body-expr …</i></dt>
+<dd><p>束縛部分が単なる変数ではなく、パターンを許す、一般化された <code>let</code>、
+<code>let*</code> および <code>letrec</code> です。
+各 <var>expr</var> が評価され、その後、<var>pat</var> と照合され、束縛された
+パターン変数が <var>body-expr</var> … から見えるようになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match-let (
+             (((ca . cd) ...)   '((a . 0) (b . 1) (c . 2)))
+           )
+  (list ca cd))
+ ⇒ ((a b c) (0 1 2))
+</pre></td></tr></tbody></table>
+
+<p>括弧はうんざりという向きには、以下の <code>match-let1</code> をおためしあれ。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-match_002dlet1"></a><u>Macro:</u> <b>match-let1</b><i> pat expr body-expr …</i></dt>
+<dd><p>これは Gauche での拡張で、オリジナルの Wright のコードにはありません。
+これは以下のコードと同等です。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match-let ((<var>pat</var> <var>expr</var>)) <var>body-expr</var> …)
+</pre></td></tr></tbody></table>
+
+<p>構文としては <code>match-let1</code> は Common Lisp の <code>destructuring-bind</code>
+に非常によく似ています。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match-let1 ('let ((var val) ...) body ...)
+            '(let ((a b) (c d)) foo bar baz)
+  (list var val body))
+ ⇒ ((a c) (b d) (foo bar baz))
+</pre></td></tr></tbody></table>
+</dd></dl>
+
+<dl>
+<dt><a name="index-match_002ddefine"></a><u>Macro:</u> <b>match-define</b><i> pat expr</i></dt>
+<dd><p>トップレベルの <code>define</code> と同様ですが、変数の代りにパターンが許されます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match-define (x . xs) (list 1 2 3))
+
+x  ⇒ 1
+xs ⇒ (2 3)
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+
+<a name="g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e3_0081_00ae_00e6_00a7_008b_00e6_0096_0087"></a>
+<h3 class="subheading">パターンの構文</h3>
+
+<p>ここにあるのはパターンの構文の要約です。説明の後にあるアスタリスク
+<code>(*)</code> はオリジナルの Wright のコードにはない、Gauche の拡張で
+あることを意味します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">pat : <var>patvar</var>                       ;; 任意のオブジェクトにマッチし、patvarを束縛
+    | <b>_</b>                            ;; 任意のオブジェクト
+    | ()                           ;; 空リスト
+    | #t                           ;; #t
+    | #f                           ;; #f
+    | <var>string</var>                       ;; 文字列
+    | <var>number</var>                       ;; 数
+    | <var>character</var>                    ;; 文字
+    | <var>keyword</var>                      ;; キーワード (*)
+    | '<var>sexp</var>                        ;; Ｓ式
+    | '<var>symbol</var>                      ;; シンボル(Ｓ式の特殊ケース)
+    | (<var>pat1</var> ... <var>patN</var>)              ;; n 要素のリスト
+    | (<var>pat1</var> ... <var>patN</var> . <var>patN+1</var>)     ;; n 以上の要素を含むリスト
+    | (<var>pat1</var> ... <var>patN</var> <var>patN+1</var> ooo)   ;; n 以上の要素を含むリスト、残りの各要素は
+                                   ;; <var>patN+1</var> にマッチしなければならない
+    | #(<var>pat1</var> ... <var>patN</var>)             ;; n 要素のベクタ
+    | #(<var>pat1</var> ... <var>patN</var> <var>patN+1</var> ooo)  ;; n 以上の要素を含むベクタ、残りの各要素は
+                                   ;; <var>patN+1</var> にマッチしなければならない
+    | (<b>$</b> <var>class</var> <var>pat1</var> ... <var>patN</var>)      ;; オブジェクト (<var>patK</var> はスロット順でマッチ)
+    | (<b>struct</b> <var>class</var> <var>pat1</var> ... <var>patN</var>) ;; 同上 (*)
+    | (<b>@</b> <var>class</var> (<var>slot1</var> <var>pat1</var>) ...)  ;; オブジェクト (スロット名を使う) (*)
+    | (<b>object</b> <var>class</var> (<var>slot1</var> <var>pat1</var>) ...) ;; 同上 (*)
+    | (<b>=</b> <var>proc</var> <var>pat</var>)                 ;; procを適用し、結果を pat にマッチさせる
+    | (<b>and</b> <var>pat</var> ...)                ;; すべての pat にマッチするか
+    | (<b>or</b> <var>pat</var> ...)                 ;; マッチする pat があるか
+    | (<b>not</b> <var>pat</var> ...)                ;; どの pat もマッチしないか
+    | (<b>?</b> <var>predicate</var> <var>pat</var> ...)        ;; predicate が真、かつ、全 pat がマッチ
+    | (<b>set!</b> <var>patvar</var>)                ;; 任意のオブジェクトにマッチし、セッタを束縛
+    | (<b>get!</b> <var>patvar</var>)                ;; 任意のオブジェクトにマッチし、ゲッタを束縛
+    | `qp                          ;; 擬似パターン
+
+patvar : a symbol except <b>_</b>, <b>quote</b>, <b>$</b>, <b>struct</b>, <b>@</b>, <b>object</b>, <b>=</b>, <b>and</b>, <b>or</b>,
+         <b>not</b>, <b>?</b>, <b>set!</b>, <b>get!</b>, <b>quasiquote</b>, <b>...</b>, <b>___</b>, <b>..k</b>, <b>__k</b>.
+
+ooo : <b>...</b>                          ;; ゼロまたはそれ以上
+    | <b>___</b>                          ;; ゼロまたはそれ以上
+    | <b>..<i>k</i></b>                          ;; <i>k</i> またはそれ以上。<i>k</i>は整数。
+                                   ;;   例: <b>..1</b>, <b>..2</b> ...
+    | <b>__<i>k</i></b>                          ;; <i>k</i> またはそれ以上。<i>k</i>は整数。
+                                   ;;   例: <b>__1</b>, <b>__2</b> ...
+
+</pre></td></tr></tbody></table>
+
+<ul>
+<li>
+素のシンボルは「パターン変数」で、あらゆるものとマッチし、
+式のマッチした部分がそのシンボルに束縛されます。
+以下のシンボルは特別な意味をもち、パターン変数としては使えません。
+<code>_</code>、<code>quote</code>、<code>$</code>、<code>struct</code>、<code>@</code>、<code>object</code>、
+<code>=</code>、<code>and</code>、<code>or</code>、<code>not</code>、<code>?</code>、<code>set!</code>、
+<code>get!</code>、<code>quasiquote</code>、<code>...</code>、<code>___</code> および
+<code>..k</code> と <code>__k</code> (ここで、<em>k</em> は整数)。
+
+</li><li>
+シンボル <code>_</code> はあらゆるものマッチし、パターン変数は束縛しません。
+プレースホルダであることを示すのに用います。
+
+</li><li>
+空リスト、真偽値、文字列、数、文字およびキーワードのリテラルは
+(<code>equal?</code>という意味で)同じオブジェクトとマッチします。
+
+</li><li>
+クウォートされた式は(<code>equal?</code> という意味で)同じ式とマッチします。
+クウォートされたシンボルをそれ自身とマッチさせるのに使えます。
+
+</li><li>
+通常リストおよびベクタは、それぞれ、パターン中の要素にマッチする要素を
+もつリストまたはベクタとマッチします。ただし、最初の要素が上であげた
+特別なシンボルではない限りです。そのような場合には特別な意味を持ちます。
+
+<p>特別な場合として、ベクタあるいはリストの最後の要素のあとにシンボル
+<code>...</code> を付加することができます。この場合には、<code>...</code> シンボル
+直前のパターンが与えられた式のすべての要素を尽すまで繰り返し適用されます。
+シンボル <code>___</code> は <code>...</code> の場所で使えます。構文規則マクロによって
+パターンを生成したいときに便利です。
+</p>
+<p>リストのパターンに対しては、シンボル <code>..1</code>、<code>..2</code>、… が
+使えます。これは繰り返しの最小値を指定するものです。
+</p>
+</li><li>
+<code>($ class pat1 …)</code> は <code>class</code> クラスのインスタンスと
+マッチします。各パターン <code>pat1</code> … はスロットの各値と
+<code>(class-slots class)</code> の順にマッチします。
+
+<p><code>(struct class pat1 …)</code> は同じ意味です。オリジナルの
+Wright のコードには、<code>struct</code> はありませんが、PLT Scheme の拡張
+照合機能にはそなわっています。こちらの方がより説明的です。
+</p>
+<p>これはオリジナルの機能を構造(structure)にもマッチするように調整した
+ものです。スロットの順番が予め分るような単純なインスタンスをマッチする
+のに便利です。たとえば、<code>define-record-type</code> (<a indepth="true" href="gauche-refj_96.html#g_t_00e3_0083_00ac_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_009e_008b"><code>gauche.record</code> - レコード型</a>参照)で作成した
+簡単なレコードは簡単に位置指定された値でマッチすることができます。
+</p>
+<p>インスタンスのクラスが継承を使っている場合、位置によるマッチを
+おこなうのは少々難しくなります。以下の <code>@</code> あるいは <code>object</code>
+パターンを使って、スロット名でマッチを行うことができます。
+</p>
+</li><li>
+<code>(object class (slot1 pat1) …)</code> は
+<var>slot1</var> … の値が <var>pat1</var> … にマッチするような
+<code>class</code> クラスのインスタンスとマッチします。これは、
+Gauche の拡張です。<code>@</code> は <code>object</code> と同じ場所で使えます。
+ただし、<code>object</code> の方が説明的でわかりやすいので、こちらを
+推奨します。
+
+</li><li>
+<code>(= proc pat)</code> は最初に <var>proc</var> を対応する式に適用し、
+その結果と <var>pat</var> をマッチさせます。
+
+</li><li>
+<code>(and pat …)</code>、<code>(or pat …)</code> および
+<code>(not pat …)</code> はパターンの真偽値演算子です。
+
+</li><li>
+<code>(? predicate pat …)</code> は最初、述語を対応する式に適用し、
+真が返れば、各 <code>pat</code> … をその式に適用します。
+
+</li><li>
+<code>(set! patvar)</code> はあらゆるものにマッチし、一引数の手続きを
+パターン変数 <var>patvar</var> に束縛します。その手続きが呼ばれると、
+マッチしたパターンの値を与えられた引数で置き換えます。
+
+</li><li>
+<code>(get! patvar)</code> はあらゆるものにマッチし、引数なしの手続きを
+パターン変数 <var>patvar</var> に束縛します。その手続きが呼ばれると、
+マッチしたパターンの値を返します。
+
+</li><li>
+<code>`qp</code>はquasipatternです。<var>qp</var>は、クオートされたパターンと同様、
+それそのものにマッチしますが、その中にアンクオートされているパターンがあると、
+その部分だけは通常のパターンとして解釈されます。
+(準クオート(quasiquote)とquasipatternを混同しないようにしてください。
+機能的に両者は似ていますが、準クオートがアンクオートされた部分木以外の
+部分の評価をoffにするのに対し、quasipatternはアンクオートされた部分木
+以外の部分のパターン構文を無効にします。下の例も参照して下さい。)
+</li></ul>
+
+<a name="g_t_00e3_0083_0091_00e3_0082_00bf_00e3_0083_00bc_00e3_0083_00b3_00e4_00be_008b"></a>
+<h3 class="subheading">パターン例</h3>
+
+<p>単純な構造の分解
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match '(0 (1 2) (3 4 5))
+  [(a (b c) (d e f))
+   (list a b c d e f)])
+ ⇒ (0 1 2 3 4 5)
+</pre></td></tr></tbody></table>
+
+<p>述語パターンの使用
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match 123
+  [(? string? x) (list 'string x)]
+  [(? number? x) (list 'number x)])
+ ⇒ (number 123)
+</pre></td></tr></tbody></table>
+
+<p><code>let</code> から変数と式を取り出す
+反復および述語パターンの利用
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(define let-analyzer
+  (match-lambda
+    [('let (? symbol?)
+           ((var expr) ...)
+       body ...)
+     (format "named let, vars=~s exprs=~s" var expr)]
+    [('let ((var expr) ...)
+       body ...)
+     (format "normal let, vars=~s exprs=~s" var expr)]
+    [_
+     (format "malformed let")]))
+
+(let-analyzer '(let ((a b) (c d)) e f g))
+ ⇒ "normal let, vars=(a c) exprs=(b d)"
+
+(let-analyzer '(let foo ((x (f a b)) (y (f c d))) e f g))
+ ⇒ "named let, vars=(x y) exprs=((f a b) (f c d))"
+
+(let-analyzer '(let (a) b c d))
+ ⇒ "malformed let"
+</pre></td></tr></tbody></table>
+
+<p><code>=</code> 関数適用。パターン変数 <var>m</var> は正規表現の適用結果にマッチする
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match "gauche-ref.texi"
+  ((? string? (= #/(.*)\.([^.]+)$/ m))
+   (format "base=~a suffix=~a" (m 1) (m 2))))
+ ⇒ "base=gauche-ref suffix=texi"
+</pre></td></tr></tbody></table>
+
+<p>quasipatternの例です。最初の式では、パターンのうち<code>value</code>以外の
+部分がクオートされたことになり、従ってシンボル<code>the</code>, <code>answer</code>,
+<code>is</code>はパターン変数ではなくリテラルシンボルとなります。
+2番目の式がそのことを示しています。入力にあるシンボル<code>was</code>は
+パターンの<code>is</code>とマッチしません。もしクオートを行わないと、
+全てのシンボルはパターン変数となるので、3番目の例に示すように
+任意の4つの要素を持つリストとマッチしてしまいます。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(match '(the answer is 42)
+  [`(the answer is ,value) value]
+  [else #f])
+ ⇒ 42
+
+(match '(the answer was 42)
+  [`(the answer is ,value) value]
+  [else #f])
+ ⇒ #f
+
+(match '(a b c d)
+  [(the answer is value) value]
+  [else #f])
+ ⇒ d
+</pre></td></tr></tbody></table>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_177.html#g_t_00e6_009c_0080_00e9_0095_00b7_00e5_0085_00b1_00e9_0080_009a_00e3_0082_00b5_00e3_0083_0096_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_179.html#g_t_00e3_0082_00ad_00e3_0083_00a5_00e3_0083_00bc" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

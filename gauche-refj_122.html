@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>10.14 srfi-43 - ベクタライブラリ</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 10.14 srfi-43 - ベクタライブラリ">
+<meta name="keywords" content="Gauche ユーザリファレンス: 10.14 srfi-43 - ベクタライブラリ">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="Vector-library"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_121.html#Eager-comprehensions" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_123.html#Requiring-extensions" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="srfi_002d43-_002d-_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa"></a>
+<h2 class="section">10.14 <code>srfi-43</code> - ベクタライブラリ</h2>
+
+<dl>
+<dt><a name="index-srfi_002d43"></a><u>Module:</u> <b>srfi-43</b></dt>
+<dd><a name="index-srfi_002d43-1"></a>
+<p>このモジュールはベクタ用のライブラリ関数を提供します。
+SRFI-43のいくつかの関数は組み込みになっています。<a indepth="true" href="gauche-refj_52.html#g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf">ベクタ</a>を見てく
+ださい。
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e6_00a7_008b_00e6_0088_0090_00e5_00ad_0090"></a>
+<h3 class="subheading">ベクタ構成子</h3>
+
+<dl>
+<dt><a name="index-vector_002dunfold"></a><u>Function:</u> <b>vector-unfold</b><i> f length seed …</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dunfold_002dright"></a><u>Function:</u> <b>vector-unfold-right</b><i> f length seed …</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dreverse_002dcopy"></a><u>Function:</u> <b>vector-reverse-copy</b><i> vec :optional start end</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dappend"></a><u>Function:</u> <b>vector-append</b><i> vec …</i></dt>
+<dd><p>[SRFI-43]
+Returns a newly allocated vector whose contents are concatenation
+of elements of <var>vec</var> in order.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dconcatenate"></a><u>Function:</u> <b>vector-concatenate</b><i> list-of-vectors</i></dt>
+<dd><p>[SRFI-43]
+Acts like <code>(apply vector-append list-of-vectors)</code>, though
+this may be more efficient.
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e4_00b8_008a_00e3_0081_00ae_00e8_00bf_00b0_00e8_00aa_009e"></a>
+<h3 class="subheading">ベクタ上の述語</h3>
+
+<dl>
+<dt><a name="index-vector_002dempty_003f"></a><u>Function:</u> <b>vector-empty?</b><i> vec</i></dt>
+<dd><p>[SRFI-43]
+Returns <code>#t</code> if <var>vec</var>’s length is zero, and
+<code>#f</code> if <var>vec</var>’s length is more than zero.
+Signals an error if <var>vec</var> is not a vector.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_003d"></a><u>Function:</u> <b>vector=</b><i> elt= vec …</i></dt>
+<dd><p>[SRFI-43]
+Compares <var>vec</var>s element-wise, using given predicate <var>elt=</var>.
+Returns <code>#t</code> iff lengths of all the vectors are the same,
+and every corresponding elements are equal by <var>elt=</var>.
+<var>Elt=</var> is always called with two arguments and must
+return <code>#t</code> iff two are the same.
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e4_00b8_008a_00e3_0081_00ae_00e5_008f_008d_00e5_00be_00a9"></a>
+<h3 class="subheading">ベクタ上の反復</h3>
+
+<dl>
+<dt><a name="index-vector_002dfold"></a><u>Function:</u> <b>vector-fold</b><i> kons knil vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+<var>Kons</var> is a procedure that takes <var>n</var>+2 arguments, where
+<var>n</var> is the number of given vectors.  For each element of the
+given vectors, <var>kons</var> is called as
+<code>(<var>kons</var> <var>i</var> <var>seed</var> <var>e_1i</var> <var>e_2i</var> …)</code>,
+where <var>i</var> is the index, and <var>e_ni</var> is the <var>i</var>-th element
+of the vector <var>n</var>.  If the lengths of the vectors differ,
+iteration stops when the shortest vector is exhausted.
+</p>
+<p>The initial value of <var>seed</var> is <var>knil</var>, and the return value
+from <var>kons</var> is used as the next seed value.  The last return value
+of <var>kons</var> is returned from <code>vector-fold</code>.
+</p>
+<p>The iteration is strictly left to right.
+</p>
+<p>Note that the seed value precedes elements, which is opposite to
+<code>fold</code> (See section <a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0081_00ab_00e5_00af_00be_00e3_0081_0099_00e3_0082_008b_00e3_0083_009e_00e3_0083_0083_00e3_0083_0094_00e3_0083_00b3_00e3_0082_00b0">コレクションに対するマッピング</a>).  It’s an unfortunate
+historical glitch; <code>vector-fold-left</code> would be more consistent
+name.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dfold_002dright"></a><u>Function:</u> <b>vector-fold-right</b><i> kons knil vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+Like <code>vector-fold</code>, but iterates right to left.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dmap"></a><u>Function:</u> <b>vector-map</b><i> f vec1 vec2 …</i></dt>
+<dt><a name="index-vector_002dmap_0021"></a><u>Function:</u> <b>vector-map!</b><i> f vec1 vec2 …</i></dt>
+<dt><a name="index-vector_002dfor_002deach"></a><u>Function:</u> <b>vector-for-each</b><i> f vec1 vec2 …</i></dt>
+<dt><a name="index-vector_002dcount"></a><u>Function:</u> <b>vector-count</b><i> f vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+The argument <var>f</var> is a procedure that takes <var>n</var>+1 arguments where
+<var>n</var> is the number of given vectors.   These procedures call <var>f</var>
+for each element of the given vectors as
+<code>(<var>f</var> <var>i</var> <var>e_1i</var> <var>e_2i</var> …)</code>,
+where <var>i</var> is the index, and <var>e_ni</var> is the <var>i</var>-th element
+of the vector <var>n</var>.   If the lengths of the vectors differ, iteration
+only covers the shortest vector.
+</p>
+<p><code>vector-map</code> creates a fresh vector out of the result of applications
+of <var>f</var> and returns it.
+<code>vector-map!</code> reuses <var>vec1</var> to
+store the result and returns <var>vec1</var>; hence <var>vec1</var> must be mutable.
+</p>
+<p><code>vector-for-each</code> is for side-effects.  It discards the result of
+<var>f</var>.
+</p>
+<p><code>vector-count</code> counts the number of times <var>f</var> returned a true value.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(vector-map list '#(a b c))
+ ⇒ #((0 a) (1 b) (2 c))
+(vector-map list '#(a b c) '#(d e f g))
+ ⇒ #((0 a d) (1 b e) (2 c f))
+(vector-count = '#(0 2 2 4 4))
+ ⇒ 3
+</pre></td></tr></tbody></table>
+
+<p>Note: The generic <code>map</code> and <code>for-each</code>
+in <code>gauche.collection</code> can be used
+on vectors, but the procedure is called without index, and the result
+is returned as a list.
+<code>(vector-map f vec1 vec2 …)</code> is operationally equivalent to
+<code>(map-to-with-index &lt;vector&gt; f vec1 vec2 …)</code>.
+See <a indepth="true" href="gauche-refj_78.html#g_t_00e3_0082_00b3_00e3_0083_00ac_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.collection</code> - コレクションフレームワーク</a> and <a indepth="true" href="gauche-refj_99.html#g_t_00e3_0082_00b7_00e3_0083_00bc_00e3_0082_00b1_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0095_00e3_0083_00ac_00e3_0083_00bc_00e3_0083_00a0_00e3_0083_00af_00e3_0083_00bc_00e3_0082_00af"><code>gauche.sequence</code> - シーケンスフレームワーク</a>.
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e4_00b8_008a_00e3_0081_00ae_00e6_00a4_009c_00e7_00b4_00a2"></a>
+<h3 class="subheading">ベクタ上の検索</h3>
+
+<dl>
+<dt><a name="index-vector_002dindex"></a><u>Function:</u> <b>vector-index</b><i> pred vec1 vec2 …</i></dt>
+<dt><a name="index-vector_002dindex_002dright"></a><u>Function:</u> <b>vector-index-right</b><i> pred vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+Returns the index of the first or the last elements in <var>vec1</var>
+<var>vec2</var> … that satisfy <var>pred</var>, respectively.
+Returns <code>#f</code> if no elements satisfy <var>pred</var>.
+In <code>vector-index</code>, comparison ends at the end of the shortest vector.
+For <code>vector-index-right</code>, all the vectors must have the same length.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dskip"></a><u>Function:</u> <b>vector-skip</b><i> pred vec1 vec2 …</i></dt>
+<dt><a name="index-vector_002dskip_002dright"></a><u>Function:</u> <b>vector-skip-right</b><i> pred vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+Like <code>vector-index</code> and <code>vector-index-right</code>, except that
+the result of <var>pred</var> is negated.  That is, returns the index
+of the first or the last elements that don’t sastisfy <var>pred</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dbinary_002dsearch"></a><u>Function:</u> <b>vector-binary-search</b><i> vec value cmp :optional start end</i></dt>
+<dd><p>[SRFI-43+]
+Look for <var>value</var> in a vector <var>vec</var>, and returns its
+index if it is found, or <code>#f</code> if it is not found.
+Comparison of <var>value</var> and an element in <var>vec</var> is
+done by a procedure <var>cmp</var>, which takes two arguments,
+and should return a negative integer if the first argument is less than the
+second, 0 if they are the same, and a positive integer if the first
+is greater than tne second.
+</p>
+<p>Elements in <var>vec</var> must be ordered from smaller to greater
+w.r.t. <var>cmp</var>.  Using that fact, this procedure performs
+binary search instead of linear search.
+</p>
+<p>The optional arguments <var>start</var> and <var>end</var> are an
+extention to SRFI-43, and can be used to limit the range of the
+search in <var>start</var>-th element (inclusive) to
+<var>end</var>-th element (exclusive).
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dany"></a><u>Function:</u> <b>vector-any</b><i> pred vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+Applies <var>pred</var> on each corresponding elements
+of <var>vec1</var> <var>vec2</var> … left to right, and
+as soon as <var>pred</var> returns non-<code>#f</code> value,
+the procedure stops iteration and returns the value.
+</p>
+<p>If no elements that satisfy <var>pred</var> are found, it returns <code>#f</code>.
+</p>
+<p>Vectors can have different lengths.  Iteration stops at the end
+of the shortest.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002devery"></a><u>Function:</u> <b>vector-every</b><i> pred vec1 vec2 …</i></dt>
+<dd><p>[SRFI-43]
+Applies <var>pred</var> on each corresponding elements
+of <var>vec1</var> <var>vec2</var> … left to right.
+If all the elements (when the lengths of vectors differ, the
+first N elements where N is the length of the shortest) satisfy
+<var>pred</var>, returns the last result of <var>pred</var>.   Otherwise
+returns <code>#t</code>.
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_009b_00b4_00e5_00ad_0090"></a>
+<h3 class="subheading">ベクタの変更子</h3>
+
+<dl>
+<dt><a name="index-vector_002dswap_0021"></a><u>Function:</u> <b>vector-swap!</b><i> vec i j</i></dt>
+<dd><p>[SRFI-43]
+Swaps vector <var>vec</var>’s <code>i</code>-th and <code>j</code>-th elements.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dreverse_0021"></a><u>Function:</u> <b>vector-reverse!</b><i> vec :optional start end</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dcopy_0021"></a><u>Function:</u> <b>vector-copy!</b><i> target tstart source :optional sstart send</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vector_002dreverse_002dcopy_0021"></a><u>Function:</u> <b>vector-reverse-copy!</b><i> target tstart source :optional sstart send</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<a name="g_t_00e3_0083_0099_00e3_0082_00af_00e3_0082_00bf_00e3_0081_00ae_00e5_00a4_0089_00e6_008f_009b"></a>
+<h3 class="subheading">ベクタの変換</h3>
+
+<dl>
+<dt><a name="index-reverse_002dvector_002d_003elist"></a><u>Function:</u> <b>reverse-vector-&gt;list</b><i> vec :optional start end</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-reverse_002dlist_002d_003evector"></a><u>Function:</u> <b>reverse-list-&gt;vector</b><i> list :optional start end</i></dt>
+<dd><p>[SRFI-43]
+</p></dd></dl>
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_121.html#Eager-comprehensions" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_123.html#Requiring-extensions" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_108.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-SRFI" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

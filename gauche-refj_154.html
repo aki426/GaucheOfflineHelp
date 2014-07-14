@@ -1,0 +1,522 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>11.28 rfc.mime - MIMEメッセージ処理</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 11.28 rfc.mime - MIMEメッセージ処理">
+<meta name="keywords" content="Gauche ユーザリファレンス: 11.28 rfc.mime - MIMEメッセージ処理">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="gauche-refj_154.css" media="all">
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="MIME_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_0087_00a6_00e7_0090_0086"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_153.html#MD5_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_155.html#Quoted_002dprintable_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="rfc_002emime-_002d-MIME_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_0087_00a6_00e7_0090_0086"></a>
+<h2 class="section">11.28 <code>rfc.mime</code> - MIMEメッセージ処理</h2>
+
+<dl>
+<dt><a name="index-rfc_002emime"></a><u>Module:</u> <b>rfc.mime</b></dt>
+<dd><a name="index-rfc_002emime-1"></a>
+<p>RFC2045からRFC2049で定義されている、
+多目的インターネットメール拡張(Multipurpose Internet Mail Extensions; MIME)
+メッセージを扱う便利な手続きです。MIME特有のヘッダフィールドやメッセージボディを
+パーズしたり作成したりするAPIが提供されます。
+</p>
+<p>このモジュールは主としてビルディングブロックとなる低レベルの手続きに
+フォーカスしており、アプリケーション特有のモジュールがこの上に
+構築されることを意図しています。例えば<code>rfc.http</code>はPOSTリクエストの
+ボディを<code>multipart/form-data</code>として構築する際にこのモジュールを
+利用します(<a indepth="true" href="gauche-refj_149.html#HTTP"><code>rfc.http</code> - HTTP</a>参照)。
+</p>
+<p>このモジュールは、<code>rfc.822</code>モジュールと一緒に使うことを
+想定しています(<a indepth="true" href="gauche-refj_144.html#RFC822_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e5_00bd_00a2_00e5_00bc_008f"><code>rfc.822</code> - RFC822メッセージ形式</a>参照)。
+</p></dd></dl>
+
+<a name="Utilities-for-header-fields"></a>
+<h3 class="subheading">Utilities for header fields</h3>
+
+<p>MIME特有のヘッダフィールドをパーズしたり生成したりする便利な手続き。
+</p>
+<dl>
+<dt><a name="index-mime_002dparse_002dversion"></a><u>Function:</u> <b>mime-parse-version</b><i> field</i></dt>
+<dd><p><var>field</var>がそのMIMEバージョンのヘッダフィールドとして有効であれば、
+そのメジャーバージョン番号とマイナーバージョン番号をリストにして
+返します。そうでなければ、<code>#f</code>を返します。
+<var>field</var>には<code>#f</code>を渡せるので、<code>rfc822-header-ref</code>の
+戻り値を直接渡すこともできます。<code>rfc822-read-headers</code>により
+返されるパーズ済みヘッダのリストを渡すことで、以下のように
+MIMEのバージョンを得ることができます。(現在は、<code>(1 0)</code>です。)
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(mime-parse-version (rfc822-header-ref headers "mime-version"))
+</pre></td></tr></tbody></table>
+
+<p>注意: <var>field</var>はトークンの間にコメントを含むかもしれないので、
+<code>#/\d+\.\d+/</code>のような単純な正規表現では不十分です。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mime_002dparse_002dcontent_002dtype"></a><u>Function:</u> <b>mime-parse-content-type</b><i> field</i></dt>
+<dd><p>“content-type”ヘッダフィールドをパーズし、次のようなリストを
+返します。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(<i>type</i> <i>subtype</i> (<i>attribute</i> . <i>value</i>) …)
+</pre></td></tr></tbody></table>
+<p>ここで、<i>type</i>と<i>subtype</i>はそれぞれ、MIMEメディアタイプと
+サブタイプを文字列で表したものになります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(mime-parse-content-type "text/html; charset=iso-2022-jp")
+ ⇒ ("text" "html" ("charset" . "iso-2022-jp"))
+</pre></td></tr></tbody></table>
+
+<p><var>field</var>が有効なcontent-typeフィールドでない場合は、
+<code>#f</code>が返ります。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mime_002dparse_002dcontent_002ddisposition"></a><u>Function:</u> <b>mime-parse-content-disposition</b><i> field</i></dt>
+<dd><p>RFC2183に定められたContent-Dispositionヘッダフィールドをパーズします。
+(mime-parse-content-disposition "attachment; filename=genome.jpeg;\
+  modification-date=\"Wed, 12 Feb 1997 16:29:51 -0500\";")
+ ⇒ ("attachment"
+      ("filename" . "genome.jpeg")
+      ("modification-date" . "Wed, 12 Feb 1997 16:29:51 -0500"))
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-mime_002dparse_002dparameters"></a><u>Function:</u> <b>mime-parse-parameters</b><i> :optional iport</i></dt>
+<dt><a name="index-mime_002dcompose_002dparameters"></a><u>Function:</u> <b>mime-compose-parameters</b><i> params :optional oport &amp;key start-column</i></dt>
+<dd><p>これらは、(RFC2045の5.1節にあるような)ヘッダフィールドの値の<em>parameter</em>
+部分をパーズしたり作成したりするための低レベルのユーティリティ手続きです。
+</p>
+<p><code>mime-parse-parameters</code>はヘッダフィールドの値のパラメータ部分を
+入力ポート<var>iport</var>から読んでパーズし、パラメータの名前と値の
+連想リストを返します。
+<code>mime-compose-parameters</code>はその逆で、連想リストをとり、
+パラメータ部分を構成して<var>oport</var>へと書き出します。
+<var>iport</var>、<var>oport</var>はそれぞれ省略された場合、
+<code>current-input-port</code>と<code>current-output-port</code>を
+デフォルトとします。また、<var>oport</var>に<code>#f</code>を渡すと
+<code>mime-compose-parameters</code>は結果をポートに書き出すかわりに
+文字列として返します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(call-with-input-string
+   "; name=foo; filename=\"foo/bar/baz\""
+   mime-parse-parameters)
+ ⇒ (("name" . "foo") ("filename" . "foo/bar/baz"))
+
+(mime-compose-parameters
+ '(("name" . "foo") ("filename" . "foo/bar/baz"))
+ #f)
+ ⇒ "; name=foo; filename=\"foo/bar/baz\""
+</pre></td></tr></tbody></table>
+
+<p><var>mime-compose-parameters</var>はヘッダ行が長くなりすぎる場合に
+パラメータ間に折り返し改行を入れようとします。パラメータ部分が始まる
+カラム数は<var>start-column</var>で与えることができます。
+</p>
+<p>将来は、これらの手続きにRFC2231のパラメータ値拡張を透過的に処理させる予定です。
+</p></dd></dl>
+
+
+<dl>
+<dt><a name="index-mime_002ddecode_002dword"></a><u>Function:</u> <b>mime-decode-word</b><i> word</i></dt>
+<dd><p>RFC2047でエンコードされた<var>word</var>をデコードします。
+<var>word</var>がRFC2047でエンコードされたものでない場合は、そのまま
+返されます。
+</p>
+<p>この手続きは<var>word</var>全体がRFC2047の規定する“encoded-word”である場合にのみ
+デコードを行うことに注意してください。複数のエンコードされた部分や
+エンコードされていない部分が混ざっているフィールドを扱う場合は、
+下に示す<code>mime-decode-text</code>を使います。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(mime-decode-word "=?iso-8859-1?q?this=20is=20some=20text?=")
+ ⇒ "this is some text"
+</pre></td></tr></tbody></table>
+
+</dd></dl>
+<dl>
+<dt><a name="index-mime_002ddecode_002dtext"></a><u>Function:</u> <b>mime-decode-text</b><i> text</i></dt>
+<dd><p><var>text</var>中に含まれるすべてのencoded wordをデコードした文字列を返します。
+この手続きは、エンコードされていない部分とエンコードされている部分が混ざっていたり、
+複数のエンコードされている部分を持つヘッダフィールドボディを処理することが
+できます。そのようなフィールドの例はemailのSubjectフィールドです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(mime-decode-text "Yamada Taro (=?utf-8?B?5bGx55SwIOWkqumDjg==?=)")
+ ⇒ "Yamada Taro (山田 太郎)"
+</pre></td></tr></tbody></table>
+
+<p>この手続きを「構造化された」ヘッダフィールドボディ (RFC2822 2.2.2節参照)
+に適用する際には注意が必要です。
+構造化されたヘッダフィールドボディをパーズする正式な方法は、
+最初にトークンに分割して、それから各wordを
+<code>mime-decode-word</code>を使ってデコードするというものです。
+なぜならデコード後のテキスト中に、パージングに影響を与える文字が含まれている
+かもしれないからです。
+(ただし、単に参考情報を人間にわかりやすいように表示するだけの目的の場合は、
+簡便のためにヘッダフィールド全体をこの手続きで一度にデコードしてしまっても
+良いでしょう)。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mime_002dencode_002dword"></a><u>Function:</u> <b>mime-encode-word</b><i> word :key charset transfer-encoding</i></dt>
+<dd><p><var>word</var>をRFC2047フォーマットにエンコードします。キーワード引数
+<var>charset</var>は文字列かシンボルで文字エンコーディングスキームを指定します。
+デフォルトは<code>utf-8</code>です。<var>charset</var>の指定がGaucheの
+内部文字エンコーディングと異なっており、<var>word</var>が完全な文字列である場合は、
+まず<var>word</var>が<var>charset</var>のエンコーディングへと変換され、
+その上でトランスファーエンコーディングがかけられます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(mime-encode-word "this is some text")
+ ⇒ "=?utf-8?B?dGhpcyBpcyBzb21lIHRleHQ=?="
+</pre></td></tr></tbody></table>
+
+<p>キーワード引数<var>transfer-encoding</var>は各オクテットを伝達上安全な
+文字列へどエンコードする方法を指定します。サポートされている値は、
+Base64を指定するシンボル<code>b</code>、<code>B</code>、<code>base64</code>、
+およびQuoted printableを指定する
+<code>Q</code>、<code>q</code>、<code>quoted-printable</code>です。
+これ以外の値を渡した場合はエラーが通知されます。デフォルトはBase64です。
+</p>
+<p>この手続きは結果のencoded wordの長さを気にしませんが、
+RFC2047によればencoded wordは75オクテットまでに収めることが
+要請されています。この要請に対応するには下に示す
+<code>mime-encode-text</code>を使って下さい。
+</p>
+<p>(註：ほとんどのGaucheの手続きでは、キーワード引数<code>encoding</code>により
+文字エンコーディングを指定します。しかしこの手続きの文脈では
+2つの「エンコーディング」が存在しているので、混乱を避けるために
+RFC文書で使われている“charset”および“transfer-encoding”の用語を
+使うこととしました。)
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mime_002dencode_002dtext"></a><u>Function:</u> <b>mime-encode-text</b><i> text :key charset transfer-encoding line-width start-column force</i></dt>
+<dd><p><var>text</var>を、必要ならばRFC2047フォーマットに従いエンコードします。
+また、結果が長すぎる場合の行の折り返しも考慮します。
+</p>
+<p>キーワード引数<var>charset</var>と<var>transfer-encoding</var>の意味は
+<code>mime-encode-word</code>と同じです。
+</p>
+<p>もし<var>word</var>が印字可能なASCII文字のみで構成されていた場合は
+エンコーディングは行われず、行の折り返しのみが処理されます。
+但し、<var>force</var>引数に真の値が与えられた場合はASCIIのみの<var>text</var>も
+エンコードされます。
+</p>
+<p><var>line-width</var>は結果に現れる行の最大値を指定します。デフォルトは76です。
+encoded wordがこれを越える場合は、複数のencoded wordへと結果は分割され、
+間にCR LF SPCシーケンス(RFC2822で定義される“folding white space”)が挿入されます。
+<var>line-width</var>に<code>#f</code>か<code>0</code>を渡すことで
+行の折り返しを抑制することができます。
+encoded wordには文字数でいくらかのオーバヘッドがあるため、
+あまり小さい<code>line-width</code>には意味がありません。現在の実装では
+30以下の値は拒否されます。
+</p>
+<p><var>start-column</var>キーワード引数は、ヘッダフィールド名を入れるために
+エンコード結果の最初の行だけを短くするのに使えます。
+例えばSubjectヘッダフィールドのボディをエンコードする際に、
+<code>(string-length "Subject: ")</code>の値を渡してやれば、
+結果を直接"Subject: "の後に連結することができるわけです。
+デフォルトの値は0です。
+</p>
+<p>この手続きはstructured header fieldをエンコードするようには設計
+されていません。structured header fieldには、どの部分がエンコード
+可能でどの部分にfolding white spaceが挿入可能かについてさらなる
+制約があるためです。安全な方法は、まず必要な部分をエンコードし、
+それから折り返しを考慮しつつstructured header fieldを組み立てることです。
+</p></dd></dl>
+
+<a name="Streaming-parser"></a>
+<h3 class="subheading">Streaming parser</h3>
+
+<p>メッセージ全体が読み込まれる前にメッセージボディをどのように
+扱うかをコントロールできるように、ストリームパーザが用意されて
+います。
+</p>
+<dl>
+<dt><a name="index-mime_002dparse_002dmessage"></a><u>Function:</u> <b>mime-parse-message</b><i> port headers handler</i></dt>
+<dd><p>基本的なストリームパーザです。<var>port</var>は、メッセージを読み込む
+入力ポートです。<var>headers</var>は<code>rfc822-read-headers</code>により
+パーズされたヘッダのリストです。つまり、この手続きは、
+<var>port</var>から読み込まれたメッセージのヘッダ部分がパーズされた
+後に使われることを想定しています。
+</p><table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let* ((headers (rfc822-read-headers port)))
+  (if (mime-parse-version (rfc822-header-ref headers "mime-version"))
+     ;; parse MIME message
+     (mime-parse-message port headers handler)
+     ;; retrieve a non-MIME body
+     ...))
+</pre></td></tr></tbody></table>
+
+<p><code>mime-parse-message</code>は<var>headers</var>を解析し、
+メッセージボディのそれぞれについて、2引数をもって
+<var>handler</var>を呼び出します。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(handler <var>part-info</var> <var>xport</var>)
+</pre></td></tr></tbody></table>
+
+<p><var>part-info</var>は、以下で説明するような、メッセージのこのパートの
+情報をカプセル化した<code>&lt;mime-part&gt;</code>ストラクチャです。
+</p>
+<p><var>xport</var>は入力ポートで、最初はメッセージボディの先頭を指しています。
+ハンドラはこのポートからメッセージボディを読み込むことが出来ます。
+<var>xport</var>はMIMEバウンダリを認識し、パートの最後に到達したら
+EOFを返します。
+(元の<var>port</var>から直接読み込まないようにして下さい。
+そうしてしまうと、<var>vport</var>の内部状態がおかしくなります)。
+</p>
+<p><var>handler</var>は、パートをメモリに読み込んだり、ディスクに保存したり、
+あるいはそのパートを無視したりできます。ただ、何をするにせよ、
+<var>vport</var>がEOFを返すまでデータを読まなければなりません。
+</p>
+<p><var>handler</var>の戻り値は、<var>part-info</var>の<code>content</code>スロットに
+セットされます。
+</p>
+<p>メッセージが、ネストしたマルチパートメッセージを含んでいる場合は、
+<var>handler</var>は深さ優先でそれぞれの“葉”のパートに対して呼ばれます。
+<var>handler</var>は、<var>part-info</var>ストラクチャを調べることで、
+そのネストのレベルを知ることができます。
+</p>
+<p>メッセージはマルチパートである必要はありません。メッセージが
+MIME <code>mesasge</code>タイプである場合は、<var>handler</var>は囲まれたメッセージの
+ボディに対して呼ばれます。メッセージが、<code>text</code>や<code>application</code>
+などの他のメディアタイプの場合は、<var>handler</var>は単にメッセージボディに
+対して呼ばれます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-_003cmime_002dpart_003e"></a><u>Class:</u> <b>&lt;mime-part&gt;</b></dt>
+<dd><a name="index-mime_002dmessage"></a>
+<p>MIMEパートのメタ情報を含むストラクチャです。
+これは、そのパートのヘッダが読み込まれた時点で構築され、
+そのパートのボディを読み込むハンドラに渡されます。
+</p>
+<p>以下のスロットを持ちます。
+</p>
+<dl>
+<dt><a name="index-type-3"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>type</b></dt>
+<dd><p>MIMEメディアタイプの文字列。そのパートの<code>content-type</code>ヘッダが
+省略された場合は、適切なデフォルト値がセットされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-subtype"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>subtype</b></dt>
+<dd><p>MIMEメディアのサブタイプの文字列。そのパートの<code>content-type</code>
+ヘッダが省略された場合は、適切なデフォルト値がセットされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-parameters"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>parameters</b></dt>
+<dd><p><code>content-type</code>ヘッダフィールドに渡されるパラメータの連想リスト。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-transfer_002dencoding"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>transfer-encoding</b></dt>
+<dd><p><code>content-transfer-encoding</code>ヘッダフィールドの値。
+このヘッダフィールドが省略された場合は、適切なデフォルト値が
+セットされます。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-headers"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>headers</b></dt>
+<dd><p><code>rfc822-read-headers</code>によりパーズされた、ヘッダフィールドのリスト。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-parent"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>parent</b></dt>
+<dd><p>それがマルチパートメッセージあるいはカプセル化されたメッセージの
+パートである場合は、それを含んでいるパートの<code>&lt;mime-part&gt;</code>
+ストラクチャを指します。そうでなければ<code>#f</code>を返します。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-index"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>index</b></dt>
+<dd><p>同じ親を持つパートの中でのそのパートのシーケンス番号。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-content"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>content</b></dt>
+<dd><p>そのパートのメディアタイプがmultipart/*あるいはmessage/*で
+ある場合は、このスロットにはそれに含まれるパートのリストが
+入っています。そうでなければ、<var>handler</var>の戻り値が
+格納されています。
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-source"></a><u>Instance Variable of &lt;mime-part&gt;:</u> <b>source</b></dt>
+<dd><p>このスロットはMIMEメッセージを作成する時のみ使われます。
+呼び出し元は、このスロットにファイル名をセットすることで、
+MIMEメッセージのこのパートにファイルの内容を挿入することができます。
+詳しくは下の<code>mime-compose-message</code>の項を参照してください。
+</p></dd></dl>
+</dd></dl>
+
+<dl>
+<dt><a name="index-mime_002dretrieve_002dbody"></a><u>Function:</u> <b>mime-retrieve-body</b><i> part-info xport outp</i></dt>
+<dd><p>メッセージボディを取得するための手続きです。
+<code>mime-parse-message</code>へ渡される、<var>handler</var>の
+ビルディングブロックとなることを意図しています。
+</p>
+<p><var>part-info</var>は、<code>&lt;mime-part&gt;</code>のオブジェクトです。
+<var>xport</var>はハンドラに渡された入力ポートで、
+そこからMIMEパートが読みこまれるものです。
+</p>
+<p>この手続きは、<var>xport</var>からEOFに達するまで読み込み、
+<var>part-info</var>の<code>transfer-encoding</code>も見て、
+ボディを適切にデコードします。つまり、base64やquoted-printable
+のエンコーディングは適切に処理されます。結果が出力ポート<var>outp</var>へと
+出力されます。
+</p>
+<p>この手続きは文字セットの変換は扱いません。
+必要であれば、呼び出し側が<var>outp</var>としてCES変換ポートを
+使う必要があります(<a indepth="true" href="gauche-refj_76.html#g_t_00e6_0096_0087_00e5_00ad_0097_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0089_00e5_00a4_0089_00e6_008f_009b"><code>gauche.charconv</code> - 文字コード変換</a>参照)。
+</p>
+</dd></dl>
+
+<p>典型的なケースのために、いくつかの便利な手続きが<code>mime-retrieve-body</code>
+の上に定義されています。
+</p>
+<dl>
+<dt><a name="index-mime_002dbody_002d_003estring"></a><u>Function:</u> <b>mime-body-&gt;string</b><i> part-info xport</i></dt>
+<dt><a name="index-mime_002dbody_002d_003efile"></a><u>Function:</u> <b>mime-body-&gt;file</b><i> part-info xport filename</i></dt>
+<dd><p>MIMEメッセージのボディを読み込み、転送(transfer)エンコーディングを
+デコードし、それぞれ文字列として返すか、ファイルへ書き出します。
+</p></dd></dl>
+
+<p>MIMEメッセージパーザの最もシンプルな使い方は次のように
+なります。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(let ((headers (rfc822-read-headers port)))
+  (mime-parse-message port headers
+                      (cut mime-body-&gt;string &lt;&gt; &lt;&gt;)))
+</pre></td></tr></tbody></table>
+
+<p>これは、メッセージの全てをメモリに読み込み、
+一番上層の<code>&lt;mime-part&gt;</code>オブジェクトを返します。
+(“葉”である<code>&lt;mime-part&gt;</code>オブジェクトの<code>content</code>フィールドは、
+そのパートのボディを文字列として保持しています。)
+内容の転送エンコーディング(content transfer encoding)は認識され処理
+されますが、文字セットの変換は行われません。
+</p>
+<p>メッセージボディを直接ファイルに書き出したり、MIMEメディアタイプや
+他のヘッダ情報に基づいていくつかのボディをスキップしたいかもしれません。
+その場合は、ロジックをハンドラのクロージャに入れることができます。
+それが、このモジュールが、オールインワンの手続きではなく、
+ビルディングブロックを提供している理由です。
+</p>
+<a name="Message-composer"></a>
+<h3 class="subheading">Message composer</h3>
+
+<dl>
+<dt><a name="index-mime_002dcompose_002dmessage"></a><u>Function:</u> <b>mime-compose-message</b><i> parts :optional port &amp;key boundary</i></dt>
+<dt><a name="index-mime_002dcompose_002dmessage_002dstring"></a><u>Function:</u> <b>mime-compose-message-string</b><i> parts &amp;key boundary</i></dt>
+<dd><p>Composes a MIME multipart message.  <code>Mime-compose-message</code>
+emits the result to an output port <var>port</var>, whose default
+is the current output port.  <code>Mime-compose-message-string</code>
+makes the result into a string.   You can give a boundary string
+via <var>boundary</var> argument; when omitted, a fresh boundary string
+is automatically generated by <code>mime-make-boundary</code> below.
+</p>
+<p><code>Mime-compose-message</code> returns the boundary string.
+<code>Mime-compose-message-string</code> returns two values, the result
+string and the boundary string.
+</p>
+<p>The content of the message is provided by the <var>parts</var> argument,
+which can be a list of instances of <code>&lt;mime-part&gt;</code> (see above)
+or lists that describe parts.  The list form is supported for
+the caller’s convenience, and internally it is converted to
+a list of <code>&lt;mime-part&gt;</code>s.
+</p>
+<p>The syntax of each part element in <var>parts</var> are defined as follow.
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">&lt;part&gt;           : &lt;mime-part&gt; | &lt;mime-part-desc&gt;
+
+&lt;mime-part&gt;      : <span class="roman">an instance of the class</span> &lt;mime-part&gt;
+
+&lt;mime-part-desc&gt; : (&lt;content-type&gt; (&lt;header&gt; ...) &lt;body&gt;)
+&lt;content-type&gt;   : (&lt;type&gt; &lt;subtype&gt; &lt;header-param&gt; ...)
+&lt;header-param&gt;   : (&lt;key&gt; . &lt;value&gt;) ...
+&lt;header&gt;         : (&lt;header-name&gt; &lt;encoded-header-value&gt;)
+                 | (&lt;header-name&gt; (&lt;header-value&gt; &lt;header-param&gt; ...))
+&lt;body&gt;           : <span class="roman">a string</span>
+                 | (file &lt;filename&gt;)
+                 | (subparts &lt;part&gt; ...)
+</pre></td></tr></tbody></table>
+
+<p>Note: In the first form of <code>&lt;header&gt;</code>,
+<code>&lt;encoded-header-value&gt;</code> must already be encoded using RFC2047
+or RFC2231 if the original value contains non-ascii characters.
+In the second form, we plan to do RFC2231 encoding on behalf of
+the caller; but the current version does not implement it.  The
+caller should not pass encoded words in this form, since it may
+result double-encoding when we implement the auto encoding feature;
+for the time being, the second form restricts ASCII-only values.
+</p>
+<p>If <code>&lt;body&gt;</code> is a string, it is used as the part’s content.
+If <code>&lt;body&gt;</code> is <code>(file <var>filename</var>)</code>, the content is
+read from the named file.   If <code>&lt;body&gt;</code> is
+<code>(subparts <var>part</var> …)</code>, the part becomes nested
+MIME part.
+</p>
+<p>It is the caller’s responsibility to give the proper content.
+For example, if <code>&lt;body&gt;</code> is in the third form, the
+part must have <code>multipart</code> content type.
+</p>
+<p>The caller needs to provide proper <code>content-transfer-encoding</code>
+header, depending on the application.  If none is given, the content
+is inserted into the message as is, which may be appropriate for
+some applications, but if you want to use the result in email
+message you certainly want to encode binary part with base64,
+for example.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-mime_002dmake_002dboundary"></a><u>Function:</u> <b>mime-make-boundary</b></dt>
+<dd><p>MIMEマルチパートメッセージのboundaryとして使えるユニークな文字列を返します。
+</p></dd></dl>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_153.html#MD5_00e3_0083_00a1_00e3_0083_0083_00e3_0082_00bb_00e3_0083_00bc_00e3_0082_00b8_00e3_0083_0080_00e3_0082_00a4_00e3_0082_00b8_00e3_0082_00a7_00e3_0082_00b9_00e3_0083_0088" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_155.html#Quoted_002dprintable_00e3_0082_00a8_00e3_0083_00b3_00e3_0082_00b3_00e3_0083_00bc_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_126.html#g_t_00e3_0083_00a9_00e3_0082_00a4_00e3_0083_0096_00e3_0083_00a9_00e3_0083_00aa_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab-_002d-_00e3_0083_00a6_00e3_0083_00bc_00e3_0083_0086_00e3_0082_00a3_00e3_0083_00aa_00e3_0083_0086_00e3_0082_00a3" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_189.html#g_t_00e5_008f_0082_00e8_0080_0083_00e6_0096_0087_00e7_008c_00ae" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>

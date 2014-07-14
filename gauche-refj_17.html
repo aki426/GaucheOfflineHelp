@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+<title>3.5 プラットフォーム依存の機能</title>
+
+<meta name="description" content="Gauche ユーザリファレンス: 3.5 プラットフォーム依存の機能">
+<meta name="keywords" content="Gauche ユーザリファレンス: 3.5 プラットフォーム依存の機能">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.82">
+
+
+
+
+</head>
+<body alink="#FF0000" bgcolor="#FFFFFF" lang="ja" link="#0000FF" text="#000000" vlink="#800080">
+
+<a name="g_t_00e3_0083_0097_00e3_0083_00a9_00e3_0083_0083_00e3_0083_0088_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e4_00be_009d_00e5_00ad_0098_00e3_0081_00ae_00e6_00a9_009f_00e8_0083_00bd"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_16.html#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_18.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj.html#Top" title="Cover (top) of document">Top</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_191.html#Index-_002d-_00e6_0089_008b_00e7_00b6_009a_00e3_0081_008d_00e3_0081_00a8_00e6_00a7_008b_00e6_0096_0087_00e7_00b4_00a2_00e5_00bc_0095" title="Index">Index</a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></tbody></table>
+<a name="g_t_00e3_0083_0097_00e3_0083_00a9_00e3_0083_0083_00e3_0083_0088_00e3_0083_0095_00e3_0082_00a9_00e3_0083_00bc_00e3_0083_00a0_00e4_00be_009d_00e5_00ad_0098_00e3_0081_00ae_00e6_00a9_009f_00e8_0083_00bd-1"></a>
+<h2 class="section">3.5 プラットフォーム依存の機能</h2>
+
+<p>GaucheではOSが提供するAPIに近い低レベルAPIを提供するようにしています。
+しかし、システムごとに扱いの違うものがあります。たとえば、POSIXでは
+<code>symlink</code>は必須ではありませんので、システムによっては
+<code>sys-symlink</code> (<a indepth="true" href="gauche-refj_63.html#g_t_00e3_0083_0087_00e3_0082_00a3_00e3_0083_00ac_00e3_0082_00af_00e3_0083_0088_00e3_0083_00aa_00e6_0093_008d_00e4_00bd_009c">ディレクトリ操作</a>参照)がありません。
+UNIX系のシステム関数は少なからずWindowsでは使えません。
+</p>
+<p>プラットフォーム間でポータブルなプログラムを書くために、Gaucheでは
+頻繁に<code>cond-expand</code> を使います(<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>参照)。
+拡張された<em>機能識別子(feature-identifier)</em>が提供されており、これ
+を使って特定の機能が利用可能かどうかチェックできます。たとえば、
+<code>symlink</code>があるシステムでは機能識別子<code>gauche.sys.symlink</code>が
+定義されます。したがって、以下のように<code>sys-symlink</code>が利用できるか
+どうかによって、コードをスイッチするようなプログラムを書けます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ (gauche.sys.symlink
+   ... code that uses sys-symlink ...)
+ (else
+   ... alternative code ...)
+ )
+</pre></td></tr></tbody></table>
+
+<p>Cのシステムプログラミングに詳しいなら、上のコードは以下のCのイディオム
+と同じだとみなせます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">#if defined(HAVE_SYMLINK)
+... code that uses symlink ...
+#else
+... alternative code ...
+#endif
+</pre></td></tr></tbody></table>
+
+<p>このような機能識別子はたくさんあり、それぞれの識別子についてはこのマニュ
+アル中のその機能に依存した手続きの項目で説明しています。特に重要なもの
+を以下にリストアップしておきます。
+</p>
+<dl compact="compact">
+<dt> <code>gauche</code></dt>
+<dd><p>この機能識別子は常に定義されています。Gauche以外のSchemeの実装とも互換
+性のあるコードを書くときに使えます。
+</p></dd>
+<dt> <code>gauche.os.windows</code></dt>
+<dd><p>Windowsネイティブプラットフォームで定義されます。(現時点では、MinGWを
+使っていますが、将来VC++版をサポートする予定です。) cygwinでは
+この機能識別子は定義されません (下記も参照)。
+</p></dd>
+<dt> <code>gauche.os.cygwin</code></dt>
+<dd><p>Cygwin上で定義されます。
+</p></dd>
+<dt> <code>gauche.sys.threads</code></dt>
+<dd><p>Gaucheがスレッドをサポートするようにコンパイルされている場合に定義されます。
+詳細は<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"><code>gauche.threads</code> - スレッド</a>を参照してください。
+</p></dd>
+<dt> <code>gauche.sys.pthreads</code></dt>
+<dt> <code>gauche.sys.wthreads</code></dt>
+<dd><p>スレッドがサポートされている時に、下位の実装を示すために定義されます。
+詳細は<a indepth="true" href="gauche-refj_103.html#g_t_00e3_0082_00b9_00e3_0083_00ac_00e3_0083_0083_00e3_0083_0089"><code>gauche.threads</code> - スレッド</a>を参照してください。
+</p></dd>
+<dt> <code>gauche.net.ipv6</code></dt>
+<dd><p>GaucheがIPv6をサポートするようにコンパイルされている場合に定義されます。
+</p></dd>
+</dl>
+
+<p><code>cond-expand</code>はマクロなので、<code>cond-expand</code>自身がトップレベル
+にあれば、節の本体はトップレベルで展開されます。これはトップレベルの定
+義をスイッチできるということです。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ (gauche.os.windows
+  (define (get-current-user)
+    ... get current username ...))
+ (else
+  (define (get-current-user)
+    (sys-uid-&gt;user-name (sys-getuid)))))
+</pre></td></tr></tbody></table>
+
+<p>あるいは条件によってモジュールを使いわけられます。
+</p>
+<table><tbody><tr><td>&nbsp;</td><td><pre class="example">(cond-expand
+ (gauche.os.windows
+   (use "my-windows-compatibility-module"))
+ (else))
+</pre></td></tr></tbody></table>
+
+<p>実行時にトップレベルの束縛をチェックするような旧いテクニック
+(<code>global-variable-bound?</code>を使う, <a indepth="true" href="gauche-refj_32.html#g_t_00e3_0083_00a2_00e3_0082_00b8_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_00ab_00e3_0082_00a4_00e3_0083_00b3_00e3_0083_0088_00e3_0083_00ad_00e3_0082_00b9_00e3_0083_009a_00e3_0082_00af_00e3_0082_00b7_00e3_0083_00a7_00e3_0083_00b3">モジュールイントロスペクション</a>参照)
+は正しく働きません。これはプログラム実行時に実行されますが、<code>use</code>
+形式はコンパイル時に意味をもちます。可能なかぎり、<code>cond-expand</code>を
+使うことを推奨します。
+</p>
+<p>現時点では機能識別子集合はGaucheのコンパイル時に固定されます。つまり、
+Cのプリプロセッサを使った条件分岐よりも柔軟性に劣ります。この機能を拡
+張してあとから機能識別子を追加できるようにする計画ですが、この機能拡張
+はコンパイルと実行交互におこるときのセマンティクスを複雑にしてしまう可
+能性があり、現在その影響を慎重にみきわめている最中です。
+</p>
+<p>いくつか注意事項があります。
+</p>
+<p>機能識別子は変数ではありません。<code>cond-expand</code>の
+<var>feature-requirement</var>部の内部でのみ利用可能です(機能要求の定義全般
+については<a indepth="true" href="gauche-refj_109.html#g_t_00e6_00a9_009f_00e8_0083_00bd_00e6_009d_00a1_00e4_00bb_00b6_00e5_00bc_008f"><code>srfi-0</code> - 機能条件式</a>を見てください)。
+</p>
+<p><code>srfi-0</code>の定義により、機能要求が満されず、かつ<code>else</code>節がない
+場合には<code>cond-expand</code>はエラーをあげます。常に<code>else</code>を書いて
+おくのがよいでしょう。 上の例のように、<code>else</code>節でなにもしないとき
+でも、空の<code>else</code>節を書くのがよいでしょう。
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tbody><tr><td align="left" valign="middle">[<a indepth="true" href="gauche-refj_16.html#g_t_00e3_0083_0087_00e3_0083_0090_00e3_0083_0083_00e3_0082_00b0" title="Previous section in reading order"> &lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_18.html#g_t_00e3_0083_0097_00e3_0083_00ad_00e3_0083_0095_00e3_0082_00a1_00e3_0082_00a4_00e3_0083_00aa_00e3_0083_00b3_00e3_0082_00b0_00e3_0081_00a8_00e3_0083_0081_00e3_0083_00a5_00e3_0083_00bc_00e3_0083_008b_00e3_0083_00b3_00e3_0082_00b0" title="Next section in reading order"> &gt; </a>]</td>
+<td align="left" valign="middle"> &nbsp; </td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_12.html#Gauche_00e3_0081_00a7_00e3_0081_00ae_00e3_0083_0097_00e3_0083_00ad_00e3_0082_00b0_00e3_0083_00a9_00e3_0083_009f_00e3_0083_00b3_00e3_0082_00b0" title="Up section"> Up </a>]</td>
+<td align="left" valign="middle">[<a indepth="true" href="gauche-refj_21.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e7_009a_0084_00e3_0081_00aa_00e6_00a7_008b_00e6_0096_0087" title="Next chapter"> &gt;&gt; </a>]</td>
+</tr></tbody></table>
+<p>
+ <font size="-1">
+  This document was generated by <em>Shiro Kawai</em> on <em>May 28, 2012</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html 1.82</em></a>.
+ </font>
+ <br>
+
+</p>
+
+
+
+
+</body></html>
