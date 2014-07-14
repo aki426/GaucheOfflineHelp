@@ -15,11 +15,11 @@
 4. [hhhlp](http://hp.vector.co.jp/authors/VA035931/hhhlp.html)を使ってhhpファイルを生成
 5. [Microsoft HTML Help Downloads](http://msdn.microsoft.com/ja-jp/library/windows/desktop/ms669985%28v=vs.85%29.aspx)を使ってCHMファイルにコンパイル
 
-コンパイル前のhtmlファイル、hhpファイルもリポジトリに一緒に入れておきます。
+コンパイル前のhtmlファイル、hhpファイルもリポジトリに一緒に入れてあります。必要に応じて使ってください。
 
 ##ライセンス
 元のリファレンスマニュアルと同様、修正BSDライセンスです。日本語のライセンス文は[SourceForgeの翻訳文など](http://sourceforge.jp/projects/opensource/wiki/licenses%2Fnew_BSD_license)を参考にしてください。
-また、本リファレンスマニュアルの著作権は私ではなく、の原著作者の川合史郎氏にあります。
+また、本リファレンスマニュアルの著作権は私ではなく、原著作者の川合史郎氏にあります。
 
   Copyright (c) 2000-2014  Shiro Kawai  <shiro@acm.org>
 
