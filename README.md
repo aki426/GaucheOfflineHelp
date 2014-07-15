@@ -3,7 +3,7 @@
 主にWindowsユーザの利用を想定していますが、Linux、Macでも適当なブラウザがあれば見れるのかもしれません。
 
 ##使い方
-リポジトリの中にある[Gaucheリファレンスマニュアル.chm]([https://github.com/aki426/GaucheOfflineHelp/blob/master/Gauche%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB.chm?raw=true)をダウンロードして使ってください。「検索」から全文検索が可能です。
+リポジトリの中にある[「Gaucheリファレンスマニュアル.chm」]([https://github.com/aki426/GaucheOfflineHelp/blob/master/Gauche%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB.chm?raw=true)をダウンロードして使ってください。「検索」から全文検索が可能です。
 
 ネットワークの無いところにノートPCを持ち歩いてプログラミングするような時に重宝すると思います。
 
